@@ -10,15 +10,22 @@ angular.module('HomeCooked.controllers', [])
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
+    //$scope.login();
   });
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();
-  },
+  };
 
   // Open the login modal
   $scope.login = function() {
+    $scope.modal.show();
+  };
+
+  // Open the login modal
+  $scope.logout = function() {
+    $scope.loginData = {};
     $scope.modal.show();
   };
 
@@ -31,7 +38,7 @@ angular.module('HomeCooked.controllers', [])
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
-  }
+  };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -45,5 +52,13 @@ angular.module('HomeCooked.controllers', [])
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('PlaylistCtrl', function() {
+})
+.controller('BuyerCtrl', function($scope) {
+  $scope.findChefs = function(){
+    console.log(arguments);
+  };
+  $scope.openOrders = function(){
+    console.log(arguments);
+  };
 });
