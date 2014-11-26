@@ -1,4 +1,7 @@
 'use strict';
+var Parse = require('parse').Parse;
+Parse.initialize('LaxhuAA5aa4vMQ7SfNfDchfXgMETj2xVl3tGoMWC', 'ajYR5N3u2d1G4f5bZ52HBJwFCZRyJ4S3CNLAk5Il');
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules

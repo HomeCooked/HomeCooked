@@ -2,7 +2,9 @@
   "name": "HomeCooked",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "parse": "^1.3.0"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "glob": "~4.0.5",
