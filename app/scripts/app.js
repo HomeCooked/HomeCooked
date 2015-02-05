@@ -1,5 +1,4 @@
 'use strict';
-var Parse = require('parse').Parse;
 
 // Ionic Starter App
 
@@ -8,7 +7,6 @@ var Parse = require('parse').Parse;
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('HomeCooked', ['ionic', 'HomeCooked.controllers'])
-  .constant('Parse', Parse)
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
       // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
@@ -32,15 +30,6 @@ angular.module('HomeCooked', ['ionic', 'HomeCooked.controllers'])
         controller: 'AppCtrl'
       })
 
-      .state('app.search', {
-        url: '/search',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/search.html'
-          }
-        }
-      })
-
       .state('app.buyer', {
         url: '/buyer',
         views: {
@@ -56,25 +45,6 @@ angular.module('HomeCooked', ['ionic', 'HomeCooked.controllers'])
           'menuContent': {
             templateUrl: 'templates/seller.html',
             controller: 'SellerCtrl'
-          }
-        }
-      })
-      .state('app.playlists', {
-        url: '/playlists',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/playlists.html',
-            controller: 'PlaylistsCtrl'
-          }
-        }
-      })
-
-      .state('app.chefs', {
-        url: '/buyer/:zipcode',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/playlist.html',
-            controller: 'PlaylistCtrl'
           }
         }
       });
