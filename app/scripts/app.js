@@ -22,6 +22,7 @@ angular.module('HomeCooked', ['ionic', 'HomeCooked.controllers'])
   })
 
   .config(function ($stateProvider, $urlRouterProvider) {
+    openFB.init({appId: '805673482820123'});
     $stateProvider
       .state('app', {
         url: '/app',

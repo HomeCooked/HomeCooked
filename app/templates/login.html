@@ -1,14 +1,53 @@
 <div class="modal">
   <ion-header-bar>
-    <h1 class="title">Login</h1>
-    
+    <h1 class="title">{{doingLogin===true ? 'Login' : doingSignup===true ? 'Signup' : 'HomeCooked'}}</h1>
+
   </ion-header-bar>
   <ion-content>
-    <div class="item">
-      <button class="button button-block button-positive" ng-click="doLogin()">Log in</button>
-      <button class="button button-block button-positive">Sign up</button>
-      <button class="button button-block button-positive">Log in with Facebook</button>
+    <div class="item" ng-hide="doingLogin || doingSignup">
+      <button class="button button-block button-positive" ng-click="doingLogin=true">Log in</button>
+      <button class="button button-block button-positive" ng-click="fbLogin()">Log in with Facebook</button>
+      <button class="button button-block button-positive" ng-click="doingSignup=true">Sign up</button>
     </div>
+    <form novalidate class="list list-inset" name="loginForm" ng-show="doingLogin">
+      <label class="item item-input">
+        <input type="email" name="email" placeholder="Email" ng-model="login.email" required>
+        <span ng-show="loginForm.email.$dirty && loginForm.email.$invalid">This is not a valid email.</span>
+      </label>
+      <label class="item item-input">
+        <input type="password" name="password" placeholder="Password" ng-model="login.password" required
+               ng-minlength="5">
+        <span ng-show="loginForm.password.$dirty && loginForm.password.$invalid">Minimum 5 chars.</span>
+      </label>
+      <div class="button-bar">
+        <div class="button" ng-click="doingLogin=false">Cancel</div>
+        <div class="button button-positive" ng-click="login(loginForm)" ng-disabled="loginForm.$invalid">Submit</div>
+      </div>
+    </form>
+    <form novalidate class="list list-inset" name="signupForm" ng-show="doingSignup">
+      <label class="item item-input">
+        <input type="text" name="name" placeholder="Name" ng-model="signup.name" required ng-minlength="2"
+               ng-maxlength="50">
+      </label>
+      <label class="item item-input">
+        <input type="email" name="email" placeholder="Email" ng-model="signup.email" required>
+        <span ng-show="signupForm.email.$dirty && signupForm.email.$invalid">This is not a valid email.</span>
+      </label>
+      <label class="item item-input">
+        <input type="password" name="password1" placeholder="Password" ng-model="signup.password1" required
+               ng-minlength="5">
+        <span ng-show="signupForm.password1.$dirty && signupForm.password1.$invalid">Minimum 5 chars.</span>
+      </label>
+      <label class="item item-input">
+        <input type="password" name="password2" placeholder="Repeat password" ng-model="signup.password2" required
+               ng-minlength="5">
+        <span ng-show="signupForm.password1.$valid && signupForm.password2.$valid && signup.password1 !== signup.password2">Passwords don't match.</span>
+      </label>
+      <div class="button-bar">
+        <div class="button" ng-click="doingSignup=false">Cancel</div>
+        <div class="button button-positive" ng-click="signup(signupForm)" ng-disabled="signupForm.$invalid">Submit</div>
+      </div>
+    </form>
   </ion-content>
 </div>
 
