@@ -1,12 +1,11 @@
 <div class="modal">
   <ion-header-bar>
     <h1 class="title">{{doingLogin===true ? 'Login' : doingSignup===true ? 'Signup' : 'HomeCooked'}}</h1>
-
   </ion-header-bar>
   <ion-content>
     <div class="item" ng-hide="doingLogin || doingSignup">
       <button class="button button-block button-positive" ng-click="doingLogin=true">Log in</button>
-      <button class="button button-block button-positive" ng-click="fbLogin()">Log in with Facebook</button>
+      <button class="button button-block button-positive" ng-click="login('fb')">Log in with Facebook</button>
       <button class="button button-block button-positive" ng-click="doingSignup=true">Sign up</button>
     </div>
     <form novalidate class="list list-inset" name="loginForm" ng-show="doingLogin">
@@ -21,7 +20,7 @@
       </label>
       <div class="button-bar">
         <div class="button" ng-click="doingLogin=false">Cancel</div>
-        <div class="button button-positive" ng-click="login(loginForm)" ng-disabled="loginForm.$invalid">Submit</div>
+        <div class="button button-positive" ng-click="login(null,loginForm.email,loginForm.password)" ng-disabled="loginForm.$invalid">Submit</div>
       </div>
     </form>
     <form novalidate class="list list-inset" name="signupForm" ng-show="doingSignup">
