@@ -6,7 +6,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('HomeCooked', ['ionic', 'HomeCooked.controllers'])
+angular.module('HomeCooked', ['ionic', 'ngAnimate', 'HomeCooked.controllers'])
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
       // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
@@ -20,9 +20,8 @@ angular.module('HomeCooked', ['ionic', 'HomeCooked.controllers'])
       }
     });
   })
-
   .config(function ($stateProvider, $urlRouterProvider) {
-    openFB.init({appId: '805673482820123'});
+    window.openFB.init({appId: '805673482820123'});
     $stateProvider
       .state('app', {
         url: '/app',

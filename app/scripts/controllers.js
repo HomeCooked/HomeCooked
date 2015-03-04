@@ -2,9 +2,7 @@
 angular.module('HomeCooked.controllers', [])
   .factory('LoginService', ['$q', '$http',
     function ($q, $http) {
-      //var baseUrl = '//127.0.0.1:8000';
       var baseUrl = '//homecooked.herokuapp.com';
-
       var _isLoggedIn = false, currentLoginType;
 
       var isLoggedIn = function () {
@@ -16,8 +14,8 @@ angular.module('HomeCooked.controllers', [])
 
       var login = function (loginType, user, pass) {
         var deferred = $q.defer();
-        if (loginType == 'fb') {
-          openFB.login(
+        if (loginType === 'fb') {
+          window.openFB.login(
             function didLogin(response) {
               if (response.status === 'connected') {
                 _isLoggedIn = true;
@@ -32,17 +30,17 @@ angular.module('HomeCooked.controllers', [])
         else {
           $http.post(baseUrl + '/api-auth/login/', {username: user, password: pass})
             .success(deferred.resolve)
-            .error(function loginFail(data, status, headers, config) {
+            .error(function loginFail(data /*, status, headers, config*/) {
               deferred.reject(data);
-            })
+            });
         }
         return deferred.promise;
       };
 
       var logout = function () {
         if (_isLoggedIn) {
-          if (currentLoginType == 'fb') {
-            openFB.logout();
+          if (currentLoginType === 'fb') {
+            window.openFB.logout();
           }
           _isLoggedIn = false;
           currentLoginType = undefined;
@@ -53,13 +51,15 @@ angular.module('HomeCooked.controllers', [])
         isLoggedIn: isLoggedIn,
         login: login,
         logout: logout
-      }
+      };
     }])
   .controller('AppCtrl', ['$scope', '$ionicModal', 'LoginService',
     function ($scope, $ionicModal, LoginService) {
       // Create the login modal that we will use later
       $ionicModal.fromTemplateUrl('templates/login.html', {
-        scope: $scope
+        scope: $scope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false
       }).then(function (modal) {
         $scope.modal = modal;
         //TODO use promise
@@ -80,19 +80,16 @@ angular.module('HomeCooked.controllers', [])
 
       // Perform the login action when the user submits the login form
       $scope.login = function (loginType, user, pass) {
-        LoginService.login(loginType, user, pass).then(
-          function didLogin() {
-            $scope.modal.hide();
-            $scope.doingLogin = $scope.doingSignup = false;
-            //TODO welcome message toast
-          },
-          function didNotLogin(err) {
-            //TODO show error somehow
-          });
+        LoginService.login(loginType, user, pass).then(function didLogin() {
+          $scope.modal.hide();
+          $scope.doingLogin = $scope.doingSignup = false;
+          //TODO welcome message toast
+        }, function didNotLogin(err) {
+          window.alert(err);
+        });
       };
     }])
-  .controller('SellerCtrl', function () {
-  })
+  .controller('SellerCtrl', function () {})
   .controller('BuyerCtrl', ['$scope',
     function ($scope) {
       $scope.findChefs = function () {
