@@ -3,12 +3,12 @@
     <h1 class="title">{{doingLogin===true ? 'Login' : doingSignup===true ? 'Signup' : 'HomeCooked'}}</h1>
   </ion-header-bar>
   <ion-content>
-    <div class="item" ng-hide="doingLogin || doingSignup">
+    <div class="item" ng-hide="(doingLogin===true || doingSignup===true)">
       <button class="button button-block button-positive" ng-click="doingLogin=true">Log in</button>
       <button class="button button-block button-positive" ng-click="login('fb')">Log in with Facebook</button>
-      <button class="button button-block button-positive" ng-click="doingSignup=true">Sign up</button>
+      <!--<button class="button button-block button-positive" ng-click="doingSignup=true">Sign up</button>-->
     </div>
-    <form novalidate class="list list-inset" name="loginForm" ng-show="doingLogin">
+    <form novalidate class="list list-inset" name="loginForm" ng-show="doingLogin===true">
       <label class="item item-input">
         <input type="email" name="email" placeholder="Email" ng-model="login.email" required>
         <span ng-show="loginForm.email.$dirty && loginForm.email.$invalid">This is not a valid email.</span>
@@ -23,7 +23,7 @@
         <div class="button button-positive" ng-click="login(null,loginForm.email,loginForm.password)" ng-disabled="loginForm.$invalid">Submit</div>
       </div>
     </form>
-    <form novalidate class="list list-inset" name="signupForm" ng-show="doingSignup">
+    <form novalidate class="list list-inset" name="signupForm" ng-show="doingSignup===true">
       <label class="item item-input">
         <input type="text" name="name" placeholder="Name" ng-model="signup.name" required ng-minlength="2"
                ng-maxlength="50">

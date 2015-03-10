@@ -6,10 +6,20 @@ angular.module('HomeCooked.controllers', [])
       var _isLoggedIn = false, currentLoginType;
 
       var isLoggedIn = function () {
+        var deferred = $q.defer();
         if (!_isLoggedIn) {
-          //TODO create promise and check on server if logged in
+          window.openFB.getLoginStatus(function (response) {
+            _isLoggedIn = response.status === 'connected';
+            if (_isLoggedIn) {
+              currentLoginType = 'fb';
+            }
+            deferred.resolve(_isLoggedIn);
+          });
         }
-        return _isLoggedIn;
+        else {
+          deferred.resolve(_isLoggedIn);
+        }
+        return deferred.promise;
       };
 
       var login = function (loginType, user, pass) {
@@ -53,8 +63,10 @@ angular.module('HomeCooked.controllers', [])
         logout: logout
       };
     }])
-  .controller('AppCtrl', ['$scope', '$ionicModal', 'LoginService',
-    function ($scope, $ionicModal, LoginService) {
+  .controller('AppCtrl', ['$scope', '$ionicModal', '$ionicPopup', 'LoginService',
+    function ($scope, $ionicModal, $ionicPopup, LoginService) {
+      $scope.doingLogin = false;
+      $scope.doingSignup = false;
       // Create the login modal that we will use later
       $ionicModal.fromTemplateUrl('templates/login.html', {
         scope: $scope,
@@ -62,10 +74,11 @@ angular.module('HomeCooked.controllers', [])
         hardwareBackButtonClose: false
       }).then(function (modal) {
         $scope.modal = modal;
-        //TODO use promise
-        if (!LoginService.isLoggedIn()) {
-          openLogin();
-        }
+        LoginService.isLoggedIn().then(function (isLoggedIn) {
+          if (!isLoggedIn) {
+            openLogin();
+          }
+        });
       });
 
       var openLogin = function () {
@@ -85,11 +98,15 @@ angular.module('HomeCooked.controllers', [])
           $scope.doingLogin = $scope.doingSignup = false;
           //TODO welcome message toast
         }, function didNotLogin(err) {
-          window.alert(err);
+          $ionicPopup.alert({
+            title: 'Couldn\'t login',
+            template: err
+          });
         });
       };
     }])
-  .controller('SellerCtrl', function () {})
+  .controller('SellerCtrl', function () {
+  })
   .controller('BuyerCtrl', ['$scope',
     function ($scope) {
       $scope.findChefs = function () {

@@ -12,5 +12,6 @@ plugins
 *.DS_Store
 
 .idea/*
+parse/*
 
 app/scripts/config.js
