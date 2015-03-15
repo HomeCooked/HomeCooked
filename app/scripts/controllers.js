@@ -3,17 +3,41 @@ angular.module('HomeCooked.controllers', [])
   .factory('LoginService', ['$q', '$http',
     function ($q, $http) {
       var baseUrl = '//homecooked.herokuapp.com';
-      var _isLoggedIn = false, currentLoginType;
+      var _isLoggedIn = false, currentLoginType, userInfo;
 
-      var isLoggedIn = function () {
+      var homeCookedLogin = function (accessToken, provider) {
+        var javascriptClientId = '111';
+        var deferred = $q.defer();
+        $http.post(baseUrl + '/connect', {
+          access_token: accessToken,
+          client_id: javascriptClientId,
+          provider: provider
+        })
+          .success(function (data) {
+            currentLoginType = provider;
+            _isLoggedIn = true;
+            userInfo = data;
+            deferred.resolve(_isLoggedIn);
+          })
+          .error(function loginFail(data) {
+            _isLoggedIn = false;
+            currentLoginType = undefined;
+            userInfo = undefined;
+            deferred.reject(data);
+          });
+        return deferred.promise;
+      };
+
+      var getLoginStatus = function () {
         var deferred = $q.defer();
         if (!_isLoggedIn) {
           window.openFB.getLoginStatus(function (response) {
-            _isLoggedIn = response.status === 'connected';
-            if (_isLoggedIn) {
-              currentLoginType = 'fb';
+            if (response && response.status === 'connected') {
+              homeCookedLogin(response.authResponse.token, 'facebook').then(deferred.resolve, deferred.reject);
             }
-            deferred.resolve(_isLoggedIn);
+            else {
+              deferred.reject('not connected');
+            }
           });
         }
         else {
@@ -24,15 +48,14 @@ angular.module('HomeCooked.controllers', [])
 
       var login = function (loginType, user, pass) {
         var deferred = $q.defer();
-        if (loginType === 'fb') {
+        if (loginType === 'facebook') {
           window.openFB.login(
             function didLogin(response) {
-              if (response.status === 'connected') {
-                _isLoggedIn = true;
-                currentLoginType = loginType;
-                deferred.resolve();
-              } else {
-                deferred.reject('Facebook login failed');
+              if (response && response.status === 'connected') {
+                homeCookedLogin(response.authResponse.token, 'facebook').then(deferred.resolve, deferred.reject);
+              }
+              else {
+                deferred.reject('not connected');
               }
             },
             {scope: 'email'});
@@ -49,7 +72,7 @@ angular.module('HomeCooked.controllers', [])
 
       var logout = function () {
         if (_isLoggedIn) {
-          if (currentLoginType === 'fb') {
+          if (currentLoginType === 'facebook') {
             window.openFB.logout();
           }
           _isLoggedIn = false;
@@ -57,16 +80,51 @@ angular.module('HomeCooked.controllers', [])
         }
       };
 
+      var getUserInfo = function () {
+        var deferred = $q.defer();
+        if (userInfo) {
+          deferred.resolve(userInfo);
+        }
+        else if (_isLoggedIn) {
+          if (currentLoginType === 'facebook') {
+            window.openFB.api({
+              path: '/v2.2/me',
+              success: function (result) {
+                userInfo = result;
+                deferred.resolve(userInfo);
+              },
+              error: deferred.reject
+            });
+          }
+          else {
+            //TODO
+            deferred.reject('login type not supported');
+          }
+        }
+        else {
+          deferred.reject('not logged in');
+        }
+        return deferred.promise;
+      };
+      var isLoggedIn = function () {
+        return _isLoggedIn;
+      }
+
       return {
+        getLoginStatus: getLoginStatus,
         isLoggedIn: isLoggedIn,
         login: login,
+        getUserInfo: getUserInfo,
         logout: logout
       };
     }])
-  .controller('AppCtrl', ['$scope', '$ionicModal', '$state', '$ionicPopup', 'LoginService',
-    function ($scope, $ionicModal, $state, $ionicPopup, LoginService) {
+  .controller('AppCtrl', ['$scope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', 'LoginService',
+    function ($scope, $ionicModal, $ionicLoading, $state, $ionicPopup, LoginService) {
       $scope.doingLogin = false;
       $scope.doingSignup = false;
+      $ionicLoading.show({
+        template: 'Checking login...'
+      });
       // Create the login modal that we will use later
       $ionicModal.fromTemplateUrl('templates/login.html', {
         scope: $scope,
@@ -74,21 +132,20 @@ angular.module('HomeCooked.controllers', [])
         hardwareBackButtonClose: false
       }).then(function (modal) {
         $scope.modal = modal;
-        LoginService.isLoggedIn().then(function (isLoggedIn) {
-          if (!isLoggedIn) {
-            openLogin();
-          }
-        });
+        LoginService.getLoginStatus().then(openLogin, openLogin);
       });
 
       var openLogin = function () {
-        $scope.modal.show();
+        $ionicLoading.hide();
+        if (!LoginService.isLoggedIn()) {
+          $scope.modal.show();
+        }
       };
       var logout = function () {
         LoginService.logout();
         openLogin();
       };
-      $scope.openLogin = openLogin;
+
       $scope.logout = logout;
       $scope.isSellerView = false;
       $scope.switchView = function () {
@@ -99,11 +156,15 @@ angular.module('HomeCooked.controllers', [])
 
       // Perform the login action when the user submits the login form
       $scope.login = function (loginType, user, pass) {
+        $ionicLoading.show({
+          template: 'Doing login...'
+        });
         LoginService.login(loginType, user, pass).then(function didLogin() {
+          $ionicLoading.hide();
           $scope.modal.hide();
           $scope.doingLogin = $scope.doingSignup = false;
-          //TODO welcome message toast
         }, function didNotLogin(err) {
+          $ionicLoading.hide();
           $ionicPopup.alert({
             title: 'Couldn\'t login',
             template: err
