@@ -63,8 +63,8 @@ angular.module('HomeCooked.controllers', [])
         logout: logout
       };
     }])
-  .controller('AppCtrl', ['$scope', '$ionicModal', '$ionicPopup', 'LoginService',
-    function ($scope, $ionicModal, $ionicPopup, LoginService) {
+  .controller('AppCtrl', ['$scope', '$ionicModal', '$state', '$ionicPopup', 'LoginService',
+    function ($scope, $ionicModal, $state, $ionicPopup, LoginService) {
       $scope.doingLogin = false;
       $scope.doingSignup = false;
       // Create the login modal that we will use later
@@ -90,6 +90,12 @@ angular.module('HomeCooked.controllers', [])
       };
       $scope.openLogin = openLogin;
       $scope.logout = logout;
+      $scope.isSellerView = false;
+      $scope.switchView = function () {
+        $scope.isSellerView = !$scope.isSellerView;
+        //TODO check if he can be seller
+        $state.go($scope.isSellerView ? 'app.seller' : 'app.buyer');
+      }
 
       // Perform the login action when the user submits the login form
       $scope.login = function (loginType, user, pass) {

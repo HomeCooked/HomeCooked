@@ -1,24 +1,17 @@
 <ion-side-menus>
 
   <ion-pane ion-side-menu-content>
-    <ion-nav-bar class="bar-stable nav-title-slide-ios7">
-      <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> Back</ion-nav-back-button>
-    </ion-nav-bar>
+    <ion-nav-bar class="bar-stable nav-title-slide-ios7"></ion-nav-bar>
     <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-pane>
 
   <ion-side-menu side="left">
-    <header class="bar bar-header bar-stable">
-      <h1 class="title">HomeCooked</h1>
-    </header>
-    <ion-content class="has-header">
+    <ion-content>
+      <a class="item item-icon-right" nav-clear menu-close href="#/app/settings">
+        {{user.name}}
+        <i class="icon ion-gear-b"></i>
+      </a>
       <ion-list>
-        <ion-item nav-clear menu-close href="#/app/buyer">
-          Become a Chef!
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/buyer">
-          Link with Facebook
-        </ion-item>
         <ion-item nav-clear menu-close href="#/app/buyer">
           Credit Card/Bank Info
         </ion-item>
@@ -34,9 +27,9 @@
         <ion-item nav-clear menu-close href="#/app/buyer">
           Order History
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/buyer">
-          Settings
-        </ion-item>
+        <ion-toggle nav-clear menu-close ng-model="isSellerView" ng-change="switchView()">
+          Chef mode
+        </ion-toggle>
       </ion-list>
     </ion-content>
   </ion-side-menu>
