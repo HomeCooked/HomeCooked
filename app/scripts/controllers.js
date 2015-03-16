@@ -8,7 +8,7 @@ angular.module('HomeCooked.controllers', [])
       var homeCookedLogin = function (accessToken, provider) {
         var javascriptClientId = '111';
         var deferred = $q.defer();
-        $http.post(baseUrl + '/connect', {
+        $http.post(baseUrl + '/connect/', {
           access_token: accessToken,
           client_id: javascriptClientId,
           provider: provider
