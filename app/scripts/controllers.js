@@ -81,6 +81,8 @@ angular.module('HomeCooked.controllers', [])
       };
 
       var getUserInfo = function () {
+        return userInfo;
+
         var deferred = $q.defer();
         if (userInfo) {
           deferred.resolve(userInfo);
@@ -132,21 +134,24 @@ angular.module('HomeCooked.controllers', [])
         hardwareBackButtonClose: false
       }).then(function (modal) {
         $scope.modal = modal;
-        LoginService.getLoginStatus().then(openLogin, openLogin);
+        LoginService.getLoginStatus().then(function gotLoginStatus() {
+          $ionicLoading.hide();
+          if (LoginService.isLoggedIn()) {
+            $scope.user = LoginService.getUserInfo();
+          }
+          else {
+            modal.show();
+          }
+        }, function didntGotLoginStatus() {
+          $ionicLoading.hide();
+          modal.show();
+        });
       });
 
-      var openLogin = function () {
-        $ionicLoading.hide();
-        if (!LoginService.isLoggedIn()) {
-          $scope.modal.show();
-        }
-      };
-      var logout = function () {
+      $scope.logout = function () {
         LoginService.logout();
-        openLogin();
+        $scope.modal.show();
       };
-
-      $scope.logout = logout;
       $scope.isSellerView = false;
       $scope.switchView = function () {
         $scope.isSellerView = !$scope.isSellerView;
