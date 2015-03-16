@@ -16,7 +16,7 @@ angular.module('HomeCooked.controllers', [])
           .success(function (data) {
             currentLoginType = provider;
             _isLoggedIn = true;
-            userInfo = data;
+            userInfo = data.user;
             deferred.resolve(_isLoggedIn);
           })
           .error(function loginFail(data) {
