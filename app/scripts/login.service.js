@@ -13,9 +13,9 @@ angular.module('HomeCooked.services')
       var homeCookedLogin = function (accessToken, provider) {
         var deferred = $q.defer();
         $http.post(BASE_URL + '/connect/', {
-          access_token: accessToken,
-          client_id: CLIENT_ID,
-          provider: provider
+          'access_token': accessToken,
+          'client_id': CLIENT_ID,
+          'provider': provider
         })
           .success(function (data) {
             _updateLogin(data, provider);
@@ -47,17 +47,18 @@ angular.module('HomeCooked.services')
       };
       var getLoginStatus = function () {
         var deferred = $q.defer();
+
         if (loginData.loginInfo) {
-          deferred.resolve();
+          deferred.resolve(loginData.loginInfo.user);
         }
         else {
           window.openFB.getLoginStatus(function (response) {
             if (response && response.status === 'connected') {
-              homeCookedLogin(response.authResponse.token, 'facebook').then(deferred.resolve, deferred.resolve);
+              homeCookedLogin(response.authResponse.token, 'facebook').then(deferred.resolve, deferred.reject);
             }
             else {
               _updateLogin();
-              deferred.resolve();
+              deferred.reject();
             }
           });
         }
@@ -77,12 +78,6 @@ angular.module('HomeCooked.services')
         _updateLogin();
       };
 
-      var getUserInfo = function () {
-        if (loginData.loginInfo) {
-          return loginData.loginInfo.user;
-        }
-      };
-
       var isLoggedIn = function () {
         return !!loginData.loginInfo && !!loginData.loginInfo.user;
       };
@@ -96,7 +91,6 @@ angular.module('HomeCooked.services')
       return {
         getLoginStatus: getLoginStatus,
         isLoggedIn: isLoggedIn,
-        getUserInfo: getUserInfo,
         login: login,
         logout: logout
       };

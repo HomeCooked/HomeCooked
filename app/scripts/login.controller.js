@@ -1,6 +1,5 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('LoginCtrl', [
-    '$scope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', 'LoginService',
+angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', 'LoginService',
     function ($scope, $ionicModal, $ionicLoading, $state, $ionicPopup, LoginService) {
       $scope.doingLogin = false;
       $scope.doingSignup = false;
@@ -14,10 +13,10 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', [
         hardwareBackButtonClose: false
       }).then(function (modal) {
         $scope.modal = modal;
-        LoginService.getLoginStatus().then(function gotLoginStatus(isLoggedIn) {
+        LoginService.getLoginStatus().then(function gotLoginStatus(userInfo) {
           $ionicLoading.hide();
-          if (isLoggedIn) {
-            that.user = LoginService.getUserInfo();
+          if (userInfo) {
+            $scope.user = userInfo;
           }
           else {
             modal.show();
@@ -37,15 +36,15 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', [
         $scope.isSellerView = !$scope.isSellerView;
         //TODO check if he can be seller
         $state.go($scope.isSellerView ? 'app.seller' : 'app.buyer');
-      }
+      };
 
       // Perform the login action when the user submits the login form
       $scope.login = function (loginType, user, pass) {
         $ionicLoading.show({
           template: 'Doing login...'
         });
-        LoginService.login(loginType, user, pass).then(function didLogin() {
-          $scope.user = LoginService.getUserInfo();
+        LoginService.login(loginType, user, pass).then(function didLogin(userInfo) {
+          $scope.user = userInfo;
           $ionicLoading.hide();
           $scope.modal.hide();
           $scope.doingLogin = $scope.doingSignup = false;
@@ -57,5 +56,4 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', [
           });
         });
       };
-    }]
-);
+    }]);
