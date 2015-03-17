@@ -1,11 +1,5 @@
 'use strict';
 
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
 angular.module('HomeCooked', ['ionic', 'ngAnimate', 'HomeCooked.controllers'])
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -27,15 +21,14 @@ angular.module('HomeCooked', ['ionic', 'ngAnimate', 'HomeCooked.controllers'])
         url: '/app',
         abstract: true,
         templateUrl: 'templates/menu.html',
-        controller: 'AppCtrl'
+        controller: 'LoginCtrl'
       })
 
       .state('app.buyer', {
         url: '/buyer',
         views: {
           'menuContent': {
-            templateUrl: 'templates/buyer.html',
-            controller: 'BuyerCtrl'
+            templateUrl: 'templates/buyer.html'
           }
         }
       })
@@ -43,12 +36,12 @@ angular.module('HomeCooked', ['ionic', 'ngAnimate', 'HomeCooked.controllers'])
         url: '/seller',
         views: {
           'menuContent': {
-            templateUrl: 'templates/seller.html',
-            controller: 'SellerCtrl'
+            templateUrl: 'templates/seller.html'
           }
         }
       });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/buyer');
   });
-
+angular.module('HomeCooked.controllers', ['HomeCooked.services']);
+angular.module('HomeCooked.services', []);
