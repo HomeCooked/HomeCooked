@@ -1,10 +1,7 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('LoginService', ['$q', '$http',
-    function ($q, $http) {
-      var BASE_URL = '//homecooked.herokuapp.com',
-        CLIENT_ID = '111',
-        CACHE_ID = 'homecooked';
+  .factory('LoginService', ['$q', '$http', 'BASE_URL', 'CLIENT_ID', 'CACHE_ID',
+    function ($q, $http, BASE_URL, CLIENT_ID, CACHE_ID) {
       var loginData = {};
       if (window.localStorage) {
         loginData = JSON.parse(window.localStorage.getItem(CACHE_ID) || '{}');

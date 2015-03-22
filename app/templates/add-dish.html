@@ -1,0 +1,26 @@
+<div class="modal">
+  <ion-header-bar>
+    <h1 class="title">Create Your New Dish</h1>
+  </ion-header-bar>
+  <ion-content>
+    <form novalidate class="list list-inset" name="dishForm">
+      <label class="item item-input">
+        <input type="text" name="name" placeholder="Name" ng-model="dish.name" ng-minlength="2" required />
+        <span ng-show="dishForm.name.$dirty && dishForm.name.$invalid">Minimum 2 chars.</span>
+      </label>
+      <label class="item item-input">
+        <input type="text" name="ingredients" placeholder="Ingredients" ng-model="dish.ingredients" ng-minlength="2" required />
+        <span ng-show="dishForm.ingredients.$dirty && dishForm.ingredients.$invalid">Minimum 2 chars.</span>
+      </label>
+      <label class="item item-input">
+        <textarea name="description" placeholder="Description" ng-model="dish.description" ng-minlength="2" rows="5" required style="resize: none;"></textarea>
+        <span ng-show="dishForm.description.$dirty && dishForm.description.$invalid">Minimum 2 chars.</span>
+      </label>
+      <div class="button-bar">
+        <div class="button" ng-click="modal.hide()">Cancel</div>
+        <div class="button button-positive" ng-click="addDish(dish)" ng-disabled="dishForm.$invalid">Create!</div>
+      </div>
+    </form>
+  </ion-content>
+</div>
+

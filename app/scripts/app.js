@@ -14,6 +14,9 @@ angular.module('HomeCooked', ['ionic', 'ngAnimate', 'HomeCooked.controllers'])
       }
     });
   })
+  .constant("BASE_URL", "//homecooked.herokuapp.com")
+  .constant("CLIENT_ID", "111")
+  .constant("CACHE_ID", "homecooked")
   .config(function ($stateProvider, $urlRouterProvider) {
     window.openFB.init({appId: '805673482820123'});
     $stateProvider
@@ -36,7 +39,8 @@ angular.module('HomeCooked', ['ionic', 'ngAnimate', 'HomeCooked.controllers'])
         url: '/seller',
         views: {
           'menuContent': {
-            templateUrl: 'templates/seller.html'
+            templateUrl: 'templates/chef.html',
+            controller: 'ChefCtrl'
           }
         }
       });
