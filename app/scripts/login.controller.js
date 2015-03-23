@@ -3,9 +3,7 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
   function ($scope, $ionicModal, $ionicLoading, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, LoginService) {
     $scope.doingLogin = false;
     $scope.doingSignup = false;
-    $ionicLoading.show({
-      template: 'Checking login...'
-    });
+    $scope.user = LoginService.getUser();
     // Create the login modal that we will use later
     $ionicModal.fromTemplateUrl('templates/login.html', {
       scope: $scope,
@@ -13,18 +11,9 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
       hardwareBackButtonClose: false
     }).then(function (modal) {
       $scope.modal = modal;
-      LoginService.getLoginStatus().then(function gotLoginStatus(userInfo) {
-        $ionicLoading.hide();
-        if (userInfo) {
-          $scope.user = userInfo;
-        }
-        else {
-          modal.show();
-        }
-      }, function didntGotLoginStatus() {
-        $ionicLoading.hide();
+      if (!$scope.user) {
         modal.show();
-      });
+      }
     });
 
     $scope.logout = function () {
@@ -46,8 +35,8 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
       $ionicLoading.show({
         template: 'Doing login...'
       });
-      LoginService.login(loginType, user, pass).then(function didLogin(userInfo) {
-        $scope.user = userInfo;
+      LoginService.login(loginType, user, pass).then(function didLogin(user) {
+        $scope.user = user;
         $ionicLoading.hide();
         $scope.modal.hide();
         $scope.doingLogin = $scope.doingSignup = false;

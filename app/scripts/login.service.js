@@ -1,11 +1,9 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('LoginService', ['$q', '$http', 'BASE_URL', 'CLIENT_ID', 'CACHE_ID',
-    function ($q, $http, BASE_URL, CLIENT_ID, CACHE_ID) {
-      var loginData = {};
-      if (window.localStorage) {
-        loginData = JSON.parse(window.localStorage.getItem(CACHE_ID) || '{}');
-      }
+  .factory('LoginService', ['$q', '$http', '$window', 'BASE_URL', 'CLIENT_ID', 'CacheService',
+    function ($q, $http, $window, BASE_URL, CLIENT_ID, CacheService) {
+      var self = this;
+      var user = CacheService.getCache('hcuser');
 
       var homeCookedLogin = function (accessToken, provider) {
         var deferred = $q.defer();
@@ -15,8 +13,8 @@ angular.module('HomeCooked.services')
           'provider': provider
         })
           .success(function (data) {
-            _updateLogin(data, provider);
-            deferred.resolve(data.user);
+            _updateLogin(data.credential.access_token, data.user);
+            deferred.resolve(self.getUser());
           })
           .error(function loginFail(data) {
             _updateLogin();
@@ -42,27 +40,14 @@ angular.module('HomeCooked.services')
         }
         return deferred.promise;
       };
-      var getLoginStatus = function () {
-        var deferred = $q.defer();
 
-        if (loginData.loginInfo) {
-          deferred.resolve(loginData.loginInfo.user);
-        }
-        else {
-          window.openFB.getLoginStatus(function (response) {
-            if (response && response.status === 'connected') {
-              homeCookedLogin(response.authResponse.token, 'facebook').then(deferred.resolve, deferred.reject);
-            }
-            else {
-              _updateLogin();
-              deferred.reject();
-            }
-          });
-        }
-        return deferred.promise;
+      var _updateLogin = function (token, newUser) {
+        user = newUser;
+        CacheService.setCache('hcuser', user);
+        CacheService.setCache('hctoken', token);
       };
 
-      var login = function (type) {
+      self.login = function (type) {
         var deferred = $q.defer();
 
         getAccessToken(type).then(function (accessToken) {
@@ -71,25 +56,19 @@ angular.module('HomeCooked.services')
         return deferred.promise;
       };
 
-      var logout = function () {
+      self.logout = function () {
         _updateLogin();
       };
 
-      var isLoggedIn = function () {
-        return !!loginData.loginInfo && !!loginData.loginInfo.user;
+      self.isLoggedIn = function () {
+        return !!self.getUser();
       };
 
-      var _updateLogin = function (newInfo, newType) {
-        loginData.loginType = newType;
-        loginData.loginInfo = newInfo;
-        window.localStorage.setItem(CACHE_ID, JSON.stringify(loginData));
+
+      self.getUser = function () {
+        return user;
       };
 
-      return {
-        getLoginStatus: getLoginStatus,
-        isLoggedIn: isLoggedIn,
-        login: login,
-        logout: logout
-      };
+      return self;
     }]
 );

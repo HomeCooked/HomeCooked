@@ -6,7 +6,7 @@
     <h4 class="title">Are you free to cook?</h4>
     <ion-list>
       <ion-item class="item item-thumbnail-left" ng-repeat="dish in dishes">
-        <img src="{{dish.image}}" width="100px">
+        <img ng-if="!!dish.image" ng-src="{{dish.image}}">
         <h2>{{dish.name}}</h2>
         <p>{{dish.description}}</p>
       </ion-item>
