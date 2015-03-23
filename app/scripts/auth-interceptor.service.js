@@ -5,9 +5,9 @@ angular.module('HomeCooked.services')
       return {
         request: function (config) {
           config.headers = config.headers || {};
-          var token = CacheService.getCache('hctoken');
-          if (token) {
-            config.headers.Authorization = 'Bearer ' + token;
+          var credential = CacheService.getCache('hccredential');
+          if (credential) {
+            config.headers.Authorization = credential.token_type + ' ' + credential.access_token;
           }
           return config;
         },

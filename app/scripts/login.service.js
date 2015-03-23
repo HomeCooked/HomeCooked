@@ -13,7 +13,7 @@ angular.module('HomeCooked.services')
           'provider': provider
         })
           .success(function (data) {
-            _updateLogin(data.credential.access_token, data.user);
+            _updateLogin(data.credential, data.user);
             deferred.resolve(self.getUser());
           })
           .error(function loginFail(data) {
@@ -41,10 +41,10 @@ angular.module('HomeCooked.services')
         return deferred.promise;
       };
 
-      var _updateLogin = function (token, newUser) {
+      var _updateLogin = function (credential, newUser) {
+        CacheService.setCache('hccredential', credential);
+        CacheService.setCache('hcuser', newUser);
         user = newUser;
-        CacheService.setCache('hcuser', user);
-        CacheService.setCache('hctoken', token);
       };
 
       self.login = function (type) {
@@ -59,11 +59,6 @@ angular.module('HomeCooked.services')
       self.logout = function () {
         _updateLogin();
       };
-
-      self.isLoggedIn = function () {
-        return !!self.getUser();
-      };
-
 
       self.getUser = function () {
         return user;
