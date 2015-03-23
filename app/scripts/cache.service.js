@@ -8,7 +8,7 @@ angular.module('HomeCooked.services')
         if ($window.localStorage) {
           var serializedCache = $window.localStorage.getItem(key);
           if (serializedCache && isJSON(serializedCache)) {
-            serializedCache = JSON.stringify(serializedCache);
+            serializedCache = JSON.parse(serializedCache);
           }
           return serializedCache;
         }

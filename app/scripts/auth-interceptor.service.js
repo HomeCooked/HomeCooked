@@ -13,7 +13,8 @@ angular.module('HomeCooked.services')
         },
         response: function (response) {
           if (response.status === 401) {
-            //LoginService.logout();
+            CacheService.setCache('hccredential');
+            CacheService.setCache('hcuser');
           }
           return response || $q.when(response);
         }
