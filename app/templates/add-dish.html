@@ -21,7 +21,7 @@
       <ion-checkbox ng-model="dish.peanuts">Peanuts</ion-checkbox>
       <ion-checkbox ng-model="dish.milk">Milk</ion-checkbox>
       <div class="button-bar">
-        <div class="button" ng-click="modal.hide()">Cancel</div>
+        <div class="button" ng-click="hideModal()">Cancel</div>
         <div class="button button-positive" ng-click="addDish(dish)" ng-disabled="dishForm.$invalid">Create!</div>
       </div>
     </form>

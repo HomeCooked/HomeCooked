@@ -1,27 +1,27 @@
-<ion-view title="Chef's portal">
+<ion-view ng-controller="ChefCtrl as ctrl" title="Chef's portal">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
     <div class="list">
       <h4 class="title">Orders</h4>
-      <div class="item item-thumbnail-left" ng-repeat="order in orders | orderBy:order.pickupTimestamp | limitTo:3">
+      <div class="item item-thumbnail-left" ng-repeat="order in ctrl.orders | orderBy:order.pickupTimestamp | limitTo:3">
         <img ng-src="{{order.image || 'img/user.png'}}">
         <h2>{{order.userName}} ordered {{order.dishName}}</h2>
         <p>Quantity: {{order.quantity}}</p>
         <p>Price: {{order.totalPrice}}</p>
       </div>
     </div>
-    <div class="button button-block" ng-click="go('/app/orders')">See all orders</div>
+    <div class="button button-block" ng-click="ctrl.go('/app/orders')">See all orders</div>
     <div class="list">
       <h4 class="title">Batches</h4>
-      <div class="item item-thumbnail-left" ng-repeat="batch in batches">
+      <div class="item item-thumbnail-left" ng-repeat="batch in ctrl.batches">
         <img ng-src="{{batch.dishImage || 'img/logo.png'}}">
         <h2>{{batch.dishName}}</h2>
         <p>Quantity: {{batch.quantity}}</p>
         <p>Price: ${{batch.price}}/each</p>
       </div>
     </div>
-    <div class="button button-block" ng-click="modal.show()">Add Batch</div>
+    <div class="button button-block" ng-click="ctrl.modal.show()">Add Batch</div>
   </ion-content>
 </ion-view>
