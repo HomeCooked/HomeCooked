@@ -25,7 +25,7 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
     var that = this;
 
     var setLinks = function () {
-      if (that.isSellerView) {
+      if (that.chefMode) {
         that.links = [
           {name: 'Bank & Address', url: '#/app/seller'},
           {name: 'Transaction History', url: '#/app/seller'},
@@ -41,7 +41,7 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
         ];
       }
     };
-    
+
     that.user = LoginService.getUser();
     // Create the login modal that we will use later
     $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -61,15 +61,16 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
     };
 
     that.switchView = function () {
-      that.isSellerView = !that.isSellerView;
-      //TODO check if he can be seller
+      if (that.chefMode) {
+        //TODO check if he can be seller
+      }
+      setLinks();
+      $state.go(that.chefMode ? 'app.seller' : 'app.buyer');
       $timeout(function () {
         $ionicSideMenuDelegate.toggleLeft(false);
-        setLinks();
-        $state.go(that.isSellerView ? 'app.seller' : 'app.buyer');
       }, 250);
     };
 
-    that.isSellerView = $state.current.name === 'app.seller';
+    that.chefMode = $state.current.name === 'app.seller';
     setLinks();
   }]);
