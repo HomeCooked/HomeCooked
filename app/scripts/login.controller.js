@@ -31,9 +31,9 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
     ];
 
     var buyerLinks = [
-      {name: 'Search food', path: 'app.buyer'},
+      {name: 'Find local chefs', path: 'app.buyer'},
       {name: 'My Orders', path: 'app.orders'},
-      {name: 'Payment methods', path: 'app.payment'}
+      {name: 'Payment methods', path: 'app.settings'}
     ];
 
     that.user = LoginService.getUser();

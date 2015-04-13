@@ -54,6 +54,14 @@ myApp.run(function ($ionicPlatform) {
           }
         }
       })
+      .state('app.orders', {
+        url: '/orders',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/orders.html'
+          }
+        }
+      })
       .state('app.seller', {
         url: '/seller',
         views: {
@@ -70,11 +78,27 @@ myApp.run(function ($ionicPlatform) {
           }
         }
       })
-      .state('app.not-found', {
-        url: '/not-found',
+      .state('app.bio', {
+        url: '/bio',
         views: {
           'menuContent': {
-            templateUrl: 'templates/notFound.html'
+            templateUrl: 'templates/bio.html'
+          }
+        }
+      })
+      .state('app.delivery', {
+        url: '/delivery',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/delivery.html'
+          }
+        }
+      })
+      .state('app.settings', {
+        url: '/settings',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/settings.html'
           }
         }
       });

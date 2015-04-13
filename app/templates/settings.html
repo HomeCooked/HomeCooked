@@ -1,9 +1,12 @@
-<ion-view title="Page not found">
+<ion-view title="Settings" ng-controller="SettingsCtrl as ctrl">
   <ion-nav-buttons side="left">
     <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-  	<label>Sorry, the page doesn't exist.</label>
-	</div>
+  	<h2>{{ctrl.user.first_name}}</h2>
+    <h3>Address, email, phone</h3>
+    <h3>Bank Info</h3>
+    <h4>Delete account</h4>
+    </div>
   </ion-content>
 </ion-view>

@@ -48,12 +48,9 @@ angular.module('HomeCooked.services')
       };
 
       self.login = function (type) {
-        var deferred = $q.defer();
-
-        getAccessToken(type).then(function (accessToken) {
-          homeCookedLogin(accessToken, type).then(deferred.resolve, deferred.reject);
+        return getAccessToken(type).then(function (accessToken) {
+          return homeCookedLogin(accessToken, type);
         });
-        return deferred.promise;
       };
 
       self.logout = function () {
