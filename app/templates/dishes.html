@@ -1,18 +1,18 @@
-  <ion-view title="My Dishes" ng-controller="DishesCtrl as ctrl">
+<ion-view title="My Dishes" ng-controller="DishesCtrl as ctrl">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
       <ion-item class="item item-thumbnail-left" ng-repeat="dish in ctrl.dishes">
-        <img ng-if="!!dish.image" ng-src="{{dish.image}}">
+        <img ng-src="{{dish.image || 'img/logo.png'}}">
+
         <h2>{{dish.name}}</h2>
+
         <p>{{dish.description}}</p>
+        <a ng-href="#/app/dish/{{dish.id}}">{{dish.rating}}/5 ({{dish.voters}} reviews)</a>
       </ion-item>
     </ion-list>
-    <div class="button-bar">
-      <div class="button" ng-click="ctrl.modal.show()">Add Dish</div>
-      <div class="button">Track orders</div>
-    </div>
+    <div class="button button-full" ng-click="ctrl.modal.show()">Add Dish</div>
   </ion-content>
 </ion-view>

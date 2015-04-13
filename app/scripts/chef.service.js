@@ -32,11 +32,17 @@ angular.module('HomeCooked.services')
 
       self.getDishes = function () {
         var dishes = [{
+          id: '1',
           name: 'mock dish 1',
-          description: 'mock description'
+          description: 'mock description',
+          rating: 4.5,
+          voters: 200
         }, {
+          id: '2',
           name: 'salad',
-          description: 'very good'
+          description: 'very good',
+          rating: 3,
+          voters: 42
         }];
         return $q.when(dishes);
       };
