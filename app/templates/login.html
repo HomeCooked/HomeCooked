@@ -1,14 +1,14 @@
 <div class="modal">
   <ion-header-bar>
-    <h1 class="title">{{doingLogin===true ? 'Login' : doingSignup===true ? 'Signup' : 'HomeCooked'}}</h1>
+    <h1 class="title">{{doingLogin ? 'Login' : doingSignup ? 'Signup' : 'HomeCooked'}}</h1>
   </ion-header-bar>
   <ion-content>
-    <div class="item" ng-hide="(doingLogin===true || doingSignup===true)">
+    <div class="item" ng-hide="(doingLogin || doingSignup)">
       <!--<button class="button button-block button-positive" ng-click="doingLogin=true">Log in</button>-->
       <button class="button button-block button-positive" ng-click="login('facebook')">Log in with Facebook</button>
       <!--<button class="button button-block button-positive" ng-click="doingSignup=true">Sign up</button>-->
     </div>
-    <form novalidate class="list list-inset" name="loginForm" ng-show="doingLogin===true">
+    <form novalidate class="list list-inset" name="loginForm" ng-show="doingLogin">
       <label class="item item-input">
         <input type="email" name="email" placeholder="Email" ng-model="login.email" required>
         <span ng-show="loginForm.email.$dirty && loginForm.email.$invalid">This is not a valid email.</span>
