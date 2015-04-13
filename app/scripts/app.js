@@ -58,6 +58,14 @@ myApp.run(function ($ionicPlatform) {
             templateUrl: 'templates/chef.html'
           }
         }
+      })
+      .state('app.not-found', {
+        url: '/not-found',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/notFound.html'
+          }
+        }
       });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/main');
