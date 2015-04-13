@@ -18,9 +18,12 @@ myApp.run(function ($ionicPlatform) {
     }
   });
 })
+  //lodash
+  .constant('_', window._)
   .constant('BASE_URL', '//homecooked.herokuapp.com')
   .constant('CLIENT_ID', '111')
   .constant('CACHE_ID', 'homecooked')
+
   .config(function ($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
@@ -56,6 +59,14 @@ myApp.run(function ($ionicPlatform) {
         views: {
           'menuContent': {
             templateUrl: 'templates/chef.html'
+          }
+        }
+      })
+      .state('app.dishes', {
+        url: '/dishes',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/dishes.html'
           }
         }
       })

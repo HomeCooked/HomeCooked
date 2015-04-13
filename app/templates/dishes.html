@@ -1,0 +1,18 @@
+  <ion-view title="My Dishes" ng-controller="DishesCtrl as ctrl">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <ion-list>
+      <ion-item class="item item-thumbnail-left" ng-repeat="dish in ctrl.dishes">
+        <img ng-if="!!dish.image" ng-src="{{dish.image}}">
+        <h2>{{dish.name}}</h2>
+        <p>{{dish.description}}</p>
+      </ion-item>
+    </ion-list>
+    <div class="button-bar">
+      <div class="button" ng-click="ctrl.modal.show()">Add Dish</div>
+      <div class="button">Track orders</div>
+    </div>
+  </ion-content>
+</ion-view>

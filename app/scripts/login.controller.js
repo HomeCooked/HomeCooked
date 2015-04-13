@@ -1,6 +1,6 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', '$timeout', '$ionicSideMenuDelegate', 'LoginService',
-  function ($scope, $ionicModal, $ionicLoading, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, LoginService) {
+angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', '$timeout', '$ionicSideMenuDelegate', 'LoginService', '_',
+  function ($scope, $rootScope, $ionicModal, $ionicLoading, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, LoginService, _) {
     $scope.doingLogin = false;
     $scope.doingSignup = false;
     // Perform the login action when the user submits the login form
@@ -23,24 +23,18 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
     };
 
     var that = this;
+    var chefLinks = [
+      {name: 'Orders', path: 'app.seller'},
+      {name: 'My dishes', path: 'app.dishes'},
+      {name: 'Edit Bio', path: 'app.bio'},
+      {name: 'Get more delivery kits', path: 'app.delivery'}
+    ];
 
-    var setLinks = function () {
-      if (that.chefMode) {
-        that.links = [
-          {name: 'Bank & Address', url: '#/app/seller'},
-          {name: 'Transaction History', url: '#/app/seller'},
-          {name: 'View Ratings', url: '#/app/ratings'},
-          {name: 'Edit Bio', url: '#/app/bio'},
-          {name: 'Get more delivery kits', url: '#/app/delivery'}
-        ];
-      }
-      else {
-        that.links = [
-          {name: 'My Orders', url: '#/app/seller'},
-          {name: 'Payment methods', url: '#/app/seller'}
-        ];
-      }
-    };
+    var buyerLinks = [
+      {name: 'Search food', path: 'app.buyer'},
+      {name: 'My Orders', path: 'app.orders'},
+      {name: 'Payment methods', path: 'app.payment'}
+    ];
 
     that.user = LoginService.getUser();
     // Create the login modal that we will use later
@@ -61,16 +55,28 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$io
     };
 
     that.switchView = function () {
+      var path = buyerLinks[0].path;
       if (that.chefMode) {
         //TODO check if he can be seller
+        path = chefLinks[0].path;
       }
-      setLinks();
-      $state.go(that.chefMode ? 'app.seller' : 'app.buyer');
+      that.go(path);
       $timeout(function () {
         $ionicSideMenuDelegate.toggleLeft(false);
       }, 250);
     };
 
-    that.chefMode = $state.current.name === 'app.seller';
-    setLinks();
+    that.go = function (path) {
+      $state.go(path);
+    };
+
+    var onStateChanged = function (event, toState) {
+      var path = toState.name;
+      that.chefMode = _.some(chefLinks, function (link) {
+        return link.path === path;
+      });
+      that.links = that.chefMode ? chefLinks : buyerLinks;
+    };
+    onStateChanged(null, $state.current);
+    $rootScope.$on('$stateChangeStart', onStateChanged);
   }]);

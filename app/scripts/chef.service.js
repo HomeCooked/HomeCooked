@@ -16,26 +16,21 @@ angular.module('HomeCooked.services')
       };
 
       self.getOrders = function () {
-        var deferred = $q.defer();
         var orders = [fakeOrder('val', 2, 50), fakeOrder('jon', 1, 7), fakeOrder('max', 1, 12), fakeOrder('marc', 2, 40)];
-        deferred.resolve(orders);
-        return deferred.promise;
+        return $q.when(orders);
       };
 
       self.getBatches = function () {
-        var deferred = $q.defer();
         var batches = [{
           dishImage: 'img/logo.png',
           dishName: 'duck',
           quantity: 1,
           price: 6
         }];
-        deferred.resolve(batches);
-        return deferred.promise;
+        return $q.when(batches);
       };
 
       self.getDishes = function () {
-        var deferred = $q.defer();
         var dishes = [{
           name: 'mock dish 1',
           description: 'mock description'
@@ -43,8 +38,7 @@ angular.module('HomeCooked.services')
           name: 'salad',
           description: 'very good'
         }];
-        deferred.resolve(dishes);
-        return deferred.promise;
+        return $q.when(dishes);
       };
 
       self.addDish = function (dish) {
