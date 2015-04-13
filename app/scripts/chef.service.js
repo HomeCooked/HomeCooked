@@ -22,7 +22,7 @@ angular.module('HomeCooked.services')
 
       self.getBatches = function () {
         var batches = [{
-          dishImage: 'img/logo.png',
+          dishImage: 'images/logo.png',
           dishName: 'duck',
           quantity: 1,
           price: 6

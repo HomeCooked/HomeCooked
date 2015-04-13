@@ -6,7 +6,7 @@
     <div class="list">
       <h4 class="title">Orders</h4>
       <div class="item item-thumbnail-left" ng-repeat="order in ctrl.orders | orderBy:order.pickupTimestamp | limitTo:3">
-        <img ng-src="{{order.image || 'img/user.png'}}">
+        <img ng-src="{{order.image || 'images/user.png'}}">
         <h2>{{order.userName}} ordered {{order.dishName}}</h2>
         <p>Quantity: {{order.quantity}}</p>
         <p>Price: {{order.totalPrice}}</p>
@@ -16,7 +16,7 @@
     <div class="list">
       <h4 class="title">Batches</h4>
       <div class="item item-thumbnail-left" ng-repeat="batch in ctrl.batches">
-        <img ng-src="{{batch.dishImage || 'img/logo.png'}}">
+        <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
         <h2>{{batch.dishName}}</h2>
         <p>Quantity: {{batch.quantity}}</p>
         <p>Price: ${{batch.price}}/each</p>
