@@ -45,6 +45,10 @@ angular.module('HomeCooked.services')
         CacheService.setCache('hccredential', credential);
         CacheService.setCache('hcuser', newUser);
         user = newUser;
+        //TODO should come from service
+        if (user) {
+          user.isEnrolled = !_.isEmpty(user.address) && !_.isEmpty(user.phone) && !_.isEmpty(user.email) && !_.isEmpty(user.payment);
+        }
       };
 
       self.login = function (type) {

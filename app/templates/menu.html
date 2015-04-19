@@ -11,14 +11,17 @@
       <a class="button button-icon icon ion-gear-b" nav-clear menu-close ng-click="ctrl.go('app.settings')"></a>
     </ion-header-bar>
     <ion-content>
-      <ion-toggle nav-clear ng-model="ctrl.chefMode" ng-change="ctrl.switchView()">
+      <ion-toggle nav-clear ng-model="ctrl.chefMode" ng-change="ctrl.switchView()" ng-show="ctrl.user.isEnrolled">
         Chef mode
       </ion-toggle>
       <ion-list>
-        <ion-item ng-repeat="link in ctrl.links" nav-clear menu-close ng-click="ctrl.go(link.path)">
+        <ion-item ng-repeat="link in ctrl.links" nav-clear menu-close ng-click="ctrl.go(link.path)" ng-class="{'hc-menu-item-selected' : link.path===ctrl.selectedPath}">
           {{::link.name}}
         </ion-item>
       </ion-list>
+      <ion-item ng-hide="ctrl.user.isEnrolled" nav-clear menu-close ng-click="ctrl.go('app.enroll')" ng-class="{'hc-menu-item-selected' : 'app.enroll'===ctrl.selectedPath}">
+        Become a Chef!
+      </ion-item>
     </ion-content>
     <ion-footer-bar class="bar-stable">
       <h1 class="title">

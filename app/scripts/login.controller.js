@@ -23,6 +23,8 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
     };
 
     var that = this;
+    that.selectedPath = '';
+
     var chefLinks = [
       {name: 'Orders', path: 'app.seller'},
       {name: 'My dishes', path: 'app.dishes'},
@@ -73,6 +75,7 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
         return link.path === path;
       });
       that.links = that.chefMode ? chefLinks : buyerLinks;
+      that.selectedPath = path;
     };
     onStateChanged(null, $state.current);
     $rootScope.$on('$stateChangeStart', onStateChanged);

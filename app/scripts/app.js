@@ -62,6 +62,16 @@ myApp.run(function ($ionicPlatform) {
           }
         }
       })
+      .state('app.enroll', {
+        url: '/enroll',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/enroll.html',
+            controller: 'EnrollCtrl',
+            controllerAs: 'enroll'
+          }
+        }
+      })
       .state('app.seller', {
         url: '/seller',
         views: {
