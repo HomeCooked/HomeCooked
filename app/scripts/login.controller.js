@@ -1,6 +1,6 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', '$timeout', '$ionicSideMenuDelegate', 'LoginService', '_',
-  function ($scope, $rootScope, $ionicModal, $ionicLoading, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, LoginService, _) {
+angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', 'LoginService', '_',
+  function ($scope, $rootScope, $ionicModal, $ionicLoading, $state, $ionicPopup, LoginService, _) {
     $scope.doingLogin = false;
     $scope.doingSignup = false;
     // Perform the login action when the user submits the login form
@@ -61,9 +61,6 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
         path = chefLinks[0].path;
       }
       that.go(path);
-      $timeout(function () {
-        $ionicSideMenuDelegate.toggleLeft(false);
-      }, 250);
     };
 
     that.go = function (path) {
