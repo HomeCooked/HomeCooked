@@ -52,7 +52,9 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
     });
 
     that.logout = function () {
+      that.go('app.buyer');
       LoginService.logout();
+      that.user = undefined;
       that.modal.show();
     };
 
@@ -71,9 +73,20 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
 
     var onStateChanged = function (event, toState) {
       var path = toState.name;
+      var mainPage = buyerLinks[0].path;
+
+      //if not logged in and not at main page, go to home page always
+      if (_.isEmpty(that.user) && path !== mainPage) {
+        //TODO notify he needs to login
+        event.preventDefault();
+        $state.go(mainPage);
+        return;
+      }
+
       that.chefMode = _.some(chefLinks, function (link) {
         return link.path === path;
       });
+
       that.links = that.chefMode ? chefLinks : buyerLinks;
       that.selectedPath = path;
     };
