@@ -66,9 +66,7 @@ myApp.run(function ($ionicPlatform) {
         url: '/enroll',
         views: {
           'menuContent': {
-            templateUrl: 'templates/enroll.html',
-            controller: 'EnrollCtrl',
-            controllerAs: 'enroll'
+            templateUrl: 'templates/enroll.html'
           }
         }
       })

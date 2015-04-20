@@ -57,6 +57,18 @@ angular.module('HomeCooked.services')
         return deferred.promise;
       };
 
+      self.becomeChef = function (chefInfo) {
+        return $q.when('OK');
+        //TODO make it work server side
+        var deferred = $q.defer();
+        $http.post(BASE_URL + '/enroll/', chefInfo)
+          .success(deferred.resolve)
+          .error(function (data) {
+            deferred.reject(JSON.stringify(data));
+          });
+        return deferred.promise;
+      };
+
       return self;
     }]
 );

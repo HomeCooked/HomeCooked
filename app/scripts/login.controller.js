@@ -75,7 +75,7 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
       var path = toState.name;
       var mainPage = buyerLinks[0].path;
 
-      //if not logged in and not at main page, go to home page always
+      //if not logged in, go to home page always
       if (_.isEmpty(that.user) && path !== mainPage) {
         //TODO notify he needs to login
         event.preventDefault();

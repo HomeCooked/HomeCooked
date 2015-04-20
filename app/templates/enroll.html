@@ -1,8 +1,30 @@
-<ion-view title="Become a chef!">
+<ion-view title="Become a chef!" ng-controller="EnrollCtrl as enroll">
   <ion-nav-buttons side="left">
-    <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
 
+    <form novalidate class="list list-inset" name="enrollForm">
+      <label class="item item-input">
+        <input type="text" name="street" placeholder="Street Address" required ng-minlength="2" ng-maxlength="50" ng-model="enroll.form.street">
+      </label>
+      <label class="item item-input">
+        <input type="text" name="city" placeholder="City" required ng-minlength="2" ng-maxlength="50" ng-model="enroll.form.city">
+      </label>
+      <label class="item item-input">
+        <input type="number" name="zip" placeholder="ZIP Code" required ng-minlength="5" ng-maxlength="5" ng-model="enroll.form.zip">
+      </label>
+
+      <label class="item item-input">
+        <input type="text" name="phone" placeholder="Phone #" required ng-minlength="5" ng-maxlength="15" ng-model="enroll.form.phone">
+      </label>
+
+      <label class="item item-input">
+        <input type="email" name="email" placeholder="Email" required ng-model="enroll.form.email">
+        <span ng-show="enrollForm.email.$dirty && enrollForm.email.$invalid">This is not a valid email.</span>
+      </label>
+
+      <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid" ng-click="enroll.enroll(enroll.form)">Enroll</div>
+    </form>
   </ion-content>
 </ion-view>

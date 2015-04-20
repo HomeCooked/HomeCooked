@@ -1,10 +1,9 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('SearchCtrl', ['$ionicLoading', '$timeout',
-  function ($ionicLoading, $timeout) {
+angular.module('HomeCooked.controllers').controller('SearchCtrl', ['$ionicLoading',
+  function ($ionicLoading) {
     var self = this;
     self.query = '';
     self.findChefs = function () {
-      $ionicLoading.show({template: 'Searching...'});
-      $timeout($ionicLoading.hide, 2000);
+      $ionicLoading.show({template: 'Searching...', duration: 2000});
     };
   }]);
