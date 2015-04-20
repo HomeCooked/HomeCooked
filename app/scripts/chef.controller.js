@@ -45,4 +45,11 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
     that.go = function (path) {
       $location.path(path);
     };
+
+    that.removePortions = function (batch) {
+
+      batch.quantityOrdered = batch.quantity;
+
+      //TODO update server!!
+    };
   }]);
