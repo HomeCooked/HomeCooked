@@ -1,4 +1,22 @@
 .hc-menu-item-selected {
   background-color: #eef; }
 
+.hc-order {
+  display: inline-block;
+  width: 8rem;
+  padding: 0.5rem;
+  position: relative;
+  text-align: center; }
+  .hc-order > img {
+    border-radius: 50%; }
+  .hc-order-quantity {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    background: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5rem;
+    border: 2px #00A27F solid;
+    font-weight: bold; }
+
 /*# sourceMappingURL=main.css.map */

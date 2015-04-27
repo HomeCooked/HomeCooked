@@ -1,0 +1,26 @@
+<div class="modal">
+  <ion-header-bar>
+    <h1 class="title">Add Dish</h1>
+  </ion-header-bar>
+  <ion-content>
+    <form novalidate class="list list-inset" name="dishForm">
+      <label class="item item-input item-select">
+        <div class="input-label">Dish</div>
+        <select name="dishId" ng-model="batch.dishId" ng-options="dish.id as dish.name for dish in dishes" required ng-minlength="1"></select>
+      </label>
+      <label class="item item-input">
+        <div class="input-label">Portions</div>
+        <input type="number" pattern="[0-9]*" name="quantity" ng-model="batch.quantity" required ng-minlength="1"/>
+      </label>
+      <label class="item item-input">
+        <div class="input-label">Price per portion</div>
+        <input type="number" pattern="[0-9]*" name="price" ng-model="batch.price" required ng-minlength="1"/>
+      </label>
+      <div class="button-bar">
+        <div class="button" ng-click="hideModal()">Cancel</div>
+        <div class="button button-positive" ng-click="addBatch(batch)" ng-disabled="dishForm.$invalid">Add</div>
+      </div>
+    </form>
+  </ion-content>
+</div>
+

@@ -9,30 +9,28 @@
           <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
 
           <h2>{{batch.dishName}}</h2>
-
           <p>${{batch.price}} per portion</p>
-
           <p>
-            <span class="subdued">{{batch.quantityOrdered}} portions ordered,</span>
-            <span class="subdued">{{batch.quantity - batch.quantityOrdered}} to be ordered</span>
+            <span class="subdued">{{batch.quantityOrdered}} portions ordered</span><span class="subdued" ng-hide="batch.quantity === batch.quantityOrdered">, {{batch.quantity - batch.quantityOrdered}} available</span>
           </p>
         </div>
 
-        <div class="item item-body row">
-          <div ng-repeat="order in batch.orders" align="center" class="col-25">
-            <img ng-src="{{order.userImage || 'images/user.png'}}" width="100px">
-            <div>{{order.userName}} ordered {{order.quantity}}</div>
+        <div class="item item-body hc-orders">
+          <div ng-repeat="order in batch.orders" class="hc-order">
+            <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
+            <div class="hc-order-username">{{order.userName}}</div>
+            <div class="hc-order-quantity">{{order.quantity}}</div>
           </div>
         </div>
 
 
         <div class="item tabs tabs-secondary tabs-icon-left">
-          <a class="tab-item" ng-click="ctrl.removePortions(batch)">
+          <a class="tab-item" ng-click="ctrl.removePortions(batch)"  ng-hide="batch.quantity === batch.quantityOrdered">
             <i class="icon ion-minus-circled"></i>Remove remaining portions
           </a>
         </div>
       </div>
     </div>
-    <div class="button button-block" ng-click="ctrl.modal.show()">Add Dish</div>
+    <div class="button button-block" ng-click="ctrl.openAddDish()">Add Dish</div>
   </ion-content>
 </ion-view>

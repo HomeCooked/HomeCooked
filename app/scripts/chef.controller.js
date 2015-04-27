@@ -3,7 +3,7 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
   function ($scope, $location, $ionicModal, $ionicLoading, $ionicPopup, ChefService) {
     var that = this;
     // Create the login modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/add-dish.html', {
+    $ionicModal.fromTemplateUrl('templates/add-batch.html', {
       scope: $scope
     }).then(function (modal) {
       that.modal = modal;
@@ -11,20 +11,48 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
 
     $scope.addDish = function (dish) {
       $ionicLoading.show({template: 'Adding dish'});
-      ChefService.addDish(dish).then(function added() {
-        $ionicLoading.hide();
-        that.modal.hide();
-      }, function notAdded(error) {
-        $ionicLoading.hide();
-        $ionicPopup.alert({
-          title: 'Couldn\'t add',
-          template: error
+      ChefService.addDish(dish)
+        .then(function added() {
+          $ionicLoading.hide();
+          that.modal.hide();
+        })
+        .catch(function notAdded(error) {
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'Couldn\'t add',
+            template: error
+          });
         });
-      });
     };
+
     $scope.hideModal = function () {
       that.modal.hide();
-    }
+    };
+
+    $scope.addBatch = function (batch) {
+      $ionicLoading.show({template: 'Adding dish'});
+      ChefService.addBatch(batch)
+        .then(function (batches) {
+          that.batches = batches;
+          $ionicLoading.hide();
+          that.modal.hide();
+        })
+        .catch(function notAdded(error) {
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'Couldn\'t add',
+            template: error
+          });
+        });
+    };
+
+    $scope.dishes = [];
+    $scope.batch = {};
+
+    ChefService.getDishes().then(function (dishes) {
+      $scope.dishes = dishes;
+    });
+
 
     that.orders = [];
     that.batches = [];
@@ -46,10 +74,20 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
       $location.path(path);
     };
 
+    that.openAddDish = function () {
+      //Reset popup
+      $scope.batch = {dishId: $scope.dishes[0].id};
+      //TODO check if max number of batches is already met, if so show alert
+      if (that.batches.length >= ChefService.maxBatches()) {
+
+      }
+      that.modal.show();
+    };
+
     that.removePortions = function (batch) {
-
-      batch.quantityOrdered = batch.quantity;
-
-      //TODO update server!!
+      //shall ask for confirmation before?
+      ChefService.removeBatchAvailablePortions(batch).then(function (batches) {
+        that.batches = batches;
+      });
     };
   }]);
