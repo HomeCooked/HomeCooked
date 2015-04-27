@@ -6,6 +6,9 @@ angular.module('HomeCooked.services')
       var orders, dishes, batches;
 
       self.getOrders = function () {
+        if (orders) {
+          return $q.when(orders);
+        }
         return $http.get('mock/orders.json')
           .then(function (data) {
             orders = data.data;
@@ -14,6 +17,9 @@ angular.module('HomeCooked.services')
       };
 
       self.getBatches = function () {
+        if (batches) {
+          return $q.when(batches);
+        }
         return $http.get('mock/batches.json')
           .then(function (data) {
             batches = data.data;
@@ -22,6 +28,9 @@ angular.module('HomeCooked.services')
       };
 
       self.getDishes = function () {
+        if (dishes) {
+          return $q.when(dishes);
+        }
         return $http.get('mock/dishes.json')
           .then(function (data) {
             dishes = data.data;
