@@ -48,6 +48,8 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
 
     $scope.dishes = [];
     $scope.batch = {};
+    //TODO read from server
+    $scope.maxQuantity = 6;
 
     ChefService.getDishes().then(function (dishes) {
       $scope.dishes = dishes;

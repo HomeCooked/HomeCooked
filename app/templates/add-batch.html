@@ -8,9 +8,14 @@
         <div class="input-label">Dish</div>
         <select name="dishId" ng-model="batch.dishId" ng-options="dish.id as dish.name for dish in dishes" required ng-minlength="1"></select>
       </label>
-      <label class="item item-input">
+      <!--<label class="item item-input">
         <div class="input-label">Portions</div>
         <input type="number" pattern="[0-9]*" name="quantity" ng-model="batch.quantity" required ng-minlength="1"/>
+      </label>-->
+      <label class="item range range-positive">
+        <span>1</span>
+        <input type="range" name="quantity" min="1" max="{{maxQuantity}}" value="batch.quantity">
+        <span>{{maxQuantity}}</span>
       </label>
       <label class="item item-input">
         <div class="input-label">Price per portion</div>

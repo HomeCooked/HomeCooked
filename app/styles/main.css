@@ -3,10 +3,11 @@
 
 .hc-order {
   display: inline-block;
-  width: 8rem;
+  width: 5.8rem;
   padding: 0.5rem;
   position: relative;
-  text-align: center; }
+  text-align: center;
+  vertical-align: top; }
   .hc-order > img {
     border-radius: 50%; }
   .hc-order-quantity {
@@ -18,5 +19,9 @@
     border-radius: 5rem;
     border: 2px #00A27F solid;
     font-weight: bold; }
+  .hc-order-username {
+    width: 100%;
+    white-space: normal;
+    overflow: hidden; }
 
 /*# sourceMappingURL=main.css.map */

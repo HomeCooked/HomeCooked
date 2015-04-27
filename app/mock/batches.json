@@ -5,15 +5,19 @@
     "dishName": "Duck",
     "price": 6,
     "quantity": 6,
-    "quantityOrdered": 3,
+    "quantityOrdered": 4,
     "orders": [
       {
-        "userName": "Val",
+        "userName": "Valdrin",
         "quantity": 1
       },
       {
-        "userName": "Marc",
+        "userName": "Marc-Antoine",
         "quantity": 2
+      },
+      {
+        "userName": "Max",
+        "quantity": 1
       }
     ]
   },
