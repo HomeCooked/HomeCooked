@@ -57,6 +57,8 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
     that.orders = [];
     that.batches = [];
 
+    that.maxBatches = ChefService.maxBatches();
+
     ChefService.getOrders().then(function (orders) {
       that.orders = orders;
     });
@@ -77,10 +79,6 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
     that.openAddDish = function () {
       //Reset popup
       $scope.batch = {dishId: $scope.dishes[0].id};
-      //TODO check if max number of batches is already met, if so show alert
-      if (that.batches.length >= ChefService.maxBatches()) {
-
-      }
       that.modal.show();
     };
 
@@ -89,5 +87,11 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
       ChefService.removeBatchAvailablePortions(batch).then(function (batches) {
         that.batches = batches;
       });
+    };
+    that.removeAllAvailablePortions = function () {
+      ChefService.removeAllAvailablePortions()
+        .then(function (batches) {
+          that.batches = batches;
+        });
     };
   }]);

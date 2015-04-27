@@ -83,6 +83,15 @@ angular.module('HomeCooked.services')
         return $q.when(batches);
       };
 
+      self.removeAllAvailablePortions = function () {
+        //FIXME remove this and call the service
+        _.remove(batches, function (batch) {
+          batch.quantity = batch.quantityOrdered;
+          return batch.quantity === 0;
+        });
+        return $q.when(batches);
+      };
+
       self.becomeChef = function (chefInfo) {
         //FIXME remove this and use real service
         return $q.when('OK');

@@ -4,33 +4,38 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <div class="list card">
-      <div ng-repeat="batch in ctrl.batches">
-        <div class="item item-avatar">
-          <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
+      <div class="item item-avatar" ng-repeat="batch in ctrl.batches">
+        <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
 
-          <h2>{{batch.dishName}}</h2>
-          <p>${{batch.price}} per portion</p>
-          <p>
-            <span class="subdued">{{batch.quantityOrdered}} portions ordered</span><span class="subdued" ng-hide="batch.quantity === batch.quantityOrdered">, {{batch.quantity - batch.quantityOrdered}} available</span>
-          </p>
-        </div>
+        <h2>{{batch.dishName}}</h2>
 
-        <div class="item item-body hc-orders">
-          <div ng-repeat="order in batch.orders" class="hc-order">
-            <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
-            <div class="hc-order-username">{{order.userName}}</div>
-            <div class="hc-order-quantity">{{order.quantity}}</div>
+        <p>${{batch.price}} per portion</p>
+
+        <p ng-if="batch.quantityOrdered > 0" class="item">
+          <span class="title">{{batch.quantityOrdered}} portions ordered</span>
+          <div class="hc-orders">
+            <div ng-repeat="order in batch.orders" class="hc-order">
+              <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
+
+              <div class="hc-order-username">{{order.userName}}</div>
+              <div class="hc-order-quantity">{{order.quantity}}</div>
+            </div>
           </div>
-        </div>
-
-
-        <div class="item tabs tabs-secondary tabs-icon-left">
-          <a class="tab-item" ng-click="ctrl.removePortions(batch)"  ng-hide="batch.quantity === batch.quantityOrdered">
-            <i class="icon ion-minus-circled"></i>Remove remaining portions
+        </p>
+        <p ng-if="batch.quantity > batch.quantityOrdered" class="item">
+          <span class="title">{{batch.quantity - batch.quantityOrdered}} portions available</span>
+          <a href class="item-note" ng-click="ctrl.removePortions(batch)">
+            <i class="icon ion-minus-circled"></i> Remove remaining portions
           </a>
-        </div>
+        </p>
       </div>
     </div>
-    <div class="button button-block" ng-click="ctrl.openAddDish()">Add Dish</div>
+    <button class="button button-block button-positive" ng-click="ctrl.openAddDish()"
+            ng-disabled="ctrl.batches.length>=ctrl.maxBatches">Add Dish
+    </button>
+    <div align="center" ng-show="ctrl.batches.length>=ctrl.maxBatches">You can have maximum {{ctrl.maxBatches}} dish
+      types active.
+      After you sell and deliver all the dishes, you will be able to add new ones.
+    </div>
   </ion-content>
 </ion-view>
