@@ -4,6 +4,11 @@
 }
 
 .hc {
+  &-orders {
+    width: 100%;
+    overflow: hidden;
+    white-space: normal;
+  }
   &-order {
     display: inline-block;
     width: 5.8rem;
@@ -11,6 +16,7 @@
     position: relative;
     text-align: center;
     vertical-align: top;
+    cursor: pointer;
 
     > img {
       border-radius: 50%;

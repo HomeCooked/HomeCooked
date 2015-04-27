@@ -19,9 +19,10 @@ angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$scope', '$i
     };
     $scope.addDish = function (dish) {
       $ionicLoading.show({template: 'Adding dish'});
-      ChefService.addDish(dish).then(function added() {
+      ChefService.addDish(dish).then(function added(dishes) {
+        self.dishes = dishes;
         $ionicLoading.hide();
-        $scope.modal.hide();
+        self.modal.hide();
       }, function notAdded(error) {
         $ionicLoading.hide();
         $ionicPopup.alert({

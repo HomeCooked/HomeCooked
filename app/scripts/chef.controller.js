@@ -64,9 +64,6 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
     $scope.maxQuantity = 6;
     $scope.maxPrice = 100;
 
-    ChefService.getDishes().then(function (dishes) {
-      $scope.dishes = dishes;
-    });
 
 
     that.orders = [];
@@ -91,9 +88,17 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
       $location.path(path);
     };
 
+    var getDishes = function(){
+      $ionicLoading.show({template: 'Getting dishes'});
+      ChefService.getDishes().then(function (dishes) {
+        $ionicLoading.hide();
+        $scope.dishes = dishes;
+        $scope.batch = {dishId: $scope.dishes[0].id};
+      });
+    };
+    getDishes();
+
     that.openAddDish = function () {
-      //Reset popup
-      $scope.batch = {dishId: $scope.dishes[0].id};
       that.modal.show();
     };
 
@@ -108,5 +113,12 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
         .then(function (batches) {
           that.batches = batches;
         });
+    };
+
+    that.showBatchOrder = function (batch, order) {
+      $ionicPopup.alert({
+        title: 'Order details',
+        template: 'user: ' + order.userName
+      });
     };
   }]);

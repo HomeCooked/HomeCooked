@@ -30,6 +30,11 @@ angular.module('HomeCooked.services')
       };
 
       self.addDish = function (dish) {
+        //FIXME remove this and call the service
+        dish.id = dishes.length + '';
+        dishes.push(dish);
+        return $q.when(dishes);
+
         var deferred = $q.defer();
         $http.post(BASE_URL + '/dishes/', dish)
           .success(deferred.resolve)

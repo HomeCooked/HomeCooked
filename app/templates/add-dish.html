@@ -1,12 +1,13 @@
 <div class="modal">
   <ion-header-bar>
     <h1 class="title">Create Your New Dish</h1>
+    <div class="button button-clear" ng-click="hideModal()">Cancel</div>
   </ion-header-bar>
   <ion-content>
-    <form novalidate class="list list-inset" name="dishForm">
+    <form novalidate class="list" name="dishForm">
       <label class="item item-input">
-        <input type="text" name="title" placeholder="Name" ng-model="dish.title" ng-minlength="2" required />
-        <span ng-show="dishForm.title.$dirty && dishForm.title.$invalid">Minimum 2 chars.</span>
+        <input type="text" name="name" placeholder="Name" ng-model="dish.name" ng-minlength="2" required />
+        <span ng-show="dishForm.name.$dirty && dishForm.name.$invalid">Minimum 2 chars.</span>
       </label>
       <label class="item item-input">
         <input type="text" name="ingredients" placeholder="Ingredients" ng-model="dish.ingredients" ng-minlength="2" required />
@@ -20,8 +21,7 @@
       <ion-checkbox ng-model="dish.eggs">Eggs</ion-checkbox>
       <ion-checkbox ng-model="dish.peanuts">Peanuts</ion-checkbox>
       <ion-checkbox ng-model="dish.milk">Milk</ion-checkbox>
-      <div class="button-bar">
-        <div class="button" ng-click="hideModal()">Cancel</div>
+      <div class="item button-bar">
         <div class="button button-positive" ng-click="addDish(dish)" ng-disabled="dishForm.$invalid">Create!</div>
       </div>
     </form>

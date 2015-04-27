@@ -4,15 +4,17 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item class="item item-avatar" ng-repeat="dish in ctrl.dishes">
+      <div class="item item-avatar" ng-repeat="dish in ctrl.dishes">
         <img ng-src="{{dish.image || 'images/logo.png'}}">
 
         <h2>{{dish.name}}</h2>
 
         <p>{{dish.description}}</p>
-        <a ng-href="#/app/dish/{{dish.id}}">{{dish.rating}}/5 ({{dish.voters}} reviews)</a>
-      </ion-item>
+        <a ng-href="#/app/dish/{{dish.id}}">{{dish.rating || 0}}/5 ({{dish.voters || 0}} reviews)</a>
+      </div>
+      <div class="item button-bar">
+        <div class="button button-positive" ng-click="ctrl.modal.show()">Add New Dish</div>
+      </div>
     </ion-list>
-    <div class="button button-full" ng-click="ctrl.modal.show()">Add Dish</div>
   </ion-content>
 </ion-view>

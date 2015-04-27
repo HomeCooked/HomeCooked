@@ -3,7 +3,7 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-    <div class="list card">
+    <div class="list">
       <div class="item item-avatar" ng-repeat="batch in ctrl.batches">
         <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
 
@@ -21,7 +21,7 @@
         <p class="title">{{batch.quantityOrdered}} portions ordered</p>
 
         <div class="hc-orders">
-          <div ng-repeat="order in batch.orders" class="hc-order">
+          <div ng-repeat="order in batch.orders" class="hc-order" ng-click="ctrl.showBatchOrder(batch, order)">
             <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
 
             <div class="hc-order-username">{{order.userName}}</div>
@@ -29,13 +29,16 @@
           </div>
         </div>
       </div>
+      <div class="item item-text-wrap">
+        <button class="button button-block button-positive" ng-click="ctrl.openAddDish()"
+                ng-disabled="ctrl.batches.length>=ctrl.maxBatches">Add Dish
+        </button>
+        <div align="center" ng-show="ctrl.batches.length>=ctrl.maxBatches">You can have maximum {{ctrl.maxBatches}} dish
+          types active.
+          After you sell and deliver all the dishes, you will be able to add new ones.
+        </div>
+      </div>
     </div>
-    <button class="button button-block button-positive" ng-click="ctrl.openAddDish()"
-            ng-disabled="ctrl.batches.length>=ctrl.maxBatches">Add Dish
-    </button>
-    <div align="center" ng-show="ctrl.batches.length>=ctrl.maxBatches" class="padding">You can have maximum {{ctrl.maxBatches}} dish
-      types active.
-      After you sell and deliver all the dishes, you will be able to add new ones.
-    </div>
+
   </ion-content>
 </ion-view>

@@ -1,11 +1,11 @@
 [
   {
     "dishImage": "images/logo.png",
-    "dishId": "4",
+    "dishId": "3",
     "dishName": "Duck",
     "price": 6,
     "quantity": 6,
-    "quantityOrdered": 4,
+    "quantityOrdered": 5,
     "orders": [
       {
         "userName": "Valdrin",
@@ -18,13 +18,17 @@
       {
         "userName": "Max",
         "quantity": 1
+      },
+      {
+        "userName": "Jon",
+        "quantity": 1
       }
     ]
   },
   {
     "dishImage": "images/logo.png",
     "dishName": "Mushroom risotto",
-    "dishId": "3",
+    "dishId": "2",
     "price": 4,
     "quantity": 3,
     "quantityOrdered": 3,
@@ -41,7 +45,7 @@
   },
   {
     "dishImage": "images/logo.png",
-    "dishId": "1",
+    "dishId": "0",
     "dishName": "Nutella Crepes",
     "price": 4,
     "quantity": 3,
