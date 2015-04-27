@@ -46,6 +46,17 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
         });
     };
 
+    $scope.checkQuantity = function (batch) {
+      if (_.isNumber(batch.quantity)) {
+        if (batch.quantity < 1) {
+          batch.quantity = 1;
+        }
+        else if (batch.quantity > $scope.maxQuantity) {
+          batch.quantity = $scope.maxQuantity;
+        }
+      }
+    };
+
     $scope.dishes = [];
     $scope.batch = {};
     //TODO read from server
