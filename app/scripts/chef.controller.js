@@ -46,21 +46,23 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$scope', '$loc
         });
     };
 
-    $scope.checkQuantity = function (batch) {
-      if (_.isNumber(batch.quantity)) {
-        if (batch.quantity < 1) {
-          batch.quantity = 1;
+    $scope.adjustRange = function (qty, min, max) {
+      if (_.isNumber(qty)) {
+        if (qty < min) {
+          qty = min;
         }
-        else if (batch.quantity > $scope.maxQuantity) {
-          batch.quantity = $scope.maxQuantity;
+        else if (qty > max) {
+          qty = max;
         }
       }
+      return qty;
     };
 
     $scope.dishes = [];
     $scope.batch = {};
     //TODO read from server
     $scope.maxQuantity = 6;
+    $scope.maxPrice = 100;
 
     ChefService.getDishes().then(function (dishes) {
       $scope.dishes = dishes;

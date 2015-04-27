@@ -9,12 +9,10 @@
         <select name="dishId" ng-model="batch.dishId" ng-options="dish.id as dish.name for dish in dishes" required ng-minlength="1"></select>
       </label>
       <label class="item item-input">
-        <div class="input-label">Portions (max {{maxQuantity}})</div>
-        <input type="number" pattern="[0-9]*" name="quantity" ng-model="batch.quantity" value="batch.quantity" required ng-minlength="1" ng-change="checkQuantity(batch)"/>
+        <input type="number" placeholder="Portions (max {{maxQuantity}})" pattern="[0-9]*" name="quantity" ng-model="batch.quantity" value="batch.quantity" required ng-minlength="1" ng-change="batch.quantity = adjustRange(batch.quantity, 1, maxQuantity)"/>
       </label>
       <label class="item item-input">
-        <div class="input-label">Price per portion</div>
-        <input type="number" pattern="[0-9]*" name="price" ng-model="batch.price" required ng-minlength="1"/>
+        <input type="number" placeholder="Price per portion (max {{maxPrice}})" pattern="[0-9]*" name="price" ng-model="batch.price" required ng-minlength="1" ng-change="batch.price = adjustRange(batch.price, 0, maxPrice)"/>
       </label>
       <div class="button-bar">
         <div class="button" ng-click="hideModal()">Cancel</div>
