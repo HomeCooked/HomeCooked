@@ -1,109 +1,108 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('ChefService', ['$q', '$http', 'ENV', '_',
-    function($q, $http, ENV, _) {
+  .factory('ChefService', ['$q', '$http', 'ENV', '_', 'LoginService',
+    function($q, $http, ENV, _, LoginService) {
       var self = {};
-      var orders, dishes, batches;
+      var ordersReady, dishesReady, batchesReady;
+
+      var handleResponses = function(httpPromise) {
+        return httpPromise
+          .then(function(response) {
+            return response.data;
+          })
+          .catch(function(error) {
+            throw Error(error.data);
+          });
+      }
 
       self.getOrders = function() {
-        if (orders) {
-          return $q.when(orders);
-        }
-        return $http.get('mock/orders.json')
-          .then(function(data) {
-            orders = data.data;
-            return orders;
-          });
+        ordersReady = ordersReady || handleResponses($http.get('mock/orders.json'));
+        return ordersReady;
       };
 
       self.getBatches = function() {
-        if (batches) {
-          return $q.when(batches);
-        }
-        return $http.get('mock/batches.json')
-          .then(function(data) {
-            batches = data.data;
-            return batches;
-          });
+        batchesReady = batchesReady || handleResponses($http.get('mock/batches.json'));
+        return batchesReady;
       };
 
       self.getDishes = function() {
-        if (dishes) {
-          return $q.when(dishes);
-        }
-        return $http.get('mock/dishes.json')
-          .then(function(data) {
-            dishes = data.data;
-            return dishes;
-          });
+        dishesReady = dishesReady || handleResponses($http.get(ENV.BASE_URL + '/dishes/'));
+        return dishesReady;
       };
 
       self.addDish = function(dish) {
-        //FIXME remove this and call the service
-        dish.id = dishes.length + '';
-        dishes.push(dish);
-        return $q.when(dishes);
-
-        //var deferred = $q.defer();
-        //$http.post(ENV.BASE_URL + 'app/v1/dishes/', dish)
-        //  .success(deferred.resolve)
-        //  .error(function (data) {
-        //    deferred.reject(JSON.stringify(data));
-        //  });
-        //return deferred.promise;
+        //FIXME should remove the user id from here!
+        dish.user = LoginService.getUser().id;
+        return handleResponses($http.post(ENV.BASE_URL + '/dishes/', dish))
+          .then(function() {
+            //invalidate dishes so they will be reloaded
+            dishesReady = null;
+            return self.getDishes();
+          });
       };
+
+
       self.addBatch = function(batch) {
-        //FIXME remove this and call the service
-        var oldBatch = _.find(batches, {'dishId': batch.dishId});
-        if (oldBatch && oldBatch.price === batch.price) {
-          oldBatch.quantity += batch.quantity;
-        }
-        else {
-          var dish = _.find(dishes, {'id': batch.dishId});
-          var newBatch = {
-            dishImage: 'images/logo.png',
-            dishId: batch.dishId,
-            dishName: dish.name,
-            quantity: batch.quantity,
-            quantityOrdered: 0,
-            price: batch.price,
-            orders: []
-          };
-          batches.push(newBatch);
-        }
-        return $q.when(batches);
+        return $q.all([self.getDishes(), self.getBatches()]).then(function(values) {
+          var dishes = values[0], batches = values[1];
+          //FIXME remove this and call the service
+          var oldBatch = _.find(batches, {'dishId': batch.dishId});
+          if (oldBatch && oldBatch.price === batch.price) {
+            oldBatch.quantity += batch.quantity;
+          }
+          else {
+            var dish = _.find(dishes, {'id': batch.dishId});
+            var newBatch = {
+              dishImage: 'images/logo.png',
+              dishId: batch.dishId,
+              dishName: dish.name,
+              quantity: batch.quantity,
+              quantityOrdered: 0,
+              price: batch.price,
+              orders: []
+            };
+            batches.push(newBatch);
+          }
+          return $q.when(batches);
 
 
-        //var deferred = $q.defer();
-        //$http.post(ENV.BASE_URL + '/batches/', batch)
-        //  .success(deferred.resolve)
-        //  .error(function (data) {
-        //    deferred.reject(JSON.stringify(data));
-        //  });
-        //return deferred.promise;
+          //var deferred = $q.defer();
+          //$http.post(ENV.BASE_URL + '/batches/', batch)
+          //  .success(deferred.resolve)
+          //  .error(function (data) {
+          //    deferred.reject(JSON.stringify(data));
+          //  });
+          //return deferred.promise;
+        });
       };
 
       self.removeBatchAvailablePortions = function(batch) {
-        //FIXME remove this and call the service
-        var i = _.findIndex(batches, {'dishId': batch.dishId, 'price': batch.price});
-        if (i >= 0) {
-          var localBatch = batches[i];
-          localBatch.quantity = localBatch.quantityOrdered;
-          //will remove current batch if empty
-          if (localBatch.quantity === 0) {
-            batches.splice(i, 1);
-          }
-        }
-        return $q.when(batches);
+        return $q.when(batchesReady)
+          .then(function(batches) {
+            //FIXME remove this and call the service
+            var i = _.findIndex(batches, {'dishId': batch.dishId, 'price': batch.price});
+            if (i >= 0) {
+              var localBatch = batches[i];
+              localBatch.quantity = localBatch.quantityOrdered;
+              //will remove current batch if empty
+              if (localBatch.quantity === 0) {
+                batches.splice(i, 1);
+              }
+            }
+            return $q.when(batches);
+          });
       };
 
       self.removeAllAvailablePortions = function() {
-        //FIXME remove this and call the service
-        _.remove(batches, function(batch) {
-          batch.quantity = batch.quantityOrdered;
-          return batch.quantity === 0;
-        });
-        return $q.when(batches);
+        return $q.when(batchesReady)
+          .then(function(batches) {
+            //FIXME remove this and call the service
+            _.remove(batches, function(batch) {
+              batch.quantity = batch.quantityOrdered;
+              return batch.quantity === 0;
+            });
+            return $q.when(batches);
+          });
       };
 
       self.becomeChef = function(chefInfo) {

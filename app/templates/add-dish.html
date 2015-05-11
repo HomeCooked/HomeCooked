@@ -6,8 +6,8 @@
   <ion-content>
     <form novalidate class="list" name="dishForm">
       <label class="item item-input">
-        <input type="text" name="name" placeholder="Name" ng-model="dish.name" ng-minlength="2" required />
-        <span ng-show="dishForm.name.$dirty && dishForm.name.$invalid">Minimum 2 chars.</span>
+        <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required />
+        <span ng-show="dishForm.title.$dirty && dishForm.title.$invalid">Minimum 2 chars.</span>
       </label>
       <label class="item item-input">
         <input type="text" name="ingredients" placeholder="Ingredients" ng-model="dish.ingredients" ng-minlength="2" required />
