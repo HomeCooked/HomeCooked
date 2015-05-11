@@ -2,43 +2,77 @@
 angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', '_',
   function($rootScope, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, _) {
     var that = this;
-
-    that.dishes = [];
-    that.batches = [];
-    that.newBatch = {};
-    //TODO read from server
-    that.maxQuantity = 6;
-    that.maxPrice = 100;
-    that.maxBatches = ChefService.maxBatches();
-
     var modalScope = $rootScope.$new();
-    modalScope.ctrl = that;
 
-    $ionicModal.fromTemplateUrl('templates/add-batch.html', {
-      scope: modalScope
-    }).then(function(modal) {
-      that.modal = modal;
-    });
+    var init = function() {
+      that.dishes = [];
+      that.batches = [];
 
-    that.hideModal = function() {
-      that.modal.hide();
+      modalScope.ctrl = that;
+      modalScope.batch = {};
+
+      $ionicModal.fromTemplateUrl('templates/add-batch.html', {
+        scope: modalScope
+      }).then(function(modal) {
+        that.modal = modal;
+      });
+
+      loadOrders();
     };
 
-    that.addBatch = function(batch) {
-      $ionicLoading.show({template: 'Adding dish'});
-      ChefService.addBatch(batch)
+    var loadOrders = function() {
+      $ionicLoading.show({template: 'Getting orders'});
+      $q.all([ChefService.getBatches(), ChefService.getDishes(), ChefService.getChefData()])
+        .then(function(values) {
+          $ionicLoading.hide();
+
+          that.batches = values[0];
+          that.dishes = values[1];
+          var chefData = values[2];
+          that.maxPrice = chefData.maxPrice;
+          that.maxQuantity = chefData.maxQuantity;
+          that.maxBatches = chefData.maxBatches;
+
+          modalScope.batch = {dishId: that.dishes[0].id};
+        })
+        .catch(handleError);
+    };
+
+    var removePortions = function(batch) {
+      $ionicLoading.show({template: 'Removing...'});
+      ChefService.removeBatchAvailablePortions(batch)
         .then(function(batches) {
           that.batches = batches;
           $ionicLoading.hide();
           that.modal.hide();
         })
-        .catch(function notAdded(error) {
+        .catch(handleError);
+    };
+
+    var handleError = function(error) {
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+        title: 'Sorry, something went wrong',
+        template: error
+      });
+    };
+
+
+    that.hideModal = function() {
+      that.modal.hide();
+    };
+
+    that.addBatch = function(batch, form) {
+      $ionicLoading.show({template: 'Adding dish'});
+      ChefService.addBatch(batch)
+        .then(function(batches) {
+          modalScope.batch = {dishId: that.dishes[0].id};
+          form.$setPristine();
+          that.batches = batches;
           $ionicLoading.hide();
-          $ionicPopup.alert({
-            title: 'Couldn\'t add',
-            template: error
-          });
-        });
+          that.modal.hide();
+        })
+        .catch(handleError);
     };
 
     that.adjustRange = function(qty, min, max) {
@@ -53,11 +87,6 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '
       return qty;
     };
 
-    that.changeDishActivity = function(dish) {
-      //TODO send to server dish active
-      console.log(dish);
-    };
-
     that.go = function(path) {
       $state.go(path);
     };
@@ -67,16 +96,17 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '
     };
 
     that.removePortions = function(batch) {
-      //shall ask for confirmation before?
-      ChefService.removeBatchAvailablePortions(batch).then(function(batches) {
-        that.batches = batches;
+      $ionicPopup.confirm({
+        title: batch.dishName + ', ' + batch.quantity + ' portion(s)',
+        template: 'Do you want to delete this batch?',
+        cancelText: 'No',
+        okText: 'Yes, Delete',
+        okType: 'button-assertive'
+      }).then(function(res) {
+        if (res) {
+          removePortions(batch);
+        }
       });
-    };
-    that.removeAllAvailablePortions = function() {
-      ChefService.removeAllAvailablePortions()
-        .then(function(batches) {
-          that.batches = batches;
-        });
     };
 
     that.showBatchOrder = function(batch, order) {
@@ -86,21 +116,5 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '
       });
     };
 
-    $ionicLoading.show({template: 'Getting dishes'});
-    $q.all([ChefService.getBatches(), ChefService.getDishes()])
-      .then(function(values) {
-        $ionicLoading.hide();
-        that.batches = values[0];
-        that.dishes = values[1];
-        that.newBatch = {dishId: that.dishes[0].id};
-      })
-      .catch(function(err) {
-        $ionicLoading.hide();
-        that.batches = [];
-        that.dishes = [];
-        $ionicPopup.alert({
-          title: 'Couldn\'t get dishes',
-          template: err
-        });
-      });
+    init();
   }]);

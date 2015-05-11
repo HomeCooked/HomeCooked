@@ -7,7 +7,7 @@
       <div class="item item-avatar" ng-repeat="dish in ctrl.dishes">
         <img ng-src="{{dish.image || 'images/logo.png'}}">
 
-        <h2>{{dish.name}}</h2>
+        <h2>{{dish.title}}</h2>
 
         <p>{{dish.description}}</p>
         <a ng-href="#/app/dish/{{dish.id}}">{{dish.rating || 0}}/5 ({{dish.voters || 0}} reviews)</a>

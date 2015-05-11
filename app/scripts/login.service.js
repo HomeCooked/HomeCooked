@@ -65,6 +65,18 @@ angular.module('HomeCooked.services')
         return user;
       };
 
+      self.becomeChef = function(chefInfo) {
+        //FIXME remove this and use real service
+        return $q.when('OK', chefInfo);
+
+        //var deferred = $q.defer();
+        //$http.post(ENV.BASE_URL + '/enroll/', chefInfo)
+        //  .success(deferred.resolve)
+        //  .error(function (data) {
+        //    deferred.reject(JSON.stringify(data));
+        //  });
+        //return deferred.promise;
+      };
       return self;
     }]
 );

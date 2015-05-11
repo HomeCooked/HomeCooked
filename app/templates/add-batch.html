@@ -1,22 +1,31 @@
 <div class="modal">
   <ion-header-bar>
     <h1 class="title">Add Dish</h1>
+
     <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
   </ion-header-bar>
   <ion-content>
-    <form novalidate class="list" name="dishForm">
+    <form novalidate class="list" name="batchForm">
       <label class="item item-input item-select">
         <div class="input-label">Dish</div>
-        <select name="dishId" ng-model="ctrl.newBatch.dishId" ng-options="dish.id as dish.name for dish in ctrl.dishes" required ng-minlength="1"></select>
+        <select name="dishId" ng-model="batch.dishId"
+                ng-options="dish.id as dish.title for dish in ctrl.dishes"></select>
       </label>
       <label class="item item-input">
-        <input type="number" placeholder="Portions (max {{ctrl.maxQuantity}})" pattern="[0-9]*" name="quantity" ng-model="ctrl.newBatch.quantity" value="ctrl.newBatch.quantity" required ng-minlength="1" ng-change="ctrl.newBatch.quantity = ctrl.adjustRange(ctrl.newBatch.quantity, 1, ctrl.maxQuantity)"/>
+        <input type="number" placeholder="Portions (max {{ctrl.maxQuantity}})" pattern="[0-9]*" name="quantity"
+               ng-model="batch.quantity" value="batch.quantity" required ng-minlength="1"
+               ng-change="batch.quantity = ctrl.adjustRange(batch.quantity, 1, ctrl.maxQuantity)"/>
       </label>
       <label class="item item-input">
-        <input type="number" placeholder="Price per portion (max {{ctrl.maxPrice}})" pattern="[0-9]*" name="price" ng-model="ctrl.newBatch.price" required ng-minlength="1" ng-change="ctrl.newBatch.price = ctrl.adjustRange(ctrl.newBatch.price, 0, ctrl.maxPrice)"/>
+        <input type="number" placeholder="Price per portion (max {{ctrl.maxPrice}})" pattern="[0-9]*" name="price"
+               ng-model="batch.price" required ng-minlength="1"
+               ng-change="batch.price = ctrl.adjustRange(batch.price, 0, ctrl.maxPrice)"/>
       </label>
+
       <div class="item button-bar">
-        <div class="button button-positive" ng-click="ctrl.addBatch(ctrl.newBatch)" ng-disabled="dishForm.$invalid">Add</div>
+        <div class="button button-positive" ng-click="ctrl.addBatch(batch, batchForm)"
+             ng-disabled="batchForm.$invalid">Add
+        </div>
       </div>
     </form>
   </ion-content>

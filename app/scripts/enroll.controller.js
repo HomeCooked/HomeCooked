@@ -1,13 +1,13 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('EnrollCtrl', ['$state', '$ionicPopup', '$ionicLoading', 'ChefService',
-  function ($state, $ionicPopup, $ionicLoading, ChefService) {
+angular.module('HomeCooked.controllers').controller('EnrollCtrl', ['$state', '$ionicPopup', '$ionicLoading', 'LoginService',
+  function ($state, $ionicPopup, $ionicLoading, LoginService) {
     var that = this;
 
     that.enroll = function (form) {
       $ionicLoading.show({
         template: 'Enrolling...'
       });
-      ChefService.becomeChef(form)
+      LoginService.becomeChef(form)
         .then(function () {
           $ionicPopup.show({
             title: 'You\'re enrolled!',

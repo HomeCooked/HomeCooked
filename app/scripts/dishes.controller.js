@@ -1,10 +1,14 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$scope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'ChefService',
-  function($scope, $ionicModal, $ionicLoading, $ionicPopup, ChefService) {
+angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'ChefService',
+  function($rootScope, $ionicModal, $ionicLoading, $ionicPopup, ChefService) {
     var self = this;
+
+    var modalScope = $rootScope.$new();
+    modalScope.ctrl = self;
+    modalScope.dish = {};
     // Create the login modal that we will use later
     $ionicModal.fromTemplateUrl('templates/add-dish.html', {
-      scope: $scope
+      scope: modalScope
     }).then(function(modal) {
       self.modal = modal;
     });
@@ -14,21 +18,25 @@ angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$scope', '$i
       self.dishes = dishes;
     });
 
-    $scope.hideModal = function() {
+    self.hideModal = function() {
       self.modal.hide();
     };
-    $scope.addDish = function(dish) {
+    self.addDish = function(dish, form) {
       $ionicLoading.show({template: 'Adding dish'});
-      ChefService.addDish(dish).then(function added(dishes) {
-        self.dishes = dishes;
-        $ionicLoading.hide();
-        self.modal.hide();
-      }, function notAdded(error) {
-        $ionicLoading.hide();
-        $ionicPopup.alert({
-          title: 'Couldn\'t add',
-          template: error
+      ChefService.addDish(dish)
+        .then(function added(dishes) {
+          modalScope.dish = {};
+          form.$setPristine();
+          self.dishes = dishes;
+          $ionicLoading.hide();
+          self.modal.hide();
+        })
+        .catch(function notAdded(error) {
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'Couldn\'t add',
+            template: error
+          });
         });
-      });
     };
   }]);
