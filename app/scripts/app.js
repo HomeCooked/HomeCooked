@@ -1,12 +1,12 @@
 'use strict';
 
-var myApp = angular.module('HomeCooked', ['ionic', 'ngAnimate', 'HomeCooked.controllers']);
+var myApp = angular.module('HomeCooked', ['ionic', 'ngAnimate', 'config', 'HomeCooked.controllers']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
 
-myApp.run(function ($ionicPlatform) {
-  $ionicPlatform.ready(function () {
+myApp.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
     // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -20,16 +20,12 @@ myApp.run(function ($ionicPlatform) {
 })
   //lodash
   .constant('_', window._)
-  .constant('BASE_URL', '//homecooked.herokuapp.com')
-  .constant('CLIENT_ID', '111')
-  .constant('CACHE_ID', 'homecooked')
-
-  .config(function ($httpProvider) {
+  .config(function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function($stateProvider, $urlRouterProvider, ENV) {
 
-    window.openFB.init({appId: '805673482820123'});
+    window.openFB.init({appId: ENV.FACEBOOK_APP_ID});
 
     $stateProvider
       .state('app', {

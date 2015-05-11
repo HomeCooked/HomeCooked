@@ -1,10 +1,10 @@
 'use strict';
 angular.module('HomeCooked.services')
   .factory('CacheService', ['$window',
-    function ($window) {
+    function($window) {
       var self = this;
 
-      self.getCache = function (key) {
+      self.getCache = function(key) {
         if ($window.localStorage) {
           var serializedCache = $window.localStorage.getItem(key);
           if (serializedCache && isJSON(serializedCache)) {
@@ -14,7 +14,7 @@ angular.module('HomeCooked.services')
         }
       };
 
-      self.setCache = function (key, value) {
+      self.setCache = function(key, value) {
         if (!$window.localStorage) {
           return;
         }
@@ -23,14 +23,14 @@ angular.module('HomeCooked.services')
           $window.localStorage.removeItem(key);
         }
         else {
-          if (typeof value === 'array' || typeof value === 'object') {
+          if (typeof value === 'object') {
             value = JSON.stringify(value);
           }
           $window.localStorage.setItem(key, value);
         }
       };
 
-      var isEmpty = function (obj) {
+      var isEmpty = function(obj) {
         var empty = true;
         var type = typeof obj;
         if (type !== 'undefined') {
@@ -49,7 +49,7 @@ angular.module('HomeCooked.services')
         return empty;
       };
 
-      var isJSON = function (json) {
+      var isJSON = function(json) {
         try {
           JSON.parse(json);
         }

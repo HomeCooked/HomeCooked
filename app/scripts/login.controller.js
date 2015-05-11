@@ -1,10 +1,10 @@
 'use strict';
 angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', 'LoginService', '_',
-  function ($scope, $rootScope, $ionicModal, $ionicLoading, $state, $ionicPopup, LoginService, _) {
+  function($scope, $rootScope, $ionicModal, $ionicLoading, $state, $ionicPopup, LoginService, _) {
     $scope.doingLogin = false;
     $scope.doingSignup = false;
     // Perform the login action when the user submits the login form
-    $scope.login = function (loginType, user, pass) {
+    $scope.login = function(loginType, user, pass) {
       $ionicLoading.show({
         template: 'Doing login...'
       });
@@ -44,21 +44,21 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
       scope: $scope,
       backdropClickToClose: false,
       hardwareBackButtonClose: false
-    }).then(function (modal) {
+    }).then(function(modal) {
       that.modal = modal;
       if (!that.user) {
         modal.show();
       }
     });
 
-    that.logout = function () {
+    that.logout = function() {
       that.go('app.buyer');
       LoginService.logout();
       that.user = undefined;
       that.modal.show();
     };
 
-    that.switchView = function () {
+    that.switchView = function() {
       var path = buyerLinks[0].path;
       if (that.chefMode) {
         //TODO check if he can be seller
@@ -67,23 +67,25 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
       that.go(path);
     };
 
-    that.go = function (path) {
+    that.go = function(path) {
       $state.go(path);
     };
 
-    var onStateChanged = function (event, toState) {
+    var onStateChanged = function(event, toState) {
       var path = toState.name;
       var mainPage = buyerLinks[0].path;
 
       //if not logged in, go to home page always
       if (_.isEmpty(that.user) && path !== mainPage) {
         //TODO notify he needs to login
-        event.preventDefault();
+        if (event) {
+          event.preventDefault();
+        }
         $state.go(mainPage);
         return;
       }
 
-      that.chefMode = _.some(chefLinks, function (link) {
+      that.chefMode = _.some(chefLinks, function(link) {
         return link.path === path;
       });
 

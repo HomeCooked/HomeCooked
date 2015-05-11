@@ -1,18 +1,18 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('LoginService', ['$q', '$http', '$window', 'BASE_URL', 'CLIENT_ID', 'CacheService',
-    function ($q, $http, $window, BASE_URL, CLIENT_ID, CacheService) {
+  .factory('LoginService', ['$q', '$http', '$window', 'ENV', 'CacheService', '_',
+    function($q, $http, $window, ENV, CacheService, _) {
       var self = this;
       var user = CacheService.getCache('hcuser');
 
-      var homeCookedLogin = function (accessToken, provider) {
+      var homeCookedLogin = function(accessToken, provider) {
         var deferred = $q.defer();
-        $http.post(BASE_URL + '/connect/', {
+        $http.post(ENV.BASE_URL + '/connect/', {
           'access_token': accessToken,
-          'client_id': CLIENT_ID,
+          'client_id': ENV.CLIENT_ID,
           'provider': provider
         })
-          .success(function (data) {
+          .success(function(data) {
             _updateLogin(data.credential, data.user);
             deferred.resolve(self.getUser());
           })
@@ -23,10 +23,10 @@ angular.module('HomeCooked.services')
         return deferred.promise;
       };
 
-      var getAccessToken = function (provider) {
+      var getAccessToken = function(provider) {
         var deferred = $q.defer();
         if (provider === 'facebook') {
-          window.openFB.login(function (response) {
+          window.openFB.login(function(response) {
             if (response && response.authResponse && response.authResponse.token) {
               deferred.resolve(response.authResponse.token);
             }
@@ -41,7 +41,7 @@ angular.module('HomeCooked.services')
         return deferred.promise;
       };
 
-      var _updateLogin = function (credential, newUser) {
+      var _updateLogin = function(credential, newUser) {
         //TODO should come from service
         if (newUser) {
           newUser.isEnrolled = !_.isEmpty(newUser.address) && !_.isEmpty(newUser.phone_number) && !_.isEmpty(newUser.email) && !_.isEmpty(newUser.payment);
@@ -51,17 +51,17 @@ angular.module('HomeCooked.services')
         user = newUser;
       };
 
-      self.login = function (type) {
-        return getAccessToken(type).then(function (accessToken) {
+      self.login = function(type) {
+        return getAccessToken(type).then(function(accessToken) {
           return homeCookedLogin(accessToken, type);
         });
       };
 
-      self.logout = function () {
+      self.logout = function() {
         _updateLogin();
       };
 
-      self.getUser = function () {
+      self.getUser = function() {
         return user;
       };
 
