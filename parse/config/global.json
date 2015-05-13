@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "_default": {
+            "link": "homecooked-app"
+        }, 
+        "homecooked-app": {
+            "applicationId": "zn1clIC0muBtp5L73xY5NkBM6eFhlhNBeInFilJH", 
+            "masterKey": "i8Pu0j0berunR0HnqJdFRON4KkO89oQmega0HzKK"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.5"
+    }
+}
