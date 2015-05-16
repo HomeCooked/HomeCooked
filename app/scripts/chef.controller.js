@@ -20,6 +20,11 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '
       loadOrders();
     };
 
+    var emptyBatch = function() {
+      var firstDish = that.dishes[0] || {};
+      return {dishId: firstDish.id};
+    };
+
     var loadOrders = function() {
       $ionicLoading.show({template: 'Getting orders'});
       $q.all([ChefService.getBatches(), ChefService.getDishes(), ChefService.getChefData()])
@@ -33,7 +38,8 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '
           that.maxQuantity = chefData.maxQuantity;
           that.maxBatches = chefData.maxBatches;
 
-          modalScope.batch = {dishId: that.dishes[0].id};
+
+          modalScope.batch = emptyBatch();
         })
         .catch(handleError);
     };
@@ -66,7 +72,7 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '
       $ionicLoading.show({template: 'Adding dish'});
       ChefService.addBatch(batch)
         .then(function(batches) {
-          modalScope.batch = {dishId: that.dishes[0].id};
+          modalScope.batch = emptyBatch();
           form.$setPristine();
           that.batches = batches;
           $ionicLoading.hide();

@@ -1,54 +1,55 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('ChefService', ['$q', '$http', '$timeout', 'ENV', '_', 'LoginService',
-    function($q, $http, $timeout, ENV, _, LoginService) {
-      var self = {};
+  .factory('ChefService', ['$q', '$http', '$timeout', 'ENV', '_',
+    function($q, $http, $timeout, ENV, _) {
+      var baseUrl = ENV.BASE_URL + '/api/v1/';
+
       var ordersReady, dishesReady, batchesReady;
 
       var handleResponses = function(httpPromise) {
-        return httpPromise
+        var deferred = $q.defer();
+        httpPromise
           .then(function(response) {
-            return response.data;
+            deferred.resolve(response.data);
           })
           .catch(function(error) {
-            throw new Error(error.data);
+            deferred.reject(error.data);
           });
+        return deferred.promise;
       };
       var wait = function(ms) {
         return $timeout(function() {
         }, ms || 0);
       };
 
-      self.getOrders = function() {
+      var getOrders = function() {
         ordersReady = ordersReady || handleResponses($http.get('mock/orders.json'));
         return ordersReady;
       };
 
-      self.getBatches = function() {
+      var getBatches = function() {
         batchesReady = batchesReady || handleResponses($http.get('mock/batches.json'));
         return batchesReady;
       };
 
-      self.getDishes = function() {
-        dishesReady = dishesReady || handleResponses($http.get(ENV.BASE_URL + '/dishes/'));
+      var getDishes = function() {
+        dishesReady = dishesReady || handleResponses($http.get(baseUrl + 'dishes/'));
         return dishesReady;
       };
 
-      self.addDish = function(dish) {
-        //FIXME should remove the user id from here!
-        dish.user = LoginService.getUser().id;
-        return handleResponses($http.post(ENV.BASE_URL + '/dishes/', dish))
+      var addDish = function(dish) {
+        return handleResponses($http.post(baseUrl + 'dishes/', dish))
           .then(function() {
             //invalidate dishes so they will be reloaded
             dishesReady = null;
-            return self.getDishes();
+            return getDishes();
           });
       };
 
 
-      self.addBatch = function(batch) {
+      var addBatch = function(batch) {
         //FIXME remove this and call the service
-        return $q.all([self.getDishes(), self.getBatches(), wait(300)]).then(function(values) {
+        return $q.all([getDishes(), getBatches(), wait(300)]).then(function(values) {
           var dishes = values[0], batches = values[1];
           var oldBatch = _.find(batches, {'dishId': batch.dishId});
           if (oldBatch && oldBatch.price === batch.price) {
@@ -70,17 +71,17 @@ angular.module('HomeCooked.services')
           return batches;
         });
 
-        return handleResponses($http.post(ENV.BASE_URL + '/batches/', batch))
+        return handleResponses($http.post(baseUrl + 'batches/', batch))
           .then(function() {
             //invalidate dishes so they will be reloaded
             batchesReady = null;
-            return self.getBatches();
+            return getBatches();
           });
       };
 
-      self.removeBatchAvailablePortions = function(batch) {
+      var removeBatchAvailablePortions = function(batch) {
         //FIXME remove this and call the service
-        return $q.all([self.getBatches(), wait(300)])
+        return $q.all([getBatches(), wait(300)])
           .then(function(values) {
             var batches = values[0];
             var i = _.findIndex(batches, {'dishId': batch.dishId, 'price': batch.price});
@@ -97,15 +98,15 @@ angular.module('HomeCooked.services')
           });
 
 
-        return handleResponses($http.post(ENV.BASE_URL + '/batches/remove', batch.id))
+        return handleResponses($http.delete(baseUrl + 'batches/' + batch.id))
           .then(function() {
             //invalidate batches so they will be reloaded
             batchesReady = null;
-            return self.getBatches();
+            return getBatches();
           });
       };
 
-      self.getChefData = function() {
+      var getChefData = function() {
         //TODO read this from server!!
         var chefData = {
           maxPrice: 100,
@@ -115,6 +116,19 @@ angular.module('HomeCooked.services')
         return $q.when(chefData);
       };
 
-      return self;
+      var getChefInfo = function(chefId) {
+        return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/'));
+      };
+
+      return {
+        getOrders: getOrders,
+        getBatches: getBatches,
+        getDishes: getDishes,
+        addDish: addDish,
+        addBatch: addBatch,
+        removeBatchAvailablePortions: removeBatchAvailablePortions,
+        getChefData: getChefData,
+        getChefInfo: getChefInfo
+      };
     }]
 );

@@ -1,6 +1,6 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', 'LoginService', '_',
-  function($scope, $rootScope, $ionicModal, $ionicLoading, $state, $ionicPopup, LoginService, _) {
+angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicLoading', '$state', '$ionicPopup', 'LoginService', 'ChefService', '_',
+  function($scope, $rootScope, $ionicModal, $ionicLoading, $state, $ionicPopup, LoginService, ChefService, _) {
     $scope.doingLogin = false;
     $scope.doingSignup = false;
     // Perform the login action when the user submits the login form
@@ -8,10 +8,8 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
       $ionicLoading.show({
         template: 'Doing login...'
       });
-      LoginService.login(loginType, user, pass).then(function didLogin(user) {
-        that.user = user;
+      LoginService.login(loginType, user, pass).then(function didLogin() {
         $ionicLoading.hide();
-        that.modal.hide();
         $scope.doingLogin = $scope.doingSignup = false;
       }, function didNotLogin(err) {
         $ionicLoading.hide();
@@ -38,7 +36,7 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
       {name: 'Payment methods', path: 'app.settings'}
     ];
 
-    that.user = LoginService.getUser();
+
     // Create the login modal that we will use later
     $ionicModal.fromTemplateUrl('templates/login.html', {
       scope: $scope,
@@ -46,16 +44,32 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
       hardwareBackButtonClose: false
     }).then(function(modal) {
       that.modal = modal;
-      if (!that.user) {
-        modal.show();
+      if (!LoginService.getUser()) {
+        that.modal.show();
+      }
+    });
+
+    $scope.$watch(function() {
+      return LoginService.getUser();
+    }, function userChanged() {
+      var user = LoginService.getUser();
+      that.userFirstName = user ? user.first_name : '';
+      that.isChef = true;
+      if (user) {
+        ChefService.getChefInfo(user.id)
+          .then(function() {
+            that.isChef = true;
+          });
+        that.modal && that.modal.hide();
+      }
+      else {
+        that.modal && that.modal.show();
       }
     });
 
     that.logout = function() {
-      that.go('app.buyer');
       LoginService.logout();
-      that.user = undefined;
-      that.modal.show();
+      that.go(buyerLinks[0].path);
     };
 
     that.switchView = function() {
@@ -76,12 +90,12 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
       var mainPage = buyerLinks[0].path;
 
       //if not logged in, go to home page always
-      if (_.isEmpty(that.user) && path !== mainPage) {
+      if (_.isEmpty(LoginService.getUser()) && path !== mainPage) {
         //TODO notify he needs to login
         if (event) {
           event.preventDefault();
         }
-        $state.go(mainPage);
+        that.go(mainPage);
         return;
       }
 
