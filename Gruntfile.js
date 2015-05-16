@@ -43,7 +43,7 @@ module.exports = function(grunt) {
             name: 'development',
             BASE_URL: '//localhost:8000',
             CLIENT_ID: '111',
-            FACEBOOK_APP_ID: '805673482820123'
+            FACEBOOK_APP_ID: '845407792180025'
           }
         }
       },
