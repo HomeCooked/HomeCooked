@@ -71,12 +71,12 @@ angular.module('HomeCooked.services')
           return batches;
         });
 
-        return handleResponses($http.post(baseUrl + 'batches/', batch))
-          .then(function() {
-            //invalidate dishes so they will be reloaded
-            batchesReady = null;
-            return getBatches();
-          });
+        //return handleResponses($http.post(baseUrl + 'batches/', batch))
+        //  .then(function() {
+        //    //invalidate dishes so they will be reloaded
+        //    batchesReady = null;
+        //    return getBatches();
+        //  });
       };
 
       var removeBatchAvailablePortions = function(batch) {
@@ -98,12 +98,12 @@ angular.module('HomeCooked.services')
           });
 
 
-        return handleResponses($http.delete(baseUrl + 'batches/' + batch.id))
-          .then(function() {
-            //invalidate batches so they will be reloaded
-            batchesReady = null;
-            return getBatches();
-          });
+        //return handleResponses($http.delete(baseUrl + 'batches/' + batch.id))
+        //  .then(function() {
+        //    //invalidate batches so they will be reloaded
+        //    batchesReady = null;
+        //    return getBatches();
+        //  });
       };
 
       var getChefData = function() {

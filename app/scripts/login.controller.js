@@ -54,16 +54,19 @@ angular.module('HomeCooked.controllers').controller('LoginCtrl', ['$scope', '$ro
     }, function userChanged() {
       var user = LoginService.getUser();
       that.userFirstName = user ? user.first_name : '';
+      //TODO put this to false!!
       that.isChef = true;
       if (user) {
         ChefService.getChefInfo(user.id)
           .then(function() {
             that.isChef = true;
           });
-        that.modal && that.modal.hide();
+        if (that.modal) {
+          that.modal.hide();
+        }
       }
-      else {
-        that.modal && that.modal.show();
+      else if (that.modal) {
+        that.modal.show();
       }
     });
 

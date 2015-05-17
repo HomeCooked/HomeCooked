@@ -34,14 +34,6 @@ myApp.run(function($ionicPlatform) {
         templateUrl: 'templates/menu.html'
       })
 
-      .state('app.main', {
-        url: '/main',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/main.html'
-          }
-        }
-      })
       .state('app.buyer', {
         url: '/buyer',
         views: {
@@ -107,5 +99,5 @@ myApp.run(function($ionicPlatform) {
         }
       });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/main');
+    $urlRouterProvider.otherwise('/app/buyer');
   });
