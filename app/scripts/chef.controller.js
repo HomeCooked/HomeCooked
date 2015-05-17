@@ -9,7 +9,7 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['$rootScope', '
       that.batches = [];
 
       modalScope.ctrl = that;
-      modalScope.batch = {};
+      modalScope.batch = emptyBatch();
 
       $ionicModal.fromTemplateUrl('templates/add-batch.html', {
         scope: modalScope

@@ -1,7 +1,7 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('LoginService', ['$q', '$http', '$window', 'ENV', 'CacheService', '_',
-    function($q, $http, $window, ENV, CacheService, _) {
+  .factory('LoginService', ['$q', '$http', '$window', 'ENV', 'CacheService',
+    function($q, $http, $window, ENV, CacheService) {
       var self = this;
       var user = CacheService.getCache('hcuser');
 
