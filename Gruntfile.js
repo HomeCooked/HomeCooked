@@ -134,6 +134,14 @@ module.exports = function(grunt) {
           ]
         }]
       },
+      parse: {
+        files: [{
+          dot: true,
+          src: [
+            'parse/public/*'
+          ]
+        }]
+      },
       server: '.tmp'
     },
 
@@ -257,6 +265,7 @@ module.exports = function(grunt) {
           src: [
             '<%= yeoman.images %>/**/*.{png,jpg,jpeg,gif,webp,svg}',
             '*.html',
+            'mock/*',
             'templates/**/*.html',
             'fonts/*'
           ]
@@ -298,6 +307,12 @@ module.exports = function(grunt) {
         expand: true,
         cwd: '.tmp',
         dest: 'www/',
+        src: '**/*'
+      },
+      parse: {
+        expand: true,
+        cwd: 'www',
+        dest: 'parse/public/',
         src: '**/*'
       }
     },
@@ -546,7 +561,9 @@ module.exports = function(grunt) {
     'cssmin',
     'uglify',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'clean:parse',
+    'copy:parse'
   ]);
 
   grunt.registerTask('coverage', ['karma:continuous', 'connect:coverage:keepalive']);
