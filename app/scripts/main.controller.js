@@ -3,12 +3,8 @@ var MainCtrl = ['$scope', '$ionicLoading', '$state', '$ionicPopup', 'LoginServic
   function($scope, $ionicLoading, $state, $ionicPopup, LoginService) {
     var that = this;
 
-    var init = function() {
+    $scope.$on('$ionicView.beforeEnter', function(){
       that.doingLogin = that.doingSignup = false;
-      that.isLoggedIn = !!LoginService.getUser();
-    };
-
-    $scope.$watch(LoginService.getUser, function() {
       that.isLoggedIn = !!LoginService.getUser();
     });
 
@@ -28,7 +24,6 @@ var MainCtrl = ['$scope', '$ionicLoading', '$state', '$ionicPopup', 'LoginServic
         });
       });
     };
-    init();
   }];
 
 angular.module('HomeCooked.controllers').controller('MainCtrl', MainCtrl);

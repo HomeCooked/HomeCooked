@@ -4,7 +4,7 @@ angular.module('HomeCooked.services')
     function($q, $http, $timeout, ENV, _) {
       var baseUrl = ENV.BASE_URL + '/api/v1/';
 
-      var ordersReady, dishesReady, batchesReady;
+      var ordersReady, batchesReady;
 
       var handleResponses = function(httpPromise) {
         var deferred = $q.defer();
@@ -33,16 +33,13 @@ angular.module('HomeCooked.services')
       };
 
       var getDishes = function() {
-        dishesReady = dishesReady || handleResponses($http.get(baseUrl + 'dishes/'));
-        return dishesReady;
+        return handleResponses($http.get(baseUrl + 'dishes/'));
       };
 
       var addDish = function(dish) {
         return handleResponses($http.post(baseUrl + 'dishes/', dish))
           .then(function() {
-            //invalidate dishes so they will be reloaded
-            dishesReady = null;
-            return getDishes();
+            return getDishes(true);
           });
       };
 
@@ -73,9 +70,7 @@ angular.module('HomeCooked.services')
 
         //return handleResponses($http.post(baseUrl + 'batches/', batch))
         //  .then(function() {
-        //    //invalidate dishes so they will be reloaded
-        //    batchesReady = null;
-        //    return getBatches();
+        //    return getBatches(true);
         //  });
       };
 
@@ -100,9 +95,7 @@ angular.module('HomeCooked.services')
 
         //return handleResponses($http.delete(baseUrl + 'batches/' + batch.id))
         //  .then(function() {
-        //    //invalidate batches so they will be reloaded
-        //    batchesReady = null;
-        //    return getBatches();
+        //    return getBatches(true);
         //  });
       };
 
