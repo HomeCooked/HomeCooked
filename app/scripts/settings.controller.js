@@ -1,11 +1,11 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('SettingsCtrl', ['$scope', '$ionicLoading', '$timeout', 'LoginService',
-  function ($scope, $ionicLoading, $timeout, LoginService) {
+angular.module('HomeCooked.controllers').controller('SettingsCtrl', ['$scope', 'LoginService',
+  function($scope, LoginService) {
     var self = this;
     //check if user changes, to show or not settings
     $scope.$watch(
       LoginService.getUser,
-      function (user) {
+      function(user) {
         self.user = user;
       }
     );

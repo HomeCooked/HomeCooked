@@ -1,12 +1,16 @@
 'use strict';
-var MainCtrl = ['$ionicLoading', '$state', '$ionicPopup', 'LoginService',
-  function($ionicLoading, $state, $ionicPopup, LoginService) {
+var MainCtrl = ['$scope', '$ionicLoading', '$state', '$ionicPopup', 'LoginService',
+  function($scope, $ionicLoading, $state, $ionicPopup, LoginService) {
     var that = this;
 
     var init = function() {
       that.doingLogin = that.doingSignup = false;
       that.isLoggedIn = !!LoginService.getUser();
     };
+
+    $scope.$watch(LoginService.getUser, function() {
+      that.isLoggedIn = !!LoginService.getUser();
+    });
 
     that.login = function(loginType, user, pass) {
       $ionicLoading.show({
@@ -15,7 +19,7 @@ var MainCtrl = ['$ionicLoading', '$state', '$ionicPopup', 'LoginService',
       LoginService.login(loginType, user, pass).then(function didLogin() {
         $ionicLoading.hide();
         $state.go('app.buyer');
-        init();
+        that.doingLogin = that.doingSignup = false;
       }, function didNotLogin(err) {
         $ionicLoading.hide();
         $ionicPopup.alert({
@@ -24,7 +28,6 @@ var MainCtrl = ['$ionicLoading', '$state', '$ionicPopup', 'LoginService',
         });
       });
     };
-    //TODO call this on navigation here
     init();
   }];
 
