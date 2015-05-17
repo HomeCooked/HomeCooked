@@ -1,5 +1,4 @@
-<ion-side-menus ng-controller="LoginCtrl as ctrl">
-
+<ion-side-menus ng-controller="MenuCtrl as ctrl">
   <ion-pane ion-side-menu-content>
     <ion-nav-bar class="bar-stable nav-title-slide-ios7"></ion-nav-bar>
     <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
@@ -15,11 +14,13 @@
         Chef mode
       </ion-toggle>
       <ion-list>
-        <ion-item ng-repeat="link in ctrl.links" nav-clear menu-close ng-click="ctrl.go(link.path)" ng-class="{'hc-menu-item-selected' : link.path===ctrl.selectedPath}">
+        <ion-item ng-repeat="link in ctrl.links" nav-clear menu-close ng-click="ctrl.go(link.path)"
+                  ng-class="{'hc-menu-item-selected' : link.path===ctrl.selectedPath}">
           {{::link.name}}
         </ion-item>
       </ion-list>
-      <ion-item ng-hide="ctrl.isChef" nav-clear menu-close ng-click="ctrl.go('app.enroll')" ng-class="{'hc-menu-item-selected' : 'app.enroll'===ctrl.selectedPath}">
+      <ion-item ng-hide="ctrl.isChef" nav-clear menu-close ng-click="ctrl.go('app.enroll')"
+                ng-class="{'hc-menu-item-selected' : 'app.enroll'===ctrl.selectedPath}">
         Become a Chef!
       </ion-item>
     </ion-content>
