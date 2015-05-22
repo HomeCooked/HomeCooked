@@ -9,18 +9,18 @@
 
         <h2>{{batch.dishName}}</h2>
 
-        <p>${{batch.dishPrice}} per portion</p>
+        <p>{{batch.dishPrice || 0}} $ per portion</p>
 
         <p ng-if="batch.remaining > 0" class="title">
-          {{batch.remaining}} portions available
+          {{batch.remaining}} portion{{batch.remaining===1 ? "" : "s"}} available
           <a href class="item-note" ng-click="ctrl.removePortions(batch)">
             <i class="icon ion-minus-circled"></i> Remove
           </a>
         </p>
 
-        <p class="title">{{batch.quantity - batch.remaining}} portions ordered</p>
 
-        <div class="hc-orders">
+        <div class="hc-orders" ng-hide="batch.quantity===batch.remaining">
+          <p class="title">{{batch.quantity - batch.remaining}} order{{batch.quantity - batch.remaining===1 ? "" : "s"}}</p>
           <div ng-repeat="order in batch.orders" class="hc-order" ng-click="ctrl.showBatchOrder(batch, order)">
             <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
 

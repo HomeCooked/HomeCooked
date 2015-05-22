@@ -57,7 +57,11 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
     var setBatchesDishInfo = function(batches, dishes) {
       _.forEach(batches, function(batch) {
         var dish = _.find(dishes, {'id': batch.dish}) || {};
-        _.extend(batch, {'dishName': dish.title, 'dishImage': dish.image});
+        _.extend(batch, {
+          'dishName': dish.title,
+          'dishImage': dish.image,
+          'dishPrice': dish.price
+        });
       });
     };
 

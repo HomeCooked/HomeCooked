@@ -62,11 +62,7 @@ angular.module('HomeCooked.services')
             return batches;
           });
 
-
-        //return handleResponses($http.delete(baseUrl + 'batches/' + batch.id))
-        //  .then(function() {
-        //    return getBatches(true);
-        //  });
+        //return handleResponses($http.delete(baseUrl + 'batches/' + batch.id)).then(getBatches);
       };
 
       var getChefData = function() {

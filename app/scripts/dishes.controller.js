@@ -34,7 +34,7 @@ angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope',
       modalScope.dish = emptyDish();
 
       $ionicLoading.show({template: 'Getting dishes...'});
-      ChefService.getDishes(true)
+      ChefService.getDishes()
         .then(function(dishes) {
           that.dishes = dishes;
           $ionicLoading.hide();
