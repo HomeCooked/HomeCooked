@@ -1,6 +1,6 @@
 'use strict';
-var MenuCtrl = ['$rootScope', '$state', 'LoginService', 'ChefService', '_',
-  function($rootScope, $state, LoginService, ChefService, _) {
+var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', 'LoginService', 'ChefService', '_',
+  function($rootScope, $state, $ionicPopup, LoginService, ChefService, _) {
     var that = this;
     var homePath = 'app.main';
 
