@@ -1,25 +1,39 @@
 <div class="modal">
   <ion-header-bar>
-    <h1 class="title">Add Dish</h1>
+    <h1 class="title">Add Batch</h1>
 
     <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
   </ion-header-bar>
   <ion-content>
     <form novalidate class="list" name="batchForm">
       <label class="item item-input item-select">
-        <div class="input-label">Dish</div>
-        <select name="dishId" ng-model="batch.dishId"
+        <div class="input-label">Select Dish</div>
+        <select name="dish" ng-model="batch.dish"
                 ng-options="dish.id as dish.title for dish in ctrl.dishes"></select>
       </label>
       <label class="item item-input">
-        <input type="number" placeholder="Portions (max {{ctrl.maxQuantity}})" pattern="[0-9]*" name="quantity"
-               ng-model="batch.quantity" value="batch.quantity" required ng-minlength="1"
-               ng-change="batch.quantity = ctrl.adjustRange(batch.quantity, 1, ctrl.maxQuantity)"/>
+        <span class="input-label">Portions</span>
+        <input name="quantity" ng-model="batch.quantity" type="number" pattern="[0-9]*" value="batch.quantity" required
+               placeholder="(max {{ctrl.maxQuantity}})" ng-minlength="1" ng-change="batch.quantity = ctrl.adjustRange(batch.quantity, 1, ctrl.maxQuantity)"/>
+      </label>
+      <!--<label class="item item-input">
+        <input name="price" ng-model="batch.price" type="number" placeholder="Price per portion (max {{ctrl.maxPrice}})"
+               pattern="[0-9]*" required ng-minlength="1"
+               ng-change="batch.price = ctrl.adjustRange(batch.price, 0, ctrl.maxPrice)"/>
+      </label>-->
+
+      <label class="item item-input item-select">
+        <div class="input-label">When will be available?</div>
+        <select name="start_time" ng-model="batch.start_time"
+                ng-options="time.id as time.title for time in start_times"></select>
       </label>
       <label class="item item-input">
-        <input type="number" placeholder="Price per portion (max {{ctrl.maxPrice}})" pattern="[0-9]*" name="price"
-               ng-model="batch.price" required ng-minlength="1"
-               ng-change="batch.price = ctrl.adjustRange(batch.price, 0, ctrl.maxPrice)"/>
+        <span class="input-label">For how many days?</span>
+        <input name="duration" ng-model="batch.duration" type="number" pattern="[0-9]*" required ng-minlength="1"/>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Preparation time</span>
+        <input name="prep_time" ng-model="batch.prep_time" type="number" pattern="[0-9]*" required ng-minlength="1" placeholder="(minutes)"/>
       </label>
 
       <div class="item button-bar">

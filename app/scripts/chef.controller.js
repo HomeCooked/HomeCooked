@@ -1,31 +1,7 @@
 'use strict';
 
-
-// OLD def
-//{
-//  dishImage: 'images/logo.png',
-//  dishId: batch.dishId,
-//  dishName: dish.title,
-//  quantity: batch.quantity,
-//  quantityOrdered: 0,
-//  price: batch.price,
-//  orders: []
-//}
-
-// NEW def
-//{
-//  "id": 1,
-//  "quantity": 1,
-//  "remaining": 1,
-//  "start_time": "2015-01-01T01:01:00Z",
-//  "duration": 10,
-//  "prep_time": 10,
-//  "chef": 2,
-//  "dish": 1
-//}
-
-angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScope', '$log', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'HCMessaging',
-  function(_, $rootScope, $log, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, HCMessaging) {
+angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScope', '$scope', '$log', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging',
+  function(_, $rootScope, $scope, $log, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
     var that = this;
     var modalScope = $rootScope.$new();
 
@@ -35,19 +11,28 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
 
       modalScope.ctrl = that;
       modalScope.batch = emptyBatch();
+      modalScope.start_times = [
+        {'id': 0, 'title': 'Now'},
+        {'id': 1, 'title': 'in 1 hour'},
+        {'id': 2, 'title': 'in 2 hours'},
+        {'id': 3, 'title': 'in 3 hours'},
+        {'id': 24, 'title': 'Tomorrow this time'}
+      ];
 
       $ionicModal.fromTemplateUrl('templates/add-batch.html', {
         scope: modalScope
       }).then(function(modal) {
         that.modal = modal;
       });
-
-      loadOrders();
     };
 
     var emptyBatch = function() {
       var firstDish = that.dishes[0] || {};
-      return {dishId: firstDish.id};
+      return {
+        dish: firstDish.id,
+        start_time: 0,
+        duration: 1
+      };
     };
 
     var loadOrders = function() {
@@ -63,7 +48,6 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
           that.maxPrice = chefData.maxPrice;
           that.maxQuantity = chefData.maxQuantity;
           that.maxBatches = chefData.maxBatches;
-
 
           modalScope.batch = emptyBatch();
         })
@@ -93,6 +77,13 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
     };
 
     that.addBatch = function(batch, form) {
+      batch.chef = LoginService.getUser().id;
+      batch.remaining = batch.quantity;
+
+      var now = new Date();
+      now.setHours(now.getHours() + batch.start_time);
+      batch.start_time = now.toISOString();
+
       $ionicLoading.show({template: 'Adding batch'});
       ChefService.addBatch(batch)
         .then(function(batches) {
@@ -148,4 +139,7 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
     };
 
     init();
+
+
+    $scope.$on('$ionicView.beforeEnter', loadOrders);
   }]);
