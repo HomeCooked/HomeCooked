@@ -3,6 +3,12 @@
   background-color: #eef;
 }
 
+@media (min-width: 800px) {
+  .popup-container .popup {
+    width: 40%;
+  }
+}
+
 .hc {
   &-orders {
     width: 100%;

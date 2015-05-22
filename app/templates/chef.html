@@ -9,16 +9,16 @@
 
         <h2>{{batch.dishName}}</h2>
 
-        <p>${{batch.price}} per portion</p>
+        <p>${{batch.dishPrice}} per portion</p>
 
-        <p ng-if="batch.quantity > batch.quantityOrdered" class="title">
-          {{batch.quantity - batch.quantityOrdered}} portions available
+        <p ng-if="batch.remaining > 0" class="title">
+          {{batch.remaining}} portions available
           <a href class="item-note" ng-click="ctrl.removePortions(batch)">
             <i class="icon ion-minus-circled"></i> Remove
           </a>
         </p>
 
-        <p class="title">{{batch.quantityOrdered}} portions ordered</p>
+        <p class="title">{{batch.quantity - batch.remaining}} portions ordered</p>
 
         <div class="hc-orders">
           <div ng-repeat="order in batch.orders" class="hc-order" ng-click="ctrl.showBatchOrder(batch, order)">
@@ -31,7 +31,7 @@
       </div>
       <div class="item item-text-wrap">
         <button class="button button-block button-positive" ng-click="ctrl.openAddDish()"
-                ng-disabled="ctrl.batches.length>=ctrl.maxBatches">Add Dish
+                ng-disabled="ctrl.batches.length>=ctrl.maxBatches">Add Batch
         </button>
         <div align="center" ng-show="ctrl.batches.length>=ctrl.maxBatches">You can have maximum {{ctrl.maxBatches}} dish
           types active.

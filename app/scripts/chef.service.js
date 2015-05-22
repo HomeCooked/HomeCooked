@@ -4,7 +4,7 @@ angular.module('HomeCooked.services')
     function($q, $http, $timeout, ENV, _) {
       var baseUrl = ENV.BASE_URL + '/api/v1/';
 
-      var ordersReady, batchesReady;
+      var ordersReady;
 
       var handleResponses = function(httpPromise) {
         var deferred = $q.defer();
@@ -28,8 +28,7 @@ angular.module('HomeCooked.services')
       };
 
       var getBatches = function() {
-        batchesReady = batchesReady || handleResponses($http.get('mock/batches.json'));
-        return batchesReady;
+        return handleResponses($http.get(baseUrl + 'batches/'));
       };
 
       var getDishes = function() {
@@ -37,41 +36,12 @@ angular.module('HomeCooked.services')
       };
 
       var addDish = function(dish) {
-        return handleResponses($http.post(baseUrl + 'dishes/', dish))
-          .then(function() {
-            return getDishes(true);
-          });
+        return handleResponses($http.post(baseUrl + 'dishes/', dish)).then(getDishes);
       };
 
 
       var addBatch = function(batch) {
-        //FIXME remove this and call the service
-        return $q.all([getDishes(), getBatches(), wait(300)]).then(function(values) {
-          var dishes = values[0], batches = values[1];
-          var oldBatch = _.find(batches, {'dishId': batch.dishId});
-          if (oldBatch && oldBatch.price === batch.price) {
-            oldBatch.quantity += batch.quantity;
-          }
-          else {
-            var dish = _.find(dishes, {'id': batch.dishId});
-            var newBatch = {
-              dishImage: 'images/logo.png',
-              dishId: batch.dishId,
-              dishName: dish.title,
-              quantity: batch.quantity,
-              quantityOrdered: 0,
-              price: batch.price,
-              orders: []
-            };
-            batches.push(newBatch);
-          }
-          return batches;
-        });
-
-        //return handleResponses($http.post(baseUrl + 'batches/', batch))
-        //  .then(function() {
-        //    return getBatches(true);
-        //  });
+        return handleResponses($http.post(baseUrl + 'batches/', batch)).then(getBatches);
       };
 
       var removeBatchAvailablePortions = function(batch) {

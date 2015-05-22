@@ -1,21 +1,21 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('EnrollCtrl', ['$state', '$ionicPopup', '$ionicLoading', 'LoginService',
-  function ($state, $ionicPopup, $ionicLoading, LoginService) {
+angular.module('HomeCooked.controllers').controller('EnrollCtrl', ['$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging',
+  function($state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
     var that = this;
 
-    that.enroll = function (form) {
+    that.enroll = function(form) {
       $ionicLoading.show({
         template: 'Enrolling...'
       });
       LoginService.becomeChef(form)
-        .then(function () {
+        .then(function() {
           $ionicPopup.show({
             title: 'You\'re enrolled!',
             template: 'We\'ll reach out to you soon with further instructions.',
             buttons: [{
               text: 'Got it!',
               type: 'button-positive',
-              onTap: function () {
+              onTap: function() {
                 // Returning a value will cause the promise to resolve with the given value.
                 $state.go('app.buyer');
               }
@@ -23,11 +23,6 @@ angular.module('HomeCooked.controllers').controller('EnrollCtrl', ['$state', '$i
           });
           $ionicLoading.hide();
         })
-        .catch(function () {
-          $ionicLoading.hide();
-          $ionicPopup.alert({
-            template: 'sorry we couldn\'t enroll you this time'
-          });
-        });
+        .catch(HCMessaging.showError);
     };
   }]);

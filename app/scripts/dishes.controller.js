@@ -1,6 +1,6 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'ChefService', 'LoginService',
-  function($rootScope, $scope, $ionicModal, $ionicLoading, $ionicPopup, ChefService, LoginService) {
+angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'ChefService', 'LoginService', 'HCMessaging',
+  function($rootScope, $scope, $ionicModal, $ionicLoading, $ionicPopup, ChefService, LoginService, HCMessaging) {
     var that = this;
 
     that.dishes = [];
@@ -19,13 +19,7 @@ angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope',
           that.modal.hide();
           $ionicLoading.hide();
         })
-        .catch(function notAdded(error) {
-          $ionicLoading.hide();
-          $ionicPopup.alert({
-            title: 'Couldn\'t add',
-            template: error
-          });
-        });
+        .catch(HCMessaging.showError);
     };
 
 
@@ -45,13 +39,7 @@ angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope',
           that.dishes = dishes;
           $ionicLoading.hide();
         })
-        .catch(function(error) {
-          $ionicLoading.hide();
-          $ionicPopup.alert({
-            title: 'Couldn\'t load dishes',
-            template: error
-          });
-        });
+        .catch(HCMessaging.showError);
     };
 
     $ionicModal.fromTemplateUrl('templates/add-dish.html', {

@@ -2,7 +2,6 @@
 var MenuCtrl = ['$rootScope', '$state', 'LoginService', 'ChefService', '_',
   function($rootScope, $state, LoginService, ChefService, _) {
     var that = this;
-    that.selectedPath = '';
     var homePath = 'app.main';
 
     var chefLinks = [
@@ -20,12 +19,18 @@ var MenuCtrl = ['$rootScope', '$state', 'LoginService', 'ChefService', '_',
     var init = function() {
       var user = LoginService.getUser();
       that.userFirstName = user ? user.first_name : '';
-      //TODO put this to false!!
-      that.isChef = true;
+      that.isChef = undefined;
+      that.selectedPath = null;
       if (user) {
         ChefService.getChefInfo(user.id)
           .then(function() {
             that.isChef = true;
+          })
+          .catch(function() {
+            that.isChef = false;
+            if (_.some(chefLinks, {path: $state.current.name})) {
+              that.go(buyerLinks[0].path);
+            }
           });
       }
       onStateChanged(null, $state.current);
@@ -36,18 +41,28 @@ var MenuCtrl = ['$rootScope', '$state', 'LoginService', 'ChefService', '_',
 
       //if not logged in, go to home page always
       if (_.isEmpty(LoginService.getUser()) && path !== homePath) {
-        //TODO notify he needs to login
         if (event) {
           event.preventDefault();
         }
+        $ionicPopup.show({
+          title: 'Your session expired',
+          template: 'Please login again'
+        });
         that.go(homePath);
         return;
       }
+      var chefMode = _.some(chefLinks, {path: path});
+      if (that.isChef === false && chefMode) {
+        if (event) {
+          event.preventDefault();
+        }
+        else {
+          that.go(buyerLinks[0].path);
+        }
+        return;
+      }
 
-      that.chefMode = _.some(chefLinks, function(link) {
-        return link.path === path;
-      });
-
+      that.chefMode = chefMode;
       that.links = that.chefMode ? chefLinks : buyerLinks;
       that.selectedPath = path;
     };
@@ -58,11 +73,7 @@ var MenuCtrl = ['$rootScope', '$state', 'LoginService', 'ChefService', '_',
     };
 
     that.switchView = function() {
-      var path = buyerLinks[0].path;
-      if (that.chefMode) {
-        //TODO check if he can be seller
-        path = chefLinks[0].path;
-      }
+      var path = that.chefMode ? chefLinks[0].path : buyerLinks[0].path;
       that.go(path);
     };
 
