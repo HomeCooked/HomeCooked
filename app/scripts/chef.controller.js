@@ -12,11 +12,8 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
       modalScope.ctrl = that;
       modalScope.batch = emptyBatch();
       modalScope.start_times = [
-        {'id': 0, 'title': 'Now'},
-        {'id': 1, 'title': 'in 1 hour'},
-        {'id': 2, 'title': 'in 2 hours'},
-        {'id': 3, 'title': 'in 3 hours'},
-        {'id': 24, 'title': 'Tomorrow this time'}
+        {'id': 0, 'title': 'Friday (6pm-9pm)'},
+        {'id': 24, 'title': 'Saturday (6pm-9pm)'}
       ];
 
       $ionicModal.fromTemplateUrl('templates/add-batch.html', {

@@ -27,12 +27,12 @@
         <select name="start_time" ng-model="batch.start_time"
                 ng-options="time.id as time.title for time in start_times"></select>
       </label>
-      <label class="item item-input">
+      <!--<label class="item item-input">
         <span class="input-label">For how many days?</span>
         <input name="duration" ng-model="batch.duration" type="number" pattern="[0-9]*" required ng-minlength="1"/>
-      </label>
+      </label>-->
       <label class="item item-input">
-        <span class="input-label">Preparation time</span>
+        <span class="input-label">Estimated preparation time</span>
         <input name="prep_time" ng-model="batch.prep_time" type="number" pattern="[0-9]*" required ng-minlength="1" placeholder="(minutes)"/>
       </label>
 

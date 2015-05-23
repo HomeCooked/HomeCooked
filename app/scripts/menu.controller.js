@@ -13,8 +13,9 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', 'LoginService', 'ChefServ
 
     var buyerLinks = [
       {name: 'Find local chefs', path: 'app.buyer'},
-      {name: 'My Orders', path: 'app.orders'},
-      {name: 'Payment methods', path: 'app.settings'}
+      {name: 'My Order', path: 'app.orders'},
+      {name: 'Payment methods', path: 'app.settings'},
+      {name: 'Become a chef!', path: 'app.enroll'}
     ];
     var init = function() {
       var user = LoginService.getUser();
@@ -25,11 +26,18 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', 'LoginService', 'ChefServ
         ChefService.getChefInfo(user.id)
           .then(function() {
             that.isChef = true;
+            var enroll = buyerLinks.pop();
+            if ($state.current.name == enroll.path) {
+              that.go(buyerLinks[0].path);
+            }
           })
           .catch(function() {
             that.isChef = false;
             if (_.some(chefLinks, {path: $state.current.name})) {
               that.go(buyerLinks[0].path);
+            }
+            else {
+              that.links = buyerLinks;
             }
           });
       }
@@ -52,7 +60,7 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', 'LoginService', 'ChefServ
         return;
       }
       var chefMode = _.some(chefLinks, {path: path});
-      if (that.isChef === false && chefMode) {
+      if ((that.isChef === false && chefMode) || (that.isChef && path === 'app.enroll')) {
         if (event) {
           event.preventDefault();
         }
