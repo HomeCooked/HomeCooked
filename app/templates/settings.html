@@ -1,15 +1,65 @@
-<ion-view title="Settings" ng-controller="SettingsCtrl as ctrl" hide-back-button="true">
-  <ion-content class="has-header">
-    <div style="position: relative">
-      <img ng-src="{{user.image ||'images/user.png'}}" width="120">
-      <a href style="position: absolute;left: 5px; bottom: 5px">Update photo</a>
+<ion-view title="Settings" ng-controller="SettingsCtrl as vm" class="settings-page" hide-back-button="true">
+  <ion-content class="has-header" has-bouncing="false">
+    <div class="profile dark-bg">
+        <img ng-src="{{vm.user.image ||'images/user.png'}}">
+        <h3>{{::vm.user.first_name}} {{::vm.user.last_name}}</h3>
+        <p>Joined October, 2014.</p>
     </div>
-    <h3>{{ctrl.user.first_name}}</h3>
 
-    <h3>Address, email, phone</h3>
+    <div class="list">
+        <div class="item item-divider">
+            Contact Information
+        </div>
+        <a class="item item-icon-right" ng-click="">
+            Email address
+            <span class="item-note">{{::vm.user.email}}</span>
+            <i class="icon ion-ios-arrow-right"></i>
+        </a>
+        <a class="item item-icon-right" ng-click="">
+            Phone number
+            <span class="item-note">{{::vm.user.phone_number}}</span>
+            <i class="icon ion-ios-arrow-right"></i>
+        </a>
+    </div>
 
-    <h3>Bank Info</h3>
-    <a href>Delete account</a>
+    <div class="list">
+        <div class="item item-divider">
+            Billing information
+        </div>
+        <a class="item item-icon-right" ng-click="">
+            Address
+            <span class="item-note">{{::vm.user.formatted_address}}</span>
+            <i class="icon ion-ios-arrow-right"></i>
+        </a>
+        <a class="item item-icon-right" ng-click="">
+            Payment method
+            <span class="item-note">Visa ending in xxxx</span>
+            <i class="icon ion-ios-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="list">
+        <div class="item item-divider">
+            About
+        </div>
+        <a class="item item-icon-right">
+            Love HomeCooked? Rate us!
+            <i class="icon ion-heart"></i>
+        </a>
+        <a class="item item-icon-right" ng-click="">
+            Terms &amp; Policies
+            <i class="icon ion-ios-arrow-right"></i>
+        </a> 
+        <a class="item">
+            Version
+            <span class="item-note">1.2.3</span>
+        </a>   
+    </div>
+
+    <div class="padding">
+        <button class="button button-block button-assertive icon-left" ng-click="">
+            <i class="icon ion-log-out"></i> Sign out
+        </button>
     </div>
   </ion-content>
 </ion-view>
