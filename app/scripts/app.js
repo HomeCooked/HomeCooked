@@ -87,7 +87,7 @@ HomeCooked
         url: '/settings',
         views: {
           'menuContent': {
-            templateUrl: 'templates/settings.html'
+            templateUrl: 'templates/settings/settings.html'
           }
         }
       })
