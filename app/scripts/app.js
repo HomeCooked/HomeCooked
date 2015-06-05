@@ -101,6 +101,15 @@ HomeCooked
           }
         }
       })
+      .state('app.settings-phonenumber', {
+        url: '/settings/phonenumber',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/settings/phonenumber.html',
+            controller: 'SettingsCtrl as vm'
+          }
+        }
+      })
       .state('app.not-found', {
         url: '/not-found',
         views: {
