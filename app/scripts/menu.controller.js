@@ -1,6 +1,6 @@
 'use strict';
-var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', 'LoginService', 'ChefService', '_',
-  function($rootScope, $state, $ionicPopup, LoginService, ChefService, _) {
+var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginService', 'ChefService', '_',
+  function($rootScope, $state, $ionicPopup, $ionicHistory, LoginService, ChefService, _) {
     var that = this;
     var homePath = 'app.main';
 
@@ -87,6 +87,10 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', 'LoginService', 'ChefServ
 
     that.go = function(path) {
       $state.go(path);
+
+      $ionicHistory.nextViewOptions({
+        historyRoot: true
+      });
     };
     $rootScope.$on('$stateChangeStart', onStateChanged);
 
