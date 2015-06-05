@@ -91,6 +91,14 @@ HomeCooked
           }
         }
       })
+      .state('app.settings-email', {
+        url: '/settings/email',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/settings/email.html'
+          }
+        }
+      })
       .state('app.not-found', {
         url: '/not-found',
         views: {
