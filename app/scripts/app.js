@@ -87,7 +87,8 @@ HomeCooked
         url: '/settings',
         views: {
           'menuContent': {
-            templateUrl: 'templates/settings/settings.html'
+            templateUrl: 'templates/settings/settings.html',
+            controller: 'SettingsCtrl as vm'
           }
         }
       })
@@ -95,7 +96,8 @@ HomeCooked
         url: '/settings/email',
         views: {
           'menuContent': {
-            templateUrl: 'templates/settings/email.html'
+            templateUrl: 'templates/settings/email.html',
+            controller: 'SettingsCtrl as vm'
           }
         }
       })
