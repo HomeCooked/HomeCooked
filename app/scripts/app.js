@@ -104,7 +104,12 @@ HomeCooked
                 }
             });
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/buyer');
+        $urlRouterProvider.otherwise( function($injector) {
+            var $state = $injector.get('$state');
+            var LoginService = $injector.get('LoginService');
+            var nextState = LoginService.getUser() === null ? 'app.signup' : 'app.buyer';
+            $state.go(nextState);
+        });
     })
     .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {
