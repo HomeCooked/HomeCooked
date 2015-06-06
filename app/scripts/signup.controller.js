@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SignupCtrl', SignupCtrl);
 
-    SignupCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicSideMenuDelegate', '$ionicNavBarDelegate', '$ionicLoading', '$ionicPopup', 'LoginService'];
+    SignupCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicHistory', '$ionicSideMenuDelegate', '$ionicNavBarDelegate', '$ionicLoading', '$ionicPopup', 'LoginService'];
 
-    function SignupCtrl($scope, $timeout, $state, $ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicLoading, $ionicPopup, LoginService) {
+    function SignupCtrl($scope, $timeout, $state, $ionicHistory, $ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicLoading, $ionicPopup, LoginService) {
         
         var vm = this;
         vm.signIn = signIn;
@@ -21,7 +21,7 @@
                 //otherwise the nav bar remains displayed
                 $ionicSideMenuDelegate.canDragContent(false);
                 $ionicNavBarDelegate.showBar(false);
-            });
+            }, 10);
         }
 
         function signIn(loginType, user, pass) {
@@ -31,6 +31,9 @@
             LoginService.login(loginType, user, pass).then(function didLogin() {
                 $ionicLoading.hide();
                 $state.go('app.buyer');
+                $ionicHistory.nextViewOptions({
+                    historyRoot: true
+                });
             }, function didNotLogin(err) {
                 $ionicLoading.hide();
                 $ionicPopup.alert({
