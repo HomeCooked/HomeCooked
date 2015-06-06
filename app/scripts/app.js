@@ -115,5 +115,5 @@ myApp.run(function($ionicPlatform) {
         }
       });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/main');
+    $urlRouterProvider.otherwise('/app/buyer');
   });
