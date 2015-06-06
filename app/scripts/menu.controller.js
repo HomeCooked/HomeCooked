@@ -2,7 +2,7 @@
 var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginService', 'ChefService', '_',
   function($rootScope, $state, $ionicPopup, $ionicHistory, LoginService, ChefService, _) {
     var that = this;
-    var signupPath = 'app.signup';
+    var signupPath = 'signup';
 
     var chefLinks = [
       {name: 'Orders', path: 'app.seller'},

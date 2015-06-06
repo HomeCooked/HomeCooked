@@ -6,24 +6,14 @@
         .module('HomeCooked.controllers')
         .controller('SignupCtrl', SignupCtrl);
 
-    SignupCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicHistory', '$ionicSideMenuDelegate', '$ionicNavBarDelegate', '$ionicLoading', '$ionicPopup', 'LoginService'];
+    SignupCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicHistory', '$ionicLoading', '$ionicPopup', 'LoginService'];
 
-    function SignupCtrl($scope, $timeout, $state, $ionicHistory, $ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicLoading, $ionicPopup, LoginService) {
+    function SignupCtrl($scope, $timeout, $state, $ionicHistory, $ionicLoading, $ionicPopup, LoginService) {
         
         var vm = this;
         vm.signIn = signIn;
 
-        activate();
-
-        function activate() {
-            $timeout(function() {
-                //wrapping the delegates in a timeout is required to avoid a race condition
-                //otherwise the nav bar remains displayed
-                $ionicSideMenuDelegate.canDragContent(false);
-                $ionicNavBarDelegate.showBar(false);
-            }, 10);
-        }
-
+  
         function signIn(loginType, user, pass) {
             $ionicLoading.show({
                 template: 'Sign in...'

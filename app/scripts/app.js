@@ -22,14 +22,10 @@ HomeCooked
                 abstract: true,
                 templateUrl: 'templates/menu.html'
             })
-            .state('app.signup', {
+            .state('signup', {
                 url: '/signup',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/signup/signup.html',
-                        controller: 'SignupCtrl as vm'
-                    }
-                }
+                templateUrl: 'templates/signup/signup.html',
+                controller: 'SignupCtrl as vm'
             })
             .state('app.main', {
                 url: '/main',
@@ -107,7 +103,7 @@ HomeCooked
         $urlRouterProvider.otherwise( function($injector) {
             var $state = $injector.get('$state');
             var LoginService = $injector.get('LoginService');
-            var nextState = LoginService.getUser() === null ? 'app.signup' : 'app.buyer';
+            var nextState = LoginService.getUser() === null ? 'signup' : 'app.buyer';
             $state.go(nextState);
         });
     })
