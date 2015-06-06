@@ -33,7 +33,15 @@ myApp.run(function($ionicPlatform) {
         abstract: true,
         templateUrl: 'templates/menu.html'
       })
-
+      .state('app.signup', {
+        url: '/signup',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/signup/signup.html',
+            controller: 'SignupCtrl as vm'
+          }
+        }
+      })
       .state('app.main', {
         url: '/main',
         views: {
