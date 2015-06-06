@@ -1,0 +1,79 @@
+.signup-page {
+    $color-text-shadow: #2e4b7d;
+    $color-border-fb-btn: #4f5a6f;
+    $color-border-email-btn: #4A6D80;
+    $light-radius: 4px;
+
+    background: url('../images/signup_bg2.jpg');
+
+    .container {
+        display: flex;
+        -webkit-flex-direction: column;
+        -webkit-justify-content: center;
+        text-align: center;
+        height: 100%;
+
+
+        .hc-logo {
+
+        }
+
+        .signup-btns{ 
+            width: 90%;
+            margin: 0 auto;
+            .btn{
+                display:block; 
+                margin: 1em auto; 
+                height:49px;
+                line-height: 49px;
+                text-align: center;
+                color: white;
+                font-size: 100%; 
+                vertical-align: middle;
+
+                .btn-icon,
+                .btn-text{
+                    float:left;
+                    line-height: 49px;
+                    height: 49px;
+                    text-shadow: 1px 1px 1px $color-text-shadow;
+                    @include box-sizing(border-box);
+                }
+                    
+                .btn-icon{ 
+                    width:15%;
+                    @include border-top-left-bottom(1px, $color-border-fb-btn);
+                    @include radius-left($light-radius);
+                    @include gradient(#444, #666, #555, 10%, #444, #333, 51%);  
+
+                    i {
+                        font-size: 200%; 
+                    }
+                }
+
+                .btn-text{
+                    width:85%;
+                    font-size: 110%;
+                    @include radius-right($light-radius); 
+                } 
+                .fb-btn-text {
+                    @include gradient(#5c7bb4, #6885bf, #6381b8, 10%, #5173b0, #3f65a3, 51%);  
+                    @include border-top-right-bottom(1px, $color-border-fb-btn);
+                }
+                .email-btn-text {
+                    text-shadow: 1px 1px 1px #424242;
+                    @include border-top-right-bottom(1px, $color-border-email-btn);
+                    @include gradient(#636363, #787878, #737373, 10%, #696969, #5E5E5E, 31%);  
+                }
+            }
+
+            .signin-email {
+                color: #333;
+                span {
+                    color: #000;
+                }
+            }
+        }
+    }
+}
+
