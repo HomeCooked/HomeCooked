@@ -2,7 +2,7 @@
 var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginService', 'ChefService', '_',
   function($rootScope, $state, $ionicPopup, $ionicHistory, LoginService, ChefService, _) {
     var that = this;
-    var homePath = 'app.main';
+    var signupPath = 'app.signup';
 
     var chefLinks = [
       {name: 'Orders', path: 'app.seller'},
@@ -27,7 +27,7 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginSe
           .then(function() {
             that.isChef = true;
             var enroll = buyerLinks.pop();
-            if ($state.current.name == enroll.path) {
+            if ($state.current.name === enroll.path) {
               that.go(buyerLinks[0].path);
             }
           })
@@ -48,7 +48,7 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginSe
       var path = toState.name;
 
       //if not logged in, go to home page always
-      if (_.isEmpty(LoginService.getUser()) && path !== homePath) {
+      if (_.isEmpty(LoginService.getUser()) && path !== signupPath) {
         if (event) {
           event.preventDefault();
         }
@@ -56,7 +56,7 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginSe
           title: 'Your session expired',
           template: 'Please login again'
         });
-        that.go(homePath);
+        that.go(signupPath);
         return;
       }
       var chefMode = _.some(chefLinks, {path: path});
@@ -77,7 +77,7 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginSe
 
     that.logout = function() {
       LoginService.logout();
-      that.go(homePath);
+      that.go(signupPath);
     };
 
     that.switchView = function() {
