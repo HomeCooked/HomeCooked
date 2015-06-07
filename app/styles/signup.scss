@@ -60,18 +60,6 @@
                     @include gradient(#5c7bb4, #6885bf, #6381b8, 10%, #5173b0, #3f65a3, 51%);  
                     @include border-top-right-bottom(1px, $color-border-fb-btn);
                 }
-                .email-btn-text {
-                    text-shadow: 1px 1px 1px #424242;
-                    @include border-top-right-bottom(1px, $color-border-email-btn);
-                    @include gradient(#636363, #787878, #737373, 10%, #696969, #5E5E5E, 31%);  
-                }
-            }
-
-            .signin-email {
-                color: #333;
-                span {
-                    color: #000;
-                }
             }
         }
     }
