@@ -10,7 +10,9 @@
     function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicLoading, LoginService) {
 
         var vm = this;
-        vm.onChange = onChange;
+        vm.onChange = onChange;        
+        vm.openExternalLink = openExternalLink;
+        vm.openRatingLink = openRatingLink;
 
         $scope.$on('$ionicView.beforeEnter', function() {
           vm.user = LoginService.getUser();
@@ -42,6 +44,15 @@
 
         function onChange() {
             vm.userPropertiesChanged = true;
+        }
+
+        function openRatingLink() {
+            var link = $ionicPlatform.is('android') ? 'market://details?id=' : 'itms://itunes.apple.com/app/';
+            return openExternalLink(link);
+        }
+
+        function openExternalLink(link) {
+            return window.open(link, '_system');
         }
     }
 

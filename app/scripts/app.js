@@ -10,7 +10,9 @@ HomeCooked
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
-  .config(function($stateProvider, $urlRouterProvider, ENV) {
+  .config(function($stateProvider, $urlRouterProvider, $compileProvider, ENV) {
+
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
 
     window.openFB.init({
       appId: ENV.FACEBOOK_APP_ID
