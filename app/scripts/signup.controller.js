@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SignupCtrl', SignupCtrl);
 
-    SignupCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicHistory', '$ionicLoading', '$ionicPopup', 'LoginService'];
+    SignupCtrl.$inject = ['$scope', '$state', '$ionicHistory', '$ionicLoading', '$ionicPopup', 'LoginService'];
 
-    function SignupCtrl($scope, $timeout, $state, $ionicHistory, $ionicLoading, $ionicPopup, LoginService) {
+    function SignupCtrl($scope, $state, $ionicHistory, $ionicLoading, $ionicPopup, LoginService) {
         
         var vm = this;
         vm.signIn = signIn;
