@@ -86,11 +86,12 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginSe
     };
 
     that.go = function(path) {
-      $state.go(path);
 
       $ionicHistory.nextViewOptions({
-        historyRoot: true
+        historyRoot: true,
+        disableAnimate: true
       });
+      $state.go(path);
     };
     $rootScope.$on('$stateChangeStart', onStateChanged);
 
