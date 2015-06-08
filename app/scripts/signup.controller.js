@@ -1,37 +1,28 @@
-(function() {
+'use strict';
+angular.module('HomeCooked.controllers').controller('SignupCtrl', [
+  '$state', '$ionicHistory', '$ionicLoading', '$ionicPopup', 'LoginService',
+  function($state, $ionicHistory, $ionicLoading, $ionicPopup, LoginService) {
 
-    'use strict';
+    var vm = this;
+    vm.signIn = signIn;
 
-    angular
-        .module('HomeCooked.controllers')
-        .controller('SignupCtrl', SignupCtrl);
-
-    SignupCtrl.$inject = ['$scope', '$state', '$ionicHistory', '$ionicLoading', '$ionicPopup', 'LoginService'];
-
-    function SignupCtrl($scope, $state, $ionicHistory, $ionicLoading, $ionicPopup, LoginService) {
-        
-        var vm = this;
-        vm.signIn = signIn;
-
-  
-        function signIn(loginType, user, pass) {
-            $ionicLoading.show({
-                template: 'Sign in...'
-            });
-            LoginService.login(loginType, user, pass).then(function didLogin() {
-                $ionicLoading.hide();
-                $ionicHistory.nextViewOptions({
-                    historyRoot: true
-                });
-                $state.go('app.buyer');
-            }, function didNotLogin(err) {
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: 'Couldn\'t signin',
-                    template: err
-                });
-            });
-        }
+    function signIn(loginType, user, pass) {
+      $ionicLoading.show({
+        template: 'Sign in...'
+      });
+      LoginService.login(loginType, user, pass).then(function didLogin() {
+        $ionicLoading.hide();
+        $ionicHistory.nextViewOptions({
+          historyRoot: true
+        });
+        $state.go('app.buyer');
+      }, function didNotLogin(err) {
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+          title: 'Couldn\'t signin',
+          template: err
+        });
+      });
     }
-
-})();
+  }
+]);
