@@ -18,7 +18,7 @@ HomeCooked
 
         $stateProvider
             .state('app', {
-                url: '/app',
+                url: '',
                 abstract: true,
                 templateUrl: 'templates/menu.html'
             })
