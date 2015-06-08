@@ -19,7 +19,7 @@ var MenuCtrl = ['$rootScope', '$state', '$ionicPopup', '$ionicHistory', 'LoginSe
     ];
     var init = function() {
       var user = LoginService.getUser();
-      that.userFirstName = user ? user['first_name'] : '';
+      that.userFirstName = user ? user.first_name : '';
       that.isChef = undefined;
       that.selectedPath = null;
       if (user) {

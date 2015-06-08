@@ -27,12 +27,11 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', [
 
     var emptyBatch = function() {
       var firstDish = that.dishes[0] || {};
-      var batch = {
+      return {
         dish: firstDish.id,
+        start_time: 0,
         duration: 1
       };
-      batch['start_time'] = 0;
-      return batch;
     };
 
     var loadOrders = function() {
@@ -85,8 +84,8 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', [
       batch.remaining = batch.quantity;
 
       var now = new Date();
-      now.setHours(now.getHours() + batch['start_time']);
-      batch['start_time'] = now.toISOString();
+      now.setHours(now.getHours() + batch.start_time);
+      batch.start_time = now.toISOString();
 
       $ionicLoading.show({template: 'Adding batch'});
       ChefService.addBatch(batch)
