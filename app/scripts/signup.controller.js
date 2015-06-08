@@ -20,10 +20,10 @@
             });
             LoginService.login(loginType, user, pass).then(function didLogin() {
                 $ionicLoading.hide();
-                $state.go('app.buyer');
                 $ionicHistory.nextViewOptions({
                     historyRoot: true
                 });
+                $state.go('app.buyer');
             }, function didNotLogin(err) {
                 $ionicLoading.hide();
                 $ionicPopup.alert({
