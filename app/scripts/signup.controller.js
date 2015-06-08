@@ -4,9 +4,7 @@ angular.module('HomeCooked.controllers').controller('SignupCtrl', [
   function($state, $ionicHistory, $ionicLoading, $ionicPopup, LoginService) {
 
     var vm = this;
-    vm.signIn = signIn;
-
-    function signIn(loginType, user, pass) {
+    vm.signIn = function(loginType, user, pass) {
       $ionicLoading.show({
         template: 'Sign in...'
       });
@@ -23,6 +21,6 @@ angular.module('HomeCooked.controllers').controller('SignupCtrl', [
           template: err
         });
       });
-    }
+    };
   }
 ]);

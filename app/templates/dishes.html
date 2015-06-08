@@ -7,7 +7,7 @@
         <h2>{{dish.title}}</h2>
 
         <p>{{dish.description}}</p>
-        <a ng-href="#/app/dish/{{dish.id}}">{{dish.rating || 0}}/5 ({{dish.voters || 0}} reviews)</a>
+        <a ng-href="#/dish/{{dish.id}}">{{dish.rating || 0}}/5 ({{dish.voters || 0}} reviews)</a>
       </div>
       <div class="item button-bar">
         <div class="button button-positive" ng-click="ctrl.modal.show()">Add New Dish</div>
