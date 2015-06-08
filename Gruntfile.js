@@ -375,26 +375,32 @@ module.exports = function(grunt) {
     karma: {
       options: {
         basePath: '',
-        frameworks: ['mocha', 'chai'],
+        frameworks: ['mocha', 'sinon-chai'],
         files: [
           '<%= yeoman.app %>/lib/angular/angular.js',
           '<%= yeoman.app %>/lib/angular-animate/angular-animate.js',
-          '<%= yeoman.app %>/lib/angular-sanitize/angular-sanitize.js',
-          '<%= yeoman.app %>/lib/angular-ui-router/release/angular-ui-router.js',
-          '<%= yeoman.app %>/lib/ionic/release/js/ionic.js',
-          '<%= yeoman.app %>/lib/ionic/release/js/ionic-angular.js',
           '<%= yeoman.app %>/lib/angular-mocks/angular-mocks.js',
+          '<%= yeoman.app %>/lib/angular-sanitize/angular-sanitize.min.js',
+          '<%= yeoman.app %>/lib/angular-ui-router/release/angular-ui-router.min.js',
+          '<%= yeoman.app %>/lib/ionic/js/ionic.js',
+          '<%= yeoman.app %>/lib/ionic/js/ionic-angular.min.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
+          '<%= yeoman.app %>/**/*.html',
           'test/mock/**/*.js',
           'test/spec/**/*.js'
         ],
+        ngHtml2JsPreprocessor: {
+          stripPrefix: 'app/',
+          moduleName: 'templates'
+        },
         autoWatch: false,
         reporters: ['dots', 'coverage'],
         port: 8080,
         singleRun: false,
         preprocessors: {
           // Update this if you change the yeoman config path
-          'app/scripts/**/*.js': ['coverage']
+          'app/scripts/**/*.js': ['coverage'],
+          'app/**/*.html': ['ng-html2js']
         },
         coverageReporter: {
           reporters: [
@@ -411,7 +417,7 @@ module.exports = function(grunt) {
       },
       continuous: {
         browsers: ['PhantomJS'],
-        singleRun: true,
+        singleRun: true
       }
     },
 
