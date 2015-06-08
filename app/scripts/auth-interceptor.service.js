@@ -7,7 +7,7 @@ angular.module('HomeCooked.services')
           config.headers = config.headers || {};
           var credential = CacheService.getCache('hccredential');
           if (credential) {
-            config.headers.Authorization = credential.token_type + ' ' + credential.access_token;
+            config.headers.Authorization = credential['token_type'] + ' ' + credential['access_token'];
           }
           return config;
         },

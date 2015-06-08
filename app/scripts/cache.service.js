@@ -1,16 +1,13 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('CacheService', ['$window',
-    function($window) {
+  .factory('CacheService', ['$window', '_',
+    function($window, _) {
       var self = this;
 
       self.getCache = function(key) {
         if ($window.localStorage) {
           var serializedCache = $window.localStorage.getItem(key);
-          if (serializedCache && isJSON(serializedCache)) {
-            serializedCache = JSON.parse(serializedCache);
-          }
-          return serializedCache;
+          return deserializeCache(serializedCache);
         }
       };
 
@@ -19,7 +16,7 @@ angular.module('HomeCooked.services')
           return;
         }
 
-        if (isEmpty(value)) {
+        if (_.isEmpty(value)) {
           $window.localStorage.removeItem(key);
         }
         else {
@@ -30,33 +27,13 @@ angular.module('HomeCooked.services')
         }
       };
 
-      var isEmpty = function(obj) {
-        var empty = true;
-        var type = typeof obj;
-        if (type !== 'undefined') {
-          if (type === 'object' || type === 'array') {
-            for (var i in obj) {
-              empty = isEmpty(obj[i]);
-              if (!empty) {
-                break;
-              }
-            }
-          }
-          else {
-            empty = false;
-          }
-        }
-        return empty;
-      };
-
-      var isJSON = function(json) {
+      var deserializeCache = function(json) {
         try {
-          JSON.parse(json);
+          return JSON.parse(json);
         }
         catch (e) {
-          return false;
+          return json;
         }
-        return true;
       };
 
       return self;
