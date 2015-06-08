@@ -1,5 +1,6 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'ChefService', 'LoginService', 'HCMessaging',
+angular.module('HomeCooked.controllers').controller('DishesCtrl', [
+  '$rootScope', '$scope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'ChefService', 'LoginService', 'HCMessaging',
   function($rootScope, $scope, $ionicModal, $ionicLoading, $ionicPopup, ChefService, LoginService, HCMessaging) {
     var that = this;
 
@@ -49,4 +50,5 @@ angular.module('HomeCooked.controllers').controller('DishesCtrl', ['$rootScope',
     });
 
     $scope.$on('$ionicView.beforeEnter', reload);
-  }]);
+  }
+]);

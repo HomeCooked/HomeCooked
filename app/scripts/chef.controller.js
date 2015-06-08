@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScope', '$scope', '$log', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging',
+angular.module('HomeCooked.controllers').controller('ChefCtrl', [
+  // TODO reduce injections
+  '_', '$rootScope', '$scope', '$log', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging',
   function(_, $rootScope, $scope, $log, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
     var that = this;
     var modalScope = $rootScope.$new();
@@ -11,7 +13,7 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
 
       modalScope.ctrl = that;
       modalScope.batch = emptyBatch();
-      modalScope.start_times = [
+      modalScope.startTimes = [
         {'id': 0, 'title': 'Friday (6pm-9pm)'},
         {'id': 24, 'title': 'Saturday (6pm-9pm)'}
       ];
@@ -143,4 +145,5 @@ angular.module('HomeCooked.controllers').controller('ChefCtrl', ['_', '$rootScop
 
 
     $scope.$on('$ionicView.beforeEnter', loadOrders);
-  }]);
+  }
+]);

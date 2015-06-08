@@ -1,5 +1,6 @@
 'use strict';
-angular.module('HomeCooked.controllers').controller('EnrollCtrl', ['$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging',
+angular.module('HomeCooked.controllers').controller('EnrollCtrl', [
+  '$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging',
   function($state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
     var that = this;
 
@@ -25,4 +26,5 @@ angular.module('HomeCooked.controllers').controller('EnrollCtrl', ['$state', '$i
         })
         .catch(HCMessaging.showError);
     };
-  }]);
+  }
+]);
