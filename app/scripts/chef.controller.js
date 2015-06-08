@@ -2,8 +2,8 @@
 
 angular.module('HomeCooked.controllers').controller('ChefCtrl', [
   // TODO reduce injections
-  '_', '$rootScope', '$scope', '$log', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging', // jshint ignore:line
-  function(_, $rootScope, $scope, $log, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) { // jshint ignore:line
+  '_', '$rootScope', '$scope', '$log', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging',
+  function(_, $rootScope, $scope, $log, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
     var that = this;
     var modalScope = $rootScope.$new();
 
