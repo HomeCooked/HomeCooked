@@ -20,7 +20,8 @@ HomeCooked
       .state('app', {
         url: '',
         abstract: true,
-        templateUrl: 'templates/menu.html'
+        templateUrl: 'templates/menu.html',
+        controller: 'MenuCtrl as vm'
       })
       .state('signup', {
         url: '/signup',
