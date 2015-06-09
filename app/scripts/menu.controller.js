@@ -51,7 +51,7 @@
 
         function init() {
             var user = LoginService.getUser();
-            vm.isUserLoggedIn = user !== null;
+            vm.isUserLoggedIn = !!user;
             vm.userFirstName = user ? user.first_name : '';
             vm.isChef = undefined;
             vm.selectedPath = null;
