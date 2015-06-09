@@ -1,13 +1,16 @@
-<ion-view title="Phone Number" class="settings-page">
-    <ion-content class="has-header">
+<ion-view title="Edit Phone" class="settings-page">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="vm.onSave()" ng-disabled="!vm.userPropertiesChanged">
+            Save 
+            <i class="icon ion-ios-checkmark-empty"></i> 
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
         <div class="list">
-            <label class="item item-input item-floating-label">
-                <span class="input-label">Phone Number</span>
+            <label class="item item-input">
+                <i class="icon ion-android-call placeholder-icon"></i>
                 <input type="text" placeholder="Phone Number" ng-model="vm.user.phone_number" ng-change="vm.onChange()"/>
             </label>
-        </div>
-        <div class="note">
-            Your phone number is used to notify you about your current order.
         </div>
     </ion-content>
 </ion-view>

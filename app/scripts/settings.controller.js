@@ -5,12 +5,13 @@
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicPlatform', '$ionicLoading', 'LoginService'];
+    SettingsCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicPlatform', '$ionicLoading', '$ionicHistory', 'LoginService'];
     
-    function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicPlatform, $ionicLoading, LoginService) {
+    function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicPlatform, $ionicLoading, $ionicHistory, LoginService) {
 
         var vm = this;
-        vm.onChange = onChange;        
+        vm.onChange = onChange;
+        vm.onSave = onSave;        
         vm.openExternalLink = openExternalLink;
         vm.openRatingLink = openRatingLink;
 
@@ -18,18 +19,8 @@
           vm.user = LoginService.getUser();
         });
 
-
-        var deregisterStateChangeStart = $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
-            // detect the navigation between a setting page to the main setting page
-            if (toState && fromState && toState.name === 'app.settings' &&  fromState.name.indexOf('app.settings') > -1) {
-                updateUserProperties(event, toState.name);
-            }
-            deregisterStateChangeStart();
-        });
-
-        function updateUserProperties(event, toStateName) {
+        function updateUserProperties() {
             if (vm.userPropertiesChanged) {
-                event.preventDefault();
                 $ionicLoading.show({
                     template: 'Saving...'
                 });
@@ -37,9 +28,13 @@
                     //API CALL
                     console.log(vm.user);
                     $ionicLoading.hide();
-                    $state.go(toStateName);
+                    $ionicHistory.goBack();
                 }, 1500);
             }
+        }
+
+        function onSave() {
+            updateUserProperties();
         }
 
         function onChange() {
