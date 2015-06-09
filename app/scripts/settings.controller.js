@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicLoading', 'LoginService'];
+    SettingsCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicPlatform', '$ionicLoading', 'LoginService'];
     
-    function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicLoading, LoginService) {
+    function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicPlatform, $ionicLoading, LoginService) {
 
         var vm = this;
         vm.onChange = onChange;        
