@@ -13,8 +13,6 @@
         vm.switchView = switchView;
         vm.go = go;
 
-        var signupPath = 'signup';
-
         var chefLinks = [{
             name: 'Orders',
             path: 'app.seller'
@@ -97,7 +95,7 @@
 
         function logout() {
             LoginService.logout();
-            vm.go(signupPath);
+            vm.go('app.buyer');
         }
 
         function switchView() {
