@@ -26,6 +26,7 @@ describe('Controller: SignupCtrl', function() {
   beforeEach(inject(function($controller, $rootScope, $injector) {
     $q = $injector.get('$q');
     scope = $rootScope.$new();
+    scope.closeModal = function() {};
     SignupCtrl = $controller('SignupCtrl', {
       $scope: scope
     });
@@ -38,12 +39,11 @@ describe('Controller: SignupCtrl', function() {
     LoginServiceMock.login.restore();
   });
 
-  it('should go to app.buyer on success', inject(function($state) {
-    var spy = sinon.stub($state, 'go');
+  it('should call close modal on success', function() {
+    var spy = sinon.stub(scope, 'closeModal');
     SignupCtrl.signIn('facebook', 'user', 'pass');
     scope.$apply();
-    expect(spy).to.have.been.calledWith('app.buyer');
-    $state.go.restore();
-  }));
+    expect(spy).to.have.been.called;
+  });
 
 });
