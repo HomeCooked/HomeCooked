@@ -78,18 +78,6 @@
         function onStateChanged(event, toState) {
             var path = toState.name;
 
-            //if not logged in, go to home page always
-            if (_.isEmpty(LoginService.getUser()) && path !== signupPath) {
-                if (event) {
-                    event.preventDefault();
-                }
-                $ionicPopup.show({
-                    title: 'Your session expired',
-                    template: 'Please login again'
-                });
-                vm.go(signupPath);
-                return;
-            }
             var chefMode = _.some(chefLinks, {
                 path: path
             });
