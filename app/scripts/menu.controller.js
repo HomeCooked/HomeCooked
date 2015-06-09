@@ -5,11 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', 
-        '$ionicPopup', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', '_'];
+    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', '_'];
 
-    function MenuCtrl($rootScope, $scope, $state, $timeout,
-         $ionicPopup, $ionicHistory, $ionicModal, LoginService, ChefService, _) {
+    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, LoginService, ChefService, _) {
 
         var vm = this;
         vm.logout = logout;
@@ -125,25 +123,24 @@
 
         function login() {
             if (!vm.modal) {
+                var modalScope = $rootScope.$new();
                 $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
                     animation: 'slide-in-up',
-                    scope: $scope
+                    scope: modalScope
                 }).then(function(modal) {
                     vm.modal = modal;
+                    vm.modal.show();
                 });
-                $scope.closeModal = function() {
+                modalScope.closeModal = function() {
                     vm.modal.hide();
                     init();
                 };
                 $scope.$on('$destroy', function() {
                     vm.modal.remove();
                 });
-                $scope.$on('modal.hidden', function() {
-                });
-            }
-            $timeout(function() {
+            } else {
                 vm.modal.show();
-            }, 100);
+            }
         }
     }
 })();
