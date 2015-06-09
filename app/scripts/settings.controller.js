@@ -5,15 +5,18 @@
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicPlatform', '$ionicLoading', '$ionicHistory', 'LoginService'];
+    SettingsCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicPlatform', 
+        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService'];
     
-    function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicPlatform, $ionicLoading, $ionicHistory, LoginService) {
+    function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicPlatform, 
+        $ionicPopup, $ionicLoading, $ionicHistory, LoginService) {
 
         var vm = this;
         vm.onChange = onChange;
         vm.onSave = onSave;        
         vm.openExternalLink = openExternalLink;
         vm.openRatingLink = openRatingLink;
+        vm.confirmLogout = confirmLogout;
 
         $scope.$on('$ionicView.beforeEnter', function() {
           vm.user = LoginService.getUser();
@@ -48,6 +51,23 @@
 
         function openExternalLink(link) {
             return window.open(link, '_system');
+        }
+
+        function confirmLogout() {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Are you sure?',
+                template: 'Signing out will remove your HomeCooked data from this device. Do you want to sign out?'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    LoginService.logout();
+                    $ionicHistory.nextViewOptions({
+                        historyRoot: true,
+                        disableAnimate: true
+                    });
+                    $state.go('app.buyer');
+                }
+            });
         }
     }
 
