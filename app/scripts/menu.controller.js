@@ -94,6 +94,7 @@
                 if (event) {
                     event.preventDefault();
                 }
+                go('app.buyer');
                 return login();
             }
 
