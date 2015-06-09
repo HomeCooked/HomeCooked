@@ -92,6 +92,12 @@
                 }
                 return;
             }
+            if (!vm.isUserLoggedIn && path !== 'app.buyer') {
+                if (event) {
+                    event.preventDefault();
+                }
+                return login();
+            }
 
             vm.chefMode = chefMode;
             vm.links = vm.chefMode ? chefLinks : buyerLinks;
