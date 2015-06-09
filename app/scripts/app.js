@@ -23,11 +23,6 @@ HomeCooked
         templateUrl: 'templates/menu.html',
         controller: 'MenuCtrl as vm'
       })
-      .state('signup', {
-        url: '/signup',
-        templateUrl: 'templates/signup/signup.html',
-        controller: 'SignupCtrl as vm'
-      })
       .state('app.buyer', {
         url: '/buyer',
         views: {
