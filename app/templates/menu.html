@@ -13,7 +13,7 @@
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable" align-title="left">
       <h1 class="title">Hi {{vm.userFirstName}}!</h1>
-      <a class="button button-icon icon ion-gear-b" nav-clear menu-close ng-click="vm.go('app.settings')"></a>
+      <a class="button button-icon icon ion-gear-b" nav-clear menu-close ng-click="vm.go('app.settings')" ng-hide="!vm.isUserLoggedIn"></a>
     </ion-header-bar>
     <ion-content>
       <ion-toggle nav-clear ng-model="vm.chefMode" ng-change="vm.switchView()" ng-show="vm.isChef">
