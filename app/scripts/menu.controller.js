@@ -5,9 +5,12 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicPopup', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', '_'];
+    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', 
+        '$ionicPopup', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', '_'];
 
-    function MenuCtrl($rootScope, $scope, $state, $timeout, $ionicPopup, $ionicHistory, $ionicModal, LoginService, ChefService, _) {
+    function MenuCtrl($rootScope, $scope, $state, $timeout,
+         $ionicPopup, $ionicHistory, $ionicModal, LoginService, ChefService, _) {
+
         var vm = this;
         vm.logout = logout;
         vm.login = login;
@@ -48,6 +51,7 @@
 
         function init() {
             var user = LoginService.getUser();
+            vm.isUserLoggedIn = user !== null;
             vm.userFirstName = user ? user.first_name : '';
             vm.isChef = undefined;
             vm.selectedPath = null;
@@ -96,6 +100,7 @@
 
         function logout() {
             LoginService.logout();
+            init();
             vm.go('app.buyer');
         }
 
@@ -122,6 +127,7 @@
                 });
                 $scope.closeModal = function() {
                     vm.modal.hide();
+                    init();
                 };
                 $scope.$on('$destroy', function() {
                     vm.modal.remove();
