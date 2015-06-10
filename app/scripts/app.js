@@ -115,6 +115,11 @@ HomeCooked
             templateUrl: 'templates/not-found.html'
           }
         }
+      })
+      .state('zipcode-validation', {
+        url: '/zipcode-validation',
+        templateUrl: 'templates/zipcode/form.html',
+        controller: 'ZipCodeRestrictionCtrl as vm'
       });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/buyer');
