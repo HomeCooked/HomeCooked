@@ -32,6 +32,12 @@
                 lng: coords.longitude,
                 zoom: 14
             };
+            vm.map.markers = {
+                marker: {
+                    lat: coords.latitude,
+                    lng: coords.longitude
+                }
+            };
         }
 
         function onLocationError(error) {
@@ -64,7 +70,8 @@
                     lat: 37.773204,
                     lng: -122.4213458,
                     zoom: 14
-                }
+                }, 
+                markers: {}
             };
         }
 

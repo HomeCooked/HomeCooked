@@ -2,7 +2,7 @@
     <ion-content scroll="false">
         <div class="container">
             <div class="zipcode-map" data-tab-disable="true">
-                <leaflet id="zipcodemap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
+                <leaflet id="zipcodemap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers"></leaflet>
             </div>
             <div class="zipcode-form">
                 <form ng-submit="vm.validZipCode()">
