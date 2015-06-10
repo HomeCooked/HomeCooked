@@ -5,12 +5,15 @@
         Sign in
       </button>
     </ion-nav-buttons>
-  <ion-content class="has-header">
-  	<div class="list list-inset">
+  <ion-content scroll="false">
+<!--   	<div class="list list-inset">
       <label class="item item-input padding-vertical">
         <input type="text" placeholder="Where are you?" ng-value="vm.query">
       </label>
       <button class="button button-block button-positive" ng-click="vm.findChefs()">Search</button>
+    </div> -->
+    <div class="map-container" data-tab-disable="true">
+        <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers"></leaflet>
     </div>
 	</div>
   </ion-content>

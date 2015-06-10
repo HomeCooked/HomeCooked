@@ -1,0 +1,12 @@
+
+.map-container {
+    background-color: #ccc;
+    position: relative;
+    height: 100%;
+    .angular-leaflet-map {
+        width: 100%;
+        height:100%;
+        display:block;
+    }
+}
+
