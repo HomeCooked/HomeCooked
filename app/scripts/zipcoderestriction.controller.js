@@ -85,10 +85,8 @@
                 //FAKE API CALL
                 $timeout(function() {
                     $ionicLoading.hide();
-                    //temporary code, all value starting by 94 are going to be valid
-                    //otherwise, it is not an available zip code
-                    var isAvailable = vm.zipcode.indexOf('94') === 0;
-
+                    var availableZipCodes = [94114, 94131, 94110, 94102, 94103, 95117];
+                    var isAvailable = availableZipCodes.indexOf(parseInt(vm.zipcode)) !== -1;
                     CacheService.setCache('hcvalidzipcode', isAvailable);
                     if (isAvailable) {
                         $ionicHistory.nextViewOptions({
