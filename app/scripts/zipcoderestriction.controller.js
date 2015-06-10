@@ -15,8 +15,10 @@
             defaults: {
                 zoomControl: false,
                 attributionControl: false,
-                doubleClickZoom: true,
-                scrollWheelZoom: true
+                doubleClickZoom: false,
+                scrollWheelZoom: false,
+                dragging: false,
+                touchZoom: false,
             },
             tiles: {
                 url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
@@ -31,8 +33,8 @@
                 }
             },
             center: {
-                lat: 37.7685616,
-                lng: -122.4152349,
+                lat: 37.773204,
+                lng: -122.4213458,
                 zoom: 14
             }
         };
