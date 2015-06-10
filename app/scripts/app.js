@@ -23,13 +23,14 @@ HomeCooked
         url: '',
         abstract: true,
         templateUrl: 'templates/menu.html',
-        controller: 'MenuCtrl as vm'
+        controller: 'MenuCtrl as menuVm'
       })
       .state('app.buyer', {
         url: '/buyer',
         views: {
           'menuContent': {
-            templateUrl: 'templates/buyer.html'
+            templateUrl: 'templates/buyer.html',
+            controller: 'SearchCtrl as vm'
           }
         }
       })

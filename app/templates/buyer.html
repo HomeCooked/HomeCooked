@@ -1,6 +1,6 @@
-<ion-view title="Find local chefs" ng-controller="SearchCtrl as ctrl" hide-back-button="true">
+<ion-view title="Find local chefs" hide-back-button="true">
     <ion-nav-buttons side="right">
-      <button class="button button-clear" ng-click="vm.login()" ng-if="!vm.isUserLoggedIn">
+      <button class="button button-clear" ng-click="menuVm.login()" ng-if="!menuVm.isUserLoggedIn">
         <i class="icon ion-ios-person"></i>
         Sign in
       </button>
@@ -8,9 +8,9 @@
   <ion-content class="has-header">
   	<div class="list list-inset">
       <label class="item item-input padding-vertical">
-        <input type="text" placeholder="Where are you?" ng-value="ctrl.query">
+        <input type="text" placeholder="Where are you?" ng-value="vm.query">
       </label>
-      <button class="button button-block button-positive" ng-click="ctrl.findChefs()">Search</button>
+      <button class="button button-block button-positive" ng-click="vm.findChefs()">Search</button>
     </div>
 	</div>
   </ion-content>
