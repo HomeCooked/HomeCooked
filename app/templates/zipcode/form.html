@@ -1,7 +1,9 @@
 <ion-view class="zipcode-restriction-page">
     <ion-content scroll="false">
         <div class="container">
-            <div class="map"></div>
+            <div class="zipcode-map" data-tab-disable="true">
+                <leaflet id="meetupmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
+            </div>
             <div class="zipcode-form">
                 <p>PLEASE CONFIRM YOUR ZIP CODE</p>
                 <input type="text" placeholder="ZIP Code" />

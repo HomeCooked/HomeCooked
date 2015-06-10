@@ -1,6 +1,6 @@
 'use strict';
 
-var HomeCooked = angular.module('HomeCooked', ['ionic', 'ngAnimate', 'config', 'HomeCooked.controllers']);
+var HomeCooked = angular.module('HomeCooked', ['ionic', 'ngAnimate', 'config', 'HomeCooked.controllers', 'leaflet-directive']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
