@@ -10,7 +10,9 @@ HomeCooked
   .config(function($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
-  .config(function($stateProvider, $urlRouterProvider, ENV) {
+  .config(function($stateProvider, $urlRouterProvider, $compileProvider, ENV) {
+
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
 
     window.openFB.init({
       appId: ENV.FACEBOOK_APP_ID
@@ -83,7 +85,26 @@ HomeCooked
         url: '/settings',
         views: {
           'menuContent': {
-            templateUrl: 'templates/settings.html'
+            templateUrl: 'templates/settings/settings.html',
+            controller: 'SettingsCtrl as vm'
+          }
+        }
+      })
+      .state('app.settings-email', {
+        url: '/settings/email',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/settings/email.html',
+            controller: 'SettingsCtrl as vm'
+          }
+        }
+      })
+      .state('app.settings-phonenumber', {
+        url: '/settings/phonenumber',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/settings/phonenumber.html',
+            controller: 'SettingsCtrl as vm'
           }
         }
       })
