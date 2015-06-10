@@ -5,16 +5,15 @@
         .module('HomeCooked.controllers')
         .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
-    ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup'];
+    ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup', 'CacheService'];
 
-    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup) {
+    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, CacheService) {
 
         var vm = this;
         vm.validZipCode = validZipCode;
         vm.registerEmail = registerEmail;
 
         activate();
-
 
         function activate() {
             if ($state.current.name === 'zipcode-validation') {
@@ -47,7 +46,7 @@
            });
         }
 
-        function initMapProperties() {           
+        function initMapProperties() {
             vm.map = {
                 defaults: {
                     zoomControl: false,
@@ -73,7 +72,7 @@
                     lat: 37.773204,
                     lng: -122.4213458,
                     zoom: 14
-                }, 
+                },
                 markers: {}
             };
         }
@@ -89,6 +88,8 @@
                     //temporary code, all value starting by 94 are going to be valid
                     //otherwise, it is not an available zip code
                     var isAvailable = vm.zipcode.indexOf('94') === 0;
+
+                    CacheService.setCache('hcvalidzipcode', isAvailable);
                     if (isAvailable) {
                         $ionicHistory.nextViewOptions({
                           historyRoot: true

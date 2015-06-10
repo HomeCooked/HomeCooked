@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', '_'];
+    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', 'CacheService', '_'];
 
-    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, LoginService, ChefService, _) {
+    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, LoginService, ChefService, CacheService, _) {
 
         var vm = this;
         vm.logout = logout;
@@ -90,12 +90,14 @@
                 }
                 return;
             }
-            if (!vm.isUserLoggedIn && path !== 'app.buyer') {
+            var validZipCode = CacheService.getCache('hcvalidzipcode'),
+                redirectPath = validZipCode ? 'app.buyer' : 'zipcode-validation';
+            if (!vm.isUserLoggedIn && path !== redirectPath) {
                 if (event) {
                     event.preventDefault();
                 }
-                go('app.buyer');
-                return login();
+                go(redirectPath);
+                return;
             }
 
             vm.chefMode = chefMode;

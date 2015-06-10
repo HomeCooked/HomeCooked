@@ -7,10 +7,10 @@ angular.module('HomeCooked.services', []);
 
 HomeCooked
   .constant('_', window._) //lodash
-  .config(function($httpProvider) {
+  .config(function ($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
-  .config(function($stateProvider, $urlRouterProvider, $compileProvider, ENV) {
+  .config(function ($stateProvider, $urlRouterProvider, $compileProvider, ENV) {
 
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
 
@@ -127,12 +127,13 @@ HomeCooked
         controller: 'ZipCodeRestrictionCtrl as vm'
       });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise(function($injector) {
+    $urlRouterProvider.otherwise(function ($injector) {
       var $state = $injector.get('$state');
       var LoginService = $injector.get('LoginService');
+      var CacheService = $injector.get('CacheService');
       var nextState = 'app.not-found';
       if (!LoginService.getUser()) {
-        nextState = 'zipcode-validation';
+        nextState = CacheService.getCache('hcvalidzipcode') ? 'app.buyer' : 'zipcode-validation';
       }
       else if ($state.current.name === '') {
         nextState = 'app.buyer';
@@ -140,8 +141,8 @@ HomeCooked
       $state.go(nextState);
     });
   })
-  .run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
+  .run(function ($ionicPlatform) {
+    $ionicPlatform.ready(function () {
       // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {
