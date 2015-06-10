@@ -1,0 +1,46 @@
+.zipcode-restriction-page { 
+
+    .container {
+        display: flex;
+        -webkit-flex-direction: column;
+        -webkit-justify-content: flex-end;
+        text-align: center;
+        height: 100%;
+
+        .zipcode-form {
+            background-color: #efefef;
+            padding: 40px 10px 10px;
+
+            p {
+                margin: 0;
+                font-size: 125%;
+                color: #333;
+                letter-spacing: 1px;
+            }
+            input {
+                width: 160px;
+                padding: 0;
+                margin: 1.5em auto;
+                text-align: center;
+                font-size: 150%;
+                letter-spacing: 1px;
+                color: #777;
+                font-weight: bold;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                height: 42px;
+                line-height: 42px;
+                &::-webkit-input-placeholder {
+                    font-size: 70%;
+                    font-weight: normal;
+                }
+            }
+
+            button {
+                font-size: 100%;
+            }
+        }
+        
+    }
+}
+
