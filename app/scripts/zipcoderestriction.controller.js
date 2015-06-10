@@ -114,7 +114,7 @@
                     vm.email_address = null;
                     $ionicPopup.alert({
                         title: 'Thank you for registering',
-                        template: 'We will let you know as soon as HomeCooked is available for your area.'
+                        template: 'Thank you, we will be in touch shortly.'
                    });
                 }, 1000);
             }
