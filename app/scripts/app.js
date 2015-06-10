@@ -120,6 +120,11 @@ HomeCooked
         url: '/zipcode-validation',
         templateUrl: 'templates/zipcode/form.html',
         controller: 'ZipCodeRestrictionCtrl as vm'
+      })
+      .state('zipcode-unavailable', {
+        url: '/zipcode-unavailable/:zipcode',
+        templateUrl: 'templates/zipcode/unavailable.html',
+        controller: 'ZipCodeRestrictionCtrl as vm'
       });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise(function($injector) {

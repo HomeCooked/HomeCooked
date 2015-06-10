@@ -1,0 +1,18 @@
+<ion-view class="zipcode-restriction-page">
+    <ion-content> 
+        <div class="area-not-available">
+            <i class="icon ion-android-sad"></i>
+
+            <p class="title">Sorry, HomeCooked is not available yet.</p>
+
+            <p class="text">It looks like your area is not supported yet. We are currently experiencing HomeCooked in San Francisco. Please, enter your email address to get notified as soon as HomeCooked got launched in your area.</p>
+            <div class="email-form">
+                <form ng-submit="vm.registerEmail()">
+                    <input type="email" placeholder="Email Address" ng-model="vm.email_address"/>
+                    <button class="button button-block button-dark">GET NOTIFIED</button>
+                    <a ui-sref="zipcode-validation">Change ZIP code</a>
+                </form>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

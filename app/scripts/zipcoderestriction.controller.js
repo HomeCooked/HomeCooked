@@ -5,13 +5,13 @@
         .module('HomeCooked.controllers')
         .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
-    ZipCodeRestrictionCtrl.$inject = ['$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup'];
+    ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup'];
 
-    function ZipCodeRestrictionCtrl($timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup) {
+    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup) {
 
         var vm = this;
         vm.validZipCode = validZipCode;
-
+        vm.registerEmail = registerEmail;
 
         activate();
 
@@ -86,16 +86,40 @@
                 //FAKE API CALL
                 $timeout(function() {
                     $ionicLoading.hide();
-                    if (true) {
+                    //temporary code, all value starting by 94 are going to be valid
+                    //otherwise, it is not an available zip code
+                    var isAvailable = vm.zipcode.indexOf('94') === 0;
+                    if (isAvailable) {
                         $ionicHistory.nextViewOptions({
                           historyRoot: true
                         });
                         $state.go('app.buyer');
                     }
+                    else {
+                        $state.go('zipcode-unavailable', {
+                            zipcode: vm.zipcode
+                        });
+                    }
                 }, 1000);
             }
         }
 
+        function registerEmail() {
+            if (vm.email_address && $stateParams.zipcode) {
+                $ionicLoading.show({
+                    template: 'Registering...'
+                });
+                //FAKE API CALL PASSING THE EMAIL ADDRESS AND THE ZIP CODE
+                $timeout(function() {
+                    $ionicLoading.hide();
+                    vm.email_address = null;
+                    $ionicPopup.alert({
+                        title: 'Thank you for registering',
+                        template: 'We will let you know as soon as HomeCooked is available for your area.'
+                   });
+                }, 1000);
+            }
+        }
     }
 
 })();

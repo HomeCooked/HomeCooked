@@ -27,7 +27,6 @@
             p {
                 margin: 0;
                 font-size: 125%;
-                color: #333;
                 font-weight: 400;
                 letter-spacing: 1px;
             }
@@ -56,6 +55,54 @@
             }
         }
         
+    }
+
+    .area-not-available {
+        text-align: center;
+        padding-top: 40px;
+
+        i {
+            font-size: 600%;
+        }
+        p.title {
+            font-weight: bold;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-size: 120%;
+        }
+        p.text {
+            text-align: justify;
+            padding: 0 20px 20px;
+        }
+
+        div.email-form {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #efefef;
+            padding: 20px 10px 10px;
+            margin: 10px;
+            input {
+                padding: 0;
+                    width: 100%;
+                text-align: center;
+                font-size: 120%;
+                letter-spacing: 1px;
+                color: #777;
+                font-weight: bold;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                height: 42px;
+                line-height: 42px;
+                &::-webkit-input-placeholder {
+                    font-size: 90%;
+                    font-weight: normal;
+                }
+            }
+
+            a {
+                color: #777;
+            }
+        }
     }
 }
 
