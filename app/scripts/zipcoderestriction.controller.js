@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
-    ZipCodeRestrictionCtrl.$inject = ['$timeout', '$ionicHistory', '$state', '$ionicLoading'];
+    ZipCodeRestrictionCtrl.$inject = ['$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup'];
 
-    function ZipCodeRestrictionCtrl($timeout, $ionicHistory, $state, $ionicLoading) {
+    function ZipCodeRestrictionCtrl($timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup) {
 
         var vm = this;
         vm.validZipCode = validZipCode;
@@ -40,8 +40,11 @@
             };
         }
 
-        function onLocationError(error) {
-            alert(error);
+        function onLocationError() {
+            $ionicPopup.alert({
+                title: 'Error',
+                template: 'Unable to retrieve your location'
+           });
         }
 
         function initMapProperties() {           
