@@ -55,6 +55,7 @@ angular.module('HomeCooked.services')
 
       self.logout = function() {
         _updateLogin();
+        CacheService.setCache('hcvalidzipcode');
       };
 
       self.getUser = function() {
