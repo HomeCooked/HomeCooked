@@ -5,9 +5,11 @@
                 <leaflet id="meetupmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
             </div>
             <div class="zipcode-form">
-                <p>PLEASE CONFIRM YOUR ZIP CODE</p>
-                <input type="text" placeholder="ZIP Code" />
-                <button class="button button-block button-dark">CHECK AVAILABILITY FOR YOUR AREA</button>
+                <form ng-submit="vm.validZipCode()">
+                    <p>PLEASE CONFIRM YOUR ZIP CODE</p>
+                    <input type="tel" placeholder="ZIP Code" ng-model="vm.zipcode"/>
+                    <button class="button button-block button-dark">CHECK AVAILABILITY</button>
+                </form>
             </div>
         </div>
     </ion-content>
