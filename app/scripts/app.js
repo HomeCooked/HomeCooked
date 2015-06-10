@@ -122,7 +122,18 @@ HomeCooked
         controller: 'ZipCodeRestrictionCtrl as vm'
       });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/buyer');
+    $urlRouterProvider.otherwise(function($injector) {
+      var $state = $injector.get('$state');
+      var LoginService = $injector.get('LoginService');
+      var nextState = 'app.not-found';
+      if (!LoginService.getUser()) {
+        nextState = 'zipcode-validation';
+      }
+      else if ($state.current.name === '') {
+        nextState = 'app.buyer';
+      }
+      $state.go(nextState);
+    });
   })
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
