@@ -12,39 +12,60 @@
         var vm = this;
         vm.validZipCode = validZipCode;
 
-        vm.map = {
-            defaults: {
-                zoomControl: false,
-                attributionControl: false,
-                doubleClickZoom: false,
-                scrollWheelZoom: false,
-                dragging: false,
-                touchZoom: false,
-            },
-            tiles: {
-                url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
-                options: {
-                    subdomains: [0, 1, 2, 3],
-                    detectRetina: true,
-                    tileSize: 512,
-                    minZoom: 2,
-                    maxZoom: 21,
-                    reuseTiles: true,
-                    noWrap: true
-                }
-            },
-            center: {
-                lat: 37.773204,
-                lng: -122.4213458,
-                zoom: 14
-            }
-        };
 
         activate();
 
 
         function activate() {
+            if ($state.current.name === 'zipcode-validation') {
+                initMapProperties();
+                $timeout(function() {
+                    navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError);
+                }, 500);
+            }
+        }
 
+        function onLocationSuccess(position) {
+            var coords = position.coords;
+            vm.map.center = {
+                lat: coords.latitude,
+                lng: coords.longitude,
+                zoom: 14
+            };
+        }
+
+        function onLocationError(error) {
+            alert(error);
+        }
+
+        function initMapProperties() {           
+            vm.map = {
+                defaults: {
+                    zoomControl: false,
+                    attributionControl: false,
+                    doubleClickZoom: false,
+                    scrollWheelZoom: false,
+                    dragging: false,
+                    touchZoom: false,
+                },
+                tiles: {
+                    url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
+                    options: {
+                        subdomains: [0, 1, 2, 3],
+                        detectRetina: true,
+                        tileSize: 512,
+                        minZoom: 2,
+                        maxZoom: 21,
+                        reuseTiles: true,
+                        noWrap: true
+                    }
+                },
+                center: {
+                    lat: 37.773204,
+                    lng: -122.4213458,
+                    zoom: 14
+                }
+            };
         }
 
         function validZipCode() {

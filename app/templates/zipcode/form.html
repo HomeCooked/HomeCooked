@@ -2,13 +2,13 @@
     <ion-content scroll="false">
         <div class="container">
             <div class="zipcode-map" data-tab-disable="true">
-                <leaflet id="meetupmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
+                <leaflet id="zipcodemap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
             </div>
             <div class="zipcode-form">
                 <form ng-submit="vm.validZipCode()">
                     <p>PLEASE CONFIRM YOUR ZIP CODE</p>
                     <input type="tel" placeholder="ZIP Code" ng-model="vm.zipcode"/>
-                    <button class="button button-block button-dark">CHECK AVAILABILITY</button>
+                    <button class="button button-block button-dark">VIEW CHEFS IN YOUR AREA</button>
                 </form>
             </div>
         </div>
