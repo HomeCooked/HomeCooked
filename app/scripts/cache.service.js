@@ -1,7 +1,7 @@
 'use strict';
 angular.module('HomeCooked.services')
-  .factory('CacheService', ['$window', '_',
-    function ($window, _) {
+  .factory('CacheService', ['$window',
+    function ($window) {
       var self = this;
 
       self.getCache = function (key) {
