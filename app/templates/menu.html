@@ -9,16 +9,13 @@
     </ion-nav-bar>
     <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-pane>
-
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable" align-title="left">
       <h1 class="title">Hi {{vm.userFirstName}}!</h1>
-      <a class="button button-icon icon ion-gear-b" nav-clear menu-close ng-click="vm.go('app.settings')" ng-hide="!vm.isUserLoggedIn"></a>
+      <a class="button button-icon icon ion-gear-b" nav-clear menu-close ng-click="vm.go('app.settings')"
+         ng-hide="!vm.isUserLoggedIn"></a>
     </ion-header-bar>
     <ion-content>
-      <ion-toggle nav-clear ng-model="vm.chefMode" ng-change="vm.switchView()" ng-show="vm.isChef">
-        Chef mode
-      </ion-toggle>
       <ion-list>
         <ion-item ng-repeat="link in vm.links" nav-clear menu-close ng-click="vm.go(link.path)"
                   ng-class="{'hc-menu-item-selected' : link.path===vm.selectedPath}">
@@ -26,5 +23,17 @@
         </ion-item>
       </ion-list>
     </ion-content>
+    <ion-footer-bar class="bar-stable" ng-if="vm.isChef">
+      <h1 class="title menu-footer-toggle">
+        <span>Chef mode</span>
+        <label class="toggle">
+          <input type="checkbox" nav-clear ng-model="vm.chefMode" ng-change="vm.switchView()">
+
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </h1>
+    </ion-footer-bar>
   </ion-side-menu>
 </ion-side-menus>
