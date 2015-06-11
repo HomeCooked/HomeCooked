@@ -50,19 +50,16 @@
 
     $scope.$watch(function () {
       return user.isLoggedIn;
-    }, function (isLoggedIn) {
-      vm.isUserLoggedIn = isLoggedIn === true;
+    }, init);
+
+    function init() {
+      vm.isUserLoggedIn = user.isLoggedIn === true;
+      vm.userFirstName = user.first_name || '';
       vm.isChef = user.isChef;
       if (user.isChef && buyerLinks[buyerLinks.length - 1].path === 'app.enroll') {
         buyerLinks.pop();
       }
       updateStateIfNeeded($state.current);
-    });
-
-    function init() {
-      vm.isUserLoggedIn = user.isLoggedIn;
-      vm.userFirstName = user.first_name || '';
-      vm.isChef = user.isChef;
     }
 
     function getCorrectPath(path) {
