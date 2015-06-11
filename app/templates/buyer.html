@@ -1,19 +1,31 @@
-<ion-view title="Find local chefs" hide-back-button="true">
+<ion-view title="Find local chefs" hide-back-button="true" class="buyer-search">
     <ion-nav-buttons side="right">
       <button class="button button-clear" ng-click="menuVm.login()" ng-if="!menuVm.isUserLoggedIn">
         <i class="icon ion-ios-person"></i>
         Sign in
       </button>
-    </ion-nav-buttons>
+    </ion-nav-buttons> 
   <ion-content scroll="false">
-<!--   	<div class="list list-inset">
-      <label class="item item-input padding-vertical">
-        <input type="text" placeholder="Where are you?" ng-value="vm.query">
-      </label>
-      <button class="button button-block button-positive" ng-click="vm.findChefs()">Search</button>
-    </div> -->
     <div class="map-container" data-tab-disable="true">
         <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers"></leaflet>
+        
+        <div class="search-filter">
+          <form ng-submit="vm.findChefs()">
+            <div class="item-input-inset">
+                <label class="item item-input-wrapper">
+                  <i class="icon ion-search placeholder-icon"></i>
+                  <input type="text" placeholder="Search for a dish" ng-model="vm.query">
+
+                  <a class="button-filter button button-small button-clear">
+                    <i class="icon ion-ios-settings"></i>
+                  </a>
+                </label>
+              <a class="button-switch-view button button-small button-clear">
+                <i class="icon ion-ios-list-outline"></i>
+              </a>
+            </div> 
+          </form>
+        </div>
     </div>
 	</div>
   </ion-content>
