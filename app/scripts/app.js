@@ -1,16 +1,16 @@
 'use strict';
 
-var HomeCooked = angular.module('HomeCooked', ['ionic', 'ngAnimate', 'config', 'HomeCooked.controllers']);
+var HomeCooked = angular.module('HomeCooked', ['ionic', 'ngAnimate', 'config', 'HomeCooked.controllers', 'leaflet-directive']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
 
 HomeCooked
   .constant('_', window._) //lodash
-  .config(function($httpProvider) {
+  .config(function ($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
-  .config(function($stateProvider, $urlRouterProvider, $compileProvider, ENV) {
+  .config(function ($stateProvider, $urlRouterProvider, $compileProvider, ENV) {
 
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
 
@@ -115,12 +115,34 @@ HomeCooked
             templateUrl: 'templates/not-found.html'
           }
         }
+      })
+      .state('zipcode-validation', {
+        url: '/zipcode-validation',
+        templateUrl: 'templates/zipcode/form.html',
+        controller: 'ZipCodeRestrictionCtrl as vm'
+      })
+      .state('zipcode-unavailable', {
+        url: '/zipcode-unavailable/:zipcode',
+        templateUrl: 'templates/zipcode/unavailable.html',
+        controller: 'ZipCodeRestrictionCtrl as vm'
       });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/buyer');
+    $urlRouterProvider.otherwise(function ($injector) {
+      var $state = $injector.get('$state');
+      var LoginService = $injector.get('LoginService');
+      var nextState = 'app.not-found',
+          user = LoginService.getUser();
+      if (!user.isLoggedIn) {
+        nextState = user.zipcode ? 'app.buyer' : 'zipcode-validation';
+      }
+      else if ($state.current.name === '') {
+        nextState = 'app.buyer';
+      }
+      $state.go(nextState);
+    });
   })
-  .run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
+  .run(function ($ionicPlatform) {
+    $ionicPlatform.ready(function () {
       // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {

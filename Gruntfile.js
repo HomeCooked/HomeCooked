@@ -384,6 +384,7 @@ module.exports = function(grunt) {
           '<%= yeoman.app %>/lib/angular-ui-router/release/angular-ui-router.min.js',
           '<%= yeoman.app %>/lib/ionic/js/ionic.js',
           '<%= yeoman.app %>/lib/ionic/js/ionic-angular.min.js',
+          '<%= yeoman.app %>/lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
           '<%= yeoman.app %>/**/*.html',
           'test/mock/**/*.js',

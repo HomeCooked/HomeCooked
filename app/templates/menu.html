@@ -21,7 +21,7 @@
       </ion-toggle>
       <ion-list>
         <ion-item ng-repeat="link in vm.links" nav-clear menu-close ng-click="vm.go(link.path)"
-                  ng-class="{'hc-menu-item-selected' : link.path===vm.selectedPath}">
+                  ng-class="{'hc-menu-item-selected' : link.selected}">
           {{::link.name}}
         </ion-item>
       </ion-list>

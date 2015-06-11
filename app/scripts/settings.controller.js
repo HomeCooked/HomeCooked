@@ -1,19 +1,19 @@
 (function() {
     'use strict';
-    
+
     angular
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$rootScope', '$scope', '$state', '$timeout', '$ionicPlatform', 
+    SettingsCtrl.$inject = ['$scope', '$state', '$timeout', '$ionicPlatform',
         '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService'];
-    
-    function SettingsCtrl($rootScope, $scope, $state, $timeout, $ionicPlatform, 
+
+    function SettingsCtrl($scope, $state, $timeout, $ionicPlatform,
         $ionicPopup, $ionicLoading, $ionicHistory, LoginService) {
 
         var vm = this;
         vm.onChange = onChange;
-        vm.onSave = onSave;        
+        vm.onSave = onSave;
         vm.openExternalLink = openExternalLink;
         vm.openRatingLink = openRatingLink;
         vm.confirmLogout = confirmLogout;
@@ -65,7 +65,7 @@
                         historyRoot: true,
                         disableAnimate: true
                     });
-                    $state.go('app.buyer');
+                    $state.go('zipcode-validation');
                 }
             });
         }
