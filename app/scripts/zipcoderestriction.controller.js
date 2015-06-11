@@ -87,8 +87,8 @@
                     $ionicLoading.hide();
                     var availableZipCodes = [94114, 94131, 94110, 94102, 94103, 95117];
                     var isAvailable = availableZipCodes.indexOf(parseInt(vm.zipcode)) !== -1;
-                    LoginService.setUserZipCode(vm.zipcode);
                     if (isAvailable) {
+                        LoginService.setUserZipCode(vm.zipcode);
                         $ionicHistory.nextViewOptions({
                           historyRoot: true
                         });

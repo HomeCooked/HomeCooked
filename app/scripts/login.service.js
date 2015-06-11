@@ -2,9 +2,9 @@
 (function () {
   angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
-  LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService'];
-  function LoginService($q, $http, ENV, CacheService) {
-    var user = getUserFromCache();
+  LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', 'ChefService', '_'];
+  function LoginService($q, $http, ENV, CacheService, ChefService, _) {
+    var user = CacheService.getValue('user') || {};
 
     return {
       login: login,
@@ -22,7 +22,11 @@
     }
 
     function logout() {
-      invalidateCache();
+      CacheService.invalidateCache();
+      _.forEach(user, function (val, key) {
+        user[key] = undefined;
+        delete user[key];
+      });
     }
 
     function getUser() {
@@ -47,33 +51,34 @@
       //return deferred.promise;
     }
 
-    function getUserFromCache() {
-      return CacheService.getValue('user') || {};
-    }
-
     function homeCookedLogin(accessToken, provider) {
-      var deferred = $q.defer();
-      $http.post(ENV.BASE_URL + '/connect/', {
+      return $http.post(ENV.BASE_URL + '/connect/', {
         'access_token': accessToken,
         'client_id': ENV.CLIENT_ID,
         'provider': provider
       })
-        .success(function (data) {
+        .then(function (response) {
+          var data = response.data;
           // TODO this should come from the server
           data.user.zipcode = user.zipcode;
-          data.user.isLoggedIn = true;
+          _.assign(user, data.user, {isLoggedIn: true, isChef: false});
           CacheService.setValue({
-            credential: data.credential,
-            user: data.user
+            provider: provider,
+            credential: data.credential
           });
-          user = data.user;
-          deferred.resolve(user);
+          return ChefService.getChefInfo(user.id);
         })
-        .error(function loginFail(data) {
-          invalidateCache();
-          deferred.reject(data);
+        .then(function () {
+          user.isChef = true;
+        })
+        .finally(function () {
+          if (user.isLoggedIn) {
+            CacheService.setValue({user: user});
+          }
+          else {
+            CacheService.invalidateCache();
+          }
         });
-      return deferred.promise;
     }
 
     function getAccessToken(provider) {
@@ -92,11 +97,6 @@
         deferred.reject('not supported');
       }
       return deferred.promise;
-    }
-
-    function invalidateCache() {
-      CacheService.invalidateCache();
-      user = {};
     }
   }
 })();
