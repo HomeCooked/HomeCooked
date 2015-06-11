@@ -5,7 +5,7 @@ angular.module('HomeCooked.services')
       return {
         request: function (config) {
           config.headers = config.headers || {};
-          var credential = CacheService.getCache('hccredential');
+          var credential = CacheService.getValue('credential');
           if (credential) {
             config.headers.Authorization = credential.token_type + ' ' + credential.access_token;
           }
@@ -13,7 +13,7 @@ angular.module('HomeCooked.services')
         },
         response: function (response) {
           if (response.status === 401) {
-            CacheService.emptyCache();
+            CacheService.invalidateCache();
           }
           return response || $q.when(response);
         }

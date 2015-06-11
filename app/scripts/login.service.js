@@ -22,7 +22,7 @@
     }
 
     function logout() {
-      updateCache();
+      invalidateCache();
     }
 
     function getUser() {
@@ -31,7 +31,7 @@
 
     function setUserZipCode(zipcode) {
       user.zipcode = zipcode;
-      CacheService.setCache('hcuser', user);
+      CacheService.setValue({user: user});
     }
 
     function becomeChef(chefInfo) {
@@ -48,7 +48,7 @@
     }
 
     function getUserFromCache() {
-      return CacheService.getCache('hcuser') || {};
+      return CacheService.getValue('user') || {};
     }
 
     function homeCookedLogin(accessToken, provider) {
@@ -62,11 +62,15 @@
           // TODO this should come from the server
           data.user.zipcode = user.zipcode;
           data.user.isLoggedIn = true;
-          updateCache(data.credential, data.user);
+          CacheService.setValue({
+            credential: data.credential,
+            user: data.user
+          });
+          user = data.user;
           deferred.resolve(user);
         })
         .error(function loginFail(data) {
-          updateCache();
+          invalidateCache();
           deferred.reject(data);
         });
       return deferred.promise;
@@ -90,11 +94,9 @@
       return deferred.promise;
     }
 
-    function updateCache(credential, newUser) {
-      newUser = newUser || {};
-      CacheService.setCache('hccredential', credential);
-      CacheService.setCache('hcuser', newUser);
-      user = newUser;
+    function invalidateCache() {
+      CacheService.invalidateCache();
+      user = {};
     }
   }
 })();

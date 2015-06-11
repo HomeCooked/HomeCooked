@@ -1,46 +1,57 @@
 'use strict';
 (function () {
   angular.module('HomeCooked.services').factory('CacheService', CacheService);
-  CacheService.$inject = ['$window'];
-  function CacheService($window) {
-    var cacheId = 'hcdata',
-      cacheData = getCacheData();
+  CacheService.$inject = ['$window', '_'];
+  function CacheService($window, _) {
+    var cacheId = 'hc-cache',
+      cache = readCache(cacheId) || {};
 
     return {
-      getCache: getCache,
-      setCache: setCache,
-      emptyCache: emptyCache
+      getValue: getValue,
+      setValue: setValue,
+      invalidateCache: invalidateCache
     };
 
-    function getCache(key) {
-      return cacheData[key];
+    function getValue(key) {
+      return cache[key];
     }
 
-    function setCache(key, value) {
-      cacheData[key] = value;
-      if (typeof value === 'undefined') {
-        delete cacheData[key];
-      }
-      saveCacheData();
+    function setValue(keyValues) {
+      _.forEach(keyValues, function (value, key) {
+        cache[key] = value;
+        if (typeof value === 'undefined') {
+          delete cache[key];
+        }
+      });
+      saveCache(cacheId, cache);
     }
 
-    function emptyCache() {
-      cacheData = {};
-      saveCacheData();
+    function invalidateCache() {
+      saveCache(cacheId);
+      cache = {};
     }
 
-    function getCacheData() {
+    function readCache(key) {
       if (!$window.localStorage) {
-        return {};
+        return;
       }
-      var serializedCache = $window.localStorage.getItem(cacheId);
-      return JSON.parse(serializedCache) || {};
+      var storedCache = $window.localStorage.getItem(key);
+      if (storedCache) {
+        return JSON.parse(storedCache);
+      }
     }
 
-    function saveCacheData() {
-      if ($window.localStorage) {
-        $window.localStorage.setItem(cacheId, JSON.stringify(cacheData));
+    function saveCache(key, data) {
+      if (!$window.localStorage) {
+        return;
+      }
+      if (!data) {
+        $window.localStorage.removeItem(key);
+      }
+      else {
+        $window.localStorage.setItem(key, JSON.stringify(data));
       }
     }
   }
-})();
+})
+();
