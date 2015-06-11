@@ -7,7 +7,6 @@
         background: #f8f8f8;
         border: 1px solid #ddd;
         border-radius: 4px;
-        opacity: 0.95;
 
         .item-input-wrapper {
             padding: 0 8px;
@@ -30,6 +29,29 @@
                 font-size: 200%;
                 margin-top: 5px;
             }
+        }
+    }
+
+    .results {
+        background: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        position: absolute;
+        top: 66px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        .item {
+            background: transparent;
+        }
+    }
+
+    .show-from-bottom {
+        -webkit-transition: all 250ms ease-out 0s;
+        -webkit-transform: translate3d(0, 0, 0);
+
+        &.ng-hide {
+            -webkit-transform: translate3d(0, 110%, 0);
         }
     }
 }

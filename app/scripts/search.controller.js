@@ -12,6 +12,7 @@
         var vm = this;
 
         vm.query = '';
+        vm.visible = false;
 
         activate();
 
