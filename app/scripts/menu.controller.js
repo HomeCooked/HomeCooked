@@ -53,6 +53,9 @@
     }, function (isLoggedIn) {
       vm.isUserLoggedIn = isLoggedIn === true;
       vm.isChef = user.isChef;
+      if (user.isChef && buyerLinks[buyerLinks.length - 1].path === 'app.enroll') {
+        buyerLinks.pop();
+      }
       updateStateIfNeeded($state.current);
     });
 
