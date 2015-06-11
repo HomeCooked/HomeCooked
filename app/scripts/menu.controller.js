@@ -10,7 +10,6 @@
     function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, LoginService, ChefService, _) {
 
         var vm = this;
-        vm.logout = logout;
         vm.login = login;
         vm.switchView = switchView;
         vm.go = go;
@@ -103,12 +102,6 @@
             vm.chefMode = chefMode;
             vm.links = vm.chefMode ? chefLinks : buyerLinks;
             vm.selectedPath = path;
-        }
-
-        function logout() {
-            LoginService.logout();
-            init();
-            vm.go('app.buyer');
         }
 
         function switchView() {
