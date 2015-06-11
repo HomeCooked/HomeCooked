@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', 'CacheService', '_'];
+    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', 'LoginService', 'ChefService', '_'];
 
-    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, LoginService, ChefService, CacheService, _) {
+    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, LoginService, ChefService, _) {
 
         var vm = this;
         vm.logout = logout;
@@ -49,11 +49,11 @@
 
         function init() {
             var user = LoginService.getUser();
-            vm.isUserLoggedIn = !!user;
-            vm.userFirstName = user ? user.first_name : '';
+            vm.isUserLoggedIn = user.isLoggedIn;
+            vm.userFirstName = user.first_name || '';
             vm.isChef = undefined;
             vm.selectedPath = null;
-            if (user) {
+            if (user.id) {
                 ChefService.getChefInfo(user.id)
                     .then(function() {
                         vm.isChef = true;
@@ -90,8 +90,8 @@
                 }
                 return;
             }
-            var validZipCode = CacheService.getCache('hcvalidzipcode'),
-                redirectPath = validZipCode ? 'app.buyer' : 'zipcode-validation';
+            var zipcode = LoginService.getUser().zipcode,
+                redirectPath = !!zipcode ? 'app.buyer' : 'zipcode-validation';
             if (!vm.isUserLoggedIn && path !== redirectPath) {
                 if (event) {
                     event.preventDefault();

@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
-    ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup', 'CacheService'];
+    ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup', 'LoginService'];
 
-    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, CacheService) {
+    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService) {
 
         var vm = this;
         vm.validZipCode = validZipCode;
@@ -87,7 +87,7 @@
                     $ionicLoading.hide();
                     var availableZipCodes = [94114, 94131, 94110, 94102, 94103, 95117];
                     var isAvailable = availableZipCodes.indexOf(parseInt(vm.zipcode)) !== -1;
-                    CacheService.setCache('hcvalidzipcode', isAvailable);
+                    LoginService.setUserZipCode(vm.zipcode);
                     if (isAvailable) {
                         $ionicHistory.nextViewOptions({
                           historyRoot: true

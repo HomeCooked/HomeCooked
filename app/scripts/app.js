@@ -130,10 +130,10 @@ HomeCooked
     $urlRouterProvider.otherwise(function ($injector) {
       var $state = $injector.get('$state');
       var LoginService = $injector.get('LoginService');
-      var CacheService = $injector.get('CacheService');
-      var nextState = 'app.not-found';
-      if (!LoginService.getUser()) {
-        nextState = CacheService.getCache('hcvalidzipcode') ? 'app.buyer' : 'zipcode-validation';
+      var nextState = 'app.not-found',
+          user = LoginService.getUser();
+      if (!user.isLoggedIn) {
+        nextState = user.zipcode ? 'app.buyer' : 'zipcode-validation';
       }
       else if ($state.current.name === '') {
         nextState = 'app.buyer';

@@ -1,41 +1,46 @@
 'use strict';
-angular.module('HomeCooked.services')
-  .factory('CacheService', ['$window',
-    function ($window) {
-      var self = this;
+(function () {
+  angular.module('HomeCooked.services').factory('CacheService', CacheService);
+  CacheService.$inject = ['$window'];
+  function CacheService($window) {
+    var cacheId = 'hcdata',
+      cacheData = getCacheData();
 
-      self.getCache = function (key) {
-        if ($window.localStorage) {
-          var serializedCache = $window.localStorage.getItem(key);
-          return deserializeCache(serializedCache);
-        }
-      };
+    return {
+      getCache: getCache,
+      setCache: setCache,
+      emptyCache: emptyCache
+    };
 
-      self.setCache = function (key, value) {
-        if (!$window.localStorage) {
-          return;
-        }
+    function getCache(key) {
+      return cacheData[key];
+    }
 
-        if (typeof value === 'undefined') {
-          $window.localStorage.removeItem(key);
-        }
-        else {
-          if (typeof value === 'object') {
-            value = JSON.stringify(value);
-          }
-          $window.localStorage.setItem(key, value);
-        }
-      };
+    function setCache(key, value) {
+      cacheData[key] = value;
+      if (typeof value === 'undefined') {
+        delete cacheData[key];
+      }
+      saveCacheData();
+    }
 
-      var deserializeCache = function (json) {
-        try {
-          return JSON.parse(json);
-        }
-        catch (e) {
-          return json;
-        }
-      };
+    function emptyCache() {
+      cacheData = {};
+      saveCacheData();
+    }
 
-      return self;
-    }]
-);
+    function getCacheData() {
+      if (!$window.localStorage) {
+        return {};
+      }
+      var serializedCache = $window.localStorage.getItem(cacheId);
+      return JSON.parse(serializedCache) || {};
+    }
+
+    function saveCacheData() {
+      if ($window.localStorage) {
+        $window.localStorage.setItem(cacheId, JSON.stringify(cacheData));
+      }
+    }
+  }
+})();
