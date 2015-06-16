@@ -2,8 +2,8 @@
 (function () {
   angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-  DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging'];
-  function DishesCtrl($rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging) {
+  DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', '_'];
+  function DishesCtrl($rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, _) {
     var vm = this;
 
     vm.dishes = [];
@@ -44,7 +44,8 @@
           _.remove(vm.dishes, dish);
         })
         .catch(function () {
-          HCMessaging.showMessage('Cannot delete', 'There are pending orders for the dish you tried to delete.<br>You will be able to delete after the orders have been completed.');
+          HCMessaging.showMessage('Cannot delete', 'There are pending orders for the dish you tried to delete.<br>' +
+            'You will be able to delete after the orders have been completed.');
         })
         .finally($ionicLoading.hide);
     }

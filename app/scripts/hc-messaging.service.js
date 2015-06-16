@@ -12,7 +12,6 @@
 
     function showMessage(title, message) {
       $ionicLoading.hide();
-      $log.error(error);
       $ionicPopup.alert({
         title: title,
         template: message
