@@ -68,8 +68,11 @@
           });
           return ChefService.getChefInfo(user.id);
         })
-        .then(function () {
+        .then(function gotChefInfo() {
           user.isChef = true;
+        }, function noChefInfo() {
+          user.isChef = false;
+          return $q.when();
         })
         .finally(function () {
           if (user.isLoggedIn) {
