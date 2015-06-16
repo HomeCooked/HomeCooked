@@ -23,9 +23,6 @@
     }, {
       name: 'Edit Bio',
       path: 'app.bio'
-    }, {
-      name: 'Get more delivery kits',
-      path: 'app.delivery'
     }];
 
     var buyerLinks = [{
