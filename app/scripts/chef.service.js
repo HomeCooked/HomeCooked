@@ -34,6 +34,11 @@ angular.module('HomeCooked.services')
       };
 
 
+      var deleteDish = function (dish) {
+        return handleResponses($http.delete(baseUrl + 'dishes/' + dish.id + '/'));
+      };
+
+
       var addBatch = function (batch) {
         return handleResponses($http.post(baseUrl + 'batches/', batch)).then(getBatches);
       };
@@ -78,6 +83,7 @@ angular.module('HomeCooked.services')
         getBatches: getBatches,
         getDishes: getDishes,
         addDish: addDish,
+        deleteDish: deleteDish,
         addBatch: addBatch,
         removeBatchAvailablePortions: removeBatchAvailablePortions,
         getChefData: getChefData,
