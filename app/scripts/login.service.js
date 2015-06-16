@@ -5,6 +5,11 @@
   LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', 'ChefService', '_'];
   function LoginService($q, $http, ENV, CacheService, ChefService, _) {
     var user = CacheService.getValue('user') || {};
+    if (user.isLoggedIn && !user.isChef) {
+      ChefService.getChefInfo(user.id).then(function () {
+        user.isChef = true;
+      });
+    }
 
     return {
       login: login,

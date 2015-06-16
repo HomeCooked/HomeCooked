@@ -69,7 +69,8 @@ HomeCooked
         url: '/bio',
         views: {
           'menuContent': {
-            templateUrl: 'templates/bio.html'
+            templateUrl: 'templates/bio.html',
+            controller: 'BioCtrl as vm'
           }
         }
       })
