@@ -73,6 +73,10 @@ angular.module('HomeCooked.services')
         return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/'));
       };
 
+      var setChefBio = function (chefId, bio) {
+        return handleResponses($http.post(baseUrl + 'chefs/' + 'chefId' + '/', {bio: bio}));
+      };
+
       return {
         getOrders: getOrders,
         getBatches: getBatches,
@@ -81,7 +85,8 @@ angular.module('HomeCooked.services')
         addBatch: addBatch,
         removeBatchAvailablePortions: removeBatchAvailablePortions,
         getChefData: getChefData,
-        getChefInfo: getChefInfo
+        getChefInfo: getChefInfo,
+        setChefBio: setChefBio
       };
     }]
 );
