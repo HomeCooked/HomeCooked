@@ -30,7 +30,7 @@
       $ionicPopup.alert({
         title: 'Oops, something went wrong!',
         scope: scope,
-        templateUrl: 'templates/error.html'
+        templateUrl: 'templates/hc-messaging/error.html'
       });
     }
   }
