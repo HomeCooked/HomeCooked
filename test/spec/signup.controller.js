@@ -16,6 +16,8 @@ describe('Controller: SignupCtrl', function() {
       },
       getUser: function() {
         return {};
+      },
+      setIsChef: function () {
       }
     };
     $provide.value('LoginService', LoginServiceMock);

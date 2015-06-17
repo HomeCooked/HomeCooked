@@ -1,16 +1,19 @@
 <ion-view title="My Dishes" ng-controller="DishesCtrl as ctrl" hide-back-button="true">
   <ion-content class="has-header">
     <ion-list>
-      <div class="item item-avatar" ng-repeat="dish in ctrl.dishes">
+      <div class="item item-avatar item-button-right" ng-repeat="dish in ctrl.dishes">
         <img ng-src="{{dish.image || 'images/logo.png'}}">
 
         <h2>{{dish.title}}</h2>
 
         <p>{{dish.description}}</p>
         <a ng-href="#/dish/{{dish.id}}">{{dish.rating || 0}}/5 ({{dish.voters || 0}} reviews)</a>
+        <button class="button button-clear button-stable" ng-click="ctrl.deleteDish(dish)">
+          <i class="icon ion-trash-a"></i>
+        </button>
       </div>
       <div class="item button-bar">
-        <div class="button button-positive" ng-click="ctrl.modal.show()">Add New Dish</div>
+        <div class="button button-positive" ng-click="ctrl.showModal()">Add New Dish</div>
       </div>
     </ion-list>
   </ion-content>
