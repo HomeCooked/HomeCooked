@@ -1,13 +1,13 @@
-'use strict';
 (function () {
-  angular.module('HomeCooked.controllers').controller('BioCtrl', BioCtrl);
+  'use strict';
+  angular.module('HomeCooked.controllers').controller('ChefBioCtrl', ChefBioCtrl);
 
-  BioCtrl.$inject = ['$scope', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging'];
+  ChefBioCtrl.$inject = ['$scope', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging'];
 
-  function BioCtrl($scope, $ionicLoading, ChefService, LoginService, HCMessaging) {
+  function ChefBioCtrl($scope, $ionicLoading, ChefService, LoginService, HCMessaging) {
     var vm = this;
     vm.updateBio = updateBio;
-    vm.maxLength = 600;
+    vm.maxLength = 160;
     vm.chefInfo = {};
 
     $scope.$on('$ionicView.beforeEnter', function () {
