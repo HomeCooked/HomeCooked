@@ -37,7 +37,7 @@ HomeCooked
         url: '/orders',
         views: {
           'menuContent': {
-            templateUrl: 'templates/orders.html'
+            templateUrl: 'templates/chef/orders.html'
           }
         }
       })
@@ -53,7 +53,7 @@ HomeCooked
         url: '/seller',
         views: {
           'menuContent': {
-            templateUrl: 'templates/chef.html'
+            templateUrl: 'templates/chef/chef.html'
           }
         }
       })
@@ -61,7 +61,7 @@ HomeCooked
         url: '/dishes',
         views: {
           'menuContent': {
-            templateUrl: 'templates/dishes.html'
+            templateUrl: 'templates/chef/dishes.html'
           }
         }
       })
@@ -69,15 +69,8 @@ HomeCooked
         url: '/bio',
         views: {
           'menuContent': {
-            templateUrl: 'templates/bio.html'
-          }
-        }
-      })
-      .state('app.delivery', {
-        url: '/delivery',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/delivery.html'
+            templateUrl: 'templates/chef/bio.html',
+            controller: 'ChefBioCtrl as vm'
           }
         }
       })
@@ -131,7 +124,7 @@ HomeCooked
       var $state = $injector.get('$state');
       var LoginService = $injector.get('LoginService');
       var nextState = 'app.not-found',
-          user = LoginService.getUser();
+        user = LoginService.getUser();
       if (!user.isLoggedIn) {
         nextState = user.zipcode ? 'app.buyer' : 'zipcode-validation';
       }
@@ -140,6 +133,9 @@ HomeCooked
       }
       $state.go(nextState);
     });
+  })
+  .run(function (LoginService) {
+    LoginService.setIsChef();
   })
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
