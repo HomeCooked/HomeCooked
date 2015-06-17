@@ -124,7 +124,7 @@ HomeCooked
       var $state = $injector.get('$state');
       var LoginService = $injector.get('LoginService');
       var nextState = 'app.not-found',
-          user = LoginService.getUser();
+        user = LoginService.getUser();
       if (!user.isLoggedIn) {
         nextState = user.zipcode ? 'app.buyer' : 'zipcode-validation';
       }
@@ -133,6 +133,9 @@ HomeCooked
       }
       $state.go(nextState);
     });
+  })
+  .run(function (LoginService) {
+    LoginService.setIsChef();
   })
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {

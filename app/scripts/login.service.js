@@ -5,20 +5,30 @@
   LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', 'ChefService', '_'];
   function LoginService($q, $http, ENV, CacheService, ChefService, _) {
     var user = CacheService.getValue('user') || {};
-    if (user.isLoggedIn && !user.isChef) {
-      ChefService.getChefInfo(user.id).then(function () {
-        user.isChef = true;
-      });
-    }
 
     return {
       login: login,
       logout: logout,
       getUser: getUser,
       setUserZipCode: setUserZipCode,
-      becomeChef: becomeChef
+      becomeChef: becomeChef,
+      setIsChef: setIsChef
     };
 
+    function setIsChef() {
+      if (user.isLoggedIn && !user.isChef) {
+        return ChefService.getChefInfo(user.id)
+          .then(function () {
+            user.isChef = true;
+            return true;
+          })
+          .catch(function () {
+            user.isChef = false;
+            return false;
+          });
+      }
+      return $q.when(user.isChef);
+    }
 
     function login(type) {
       return getAccessToken(type).then(function (accessToken) {
@@ -71,13 +81,7 @@
             provider: provider,
             credential: data.credential
           });
-          return ChefService.getChefInfo(user.id);
-        })
-        .then(function gotChefInfo() {
-          user.isChef = true;
-        }, function noChefInfo() {
-          user.isChef = false;
-          return $q.when();
+          return setIsChef();
         })
         .finally(function () {
           if (user.isLoggedIn) {
