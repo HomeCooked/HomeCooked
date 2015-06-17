@@ -1,5 +1,5 @@
-'use strict';
 (function () {
+  'use strict';
   angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
   DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', '_'];
@@ -7,22 +7,32 @@
     var vm = this;
 
     vm.dishes = [];
-    vm.modal = null;
 
+    vm.showModal = showModal;
     vm.hideModal = hideModal;
     vm.addDish = addDish;
     vm.deleteDish = deleteDish;
 
-    var modalScope = $rootScope.$new();
-    modalScope.ctrl = vm;
+    var modal, modalScope = $rootScope.$new();
 
-    $ionicModal.fromTemplateUrl('templates/add-dish.html', {
-      scope: modalScope
-    }).then(function (modal) {
-      vm.modal = modal;
+
+    $scope.$on('$ionicView.beforeEnter', function onBeforeEnter() {
+      modalScope.ctrl = vm;
+      modalScope.dish = emptyDish();
+
+      $ionicLoading.show({template: 'Getting dishes...'});
+      ChefService.getDishes()
+        .then(function (dishes) {
+          vm.dishes = dishes;
+        })
+        .catch(HCMessaging.showError)
+        .finally($ionicLoading.hide);
     });
 
-    $scope.$on('$ionicView.beforeEnter', reload);
+    $scope.$on('$destroy', function onDestroy() {
+      modal.remove();
+      modal = undefined;
+    });
 
     function addDish(dish, form) {
       $ionicLoading.show({template: 'Adding dish...'});
@@ -50,24 +60,28 @@
         .finally($ionicLoading.hide);
     }
 
+    function showModal() {
+      if (!vm.modal) {
+        $ionicModal.fromTemplateUrl('templates/add-dish.html', {
+          scope: modalScope
+        }).then(function (m) {
+          modal = m;
+          modal.show();
+        });
+      }
+      else {
+        modal.show();
+      }
+    }
+
     function hideModal() {
-      vm.modal.hide();
+      if (modal) {
+        modal.hide();
+      }
     }
 
     function emptyDish() {
       return {user: LoginService.getUser().id};
-    }
-
-    function reload() {
-      modalScope.dish = emptyDish();
-
-      $ionicLoading.show({template: 'Getting dishes...'});
-      ChefService.getDishes()
-        .then(function (dishes) {
-          vm.dishes = dishes;
-        })
-        .catch(HCMessaging.showError)
-        .finally($ionicLoading.hide);
     }
   }
 })();

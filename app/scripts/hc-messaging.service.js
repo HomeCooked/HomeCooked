@@ -1,5 +1,5 @@
-'use strict';
 (function () {
+  'use strict';
   angular.module('HomeCooked.services').factory('HCMessaging', HCMessaging);
 
   HCMessaging.$inject = ['$log', '$ionicLoading', '$ionicPopup'];
