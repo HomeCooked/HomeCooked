@@ -5,16 +5,17 @@
     .module('HomeCooked.controllers')
     .controller('PaymentCtrl', PaymentCtrl);
 
-  PaymentCtrl.$inject = ['$scope', '$ionicLoading', 'HCMessaging', 'PaymentService'];
+  PaymentCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'HCMessaging', 'PaymentService'];
 
-  function PaymentCtrl($scope, $ionicLoading, HCMessaging, PaymentService) {
+  function PaymentCtrl($scope, $state, $ionicPopup, $ionicLoading, HCMessaging, PaymentService) {
+
+    var vm = this;
 
     $scope.stripeCallback = stripeCallback;
     $scope.showLoading = showLoading;
 
     $scope.$on('$ionicView.beforeEnter', function () {
-      // TODO get values from server!
-      $scope.number = $scope.expiry = $scope.cvc = undefined;
+      vm.number = vm.expiry = vm.cvc = undefined;
     });
 
     function showLoading() {
@@ -27,7 +28,16 @@
         HCMessaging.showError(result.error);
       }
       else {
-        PaymentService.savePaymentInfo(result).catch(HCMessaging.showError).finally($ionicLoading.hide);
+        PaymentService.savePaymentInfo(result)
+          .then(function () {
+            $state.go('app.settings');
+            $ionicPopup.alert({
+              title: 'Save successful',
+              template: 'Your payment information was saved!',
+            });
+          })
+          .catch(HCMessaging.showError)
+          .finally($ionicLoading.hide);
       }
     }
   }
