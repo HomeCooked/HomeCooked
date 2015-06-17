@@ -1,0 +1,31 @@
+<ion-view title="Payment information" class="settings-page">
+  <ion-content>
+    <form class="list" stripe-form="vm.stripeCallback" name="paymentForm">
+      <label class="item item-input">
+        <input type="text" ng-model="vm.number" placeholder="Card Number"
+               payments-format="card" payments-validate="card" name="card"/>
+        <span class="invalid-entry"
+              ng-show="paymentForm.card.$dirty && paymentForm.card.$invalid">Invalid card number</span>
+      </label>
+
+      <label class="item item-input">
+        <input type="text" ng-model="vm.expiry" placeholder="Expiration" payments-format="expiry"
+               payments-validate="expiry"
+               name="expiry"/>
+        <span class="invalid-entry" ng-show="paymentForm.expiry.$dirty && paymentForm.expiry.$invalid">Invalid expiration</span>
+      </label>
+
+      <label class="item item-input">
+        <input type="text" ng-model="vm.cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"
+               name="cvc"/>
+        <span class="invalid-entry" ng-show="paymentForm.cvc.$dirty && paymentForm.cvc.$invalid">Invalid CVC</span>
+      </label>
+
+      <div class="item button-bar">
+        <button type="submit" class="button button-positive" ng-disabled="paymentForm.$invalid">
+          Save
+          <i class="icon ion-ios-checkmark-empty"></i></button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>

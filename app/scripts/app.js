@@ -1,6 +1,8 @@
 'use strict';
 
-var HomeCooked = angular.module('HomeCooked', ['ionic', 'ngAnimate', 'config', 'HomeCooked.controllers', 'leaflet-directive']);
+var HomeCooked = angular.module('HomeCooked', [
+  'ionic', 'ngAnimate', 'config', 'HomeCooked.controllers',
+  'leaflet-directive', 'angular-stripe', 'angularPayments']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
@@ -10,13 +12,16 @@ HomeCooked
   .config(function ($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   })
-  .config(function ($stateProvider, $urlRouterProvider, $compileProvider, ENV) {
+  .config(function ($stateProvider, $urlRouterProvider, $compileProvider, ENV, stripeProvider) {
 
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
 
     window.openFB.init({
       appId: ENV.FACEBOOK_APP_ID
     });
+
+    stripeProvider.setPublishableKey(ENV.STRIPE_KEY);
+
 
     $stateProvider
       .state('app', {
@@ -108,6 +113,15 @@ HomeCooked
           }
         }
       })
+      .state('app.settings-payment', {
+        url: '/settings/payment',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/settings/payment.html',
+            controller: 'PaymentCtrl as vm'
+          }
+        }
+      })
       .state('app.not-found', {
         url: '/not-found',
         views: {
@@ -131,7 +145,7 @@ HomeCooked
       var $state = $injector.get('$state');
       var LoginService = $injector.get('LoginService');
       var nextState = 'app.not-found',
-          user = LoginService.getUser();
+        user = LoginService.getUser();
       if (!user.isLoggedIn) {
         nextState = user.zipcode ? 'app.buyer' : 'zipcode-validation';
       }
