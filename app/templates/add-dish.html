@@ -19,20 +19,21 @@
       </div>
       <label class="item item-input">
         <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required/>
-        <span ng-show="dishForm.title.$dirty && dishForm.title.$invalid">Minimum 2 chars.</span>
+        <p class="hc-error-message" ng-show="dishForm.title.$dirty && dishForm.title.$invalid">Minimum 2 chars</p>
       </label>
-      <label class="item item-input">
-        <textarea name="description" placeholder="Description" ng-model="dish.description" ng-minlength="2" rows="5"
-                  required class="hc-dish-description"></textarea>
-        <span ng-show="dishForm.description.$dirty && dishForm.description.$invalid">Minimum 2 chars.</span>
+      <label class="item">
+        <textarea name="description" placeholder="Description" ng-model="dish.description" ng-minlength="2" maxlength="160" required
+                  class="hc-dish-description"></textarea>
+        <p class="hc-char-count subdued">{{dish.description.length || 0}}/160</p>
+        <p class="hc-error-message" ng-show="dishForm.description.$dirty && dishForm.description.$invalid">Minimum 2 chars</p>
       </label>
       <label class="item item-input">
         <input type="text" name="ingredients" placeholder="Ingredients" ng-model="dish.ingredients" ng-minlength="2"
                required/>
-        <span ng-show="dishForm.ingredients.$dirty && dishForm.ingredients.$invalid">Minimum 2 chars.</span>
+        <p class="hc-error-message" ng-show="dishForm.ingredients.$dirty && dishForm.ingredients.$invalid">Minimum 2 chars</p>
       </label>
       <label class="item item-input">
-        <input name="price" ng-model="dish.price" placeholder="Price (USD)" type="number" pattern="[0-9.]*"
+        <input name="price" ng-model="dish.price" placeholder="Price (USD)" type="number" pattern="[0-9.]*" min="0.1" max="200"
                value="price"
                required ng-minlength="1" ng-change="dish.price = dish.price < 0 ? 0 : dish.price"/>
       </label>
