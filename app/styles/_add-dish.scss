@@ -1,7 +1,10 @@
 .add-dish {
-  .file-upload {
+  .hc-image-container {
+    text-align: center;
+  }
+  .hc-button-upload {
     position: relative;
-    overflow: hidden;
+    display: inline-block;
     input[type='file'] {
       z-index: 2;
       position: absolute;

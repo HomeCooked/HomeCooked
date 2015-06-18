@@ -5,17 +5,17 @@
     <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
   </ion-header-bar>
   <ion-content>
-    <form>
-      <div class="item button-bar">
-        <div class="button button-positive file-upload">
-          <input type="file" name="file-upload" accept="image/*"/>
+    <form novalidate class="list" name="dishForm">
+      <div class="hc-image-container">
+        <div upload-button ng-if="!dish.imageUrl" class="button button-positive button-clear hc-button-upload"
+             url="/api/v1/dish/upload"
+             data="formData" name="dish" accept="image/*"
+             on-upload="ctrl.uploadStart(files)"
+             on-success="ctrl.uploadSuccess(response)"
+             on-error="ctrl.uploadFail(response)">
           Upload Image
         </div>
-      </div>
-    </form>
-    <form novalidate class="list" name="dishForm">
-      <div style="text-align: center;" ng-if="dish.imageUrl">
-        <img ng-src="dish.imageUrl" height="180">
+        <img ng-if="dish.imageUrl" ng-src="dish.imageUrl" height="180">
       </div>
       <label class="item item-input">
         <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required/>
