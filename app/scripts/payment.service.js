@@ -1,5 +1,6 @@
-'use strict';
 (function () {
+  'use strict';
+
   angular.module('HomeCooked.services').factory('PaymentService', PaymentService);
 
   PaymentService.$inject = ['$http', 'ENV'];
