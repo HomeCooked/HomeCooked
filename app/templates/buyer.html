@@ -17,82 +17,12 @@
   </ion-pane>
   <ion-content ng-hide="!vm.isListVisible">
       <div class="list"> 
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/marc.jpg">
-          <h2>Marc-Antoine Andreoli <span style="color:#F4C304; font-size: 90%">★ 4.5</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/valdrin.jpg">
-          <h2>Valdrin Koshi <span style="color:#F4C304; font-size: 90%">★ 6.2</span></h2>
-          <p>I am Loving it.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://didierbaquier.fr/img/me.jpg">
-          <h2>Didier Baquier <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://www.gohomecooked.com/images/jon.jpg">
-          <h2>Jon Whiteaker <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
-          <i class="icon ion-ios-arrow-forward"></i>
-        </a>
-        <a class="item item-avatar item-icon-right" href="#">
-          <img src="http://didierbaquier.fr/img/me.jpg">
-          <h2>Didier Baquier <span style="color:#F4C304; font-size: 90%">★ 4.2</span></h2>
-          <p>Doing the best hamburgers in town.</p>
+        <a class="item item-avatar item-icon-right" ng-repeat="chef in vm.chefs">
+          <img ng-src="{{chef.picture}}">
+          <h2>{{chef.first_name}} {{chef.last_name}} <span style="font-size: 80%">{{chef.distance}}</span></h2>
+          <span style="color:#F4C304; font-size: 90%">★ {{chef.rating}}</span>
+          <span style="font-size: 90%"> - {{chef.dish_count}} dishes</span>
+          <p>{{chef.description}}</p>
           <i class="icon ion-ios-arrow-forward"></i>
         </a>
       </div> 

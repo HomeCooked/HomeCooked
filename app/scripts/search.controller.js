@@ -13,6 +13,7 @@
 
         vm.query = '';
         vm.visible = false;
+        vm.chefs = [];
 
         activate();
 
@@ -20,6 +21,43 @@
             //init the map
             initMapProperties();
             //retrieve chefs
+            vm.chefs = [{
+                picture: 'http://www.gohomecooked.com/images/marc.jpg',
+                first_name: 'Marc-Antoine',
+                last_name: 'Andreoli',
+                rating: '4.5',
+                distance: '0.2mi',
+                description: 'Doing the best hamburgers in town.',
+                dish_count: 2,
+                location: {
+                    latitude: 37.7581146,
+                    longitude: -122.4184106
+                }
+            }, {
+                picture: 'http://www.gohomecooked.com/images/valdrin.jpg',
+                first_name: 'Valdrin',
+                last_name: 'Koshi',
+                rating: '4.5',
+                distance: '0.2mi',
+                description: 'Doing the best hamburgers in town.',
+                dish_count: 4,
+                location: {
+                    latitude: 37.7581146,
+                    longitude: -122.4184106
+                }
+            }, {
+                picture: 'http://didierbaquier.fr/img/me.jpg',
+                first_name: 'Didier',
+                last_name: 'Baquier',
+                rating: '4.5',
+                distance: '0.2mi',
+                description: 'Doing the best hamburgers in town.',
+                dish_count: 1,
+                location: {
+                    latitude: 37.7581146,
+                    longitude: -122.4184106
+                }
+            }];
             //center the map on user location
             $timeout(function() {
                 navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError);
