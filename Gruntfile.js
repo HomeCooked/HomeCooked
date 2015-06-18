@@ -380,6 +380,7 @@ module.exports = function (grunt) {
         frameworks: ['mocha', 'sinon-chai'],
         files: [
           '<%= yeoman.app %>/vendor/**/*.js',
+          'test/vendor/**/*.js',
           '<%= yeoman.app %>/lib/angular/angular.js',
           '<%= yeoman.app %>/lib/angular-animate/angular-animate.js',
           '<%= yeoman.app %>/lib/angular-mocks/angular-mocks.js',
@@ -393,7 +394,6 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/lib/angular-upload/angular-upload.min.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
           '<%= yeoman.app %>/**/*.html',
-          'test/mock/**/*.js',
           'test/spec/**/*.js'
         ],
         ngHtml2JsPreprocessor: {
