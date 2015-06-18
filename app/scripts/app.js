@@ -34,6 +34,15 @@ HomeCooked
           }
         }
       })
+      .state('app.chef-preview', {
+        url: '/buyer/:id/preview',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/buyer/preview.html',
+            controller: 'ChefPreviewCtrl as vm'
+          }
+        }
+      })
       .state('app.orders', {
         url: '/orders',
         views: {

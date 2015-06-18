@@ -6,14 +6,15 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$timeout', '$ionicLoading', '$ionicPopup'];
+    SearchCtrl.$inject = ['$state', '$timeout', '$ionicLoading', '$ionicPopup'];
 
-    function SearchCtrl($timeout, $ionicLoading, $ionicPopup) {
+    function SearchCtrl($state, $timeout, $ionicLoading, $ionicPopup) {
         var vm = this;
 
         vm.query = '';
         vm.visible = false;
         vm.chefs = [];
+        vm.goToPreview = goToPreview;
 
         activate();
 
@@ -132,11 +133,8 @@
             };
         }
 
-        vm.findChefs = function() {
-            $ionicLoading.show({
-                template: 'Searching...',
-                duration: 2000
-            });
-        };
+        function goToPreview(chefId) {
+            return $state.go('app.chef-preview', {id: chefId});
+        }
     }
 })();
