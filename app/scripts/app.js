@@ -29,7 +29,7 @@ HomeCooked
         url: '/buyer',
         views: {
           'menuContent': {
-            templateUrl: 'templates/buyer.html',
+            templateUrl: 'templates/buyer/search.html',
             controller: 'SearchCtrl as vm'
           }
         }
