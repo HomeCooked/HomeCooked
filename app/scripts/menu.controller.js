@@ -68,10 +68,10 @@
         return 'zipcode-validation';
       }
 
-      var chefMode = _.some(chefLinks, {path: path});
-      if ((vm.isChef === false && chefMode) || (!user.isLoggedIn && user.zipcode)) {
-        return 'app.buyer';
-      }
+      // var chefMode = _.some(chefLinks, {path: path});
+      // if ((vm.isChef === false && chefMode) || (!user.isLoggedIn && user.zipcode)) {
+      //   return 'app.buyer';
+      // }
 
       return path;
     }
