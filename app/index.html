@@ -25,7 +25,8 @@
 <ion-nav-view></ion-nav-view>
 
 <!-- build:js scripts/vendor.js -->
-<!-- <script src="vendor/someContribJs.js"></script> -->
+<script src="vendor/stripe.js"></script>
+<script src="vendor/openfb.js"></script>
 <!-- bower:js -->
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-animate/angular-animate.js"></script>
@@ -38,6 +39,8 @@
 <script src="lib/leaflet/dist/leaflet.js"></script>
 <script src="lib/leaflet/dist/leaflet-src.js"></script>
 <script src="lib/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+<script src="lib/angular-stripe/release/angular-stripe.js"></script>
+<script src="lib/angular-payments/lib/angular-payments.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -46,7 +49,6 @@
 
 
 <!-- build:js scripts/scripts.js -->
-<script src="scripts/openfb.js"></script>
 <script src="scripts/config.js"></script>
 <script src="scripts/app.js"></script>
 <script src="scripts/hc-messaging.service.js"></script>
@@ -54,11 +56,12 @@
 <script src="scripts/login.service.js"></script>
 <script src="scripts/auth-interceptor.service.js"></script>
 <script src="scripts/chef.service.js"></script>
-
+<script src="scripts/payment.service.js"></script>
 
 <script src="scripts/menu.controller.js"></script>
 <script src="scripts/signup.controller.js"></script>
 <script src="scripts/settings.controller.js"></script>
+<script src="scripts/payment.controller.js"></script>
 <script src="scripts/chef-bio.controller.js"></script>
 <script src="scripts/enroll.controller.js"></script>
 <script src="scripts/search.controller.js"></script>
