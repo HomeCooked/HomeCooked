@@ -22,6 +22,7 @@
             initMapProperties();
             //retrieve chefs
             vm.chefs = [{
+                id: 1,
                 picture: 'http://www.gohomecooked.com/images/marc.jpg',
                 first_name: 'Marc-Antoine',
                 last_name: 'Andreoli',
@@ -30,10 +31,11 @@
                 description: 'Doing the best hamburgers in town.',
                 dish_count: 2,
                 location: {
-                    latitude: 37.7581146,
-                    longitude: -122.4184106
+                    latitude: 37.7551522,
+                    longitude: -122.4260917
                 }
             }, {
+                id: 2,
                 picture: 'http://www.gohomecooked.com/images/valdrin.jpg',
                 first_name: 'Valdrin',
                 last_name: 'Koshi',
@@ -42,10 +44,11 @@
                 description: 'Doing the best hamburgers in town.',
                 dish_count: 4,
                 location: {
-                    latitude: 37.7581146,
-                    longitude: -122.4184106
+                    latitude: 37.7543784,
+                    longitude: -122.4200126
                 }
             }, {
+                id: 3,
                 picture: 'http://didierbaquier.fr/img/me.jpg',
                 first_name: 'Didier',
                 last_name: 'Baquier',
@@ -58,6 +61,8 @@
                     longitude: -122.4184106
                 }
             }];
+
+            addChefMarkers();
             //center the map on user location
             $timeout(function() {
                 navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError);
@@ -71,12 +76,22 @@
                 lng: coords.longitude,
                 zoom: 14
             };
-            vm.map.markers = {
-                marker: {
-                    lat: coords.latitude,
-                    lng: coords.longitude
-                }
+            vm.map.markers['user'] = {
+                lat: coords.latitude,
+                lng: coords.longitude
             };
+        }
+
+        function addChefMarkers() {
+            for (var i = 0; i < vm.chefs.length; i++) { 
+                var chef = vm.chefs[i];
+                if (chef.location) {
+                    vm.map.markers['chef_' + chef.id] =  {
+                        lat: chef.location.latitude,
+                        lng: chef.location.longitude
+                    };
+                }
+            }
         }
 
         function onLocationError() {
