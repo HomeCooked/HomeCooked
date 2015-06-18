@@ -55,7 +55,7 @@ module.exports = function (grunt) {
             BASE_URL: '//homecooked.herokuapp.com',
             CLIENT_ID: '111',
             FACEBOOK_APP_ID: '805673482820123',
-            STRIPE_KEY: ''
+            STRIPE_KEY: 'pk_test_mtSOdGkIRn82r80ymyrzOmmk'
           }
         }
       }
