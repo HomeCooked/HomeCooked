@@ -13,3 +13,113 @@
     }
     
 }
+.buyer-search-preview{
+    background: #efefef;
+
+    .preview {
+        width: 100%;
+        position: relative;
+        text-align: center;
+        padding: 20px 0;
+        /*background: url('http://images.wisegeek.com/red-brick-wall.jpg');*/
+        /*background: url('http://hdwpics.com/images/1210251A42AA/Wood-hd.jpg');*/
+        background: url("http://www.foodwise.com.au/wp-content/themes/foodwise/images/bg-6.jpg") 400px -300px;
+
+        .button-back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            border-color: white;
+            font-size: 140%;
+            width: 50px;
+            height: 50px;
+        }
+
+        > img {
+            border-radius: 5%;
+            border: 4px solid white;
+            box-shadow: 0px 0px 4px 1px #333;
+            width: 120px;
+            height: 120px;
+        }
+
+        h3 {
+            text-shadow: 0px 2px 2px #333;
+            margin: 10px auto;
+            color: white;
+        }
+
+        p {
+            margin: 0 auto;
+            font-size: 90%;
+            color: white;
+        }
+    }
+    .bio {
+        padding: 10px 10px 0;
+        position: relative;
+        blockquote {
+            margin: 0;
+            padding: 10px 0 0 40px;
+            border: none;
+            &:before { 
+                content: "“";
+                font-family: Georgia;
+                font-size: 600%;
+                position: absolute;
+                color: #444;
+                text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+                top: 40px;
+                left: 10px;
+            }
+        }
+    }
+
+    .dish-card {
+        margin: 20px 10px 40px;
+        .dish-cover{
+            position: relative;
+            .dish-price {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                min-width: 74px;
+                text-align: right;
+                background-color: rgba(255, 255, 255, 0.95);
+                padding: 10px;
+                font-size: 150%;
+                border-radius: 2px;
+            }
+            img {
+                max-width: 100%;
+            }
+        }
+        .dish-details {
+            display: flex; 
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            .rating {
+                text-align: center;
+                font-size: 90%;
+                span {
+                    font-size: 115%;
+                }
+            }
+            .title {
+                flex-grow: 2;
+                text-align: center;
+                span{
+                    font-weight: bold;
+                }
+            }
+            .btn .button {
+                height: 26px;
+                font-size: 14px;
+                min-height: 26px;
+                line-height: 24px;
+            }
+        }
+    }
+}
