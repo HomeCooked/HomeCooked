@@ -2,7 +2,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
   'ionic', 'ngAnimate', 'config', 'HomeCooked.controllers',
-  'leaflet-directive', 'angular-stripe', 'angularPayments']);
+  'leaflet-directive', 'angular-stripe', 'angularPayments', 'lr.upload']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);

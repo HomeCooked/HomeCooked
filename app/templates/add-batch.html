@@ -14,7 +14,7 @@
       <label class="item item-input">
         <span class="input-label">Portions</span>
         <input name="quantity" ng-model="batch.quantity" type="number" pattern="[0-9]*" value="batch.quantity" required
-               placeholder="(max {{ctrl.maxQuantity}})" ng-minlength="1" ng-change="batch.quantity = ctrl.adjustRange(batch.quantity, 1, ctrl.maxQuantity)"/>
+               placeholder="(max {{ctrl.maxQuantity}})" ng-minlength="1" min="1" max="{{ctrl.maxQuantity}}" ng-change="batch.quantity = ctrl.adjustRange(batch.quantity, 1, ctrl.maxQuantity)"/>
       </label>
       <!--<label class="item item-input">
         <input name="price" ng-model="batch.price" type="number" placeholder="Price per portion (max {{ctrl.maxPrice}})"

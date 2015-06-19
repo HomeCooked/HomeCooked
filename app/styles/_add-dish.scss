@@ -1,0 +1,41 @@
+.add-dish {
+  .hc-image-container {
+    text-align: center;
+  }
+  .hc-button-upload {
+    position: relative;
+    display: inline-block;
+    input[type='file'] {
+      z-index: 2;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0;
+      filter: alpha(opacity=0);
+    }
+  }
+
+  .item {
+    padding-right: 11px;
+
+    .hc-dish-description {
+      resize: none;
+      width: 100%;
+      height: 60px;
+    }
+    .hc-char-count {
+      text-align: right;
+    }
+    .hc-error-message {
+      text-align: right;
+    }
+  }
+
+}
+
