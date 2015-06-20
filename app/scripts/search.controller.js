@@ -98,10 +98,13 @@
             var html = '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>' + //
                 '<span class="badge">' + chef.dish_count + '</span>';
 
-            var onClickFn = function() {};
+            var onClickFn = function() {
+                goToPreview(this._icon.chefId);
+            };
 
             return {
                 id: 'chef_' + chef.id,
+                chefId: chef.id,
                 lat: chef.location.latitude,
                 lng: chef.location.longitude,
                 className: 'marker',
