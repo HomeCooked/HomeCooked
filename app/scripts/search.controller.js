@@ -6,9 +6,12 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$timeout', '$ionicLoading', '$ionicPopup'];
+    SearchCtrl.$inject = ['$state', '$timeout', '$ionicLoading', '$ionicPopup', 'mapService'];
 
-    function SearchCtrl($state, $timeout, $ionicLoading, $ionicPopup) {
+    function SearchCtrl($state, $timeout, $ionicLoading, $ionicPopup, mapService) {
+
+        var mapId = 'chefmap';
+        var userLocation = null;
         var vm = this;
 
         vm.query = '';
@@ -63,7 +66,7 @@
                 }
             }];
 
-            addChefMarkers();
+            displayMarkers();
             //center the map on user location
             $timeout(function() {
                 navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError);
@@ -72,27 +75,53 @@
 
         function onLocationSuccess(position) {
             var coords = position.coords;
-            vm.map.center = {
-                lat: coords.latitude,
-                lng: coords.longitude,
-                zoom: 14
-            };
-            vm.map.markers['user'] = {
-                lat: coords.latitude,
-                lng: coords.longitude
-            };
+            userLocation = coords;
+            mapService.centerMap(mapId, coords.latitude, coords.longitude);
+            displayMarkers();
         }
 
-        function addChefMarkers() {
+        function displayMarkers() {
+            var markers = [];
             for (var i = 0; i < vm.chefs.length; i++) { 
                 var chef = vm.chefs[i];
                 if (chef.location) {
-                    vm.map.markers['chef_' + chef.id] =  {
-                        lat: chef.location.latitude,
-                        lng: chef.location.longitude
-                    };
+                    markers.push(getChefMarker(chef));
                 }
             }
+            if (userLocation) {
+                markers.push(getUserMarker(userLocation));
+            }
+            mapService.addMarkers(mapId, markers);
+        }
+
+        function getChefMarker(chef) {
+            var html = '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>' + //
+                '<span class="badge">' + chef.dish_count + '</span>';
+
+            var onClickFn = function() {};
+
+            return {
+                id: 'chef_' + chef.id,
+                lat: chef.location.latitude,
+                lng: chef.location.longitude,
+                className: 'marker',
+                iconSize: [60, 60],
+                iconAnchor: [30, 68],
+                html : html,
+                onClickFn: onClickFn
+            };
+        }
+
+        function getUserMarker(coords) {
+            return {
+                id: 'user',
+                lat: coords.latitude,
+                lng: coords.longitude,
+                className: 'currentUserMarker',
+                iconSize: [12, 12],
+                iconAnchor: [6, 6],
+                html : ''
+            };
         }
 
         function onLocationError() {
@@ -103,6 +132,7 @@
         }
 
         function initMapProperties() {
+            mapService.initMap(mapId);
             vm.map = {
                 defaults: {
                     zoomControl: false,

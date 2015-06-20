@@ -8,5 +8,81 @@
         height:100%;
         display:block;
     }
+
+
+    /* display the user picture inside as a marker with a nice border + an arrow */
+    .marker { 
+        cursor:pointer;
+        background:#424242;
+        border-radius:5px;
+        padding:0px;
+        
+        &:after {  
+            content:"";
+            position: absolute;
+            bottom: -10px;
+            left: 21px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #424242 transparent;
+            display: block;
+            width: 0;
+        }
+
+        img { 
+            width:50px;
+            height:50px;
+            margin:5px;
+            border-radius:2px;
+        }
+
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -8px;
+            color: white;
+            background-color: rgba(36,149,191,0.8);
+        }
+
+    }
+
+    /* display the currentuser marker with a nice pulse */
+    .currentUserMarker { 
+        cursor:pointer;
+        background: #2495BF;
+        border-radius:50%;
+        padding:0px;
+        border: 1px solid #1c7598;
+
+        &:after {
+            content: '';
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            top: -15px;
+            left: -15px;
+           -webkit-animation: pulsate 1.4s ease-out;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-delay: 1.4s;
+            box-shadow: 0 0 1px 1px #1B6D8C;
+            
+            background-color: rgba(36,149,191,0.2);
+        }
+    }
+
+    @-webkit-keyframes pulsate {
+      0% {
+         -webkit-transform: scale(0.1, 0.1);
+        opacity: 0.0 !important; }
+      50% {
+        opacity: 1.0 !important; }
+      100% {
+         -webkit-transform: scale(1.2, 1.2);
+        opacity: 0.0 !important; }
+    }
+ 
+
 }
+
 
