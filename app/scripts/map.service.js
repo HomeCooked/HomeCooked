@@ -90,15 +90,13 @@
          */
 
         function addMarker(mapId, marker) {
-            var iconSize = [60, 60];
-            var iconAnchor = [30, 68];
 
             var m = $window.L.marker([marker.lat, marker.lng], {
                 icon: $window.L.divIcon({
                     className: marker.className,
                     html: marker.html,
-                    iconSize: iconSize,
-                    iconAnchor: iconAnchor
+                    iconSize: marker.iconSize,
+                    iconAnchor: marker.iconAnchor
                 })
             });
 
