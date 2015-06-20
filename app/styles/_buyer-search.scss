@@ -11,7 +11,7 @@
             background: transparent;
         }
     }
-    
+
 }
 .buyer-search-preview{
     background: #efefef;
@@ -50,6 +50,7 @@
 
         p {
             margin: 0 auto;
+            text-shadow: 0px 2px 2px #333;
             font-size: 90%;
             color: white;
         }
@@ -61,7 +62,7 @@
             margin: 0;
             padding: 10px 0 0 40px;
             border: none;
-            &:before { 
+            &:before {
                 content: "“";
                 font-family: Georgia;
                 font-size: 600%;
@@ -74,8 +75,14 @@
         }
     }
 
+    .dishes-container {
+      text-align: center;
+    }
     .dish-card {
+        cursor: pointer;
         margin: 20px 10px 40px;
+        width: 350px;
+        display: inline-block;
         .dish-cover{
             position: relative;
             .dish-price {
@@ -94,7 +101,7 @@
             }
         }
         .dish-details {
-            display: flex; 
+            display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;

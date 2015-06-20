@@ -6,12 +6,12 @@
         .module('HomeCooked.controllers')
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
-    ChefPreviewCtrl.$inject = ['$stateParams', '$ionicHistory'];
+    ChefPreviewCtrl.$inject = ['$state', '$stateParams'];
 
-    function ChefPreviewCtrl($stateParams, $ionicHistory) {
+    function ChefPreviewCtrl($state, $stateParams) {
         var vm = this;
 
-        vm.goToPrevious = $ionicHistory.goBack;
+        vm.go = $state.go;
 
         vm.chef = {};
 
@@ -31,7 +31,7 @@
                     latitude: 37.7551522,
                     longitude: -122.4260917
                 },
-                bio: 'Growing up in a Greek and Sicilian family, the Cleveland native creates boldly flavored, ' + 
+                bio: 'Growing up in a Greek and Sicilian family, the Cleveland native creates boldly flavored, ' +
                     'deeply satisfying dishes at his four restaurants in America’s heartland.',
                 dishes: [{
                     title: 'Philly Cheese Steak',
