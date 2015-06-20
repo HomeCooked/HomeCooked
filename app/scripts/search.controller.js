@@ -76,7 +76,6 @@
         function onLocationSuccess(position) {
             var coords = position.coords;
             userLocation = coords;
-            mapService.centerMap(mapId, coords.latitude, coords.longitude);
             displayMarkers();
         }
 
@@ -92,6 +91,9 @@
                 markers.push(getUserMarker(userLocation));
             }
             mapService.addMarkers(mapId, markers);
+            $timeout(function() {
+                mapService.fitMarkers(mapId);  
+            }, 100);
         }
 
         function getChefMarker(chef) {
