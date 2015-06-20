@@ -20,7 +20,7 @@
         Chef mode
       </ion-toggle>
       <ion-list>
-        <ion-item ng-repeat="link in vm.links" nav-clear menu-close ng-click="vm.go(link.path)"
+        <ion-item ng-repeat="link in menuVm.links" nav-clear menu-close ng-click="menuVm.go(link.path)"
                   ng-class="{'hc-menu-item-selected' : link.selected}">
           {{::link.name}}
         </ion-item>
