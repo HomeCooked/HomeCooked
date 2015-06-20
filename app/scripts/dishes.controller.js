@@ -12,13 +12,15 @@
     vm.hideModal = hideModal;
     vm.addDish = addDish;
     vm.deleteDish = deleteDish;
+    vm.uploadStart = uploadStart;
+    vm.uploadSuccess = uploadSuccess;
+    vm.uploadFail = uploadFail;
 
     var modal, modalScope = $rootScope.$new();
 
-
     $scope.$on('$ionicView.beforeEnter', function onBeforeEnter() {
       modalScope.ctrl = vm;
-      modalScope.dish = emptyDish();
+      modalScope.dish = getEmptyDish();
 
       $ionicLoading.show({template: 'Getting dishes...'});
       ChefService.getDishes()
@@ -38,7 +40,7 @@
       $ionicLoading.show({template: 'Adding dish...'});
       ChefService.addDish(dish)
         .then(function added(dishes) {
-          modalScope.dish = emptyDish();
+          modalScope.dish = getEmptyDish();
           form.$setPristine();
           vm.dishes = dishes;
           hideModal();
@@ -80,8 +82,21 @@
       }
     }
 
-    function emptyDish() {
+    function getEmptyDish() {
       return {user: LoginService.getUser().id};
+    }
+
+    function uploadStart() {
+      $ionicLoading.show({template: 'Uploading...'});
+    }
+
+    function uploadSuccess(result) {
+      $ionicLoading.hide();
+      modalScope.dish.imageUrl = result;
+    }
+
+    function uploadFail(error) {
+      HCMessaging.showError(error);
     }
   }
 })();

@@ -1,28 +1,50 @@
-<div class="modal">
+<div class="modal add-dish">
   <ion-header-bar>
     <h1 class="title">Create Your New Dish</h1>
+
     <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
   </ion-header-bar>
   <ion-content>
     <form novalidate class="list" name="dishForm">
+      <div class="hc-image-container">
+        <div upload-button ng-if="!dish.imageUrl" class="button button-positive button-clear hc-button-upload"
+             url="/api/v1/dish/upload"
+             data="formData" name="dish" accept="image/*"
+             on-upload="ctrl.uploadStart(files)"
+             on-success="ctrl.uploadSuccess(response)"
+             on-error="ctrl.uploadFail(response)">
+          Upload Image
+        </div>
+        <img ng-if="dish.imageUrl" ng-src="dish.imageUrl" height="180">
+      </div>
       <label class="item item-input">
-        <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required />
-        <span ng-show="dishForm.title.$dirty && dishForm.title.$invalid">Minimum 2 chars.</span>
+        <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required/>
+        <p class="hc-error-message" ng-show="dishForm.title.$dirty && dishForm.title.$invalid">Minimum 2 chars</p>
+      </label>
+      <label class="item">
+        <textarea name="description" placeholder="Description" ng-model="dish.description" ng-minlength="2" maxlength="160" required
+                  class="hc-dish-description"></textarea>
+        <p class="hc-char-count subdued">{{dish.description.length || 0}}/160</p>
+        <p class="hc-error-message" ng-show="dishForm.description.$dirty && dishForm.description.$invalid">Minimum 2 chars</p>
       </label>
       <label class="item item-input">
-        <input type="text" name="ingredients" placeholder="Ingredients" ng-model="dish.ingredients" ng-minlength="2" required />
-        <span ng-show="dishForm.ingredients.$dirty && dishForm.ingredients.$invalid">Minimum 2 chars.</span>
+        <input type="text" name="ingredients" placeholder="Ingredients" ng-model="dish.ingredients" ng-minlength="2"
+               required/>
+        <p class="hc-error-message" ng-show="dishForm.ingredients.$dirty && dishForm.ingredients.$invalid">Minimum 2 chars</p>
       </label>
       <label class="item item-input">
-        <textarea name="description" placeholder="Description" ng-model="dish.description" ng-minlength="2" rows="5" required style="resize: none;"></textarea>
-        <span ng-show="dishForm.description.$dirty && dishForm.description.$invalid">Minimum 2 chars.</span>
+        <input name="price" ng-model="dish.price" placeholder="Price (USD)" type="number" pattern="[0-9.]*" min="0.1" max="200"
+               value="price"
+               required ng-minlength="1" ng-change="dish.price = dish.price < 0 ? 0 : dish.price"/>
       </label>
       <ion-checkbox ng-model="dish.vegetarian">Vegetarian</ion-checkbox>
       <ion-checkbox ng-model="dish.eggs">Eggs</ion-checkbox>
       <ion-checkbox ng-model="dish.peanuts">Peanuts</ion-checkbox>
       <ion-checkbox ng-model="dish.milk">Milk</ion-checkbox>
       <div class="item button-bar">
-        <div class="button button-positive" ng-click="ctrl.addDish(dish, dishForm)" ng-disabled="dishForm.$invalid">Create!</div>
+        <div class="button button-positive" ng-click="ctrl.addDish(dish, dishForm)" ng-disabled="dishForm.$invalid">
+          Create!
+        </div>
       </div>
     </form>
   </ion-content>

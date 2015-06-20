@@ -83,11 +83,17 @@
         $state.go(correctPath);
         return true;
       }
+
       _.forEach(chefLinks.concat(buyerLinks), function (link) {
         link.selected = link.path === path;
       });
-      vm.chefMode = _.some(chefLinks, 'selected');
+
+      // no need to update chefMode for settings
+      if (path.indexOf('app.settings') !== 0) {
+        vm.chefMode = _.some(chefLinks, 'selected');
+      }
       vm.links = vm.chefMode ? chefLinks : buyerLinks;
+
       return false;
     }
 
