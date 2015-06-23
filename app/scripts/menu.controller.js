@@ -5,9 +5,9 @@
     .module('HomeCooked.controllers')
     .controller('MenuCtrl', MenuCtrl);
 
-  MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', 'LoginService', '_'];
+  MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', '$ionicSideMenuDelegate', 'LoginService', '_'];
 
-  function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, LoginService, _) {
+  function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, $ionicSideMenuDelegate, LoginService, _) {
 
     var vm = this;
     vm.login = login;
@@ -51,6 +51,7 @@
 
     function init() {
       vm.isUserLoggedIn = user.isLoggedIn === true;
+      $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
       vm.userFirstName = user.first_name || '';
       vm.isChef = user.isChef;
       if (user.isChef && buyerLinks[buyerLinks.length - 1].path === 'app.enroll') {
