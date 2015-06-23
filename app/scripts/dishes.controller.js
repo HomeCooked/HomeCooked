@@ -18,7 +18,7 @@
     modalScope.uploadSuccess = uploadSuccess;
     modalScope.uploadFail = uploadFail;
 
-    $scope.$on('$ionicView.beforeEnter', function onBeforeEnter() {
+    $scope.$on('$ionicView.afterEnter', function onBeforeEnter() {
       modalScope.ctrl = vm;
       modalScope.dish = getEmptyDish();
 
