@@ -2,8 +2,8 @@
   'use strict';
   angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-  DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', '_'];
-  function DishesCtrl($rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, _) {
+  DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', '_'];
+  function DishesCtrl($q, $rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, _) {
     var vm = this;
 
     vm.dishes = [];
@@ -23,10 +23,12 @@
       modalScope.dish = getEmptyDish();
 
       $ionicLoading.show({template: 'Getting dishes...'});
-      ChefService.getDishes()
-        .then(function(dishes) {
+      $q.all([ChefService.getDishes(), ChefService.isDishesTutorialDone()])
+        .then(function(values) {
+          var dishes = values[0],
+            tutorialDone = values[1];
           vm.dishes = dishes;
-          if (_.size(dishes) === 0 && !ChefService.isDishesTutorialDone()) {
+          if (_.size(dishes) === 0 && !tutorialDone) {
             showTutorial();
           }
         })

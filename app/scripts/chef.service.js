@@ -83,11 +83,13 @@ angular.module('HomeCooked.services')
       };
 
       var isDishesTutorialDone = function() {
-        return CacheService.getValue('dishesTutorialDone') === true;
+        var tutorialDone = CacheService.getValue('dishesTutorialDone') === true;
+        return $q.when(tutorialDone);
       };
 
       var setDishesTutorialDone = function() {
         CacheService.setValue({'dishesTutorialDone': true});
+        return $q.when();
       };
 
       return {
