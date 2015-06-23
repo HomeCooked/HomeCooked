@@ -80,8 +80,10 @@
     }
     .dish-card {
         cursor: pointer;
-        margin: 20px 10px 40px;
-        width: 350px;
+        padding: 20px 10px 40px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 350px;
         display: inline-block;
         .dish-cover{
             position: relative;
@@ -97,7 +99,7 @@
                 border-radius: 2px;
             }
             img {
-                max-width: 100%;
+                width: 100%;
             }
         }
         .dish-details {
