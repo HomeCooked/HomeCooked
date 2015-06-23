@@ -22,16 +22,13 @@
       modalScope.ctrl = vm;
       modalScope.dish = getEmptyDish();
 
-      if (!ChefService.isDishesTutorialDone()) {
-        showTutorial();
-      }
-      else {
-        $ionicLoading.show({template: 'Getting dishes...'});
-      }
-
+      $ionicLoading.show({template: 'Getting dishes...'});
       ChefService.getDishes()
         .then(function(dishes) {
           vm.dishes = dishes;
+          if (_.size(dishes) === 0 && !ChefService.isDishesTutorialDone()) {
+            showTutorial();
+          }
         })
         .catch(HCMessaging.showError)
         .finally($ionicLoading.hide);
