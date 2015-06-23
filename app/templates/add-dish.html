@@ -1,6 +1,6 @@
 <div class="modal add-dish">
   <ion-header-bar>
-    <h1 class="title">Create Your New Dish</h1>
+    <h1 class="title">New Dish</h1>
 
     <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
   </ion-header-bar>
@@ -10,9 +10,9 @@
         <div upload-button ng-if="!dish.imageUrl" class="button button-positive button-clear hc-button-upload"
              url="/api/v1/dish/upload"
              data="formData" name="dish" accept="image/*"
-             on-upload="ctrl.uploadStart(files)"
-             on-success="ctrl.uploadSuccess(response)"
-             on-error="ctrl.uploadFail(response)">
+             on-upload="uploadStart(files)"
+             on-success="uploadSuccess(response)"
+             on-error="uploadFail(response)">
           Upload Image
         </div>
         <img ng-if="dish.imageUrl" ng-src="dish.imageUrl" height="180">

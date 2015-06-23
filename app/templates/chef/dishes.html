@@ -1,6 +1,15 @@
 <ion-view title="My Dishes" ng-controller="DishesCtrl as ctrl" hide-back-button="true">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="ctrl.showModal()">Add
+      <i class="icon ion-plus-round"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
+      <p class="padding" align="center" ng-if="ctrl.dishes.length===0">Your menu is empty!<br>
+        <a href ng-click="ctrl.showModal()">Add a new dish</a>
+      </p>
+
       <div class="item item-avatar item-button-right" ng-repeat="dish in ctrl.dishes">
         <img ng-src="{{dish.image || 'images/logo.png'}}">
 
@@ -11,9 +20,6 @@
         <button class="button button-clear button-stable" ng-click="ctrl.deleteDish(dish)">
           <i class="icon ion-trash-a"></i>
         </button>
-      </div>
-      <div class="item button-bar">
-        <div class="button button-positive" ng-click="ctrl.showModal()">Add New Dish</div>
       </div>
     </ion-list>
   </ion-content>

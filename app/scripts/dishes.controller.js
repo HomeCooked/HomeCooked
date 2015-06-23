@@ -1,9 +1,9 @@
-(function () {
+(function() {
   'use strict';
   angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-  DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', '_'];
-  function DishesCtrl($rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, _) {
+  DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', 'CacheService', '_'];
+  function DishesCtrl($rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, CacheService, _) {
     var vm = this;
 
     vm.dishes = [];
@@ -12,19 +12,25 @@
     vm.hideModal = hideModal;
     vm.addDish = addDish;
     vm.deleteDish = deleteDish;
-    vm.uploadStart = uploadStart;
-    vm.uploadSuccess = uploadSuccess;
-    vm.uploadFail = uploadFail;
 
     var modal, modalScope = $rootScope.$new();
+    modalScope.uploadStart = uploadStart;
+    modalScope.uploadSuccess = uploadSuccess;
+    modalScope.uploadFail = uploadFail;
 
     $scope.$on('$ionicView.beforeEnter', function onBeforeEnter() {
       modalScope.ctrl = vm;
       modalScope.dish = getEmptyDish();
 
-      $ionicLoading.show({template: 'Getting dishes...'});
+      if (!CacheService.getValue('dishesTutorialDone')) {
+        showTutorial();
+      }
+      else {
+        $ionicLoading.show({template: 'Getting dishes...'});
+      }
+
       ChefService.getDishes()
-        .then(function (dishes) {
+        .then(function(dishes) {
           vm.dishes = dishes;
         })
         .catch(HCMessaging.showError)
@@ -55,7 +61,7 @@
         .then(function deleted() {
           _.remove(vm.dishes, dish);
         })
-        .catch(function () {
+        .catch(function() {
           HCMessaging.showMessage('Cannot delete', 'There are pending orders for the dish you tried to delete.<br>' +
             'You will be able to delete after the orders have been completed.');
         })
@@ -66,7 +72,7 @@
       if (!vm.modal) {
         $ionicModal.fromTemplateUrl('templates/add-dish.html', {
           scope: modalScope
-        }).then(function (m) {
+        }).then(function(m) {
           modal = m;
           modal.show();
         });
@@ -97,6 +103,25 @@
 
     function uploadFail(error) {
       HCMessaging.showError(error);
+    }
+
+    function showTutorial() {
+      var tutorialModal,
+        tutorialScope = $rootScope.$new();
+      tutorialScope.step = 0;
+      tutorialScope.next = function() {
+        tutorialScope.step++;
+        if (tutorialScope.step === 2) {
+          tutorialModal.hide();
+          CacheService.setValue({'dishesTutorialDone': true});
+        }
+      };
+      $ionicModal.fromTemplateUrl('templates/dishes-tutorial.html', {
+        scope: tutorialScope
+      }).then(function(m) {
+        tutorialModal = m;
+        tutorialModal.show();
+      });
     }
   }
 })();

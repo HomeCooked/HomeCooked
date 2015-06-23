@@ -1,0 +1,22 @@
+<div class="modal add-dish">
+  <ion-header-bar>
+    <h1 class="title">Build your own menu</h1>
+
+    <div class="button button-clear" ng-click="next()">{{ step !== 1 ? 'Next': 'Close'}}</div>
+  </ion-header-bar>
+  <ion-content>
+    <div ng-if="step===0" class="padding">
+      <p align="center">You decide what to cook, when to cook, and how much to charge.</p>
+
+      <p align="center">Use this section to describe your meals and make your customers want more!</p>
+    </div>
+    <div ng-if="step===1" class="padding">
+      <p align="center">Each menu item starts with zero reviews, as you will accumulate them through
+        time.</p>
+
+      <p align="center">You cannot edit existing items, but feel free to create as many as you like!</p>
+    </div>
+
+  </ion-content>
+</div>
+
