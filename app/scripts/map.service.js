@@ -101,7 +101,7 @@
             });
 
             // bind the on click function if exists
-            if (marker.onClickFn !== null && typeof marker.onClickFn === 'function') {
+            if (typeof marker.onClickFn === 'function') {
                 m.on('click', marker.onClickFn);
             }
 
