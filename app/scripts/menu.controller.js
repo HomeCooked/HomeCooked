@@ -70,7 +70,7 @@
       }
 
       var chefMode = _.some(chefLinks, {path: path});
-      if ((vm.isChef === false && chefMode) || (!user.isLoggedIn && user.zipcode)) {
+      if (vm.isChef === false && chefMode) {
         return 'app.buyer';
       }
 
