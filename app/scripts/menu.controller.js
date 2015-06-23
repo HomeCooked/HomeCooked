@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -45,7 +45,7 @@
     init();
     $scope.$on('$stateChangeStart', onStateChanged);
 
-    $scope.$watch(function () {
+    $scope.$watch(function() {
       return user.isLoggedIn;
     }, init);
 
@@ -84,13 +84,16 @@
         return true;
       }
 
-      _.forEach(chefLinks.concat(buyerLinks), function (link) {
-        link.selected = link.path === path;
+      _.forEach(chefLinks.concat(buyerLinks), function(link) {
+        link.selected = (link.path === path);
       });
 
-      // no need to update chefMode for settings
-      if (path.indexOf('app.settings') !== 0) {
-        vm.chefMode = _.some(chefLinks, 'selected');
+      var buyerMode = _.some(buyerLinks, 'selected'),
+        chefMode = _.some(chefLinks, 'selected');
+
+      // if one of the main links, and if not settings
+      if ((chefMode || buyerMode) && path !== 'app.settings') {
+        vm.chefMode = chefMode;
       }
       vm.links = vm.chefMode ? chefLinks : buyerLinks;
 
@@ -122,18 +125,19 @@
         $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
           animation: 'slide-in-up',
           scope: modalScope
-        }).then(function (modal) {
+        }).then(function(modal) {
           vm.modal = modal;
           vm.modal.show();
         });
-        modalScope.closeModal = function () {
+        modalScope.closeModal = function() {
           vm.modal.hide();
           init();
         };
-        $scope.$on('$destroy', function () {
+        $scope.$on('$destroy', function() {
           vm.modal.remove();
         });
-      } else {
+      }
+      else {
         vm.modal.show();
       }
     }

@@ -1,0 +1,29 @@
+<ion-view title="{{::vm.chef.first_name}} {{::vm.chef.last_name}}" class="buyer-search-preview" hide-nav-bar="true">
+    <ion-content has-bouncing="false">
+        <div class="preview">
+            <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
+            <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
+            <p>{{::vm.chef.distance}} away - ★ {{::vm.chef.rating}}</p>
+            <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.go('app.buyer')" >
+            </button>
+        </div>
+        <div class="bio">
+            <blockquote>
+                {{::vm.chef.bio}}
+            </blockquote>
+        </div>
+        <div class="dishes-container">
+          <div class="dish-card" ng-repeat="dish in vm.chef.dishes">
+              <div class="dish-cover">
+                  <img ng-src="{{::dish.picture}}" />
+                  <div class="dish-price">{{::dish.price}}</div>
+              </div>
+              <div class="dish-details">
+                  <div class="rating"><span>★★★★★</span><br />{{::dish.review_count}} reviews</div>
+                  <div class="title"><span>{{::dish.title}}</span><br />{{::dish.available_qty}} remaining at {{::dish.pickup_time}}</div>
+                  <div class="btn"><button class="button button-assertive">Details</button></div>
+              </div>
+          </div>
+        </div>
+    </ion-content>
+</ion-view>

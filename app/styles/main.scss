@@ -2,6 +2,7 @@
 
 @import
     'mixins',
+    'map',
     'menu',
     'signup',
     'settings',
@@ -9,7 +10,8 @@
     'payment',
     'messaging',
     'chef-bio',
-    'zipcode-restriction';
+    'zipcode-restriction',
+    'buyer-search';
 
 body {
    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;

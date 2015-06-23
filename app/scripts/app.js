@@ -28,13 +28,23 @@ HomeCooked
         url: '',
         abstract: true,
         templateUrl: 'templates/menu.html',
-        controller: 'MenuCtrl as vm'
+        controller: 'MenuCtrl as menuVm'
       })
       .state('app.buyer', {
         url: '/buyer',
         views: {
           'menuContent': {
-            templateUrl: 'templates/buyer.html'
+            templateUrl: 'templates/buyer/search.html',
+            controller: 'SearchCtrl as vm'
+          }
+        }
+      })
+      .state('app.chef-preview', {
+        url: '/buyer/:id/preview',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/buyer/preview.html',
+            controller: 'ChefPreviewCtrl as vm'
           }
         }
       })
