@@ -2,8 +2,8 @@
   'use strict';
   angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-  DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', 'CacheService', '_'];
-  function DishesCtrl($rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, CacheService, _) {
+  DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', '_'];
+  function DishesCtrl($rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, _) {
     var vm = this;
 
     vm.dishes = [];
@@ -18,11 +18,11 @@
     modalScope.uploadSuccess = uploadSuccess;
     modalScope.uploadFail = uploadFail;
 
-    $scope.$on('$ionicView.afterEnter', function onBeforeEnter() {
+    $scope.$on('$ionicView.afterEnter', function onAfterEnter() {
       modalScope.ctrl = vm;
       modalScope.dish = getEmptyDish();
 
-      if (!CacheService.getValue('dishesTutorialDone')) {
+      if (!ChefService.isDishesTutorialDone()) {
         showTutorial();
       }
       else {
@@ -40,6 +40,7 @@
     $scope.$on('$destroy', function onDestroy() {
       modal.remove();
       modal = undefined;
+      modalScope.$destroy();
     });
 
     function addDish(dish, form) {
@@ -112,8 +113,10 @@
       tutorialScope.next = function() {
         tutorialScope.step++;
         if (tutorialScope.step === 2) {
-          tutorialModal.hide();
-          CacheService.setValue({'dishesTutorialDone': true});
+          tutorialModal.remove();
+          tutorialModal = undefined;
+          tutorialScope.$destroy();
+          ChefService.setDishesTutorialDone();
         }
       };
       $ionicModal.fromTemplateUrl('templates/dishes-tutorial.html', {

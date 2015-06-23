@@ -76,7 +76,8 @@ HomeCooked
         url: '/dishes',
         views: {
           'menuContent': {
-            templateUrl: 'templates/chef/dishes.html'
+            templateUrl: 'templates/chef/dishes.html',
+            controller: 'DishesCtrl as vm'
           }
         }
       })
