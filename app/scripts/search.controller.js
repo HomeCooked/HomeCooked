@@ -101,12 +101,11 @@
                 '<span class="badge">' + chef.dish_count + '</span>';
 
             var onClickFn = function() {
-                goToPreview(this._icon.chefId);
+                goToPreview(parseInt(this.options.icon.options.id));
             };
 
             return {
-                id: 'chef_' + chef.id,
-                chefId: chef.id,
+                id: chef.id + '_chef',
                 lat: chef.location.latitude,
                 lng: chef.location.longitude,
                 className: 'marker',

@@ -96,7 +96,8 @@
                     className: marker.className,
                     html: marker.html,
                     iconSize: marker.iconSize,
-                    iconAnchor: marker.iconAnchor
+                    iconAnchor: marker.iconAnchor,
+                    id: marker.id
                 })
             });
 

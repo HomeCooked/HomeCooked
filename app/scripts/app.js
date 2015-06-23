@@ -40,7 +40,7 @@ HomeCooked
         }
       })
       .state('app.chef-preview', {
-        url: '/buyer/:id/preview',
+        url: '/chef/:id/preview',
         views: {
           'menuContent': {
             templateUrl: 'templates/buyer/preview.html',
