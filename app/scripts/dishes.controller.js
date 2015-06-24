@@ -2,8 +2,8 @@
   'use strict';
   angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-  DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'ChefService', 'LoginService', 'HCMessaging', '_'];
-  function DishesCtrl($q, $rootScope, $scope, $ionicModal, $ionicLoading, ChefService, LoginService, HCMessaging, _) {
+  DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicModal', '$ionicLoading', '$ionicScrollDelegate', 'ChefService', 'LoginService', 'HCMessaging', '_'];
+  function DishesCtrl($q, $rootScope, $scope, $ionicModal, $ionicLoading, $ionicScrollDelegate, ChefService, LoginService, HCMessaging, _) {
     var vm = this;
 
     vm.dishes = [];
@@ -110,6 +110,7 @@
         tutorialScope = $rootScope.$new();
       tutorialScope.step = 0;
       tutorialScope.next = function() {
+        scrollTop();
         tutorialScope.step++;
         if (tutorialScope.step === 2) {
           tutorialModal.remove();
@@ -124,6 +125,14 @@
         tutorialModal = m;
         tutorialModal.show();
       });
+    }
+
+    function scrollTop() {
+      // TODO use $getByHandle once fixed in ionic
+      var handle = _.find($ionicScrollDelegate._instances, function(s) {
+        return s.$$delegateHandle === 'dishesTutorialContent';
+      });
+      handle.scrollTop();
     }
   }
 })();

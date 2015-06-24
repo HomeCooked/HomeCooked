@@ -1,8 +1,14 @@
 <div class="modal dishes-tutorial">
-  <ion-content>
+  <ion-header-bar>
+    <h1 class="title">{{step===0 ? 'Build your own menu' : 'Before you start'}}</h1>
+
+    <div class="button button-clear" ng-class="{'button-positive' : step===1}" ng-click="next()">{{step===0 ? 'Next' :
+      'Got it!'}}
+    </div>
+  </ion-header-bar>
+  <ion-content delegate-handle="dishesTutorialContent">
 
     <div ng-if="step===0" class="instructions">
-      <h4 class="title">Build your own menu</h4>
 
       <img src="images/chef1.jpg">
 
@@ -10,12 +16,9 @@
 
       <p>Use this section to describe your meals and make your customers want more!</p>
 
-      <div class="button-bar">
-        <div class="button button-light" ng-click="next()">Next</div>
-      </div>
+      <p>Buyers will have until <b>5pm</b> to place an order for dinner.</p>
     </div>
     <div ng-if="step===1" class="instructions">
-      <h4 class="title">Before you start</h4>
 
       <img src="images/chef2.jpg">
 
@@ -23,10 +26,6 @@
         time.</p>
 
       <p>You cannot edit existing items, but feel free to create as many as you like!</p>
-
-      <div class="button-bar">
-        <div class="button button-positive" ng-click="next()">Got it!</div>
-      </div>
     </div>
 
   </ion-content>
