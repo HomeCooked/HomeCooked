@@ -1,0 +1,34 @@
+<div class="modal dishes-tutorial">
+  <ion-content>
+
+    <div ng-if="step===0" class="instructions">
+      <h4 class="title">Build your own menu</h4>
+
+      <img src="images/chef1.jpg">
+
+      <p>You decide what to cook, when to cook, and how much to charge.</p>
+
+      <p>Use this section to describe your meals and make your customers want more!</p>
+
+      <div class="button-bar">
+        <div class="button button-light" ng-click="next()">Next</div>
+      </div>
+    </div>
+    <div ng-if="step===1" class="instructions">
+      <h4 class="title">Before you start</h4>
+
+      <img src="images/chef2.jpg">
+
+      <p>Each menu item starts with zero reviews, as you will accumulate them through
+        time.</p>
+
+      <p>You cannot edit existing items, but feel free to create as many as you like!</p>
+
+      <div class="button-bar">
+        <div class="button button-positive" ng-click="next()">Got it!</div>
+      </div>
+    </div>
+
+  </ion-content>
+</div>
+
