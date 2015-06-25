@@ -57,6 +57,15 @@ HomeCooked
           }
         }
       })
+      .state('app.dish-review', {
+        url: '/chef/:id/dish/:dishId/reviews',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/buyer/dish-review.html',
+            controller: 'DishReviewCtrl as vm'
+          }
+        }
+      })
       .state('app.orders', {
         url: '/orders',
         views: {

@@ -19,6 +19,7 @@
 
         function activate() {
             vm.chef = {
+                id: $stateParams.id,
                 distance: '0.2mi',
                 cross_street: 'Guerrero st & 21st st'
             };
