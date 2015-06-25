@@ -133,7 +133,6 @@
 
 
 .buyer-dish-preview {
-
     img {
         max-height: 200px;
     }
@@ -160,6 +159,10 @@
         font-size: 85%;
         font-weight: bold;
         text-transform: uppercase;
+    }
+
+    .item-note {
+        color: initial;
     }
 
     .place-order-btn .title {

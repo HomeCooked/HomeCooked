@@ -12,12 +12,37 @@
         <div class="list">
 
           <div class="item item-divider">
-            Dish Options
+            Details
           </div>
+          
+          <a class="item">
+            Reviews
+            <span class="item-note">{{::vm.dish.review_count}} reviews</span>
+          </a> 
 
-          <a class="item" href="#">
-            Quantity
-          </a>
+          <a class="item">
+            Pickup Time
+            <span class="item-note">{{::vm.dish.pickup_time}}</span>
+          </a> 
+
+          <a class="item">
+            Pickup Location
+            <span class="item-note">{{::vm.chef.cross_street}} ({{::vm.chef.distance}})</span>
+          </a> 
+
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Quantity
+            </div>
+            <select>
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </label>
 
         </div>
     </ion-content>
