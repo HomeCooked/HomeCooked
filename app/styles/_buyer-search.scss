@@ -130,3 +130,42 @@
         }
     }
 }
+
+
+.buyer-dish-preview {
+
+    img {
+        max-height: 200px;
+    }
+
+    div.title-price {    
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 {
+            margin: 0;
+            font-size: 140%;
+        }
+
+        span {  
+            font-size: 150%;
+        }
+    }
+    .ingredients {
+        margin: 10px 0 0;
+    }
+    .item-divider {
+        font-size: 85%;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .place-order-btn .title {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
+        font-size: 110%;
+    }
+}
