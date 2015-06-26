@@ -29,6 +29,7 @@
                 price: '$7.99',
                 available_qty: 3,
                 review_count: 22,
+                rating: 4.7,
                 pickup_time: '7pm',
                 id: $stateParams.dishId,
                 ingredients: ['pizza', 'mushrooms', 'onions','cheese', 'more cheese']

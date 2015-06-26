@@ -3,8 +3,8 @@
         <div class="list"> 
           <div class="item item-avatar item-text-wrap" ng-repeat="review in vm.reviews">
             <img ng-src="{{review.picture || 'images/user.png'}}">
-            <h2>{{review.first_name}} {{review.last_name}}</h2>
-            <p>{{review.rating}} - {{review.comment}}</p>
+            <h2>{{review.first_name}} {{review.last_name}} <span>★★★★★</span></h2>
+            <p>{{review.comment}}</p>
           </div>
         </div>
     </ion-content>
