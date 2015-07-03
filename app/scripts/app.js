@@ -48,6 +48,24 @@ HomeCooked
           }
         }
       })
+      .state('app.dish-preview', {
+        url: '/chef/:id/dish/:dishId',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/buyer/dish-detail.html',
+            controller: 'DishDetailCtrl as vm'
+          }
+        }
+      })
+      .state('app.dish-review', {
+        url: '/chef/:id/dish/:dishId/reviews',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/buyer/dish-review.html',
+            controller: 'DishReviewCtrl as vm'
+          }
+        }
+      })
       .state('app.orders', {
         url: '/orders',
         views: {

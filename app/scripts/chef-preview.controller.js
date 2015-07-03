@@ -39,28 +39,32 @@
                     price: '$7.99',
                     available_qty: 3,
                     pickup_time: '7pm',
-                    review_count: 22
+                    review_count: 22,
+                    id: 1
                 }, {
                     title: 'Philly Cheese Steak',
                     picture: 'http://cdn.crownmediadev.com/d1/720d567fca26a5b363ecd6d6b74976/calamari-segment-Ep060.jpg',
                     price: '$5.99',
                     available_qty: 2,
                     pickup_time: '8pm',
-                    review_count: 22
+                    review_count: 22,
+                    id: 4
                 }, {
                     title: 'Philly Cheese Steak',
                     picture: 'http://www.muscleandfitness.com/sites/muscleandfitness.com/files/philly-cheesesteak-recipe_0.jpg',
                     price: '$5.99',
                     available_qty: 3,
                     pickup_time: '7pm',
-                    review_count: 22
+                    review_count: 22,
+                    id: 3
                 }, {
                     title: 'Philly Cheese Steak',
                     picture: 'http://www.muscleandfitness.com/sites/muscleandfitness.com/files/philly-cheesesteak-recipe_0.jpg',
                     price: '$5.99',
                     available_qty: 3,
                     pickup_time: '7pm',
-                    review_count: 22
+                    review_count: 22,
+                    id: 2
                 }]
             };
         }

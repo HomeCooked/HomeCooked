@@ -13,7 +13,7 @@
             </blockquote>
         </div>
         <div class="dishes-container">
-          <div class="dish-card" ng-repeat="dish in vm.chef.dishes">
+          <div class="dish-card" ng-repeat="dish in vm.chef.dishes" ng-click="vm.go('app.dish-preview', {id: vm.chef.id, dishId: dish.id})">
               <div class="dish-cover">
                   <img ng-src="{{::dish.picture}}" />
                   <div class="dish-price">{{::dish.price}}</div>
