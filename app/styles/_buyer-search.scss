@@ -133,11 +133,14 @@
 
 
 .buyer-dish-preview {
-    img {
+    .image-container{
+      text-align: center;
+      img {
         max-height: 200px;
+      }
     }
 
-    div.title-price {    
+    div.title-price {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -148,7 +151,7 @@
             font-size: 140%;
         }
 
-        span {  
+        span {
             font-size: 150%;
         }
     }

@@ -1,6 +1,8 @@
 <ion-view title="{{::vm.dish.title}}" class="buyer-dish-preview">
     <ion-content class="has-footer">
+      <div class="image-container">
         <img ng-src="{{vm.dish.picture}}">
+      </div>
         <div class="padding">
           <div class="title-price">
             <h2>{{::vm.dish.title}}</h2>
@@ -14,21 +16,21 @@
           <div class="item item-divider">
             Details
           </div>
-          
+
           <a class="item" ng-click="vm.go('app.dish-review', {id: vm.chef.id, dishId: dish.id})">
             Reviews
             <span class="item-note"><span>★★★★★</span> ({{::vm.dish.review_count}} reviews)</span>
-          </a> 
+          </a>
 
           <a class="item">
             Pickup Time
             <span class="item-note">{{::vm.dish.pickup_time}}</span>
-          </a> 
+          </a>
 
           <a class="item">
             Pickup Location
             <span class="item-note">{{::vm.chef.cross_street}} ({{::vm.chef.distance}})</span>
-          </a> 
+          </a>
 
           <label class="item item-input item-select">
             <div class="input-label">
