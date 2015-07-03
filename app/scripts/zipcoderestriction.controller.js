@@ -5,7 +5,8 @@
     .module('HomeCooked.controllers')
     .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
-  ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup', 'LoginService', 'ZipcodeService'];
+  ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup',
+    'LoginService', 'ZipcodeService'];
 
   function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService, ZipcodeService) {
 
