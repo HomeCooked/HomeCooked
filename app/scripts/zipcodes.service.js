@@ -1,9 +1,9 @@
 'use strict';
 (function() {
-  angular.module('HomeCooked.services').factory('ZipcodeService', ZipcodeService);
+  angular.module('HomeCooked.services').factory('ZipcodesService', ZipcodesService);
 
-  ZipcodeService.$inject = ['$q', '$http', 'ENV', '_'];
-  function ZipcodeService($q, $http, ENV, _) {
+  ZipcodesService.$inject = ['$q', '$http', 'ENV', '_'];
+  function ZipcodesService($q, $http, ENV, _) {
     var baseUrl = ENV.BASE_URL + '/api/v1/';
 
     return {
@@ -13,7 +13,7 @@
     function isValidZipcode(zipcode) {
       var deferred = $q.defer();
       var zipcodes = [];
-      $http.get(baseUrl + 'zipcode/')
+      $http.get(baseUrl + 'zipcodes/')
         .success(function(resp) {
           zipcodes = resp;
         })

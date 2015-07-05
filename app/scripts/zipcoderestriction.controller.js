@@ -6,9 +6,9 @@
     .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
   ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup',
-    'LoginService', 'ZipcodeService'];
+    'LoginService', 'ZipcodesService'];
 
-  function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService, ZipcodeService) {
+  function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService, ZipcodesService) {
 
     var vm = this;
     vm.validZipCode = validZipCode;
@@ -83,7 +83,7 @@
         $ionicLoading.show({
           template: 'Checking...'
         });
-        ZipcodeService.isValidZipcode(parseInt(vm.zipcode))
+        ZipcodesService.isValidZipcode(parseInt(vm.zipcode))
           .then(function(isAvailable) {
             $ionicLoading.hide();
             if (isAvailable) {
