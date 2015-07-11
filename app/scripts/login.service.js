@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(function() {
   angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
   LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', 'ChefService', '_'];
@@ -18,11 +18,11 @@
     function setIsChef() {
       if (user.isLoggedIn && !user.isChef) {
         return ChefService.getChefInfo(user.id)
-          .then(function () {
+          .then(function() {
             user.isChef = true;
             return true;
           })
-          .catch(function () {
+          .catch(function() {
             user.isChef = false;
             return false;
           });
@@ -31,14 +31,14 @@
     }
 
     function login(type) {
-      return getAccessToken(type).then(function (accessToken) {
+      return getAccessToken(type).then(function(accessToken) {
         return homeCookedLogin(accessToken, type);
       });
     }
 
     function logout() {
       CacheService.invalidateCache();
-      _.forEach(user, function (val, key) {
+      _.forEach(user, function(val, key) {
         user[key] = undefined;
         delete user[key];
       });
@@ -54,16 +54,19 @@
     }
 
     function becomeChef(chefInfo) {
-      //FIXME remove this and use real service
-      return $q.when('OK', chefInfo);
-
-      //var deferred = $q.defer();
-      //$http.post(ENV.BASE_URL + '/enroll/', chefInfo)
-      //  .success(deferred.resolve)
-      //  .error(function (data) {
-      //    deferred.reject(JSON.stringify(data));
-      //  });
-      //return deferred.promise;
+      chefInfo.user = user.id;
+      var deferred = $q.defer();
+      $http.post(ENV.BASE_URL + '/api/v1/enroll/', chefInfo)
+        .success(deferred.resolve)
+        .error(function(data) {
+          if (data.email && data.email[0] === 'This field must be unique.') {
+            deferred.resolve();
+          }
+          else {
+            deferred.reject(JSON.stringify(data));
+          }
+        });
+      return deferred.promise;
     }
 
     function homeCookedLogin(accessToken, provider) {
@@ -72,7 +75,7 @@
         'client_id': ENV.CLIENT_ID,
         'provider': provider
       })
-        .then(function (response) {
+        .then(function(response) {
           var data = response.data;
           // TODO this should come from the server
           data.user.zipcode = user.zipcode;
@@ -83,7 +86,7 @@
           });
           return setIsChef();
         })
-        .finally(function () {
+        .finally(function() {
           if (user.isLoggedIn) {
             CacheService.setValue({user: user});
           }
@@ -96,7 +99,7 @@
     function getAccessToken(provider) {
       var deferred = $q.defer();
       if (provider === 'facebook') {
-        window.openFB.login(function (response) {
+        window.openFB.login(function(response) {
           if (response && response.authResponse && response.authResponse.token) {
             deferred.resolve(response.authResponse.token);
           }
