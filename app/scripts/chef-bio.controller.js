@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
   angular.module('HomeCooked.controllers').controller('ChefBioCtrl', ChefBioCtrl);
 
@@ -10,9 +10,9 @@
     vm.maxLength = 160;
     vm.chefInfo = {};
 
-    $scope.$on('$ionicView.beforeEnter', function () {
+    $scope.$on('$ionicView.beforeEnter', function() {
       vm.modify = false;
-      ChefService.getChefInfo(LoginService.getUser().id).then(function (info) {
+      ChefService.getChefInfo(LoginService.getUser().id).then(function(info) {
         vm.chefInfo = info;
       });
     });
@@ -22,13 +22,14 @@
         template: 'Updating...'
       });
       ChefService.setChefBio(vm.chefInfo.user, vm.chefInfo.bio)
-        .then(function () {
+        .then(function() {
           vm.modify = false;
+          $ionicLoading.show({
+            template: 'Saved successfully!',
+            duration: 2000
+          });
         })
-        .catch(HCMessaging.showError)
-        .finally(function () {
-          $ionicLoading.hide();
-        });
+        .catch(HCMessaging.showError);
     }
   }
 })();
