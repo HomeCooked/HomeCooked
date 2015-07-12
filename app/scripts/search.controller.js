@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$timeout', '$ionicLoading', '$ionicPopup', 'mapService'];
+    SearchCtrl.$inject = ['$state', '$timeout', '$ionicLoading', '$ionicPopup', 'mapService', 'SearchService', '_'];
 
-    function SearchCtrl($state, $timeout, $ionicLoading, $ionicPopup, mapService) {
+    function SearchCtrl($state, $timeout, $ionicLoading, $ionicPopup, mapService, SearchService, _) {
 
         var mapId = 'chefmap';
         var userLocation = null;
@@ -25,74 +25,44 @@
             //init the map
             initMapProperties();
             //retrieve chefs
-            vm.chefs = [{
-                id: 1,
-                picture: 'http://www.gohomecooked.com/images/marc.jpg',
-                first_name: 'Marc-Antoine',
-                last_name: 'Andreoli',
-                rating: '4.5',
-                distance: '0.2mi',
-                bio: 'Doing the best hamburgers in town.',
-                dish_count: 2,
-                location: {
-                    latitude: 37.7551522,
-                    longitude: -122.4260917
-                }
-            }, {
-                id: 2,
-                picture: 'http://www.gohomecooked.com/images/valdrin.jpg',
-                first_name: 'Valdrin',
-                last_name: 'Koshi',
-                rating: '4.5',
-                distance: '0.2mi',
-                bio: 'Doing the best hamburgers in town.',
-                dish_count: 4,
-                location: {
-                    latitude: 37.7543784,
-                    longitude: -122.4200126
-                }
-            }, {
-                id: 3,
-                picture: 'http://didierbaquier.fr/img/me.jpg',
-                first_name: 'Didier',
-                last_name: 'Baquier',
-                rating: '4.5',
-                distance: '0.2mi',
-                bio: 'Doing the best hamburgers in town.',
-                dish_count: 1,
-                location: {
-                    latitude: 37.7581146,
-                    longitude: -122.4184106
-                }
-            }];
+            getChefs({
+                latitude: vm.map.center.lat,
+                longitude: vm.map.center.lng,
+            });
 
-            displayMarkers();
             //center the map on user location
             $timeout(function() {
                 navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError);
             }, 500);
         }
 
+        function getChefs(location) {
+            SearchService.getChefs(location).then(setChefs);
+        }
+
+        function setChefs(chefs) {
+            vm.chefs = chefs;
+            displayMarkers();
+        }
+
         function onLocationSuccess(position) {
-            var coords = position.coords;
-            userLocation = coords;
+            userLocation = position.coords;
             displayMarkers();
         }
 
         function displayMarkers() {
-            var markers = [];
-            for (var i = 0; i < vm.chefs.length; i++) { 
-                var chef = vm.chefs[i];
-                if (chef.location) {
-                    markers.push(getChefMarker(chef));
-                }
-            }
+            var markers = _.chain(vm.chefs)
+                .filter(function(chef) {
+                    return _.isObject(chef.location);
+                })
+                .map(getChefMarker)
+                .value();
             if (userLocation) {
                 markers.push(getUserMarker(userLocation));
             }
             mapService.addMarkers(mapId, markers);
             $timeout(function() {
-                mapService.fitMarkers(mapId);  
+                mapService.fitMarkers(mapId);
             }, 100);
         }
 
@@ -111,7 +81,7 @@
                 className: 'marker',
                 iconSize: [60, 60],
                 iconAnchor: [30, 68],
-                html : html,
+                html: html,
                 onClickFn: onClickFn
             };
         }
@@ -124,7 +94,7 @@
                 className: 'currentUserMarker',
                 iconSize: [12, 12],
                 iconAnchor: [6, 6],
-                html : ''
+                html: ''
             };
         }
 
@@ -132,7 +102,7 @@
             $ionicPopup.alert({
                 title: 'Error',
                 template: 'Unable to retrieve your location'
-           });
+            });
         }
 
         function initMapProperties() {
