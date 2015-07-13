@@ -2,8 +2,7 @@
   "name": "HomeCooked",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "cordova": "~3.5.0-0.2.6",
     "glob": "~4.0.5",
@@ -54,5 +53,9 @@
     "https://github.com/driftyco/ionic-plugins-keyboard.git",
     "org.apache.cordova.statusbar",
     "org.apache.cordova.console"
+  ],
+  "cordovaPlatforms": [
+    "ios",
+    "android"
   ]
 }
