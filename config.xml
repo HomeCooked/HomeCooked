@@ -68,4 +68,8 @@
     </platform>
     <plugin name="cordova-plugin-splashscreen" spec="^2.1.0" />
     <plugin name="cordova-plugin-whitelist" spec="^1.0.0" />
+    <plugin name="com.ionic.keyboard" spec="https://github.com/driftyco/ionic-plugin-keyboard.git" />
+    <plugin name="cordova-plugin-console" spec="^1.0.1" />
+    <plugin name="cordova-plugin-geolocation" spec="^1.0.1" />
+    <plugin name="cordova-plugin-statusbar" spec="^1.0.1" />
 </widget>

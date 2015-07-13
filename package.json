@@ -50,11 +50,12 @@
     "test": "grunt test"
   },
   "cordovaPlugins": [
-    "https://github.com/driftyco/ionic-plugins-keyboard.git",
-    "org.apache.cordova.statusbar",
-    "org.apache.cordova.console",
     "cordova-plugin-splashscreen",
-    "cordova-plugin-whitelist"
+    "cordova-plugin-whitelist",
+    "com.ionic.keyboard",
+    "cordova-plugin-console",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-statusbar"
   ],
   "cordovaPlatforms": [
     "ios",
