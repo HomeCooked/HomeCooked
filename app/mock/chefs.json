@@ -1,0 +1,40 @@
+[{
+  "id": 1,
+  "picture": "http://www.gohomecooked.com/images/marc.jpg",
+  "first_name": "Marc-Antoine",
+  "last_name": "Andreoli",
+  "rating": "4.5",
+  "distance": "0.2mi",
+  "bio": "Doing the best hamburgers in town.",
+  "dish_count": 2,
+  "location": {
+    "latitude": 37.7551522,
+    "longitude": -122.4260917
+  }
+}, {
+  "id": 2,
+  "picture": "http://www.gohomecooked.com/images/valdrin.jpg",
+  "first_name": "Valdrin",
+  "last_name": "Koshi",
+  "rating": "4.5",
+  "distance": "0.2mi",
+  "bio": "Doing the best hamburgers in town.",
+  "dish_count": 4,
+  "location": {
+    "latitude": 37.7543784,
+    "longitude": -122.4200126
+  }
+}, {
+  "id": 3,
+  "picture": "http://didierbaquier.fr/img/me.jpg",
+  "first_name": "Didier",
+  "last_name": "Baquier",
+  "rating": "4.5",
+  "distance": "0.2mi",
+  "bio": "Doing the best hamburgers in town.",
+  "dish_count": 1,
+  "location": {
+    "latitude": 37.7581146,
+    "longitude": -122.4184106
+  }
+}]
