@@ -56,7 +56,7 @@
     function becomeChef(chefInfo) {
       chefInfo.user = user.id;
       var deferred = $q.defer();
-      $http.post(ENV.BASE_URL + '/api/v1/enroll/', chefInfo)
+      $http.post(ENV.BASE_URL + '/api/v1/enrolls/', chefInfo)
         .success(deferred.resolve)
         .error(function(data) {
           if (data.email && data.email[0] === 'This field must be unique.') {
