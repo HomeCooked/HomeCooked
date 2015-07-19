@@ -33,7 +33,7 @@
       path: 'app.orders'
     }, {
       name: 'Payment methods',
-      path: 'app.settings'
+      path: 'app.settings-payment'
     }, {
       name: 'Become a chef!',
       path: 'app.enroll'

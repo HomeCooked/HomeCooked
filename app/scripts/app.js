@@ -78,7 +78,8 @@ HomeCooked
         url: '/enroll',
         views: {
           'menuContent': {
-            templateUrl: 'templates/enroll.html'
+            templateUrl: 'templates/enroll.html',
+            controller: 'EnrollCtrl as vm'
           }
         }
       })

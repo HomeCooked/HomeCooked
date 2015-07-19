@@ -26,7 +26,7 @@
          */
 
         function getChefs(location) {
-            return $http.get('mock/chefs.json', {
+            return $http.get(baseUrl + 'chefs/', {
                 location: location
             }).then(function(resp) {
                 return resp.data;
