@@ -1,33 +1,36 @@
 <ion-view title="Find local chefs" hide-back-button="true" class="buyer-search">
     <ion-nav-buttons side="left">
-      <button class="button button-clear" ng-click="menuVm.login()" ng-if="!menuVm.isUserLoggedIn">
-        <i class="icon ion-ios-person"></i>
-        Sign in
-      </button>
-      <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-if="menuVm.isUserLoggedIn">
-      </button>
+        <button class="button button-clear" ng-click="menuVm.login()" ng-if="!menuVm.isUserLoggedIn">
+            <i class="icon ion-ios-person"></i>
+            Sign in
+        </button>
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-if="menuVm.isUserLoggedIn">
+        </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-      <button class="button button-clear" ng-click="vm.isListVisible = !vm.isListVisible">
-        <i class="icon" ng-class="{'ion-map': vm.isListVisible, 'ion-ios-list-outline': !vm.isListVisible}"></i>
-      </button>
+        <button class="button button-clear" ng-click="vm.isListVisible = !vm.isListVisible">
+            <i class="icon" ng-class="{'ion-map': vm.isListVisible, 'ion-ios-list-outline': !vm.isListVisible}"></i>
+        </button>
     </ion-nav-buttons>
-  <ion-pane has-header="true" ng-hide="vm.isListVisible">
-      <div class="map-container" data-tab-disable="true">
-          <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
-      </div>
-  </ion-pane>
-  <ion-content ng-hide="!vm.isListVisible">
-      <div class="list">
-        <div class="item  item-thumbnail-left item-icon-right" ng-repeat="chef in vm.chefs" ng-click="vm.goToPreview(chef.id)">
-          <img ng-src="{{chef.picture}}">
-          <h2>{{chef.first_name}} {{chef.last_name}}</h2>
-          <span style="color:#F4C304; font-size: 90%">★ {{chef.rating}}</span>
-          <span style="font-size: 90%"> - {{chef.dish_count}} dishes</span>
-          <span style="font-size: 90%"> - {{chef.distance}}</span>
-          <p>{{chef.bio}}</p>
-          <i class="icon ion-ios-arrow-forward"></i>
+    <ion-pane has-header="true" ng-hide="vm.isListVisible">
+        <div class="map-container" data-tab-disable="true">
+            <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
         </div>
-      </div>
-  </ion-content>
+    </ion-pane>
+    <ion-content ng-hide="!vm.isListVisible">
+        <div class="list">
+            <div class="item  item-thumbnail-left item-icon-right" ng-repeat="chef in vm.chefs"
+                 ng-click="vm.goToPreview(chef.id)">
+                <img ng-src="{{chef.picture}}">
+
+                <h2>{{chef.first_name}} {{chef.last_name}}</h2>
+                <span style="color:#F4C304; font-size: 90%">★ {{chef.rating}}</span>
+                <span style="font-size: 90%"> - {{chef.num_active_dishes}} dishes</span>
+                <span style="font-size: 90%"> - {{chef.distance}}</span>
+
+                <p>{{chef.bio}}</p>
+                <i class="icon ion-ios-arrow-forward"></i>
+            </div>
+        </div>
+    </ion-content>
 </ion-view>
