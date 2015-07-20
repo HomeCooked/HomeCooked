@@ -26,8 +26,13 @@
          */
 
         function getChefs(location) {
-            return $http.get(baseUrl + 'chefs/', {
-                location: location
+            return $http({
+                url: baseUrl + 'chefs/',
+                method: 'GET',
+                params: {
+                    location: location,
+                    distance: 15
+                }
             }).then(function(resp) {
                 return resp.data;
             });
