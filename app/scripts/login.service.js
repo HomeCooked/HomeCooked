@@ -59,12 +59,8 @@
             $http.post(ENV.BASE_URL + '/api/v1/chefs/enroll/', chefInfo)
                 .success(deferred.resolve)
                 .error(function(data) {
-                    if (data && data.email && data.email[0] === 'This field must be unique.') {
-                        deferred.resolve();
-                    }
-                    else {
-                        deferred.reject(JSON.stringify(data));
-                    }
+                    deferred.reject(JSON.stringify(data));
+
                 });
             return deferred.promise;
         }
