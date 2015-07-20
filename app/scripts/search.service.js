@@ -31,7 +31,7 @@
                 method: 'GET',
                 params: {
                     location: location,
-                    distance: 15
+                    distance: 50
                 }
             }).then(function(resp) {
                 return resp.data;
