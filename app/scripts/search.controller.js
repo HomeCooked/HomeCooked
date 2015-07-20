@@ -60,10 +60,12 @@
             if (userLocation) {
                 markers.push(getUserMarker(userLocation));
             }
-            mapService.addMarkers(mapId, markers);
-            $timeout(function() {
-                mapService.fitMarkers(mapId);
-            }, 100);
+            if (_.size(markers)) {
+                mapService.addMarkers(mapId, markers);
+                $timeout(function() {
+                    mapService.fitMarkers(mapId);
+                }, 100);
+            }
         }
 
         function getChefMarker(chef) {
