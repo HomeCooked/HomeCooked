@@ -14,10 +14,13 @@
             first_name: user.first_name,
             last_name: user.last_name,
             email: user.email,
-            phone_number: user.phone_number
+            phone_number: user.phone_number,
+            bio: 'Hi',
+            coordinates: {latitude: 37.7732, longitude: -122.42134}
         };
 
         vm.enroll = function(form) {
+            form.picture = form.picture.base64;
             $ionicLoading.show({
                 template: 'Enrolling...'
             });

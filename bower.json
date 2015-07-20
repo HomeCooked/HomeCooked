@@ -9,7 +9,7 @@
     "angular-leaflet-directive": "~0.8.2",
     "angular-stripe": "~4.2.8",
     "angular-payments": "*",
-    "angular-upload": "~1.0.12"
+    "angular-base64-upload": "~0.1.11"
   },
   "resolutions": {
     "angular": "1.3.15"
