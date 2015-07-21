@@ -1,15 +1,20 @@
 <div class="modal add-dish">
     <ion-header-bar>
-        <h1 class="title">New Dish</h1>
+        <h1 class="title">{{dish.title || 'Add dish'}}</h1>
 
         <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
     </ion-header-bar>
     <ion-content>
         <form novalidate class="list" name="dishForm">
-            <label class="item item-input">
-                <input type="file" name="picture" required
-                       accept="image/*" ng-model="dish.picture" base-sixty-four-input ng-change="dish.picture=dish.picture.base64;"/>
-            </label>
+            <div class="hc-image-container">
+                <div class="button button-positive button-clear button-block hc-button-upload">
+                    Upload Image
+                    <input type="file" name="picture" required accept="image/*" ng-model="dish.picture"
+                           base-sixty-four-input/>
+                </div>
+                <img ng-if="dish.picture" ng-src="data:{{dish.picture.filetype}};base64,{{dish.picture.base64}}"
+                     height="180">
+            </div>
             <label class="item item-input">
                 <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required/>
 

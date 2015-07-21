@@ -1,6 +1,17 @@
 <ion-view title="Become a chef!" hide-back-button="true">
     <ion-content class="has-header">
-        <form novalidate class="list list-inset" name="enrollForm">
+        <form novalidate class="list" name="enrollForm">
+
+            <div class="hc-image-container">
+                <div class="button button-positive button-clear button-block hc-button-upload">
+                    Upload Image
+                    <input type="file" name="picture" required accept="image/*" ng-model="vm.form.picture"
+                           base-sixty-four-input/>
+                </div>
+                <img ng-if="vm.form.picture"
+                     ng-src="data:{{vm.form.picture.filetype}};base64,{{vm.form.picture.base64}}"
+                     height="180">
+            </div>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">First name</span>
                 <input type="text" name="first_name" placeholder="First name" required ng-minlength="2"
@@ -10,12 +21,6 @@
                 <span class="input-label">Last name</span>
                 <input type="text" name="last_name" placeholder="Last name" required ng-minlength="2" ng-maxlength="50"
                        ng-model="vm.form.last_name">
-            </label>
-
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Picture</span>
-                <input type="file" name="picture" accept="image/*" required ng-model="vm.form.picture"
-                       base-sixty-four-input>
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Date of birth</span>
