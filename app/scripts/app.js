@@ -87,7 +87,8 @@ HomeCooked
         url: '/seller',
         views: {
           'menuContent': {
-            templateUrl: 'templates/chef/chef.html'
+            templateUrl: 'templates/chef/chef.html',
+            controller: 'ChefCtrl as vm'
           }
         }
       })

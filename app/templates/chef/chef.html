@@ -1,7 +1,7 @@
-<ion-view ng-controller="ChefCtrl as ctrl" title="Dishes I'm cooking" hide-back-button="true">
+<ion-view title="Dishes I'm cooking" hide-back-button="true">
   <ion-content class="has-header">
     <div class="list">
-      <div class="item item-avatar" ng-repeat="batch in ctrl.batches">
+      <div class="item item-avatar" ng-repeat="batch in vm.batches">
         <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
 
         <h2>{{batch.dishName}}</h2>
@@ -10,7 +10,7 @@
 
         <p ng-if="batch.remaining > 0" class="title">
           {{batch.remaining}} portion{{batch.remaining===1 ? "" : "s"}} available
-          <a href class="item-note" ng-click="ctrl.removePortions(batch)">
+          <a href class="item-note" ng-click="vm.removePortions(batch)">
             <i class="icon ion-minus-circled"></i> Remove
           </a>
         </p>
@@ -18,7 +18,7 @@
 
         <div class="hc-orders" ng-hide="batch.quantity===batch.remaining">
           <p class="title">{{batch.quantity - batch.remaining}} order{{batch.quantity - batch.remaining===1 ? "" : "s"}}</p>
-          <div ng-repeat="order in batch.orders" class="hc-order" ng-click="ctrl.showBatchOrder(batch, order)">
+          <div ng-repeat="order in batch.orders" class="hc-order" ng-click="vm.showBatchOrder(batch, order)">
             <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
 
             <div class="hc-order-username">{{order.userName}}</div>
@@ -27,10 +27,10 @@
         </div>
       </div>
       <div class="item item-text-wrap">
-        <button class="button button-block button-positive" ng-click="ctrl.openAddDish()"
-                ng-disabled="ctrl.batches.length>=ctrl.maxBatches">Add Batch
+        <button class="button button-block button-positive" ng-click="vm.openAddDish()"
+                ng-disabled="vm.batches.length>=vm.maxBatches">Add Batch
         </button>
-        <div align="center" ng-show="ctrl.batches.length>=ctrl.maxBatches">You can have maximum {{ctrl.maxBatches}} dish
+        <div align="center" ng-show="vm.batches.length>=vm.maxBatches">You can have maximum {{vm.maxBatches}} dish
           types active.
           After you sell and deliver all the dishes, you will be able to add new ones.
         </div>
