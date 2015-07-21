@@ -4,7 +4,8 @@
 
     LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', '_'];
     function LoginService($q, $http, ENV, CacheService, _) {
-        var user = CacheService.getValue('user') || {};
+        var user = CacheService.getValue('user') || {},
+            baseUrl = ENV.BASE_URL + '/api/v1/';
 
         return {
             init: init,
@@ -16,9 +17,11 @@
         };
 
         function init() {
-            var credential = CacheService.getValue('credential');
-            if (credential) {
-                homeCookedLogin(credential.access_token, 'facebook');
+            if (user.isLoggedIn && user.id) {
+                $http.get(baseUrl + 'users/' + user.id + '/')
+                    .success(function(userData) {
+                        _.assign(user, userData);
+                    });
             }
         }
 
