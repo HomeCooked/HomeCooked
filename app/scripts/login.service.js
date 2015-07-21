@@ -51,7 +51,7 @@
         function becomeChef(chefInfo) {
             chefInfo.user = user.id;
             var deferred = $q.defer();
-            $http.post(ENV.BASE_URL + '/api/v1/chefs/enroll/', chefInfo)
+            $http.post(baseUrl + 'chefs/enroll/', chefInfo)
                 .success(deferred.resolve)
                 .error(function(data) {
                     deferred.reject(JSON.stringify(data));
