@@ -21,6 +21,7 @@
                 $http.get(baseUrl + 'users/' + user.id + '/')
                     .success(function(userData) {
                         _.assign(user, userData);
+                        CacheService.setValue({user: user});
                     });
             }
         }
