@@ -2,32 +2,24 @@
 (function() {
     angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', 'ChefService', '_'];
-    function LoginService($q, $http, ENV, CacheService, ChefService, _) {
+    LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', '_'];
+    function LoginService($q, $http, ENV, CacheService, _) {
         var user = CacheService.getValue('user') || {};
 
         return {
+            init: init,
             login: login,
             logout: logout,
             getUser: getUser,
             setUserZipCode: setUserZipCode,
-            becomeChef: becomeChef,
-            setIsChef: setIsChef
+            becomeChef: becomeChef
         };
 
-        function setIsChef() {
-            if (user.isLoggedIn && !user.isChef) {
-                return ChefService.getChefInfo(user.id)
-                    .then(function() {
-                        user.isChef = true;
-                        return true;
-                    })
-                    .catch(function() {
-                        user.isChef = false;
-                        return false;
-                    });
+        function init() {
+            var credential = CacheService.getValue('credential');
+            if (credential) {
+                homeCookedLogin(credential.access_token, 'facebook');
             }
-            return $q.when(user.isChef);
         }
 
         function login(type) {
@@ -75,12 +67,12 @@
                     var data = response.data;
                     // TODO this should come from the server
                     data.user.zipcode = user.zipcode;
-                    _.assign(user, data.user, {isLoggedIn: true, isChef: false});
+                    _.assign(user, data.user, {isLoggedIn: true});
                     CacheService.setValue({
                         provider: provider,
                         credential: data.credential
                     });
-                    return setIsChef();
+                    return user.is_chef;
                 })
                 .finally(function() {
                     if (user.isLoggedIn) {

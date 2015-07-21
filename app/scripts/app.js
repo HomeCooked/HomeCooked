@@ -180,7 +180,7 @@ HomeCooked
         });
     })
     .run(function(LoginService) {
-        LoginService.setIsChef();
+        LoginService.init();
     })
     .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {

@@ -48,13 +48,16 @@
         $scope.$watch(function() {
             return user.isLoggedIn;
         }, init);
+        $scope.$watch(function() {
+            return user.is_chef;
+        }, init);
 
         function init() {
             vm.isUserLoggedIn = user.isLoggedIn === true;
             $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
             vm.userFirstName = user.first_name || '';
-            vm.isChef = user.isChef;
-            if (user.isChef && buyerLinks[buyerLinks.length - 1].path === 'app.enroll') {
+            vm.isChef = user.is_chef;
+            if (vm.isChef && buyerLinks[buyerLinks.length - 1].path === 'app.enroll') {
                 buyerLinks.pop();
             }
             updateStateIfNeeded($state.current);
