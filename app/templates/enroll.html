@@ -43,16 +43,8 @@
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Address</span>
-                <input type="text" name="address" placeholder="Street Address" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.address">
-            </label>
-            <label class="item item-input">
-                <input type="text" name="city" placeholder="City" required ng-minlength="2" ng-maxlength="50"
-                       ng-model="vm.form.city">
-            </label>
-            <label class="item item-input">
-                <input type="number" name="zipcode" placeholder="ZIP Code" required ng-minlength="5" ng-maxlength="5"
-                       ng-model="vm.form.zipcode">
+                <input type="text" name="address" placeholder="Address, city, zipcode" required ng-minlength="2"
+                       ng-maxlength="50" ng-model="vm.form.address" g-places-autocomplete force-selection="true">
             </label>
 
             <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"

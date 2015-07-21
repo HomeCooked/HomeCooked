@@ -15,12 +15,12 @@
             last_name: user.last_name,
             email: user.email,
             phone_number: user.phone_number,
-            bio: 'Hi',
-            coordinates: {latitude: 37.7732, longitude: -122.42134}
+            bio: 'Hi'
         };
 
         vm.enroll = function(form) {
             form.picture = form.picture.base64;
+            calculateAddress(form, form.address);
             $ionicLoading.show({
                 template: 'Enrolling...'
             });
@@ -42,6 +42,17 @@
                 })
                 .catch(HCMessaging.showError);
         };
+
+        function calculateAddress(form, place) {
+            if (typeof place === 'string') {
+                form.address = place;
+                form.coordinates = {latitude: 37.7732, longitude: -122.42134};
+            }
+            else {
+                form.address = place.formatted_address;
+                form.coordinates = {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng()};
+            }
+        }
     }
 
 })();
