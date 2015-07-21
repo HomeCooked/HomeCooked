@@ -84,7 +84,7 @@ HomeCooked
         }
       })
       .state('app.seller', {
-        url: '/seller',
+        url: '/seller/:v',
         views: {
           'menuContent': {
             templateUrl: 'templates/chef/chef.html',
@@ -93,7 +93,7 @@ HomeCooked
         }
       })
       .state('app.dishes', {
-        url: '/dishes',
+        url: '/dishes/:v',
         views: {
           'menuContent': {
             templateUrl: 'templates/chef/dishes.html',

@@ -2,9 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicModal', '$ionicLoading',
+    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading',
         '$ionicScrollDelegate', 'ChefService', 'LoginService', 'HCMessaging', '_'];
-    function DishesCtrl($q, $rootScope, $scope, $ionicModal, $ionicLoading,
+    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading,
                         $ionicScrollDelegate, ChefService, LoginService, HCMessaging, _) {
         var vm = this;
 
@@ -32,6 +32,9 @@
                     vm.dishes = dishes;
                     if (_.size(dishes) === 0 && !tutorialDone) {
                         showTutorial();
+                    }
+                    if ($stateParams.v==='new') {
+                        showModal();
                     }
                 })
                 .catch(HCMessaging.showError)
@@ -72,7 +75,7 @@
         }
 
         function showModal() {
-            if (!vm.modal) {
+            if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-dish.html', {
                     scope: modalScope
                 }).then(function(m) {

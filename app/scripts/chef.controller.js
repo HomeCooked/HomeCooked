@@ -2,12 +2,13 @@
     'use strict';
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
-    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q',
+    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q',
         'ChefService', 'LoginService', 'HCMessaging'];
 
-    function ChefCtrl(_, $rootScope, $scope, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
+    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicModal, $ionicLoading, $ionicPopup, $q,
+                      ChefService, LoginService, HCMessaging) {
         var vm = this;
-        var modalScope = $rootScope.$new();
+        var modal, modalScope = $rootScope.$new();
 
         vm.addBatch = addBatch;
         vm.hideModal = hideModal;
@@ -31,12 +32,6 @@
                 {'id': 0, 'title': 'Friday (6pm-9pm)'},
                 {'id': 24, 'title': 'Saturday (6pm-9pm)'}
             ];
-
-            $ionicModal.fromTemplateUrl('templates/add-batch.html', {
-                scope: modalScope
-            }).then(function(modal) {
-                vm.modal = modal;
-            });
         }
 
         function addBatch(batch, form) {
@@ -55,7 +50,7 @@
                     vm.batches = batches;
                     setBatchesDishInfo(vm.batches, vm.dishes);
                     $ionicLoading.hide();
-                    vm.modal.hide();
+                    modal.hide();
                 })
                 .catch(HCMessaging.showError);
         }
@@ -84,6 +79,9 @@
                     vm.maxBatches = chefData.maxBatches;
 
                     modalScope.batch = emptyBatch();
+                    if ($stateParams.v==='new' && vm.dishes.length) {
+                        openAddDish();
+                    }
                 })
                 .catch(HCMessaging.showError);
         }
@@ -100,11 +98,11 @@
         }
 
         function hideModal() {
-            vm.modal.hide();
+            modal.hide();
         }
 
-        function go(path) {
-            $state.go(path);
+        function go(path, params) {
+            $state.go(path, params);
         }
 
         function adjustRange(qty, min, max) {
@@ -120,7 +118,17 @@
         }
 
         function openAddDish() {
-            vm.modal.show();
+            if (!modal) {
+                $ionicModal.fromTemplateUrl('templates/add-batch.html', {
+                    scope: modalScope
+                }).then(function(m) {
+                    modal = m;
+                    modal.show();
+                });
+            }
+            else {
+                modal.show();
+            }
         }
 
         function showBatchOrder(batch, order) {
@@ -150,7 +158,7 @@
                 .then(function(batches) {
                     vm.batches = batches;
                     $ionicLoading.hide();
-                    vm.modal.hide();
+                    modal.hide();
                 })
                 .catch(HCMessaging.showError);
         }
