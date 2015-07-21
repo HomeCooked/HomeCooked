@@ -2,7 +2,7 @@
     <ion-header-bar>
         <h1 class="title">{{dish.title || 'Add dish'}}</h1>
 
-        <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
+        <div class="button button-clear" ng-click="vm.hideModal()">Cancel</div>
     </ion-header-bar>
     <ion-content>
         <form novalidate class="list" name="dishForm">
@@ -50,7 +50,7 @@
             <ion-checkbox ng-model="dish.peanuts">Peanuts</ion-checkbox>
             <ion-checkbox ng-model="dish.milk">Milk</ion-checkbox>
             <div class="item button-bar">
-                <div class="button button-positive" ng-click="ctrl.addDish(dish, dishForm)"
+                <div class="button button-positive" ng-click="vm.addDish(dish, dishForm)"
                      ng-disabled="dishForm.$invalid">
                     Create!
                 </div>

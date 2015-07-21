@@ -2,14 +2,21 @@
     'use strict';
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
-    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q',
-        'ChefService', 'LoginService', 'HCMessaging'];
+    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging'];
 
-    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicModal, $ionicLoading, $ionicPopup, $q,
-                      ChefService, LoginService, HCMessaging) {
-        var vm = this;
-        var modal, modalScope = $rootScope.$new();
+    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
+        var vm = this,
+            modal,
+            modalScope = $rootScope.$new();
 
+        modalScope.vm = vm;
+        modalScope.startTimes = [
+            {'id': 0, 'title': 'Friday (6pm-9pm)'},
+            {'id': 24, 'title': 'Saturday (6pm-9pm)'}
+        ];
+
+        vm.dishes = [];
+        vm.batches = [];
         vm.addBatch = addBatch;
         vm.hideModal = hideModal;
         vm.go = go;
@@ -18,21 +25,8 @@
         vm.removePortions = removePortions;
         vm.showBatchOrder = showBatchOrder;
 
-        $scope.$on('$ionicView.beforeEnter', loadOrders);
-
-        init();
-
-        function init() {
-            vm.dishes = [];
-            vm.batches = [];
-
-            modalScope.ctrl = vm;
-            modalScope.batch = emptyBatch();
-            modalScope.startTimes = [
-                {'id': 0, 'title': 'Friday (6pm-9pm)'},
-                {'id': 24, 'title': 'Saturday (6pm-9pm)'}
-            ];
-        }
+        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+        $scope.$on('$destroy', onDestroy);
 
         function addBatch(batch, form) {
             batch.chef = LoginService.getUser().id;
@@ -64,7 +58,7 @@
             };
         }
 
-        function loadOrders() {
+        function onBeforeEnter() {
             $ionicLoading.show({template: 'Getting orders'});
             $q.all([ChefService.getBatches(), ChefService.getDishes(), ChefService.getChefData()])
                 .then(function(values) {
@@ -79,11 +73,19 @@
                     vm.maxBatches = chefData.maxBatches;
 
                     modalScope.batch = emptyBatch();
-                    if ($stateParams.v==='new' && vm.dishes.length) {
+                    if ($stateParams.v === 'new' && vm.dishes.length) {
                         openAddDish();
                     }
                 })
                 .catch(HCMessaging.showError);
+        }
+
+        function onDestroy() {
+            if (modal) {
+                modal.remove();
+                modal = undefined;
+                modalScope.$destroy();
+            }
         }
 
         function setBatchesDishInfo(batches, dishes) {
@@ -102,6 +104,9 @@
         }
 
         function go(path, params) {
+            $ionicHistory.nextViewOptions({
+                historyRoot: true
+            });
             $state.go(path, params);
         }
 

@@ -1,4 +1,4 @@
-<ion-view title="Dishes I'm cooking" hide-back-button="true">
+<ion-view title="My Batches" hide-back-button="true">
     <ion-nav-buttons side="right">
         <button class="button button-clear" ng-click="vm.openAddDish()"
                 ng-disabled="vm.dishes.length===0 || vm.batches.length>=vm.maxBatches">
@@ -12,6 +12,10 @@
             <p class="padding" align="center" ng-if="vm.dishes.length===0">You need to create a dish before being able
                 to sell it!<br>
                 <a href ng-click="vm.go('app.dishes', {v:'new'})">Add a new dish</a>
+            </p>
+
+            <p class="padding" align="center" ng-if="vm.dishes.length>0 && vm.batches.length<vm.maxBatches">Create your first batch!<br>
+                <a href ng-click="vm.openAddDish()">Add a new batch</a>
             </p>
 
             <div class="item item-avatar" ng-if="vm.dishes.length>0" ng-repeat="batch in vm.batches">

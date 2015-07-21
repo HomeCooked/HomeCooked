@@ -2,50 +2,22 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading',
-        '$ionicScrollDelegate', 'ChefService', 'LoginService', 'HCMessaging', '_'];
-    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading,
-                        $ionicScrollDelegate, ChefService, LoginService, HCMessaging, _) {
-        var vm = this;
+    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', '$ionicScrollDelegate', 'ChefService', 'LoginService', 'HCMessaging', '_'];
+    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, $ionicScrollDelegate, ChefService, LoginService, HCMessaging, _) {
+        var vm = this,
+            modal,
+            modalScope = $rootScope.$new();
+
+        modalScope.vm = vm;
 
         vm.dishes = [];
-
         vm.showModal = showModal;
         vm.hideModal = hideModal;
         vm.addDish = addDish;
         vm.deleteDish = deleteDish;
 
-        var modal, modalScope = $rootScope.$new();
-        modalScope.uploadStart = uploadStart;
-        modalScope.uploadSuccess = uploadSuccess;
-        modalScope.uploadFail = uploadFail;
-
-        $scope.$on('$ionicView.afterEnter', function onAfterEnter() {
-            modalScope.ctrl = vm;
-            modalScope.dish = getEmptyDish();
-
-            $ionicLoading.show({template: 'Getting dishes...'});
-            $q.all([ChefService.getDishes(), ChefService.isDishesTutorialDone()])
-                .then(function(values) {
-                    var dishes = values[0],
-                        tutorialDone = values[1];
-                    vm.dishes = dishes;
-                    if (_.size(dishes) === 0 && !tutorialDone) {
-                        showTutorial();
-                    }
-                    if ($stateParams.v==='new') {
-                        showModal();
-                    }
-                })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
-        });
-
-        $scope.$on('$destroy', function onDestroy() {
-            modal.remove();
-            modal = undefined;
-            modalScope.$destroy();
-        });
+        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+        $scope.$on('$destroy', onDestroy);
 
         function addDish(dish, form) {
             dish.picture = dish.picture.base64;
@@ -98,19 +70,6 @@
             return {user: LoginService.getUser().id};
         }
 
-        function uploadStart() {
-            $ionicLoading.show({template: 'Uploading...'});
-        }
-
-        function uploadSuccess(result) {
-            $ionicLoading.hide();
-            modalScope.dish.imageUrl = result;
-        }
-
-        function uploadFail(error) {
-            HCMessaging.showError(error);
-        }
-
         function showTutorial() {
             var tutorialModal,
                 tutorialScope = $rootScope.$new();
@@ -139,6 +98,34 @@
                 return s.$$delegateHandle === 'dishesTutorialContent';
             });
             handle.scrollTop();
+        }
+
+        function onBeforeEnter() {
+            modalScope.dish = getEmptyDish();
+
+            $ionicLoading.show({template: 'Getting dishes...'});
+            $q.all([ChefService.getDishes(), ChefService.isDishesTutorialDone()])
+                .then(function(values) {
+                    var dishes = values[0],
+                        tutorialDone = values[1];
+                    vm.dishes = dishes;
+                    if (_.size(dishes) === 0 && !tutorialDone) {
+                        showTutorial();
+                    }
+                    if ($stateParams.v === 'new') {
+                        showModal();
+                    }
+                })
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
+        }
+
+        function onDestroy() {
+            if (modal) {
+                modal.remove();
+                modal = undefined;
+                modalScope.$destroy();
+            }
         }
     }
 })();

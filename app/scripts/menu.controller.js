@@ -18,7 +18,7 @@
             name: 'My dishes',
             path: 'app.dishes'
         }, {
-            name: 'Orders',
+            name: 'My Batches',
             path: 'app.seller'
         }, {
             name: 'Edit Bio',

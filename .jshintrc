@@ -19,11 +19,11 @@
     "undef": true,
     "unused": true,
     "strict": true,
-    "maxparams": 12,
+    "maxparams": 15,
     "maxdepth": 5,
     "maxstatements": 40,
     "maxcomplexity": 8,
-    "maxlen": 150,
+    "maxlen": 200,
 
     "asi": false,
     "boss": false,
