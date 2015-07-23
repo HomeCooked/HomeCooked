@@ -8,7 +8,7 @@
         <form novalidate class="list" name="dishForm">
             <div class="hc-image-container">
                 <div class="button button-positive button-clear button-block hc-button-upload">
-                    Upload Image
+                    {{dish.picture ? 'Upload Another Image' : 'Upload Image'}}
                     <input type="file" name="picture" required accept="image/*" ng-model="dish.picture"
                            base-sixty-four-input/>
                 </div>
