@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="lib/ionic/css/ionic.css" />
   <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css" />
+  <link rel="stylesheet" href="lib/angular-google-places-autocomplete/src/autocomplete.css" />
+  <link rel="stylesheet" href="lib/angular-google-places-autocomplete/dist/autocomplete.min.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -21,6 +23,7 @@
 
   <!--must load from stripe servers-->
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 </head>
 
 <body ng-app="HomeCooked">
@@ -43,7 +46,9 @@
 <script src="lib/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
 <script src="lib/angular-stripe/release/angular-stripe.js"></script>
 <script src="lib/angular-payments/lib/angular-payments.js"></script>
-<script src="lib/angular-upload/angular-upload.js"></script>
+<script src="lib/angular-base64-upload/src/angular-base64-upload.js"></script>
+<script src="lib/angular-google-places-autocomplete/src/autocomplete.js"></script>
+<script src="lib/angular-google-places-autocomplete/dist/autocomplete.min.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 

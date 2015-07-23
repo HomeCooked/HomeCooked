@@ -60,15 +60,17 @@
             if (userLocation) {
                 markers.push(getUserMarker(userLocation));
             }
-            mapService.addMarkers(mapId, markers);
-            $timeout(function() {
-                mapService.fitMarkers(mapId);
-            }, 100);
+            if (_.size(markers)) {
+                mapService.addMarkers(mapId, markers);
+                $timeout(function() {
+                    mapService.fitMarkers(mapId);
+                }, 100);
+            }
         }
 
         function getChefMarker(chef) {
             var html = '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>' + //
-                '<span class="badge">' + chef.dish_count + '</span>';
+                '<span class="badge">' + chef.num_active_dishes + '</span>';
 
             var onClickFn = function() {
                 goToPreview(parseInt(this.options.icon.options.id));

@@ -79,7 +79,7 @@ angular.module('HomeCooked.services')
       };
 
       var setChefBio = function(chefId, bio) {
-        return handleResponses($http.put(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
+        return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
       };
 
       var isDishesTutorialDone = function() {
