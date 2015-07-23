@@ -1,115 +1,95 @@
-'use strict';
-angular.module('HomeCooked.services')
-    .factory('ChefService', ['$q', '$http', '$timeout', 'ENV', 'CacheService', '_',
-        function($q, $http, $timeout, ENV, CacheService, _) {
-            var baseUrl = ENV.BASE_URL + '/api/v1/';
+(function() {
+    'use strict';
+    angular.module('HomeCooked.services').factory('ChefService', ChefService);
 
-            var ordersReady;
+    ChefService.$inject = ['$q', '$http', 'ENV', 'CacheService'];
+    function ChefService($q, $http, ENV, CacheService) {
+        var baseUrl = ENV.BASE_URL + '/api/v1/';
 
-            var handleResponses = function(httpPromise) {
-                return httpPromise.then(function(response) {
-                    return response.data;
-                });
+        var ordersReady;
+
+        return {
+            getOrders: getOrders,
+            getBatches: getBatches,
+            getDishes: getDishes,
+            getDish: getDish,
+            addDish: addDish,
+            deleteDish: deleteDish,
+            addBatch: addBatch,
+            deleteBatch: deleteBatch,
+            getChefData: getChefData,
+            getChef: getChef,
+            setChefBio: setChefBio,
+            isDishesTutorialDone: isDishesTutorialDone,
+            setDishesTutorialDone: setDishesTutorialDone
+        };
+
+
+        function handleResponses(httpPromise) {
+            return httpPromise.then(function(response) {
+                return response.data;
+            });
+        }
+
+        function getOrders() {
+            ordersReady = ordersReady || handleResponses($http.get('mock/orders.json'));
+            return ordersReady;
+        }
+
+        function getBatches() {
+            return handleResponses($http.get(baseUrl + 'batches/'));
+        }
+
+        function getDishes() {
+            return handleResponses($http.get(baseUrl + 'dishes/'));
+        }
+
+        function getDish(dishId) {
+            return handleResponses($http.get(baseUrl + 'dishes/' + dishId));
+        }
+
+        function addDish(dish) {
+            return handleResponses($http.post(baseUrl + 'dishes/', dish)).then(getDishes);
+        }
+
+        function deleteDish(dish) {
+            return handleResponses($http.delete(baseUrl + 'dishes/' + dish.id + '/'));
+        }
+
+        function addBatch(batch) {
+            return handleResponses($http.post(baseUrl + 'batches/', batch)).then(getBatches);
+        }
+
+        function deleteBatch(batch) {
+            return handleResponses($http.delete(baseUrl + 'batches/' + batch.id + '/')).then(getBatches);
+        }
+
+        function getChefData() {
+            //TODO read this from server!!
+            var chefData = {
+                maxPrice: 100,
+                maxQuantity: 25,
+                maxBatches: 3
             };
-            var wait = function(ms) {
-                return $timeout(function() {
-                }, ms || 0);
-            };
+            return $q.when(chefData);
+        }
 
-            var getOrders = function() {
-                ordersReady = ordersReady || handleResponses($http.get('mock/orders.json'));
-                return ordersReady;
-            };
+        function getChef(chefId, details) {
+            return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/' + (details ? 'get_chef_details/' : '')));
+        }
 
-            var getBatches = function() {
-                return handleResponses($http.get(baseUrl + 'batches/'));
-            };
+        function setChefBio(chefId, bio) {
+            return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
+        }
 
-            var getDishes = function() {
-                return handleResponses($http.get(baseUrl + 'dishes/'));
-            };
+        function isDishesTutorialDone() {
+            var tutorialDone = CacheService.getValue('dishesTutorialDone') === true;
+            return $q.when(tutorialDone);
+        }
 
-            var getDish = function(dishId) {
-                return handleResponses($http.get(baseUrl + 'dishes/' + dishId));
-            };
-
-            var addDish = function(dish) {
-                return handleResponses($http.post(baseUrl + 'dishes/', dish)).then(getDishes);
-            };
-
-
-            var deleteDish = function(dish) {
-                return handleResponses($http.delete(baseUrl + 'dishes/' + dish.id + '/'));
-            };
-
-
-            var addBatch = function(batch) {
-                return handleResponses($http.post(baseUrl + 'batches/', batch)).then(getBatches);
-            };
-
-            var removeBatchAvailablePortions = function(batch) {
-                //FIXME remove this and call the service
-                return $q.all([getBatches(), wait(300)])
-                    .then(function(values) {
-                        var batches = values[0];
-                        var i = _.findIndex(batches, {'dishId': batch.dishId, 'price': batch.price});
-                        if (i >= 0) {
-                            var localBatch = batches[i];
-                            localBatch.quantity = localBatch.quantityOrdered;
-                            //will remove current batch if empty
-                            if (localBatch.quantity === 0) {
-                                batches.splice(i, 1);
-                            }
-                        }
-
-                        return batches;
-                    });
-
-                //return handleResponses($http.delete(baseUrl + 'batches/' + batch.id)).then(getBatches);
-            };
-
-            var getChefData = function() {
-                //TODO read this from server!!
-                var chefData = {
-                    maxPrice: 100,
-                    maxQuantity: 25,
-                    maxBatches: 3
-                };
-                return $q.when(chefData);
-            };
-
-            var getChef = function(chefId, details) {
-                return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/' + (details ? 'get_chef_details/' : '')));
-            };
-
-            var setChefBio = function(chefId, bio) {
-                return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
-            };
-
-            var isDishesTutorialDone = function() {
-                var tutorialDone = CacheService.getValue('dishesTutorialDone') === true;
-                return $q.when(tutorialDone);
-            };
-
-            var setDishesTutorialDone = function() {
-                CacheService.setValue({'dishesTutorialDone': true});
-                return $q.when();
-            };
-
-            return {
-                getOrders: getOrders,
-                getBatches: getBatches,
-                getDishes: getDishes,
-                getDish: getDish,
-                addDish: addDish,
-                deleteDish: deleteDish,
-                addBatch: addBatch,
-                removeBatchAvailablePortions: removeBatchAvailablePortions,
-                getChefData: getChefData,
-                getChef: getChef,
-                setChefBio: setChefBio,
-                isDishesTutorialDone: isDishesTutorialDone,
-                setDishesTutorialDone: setDishesTutorialDone
-            };
-        }]
-);
+        function setDishesTutorialDone() {
+            CacheService.setValue({'dishesTutorialDone': true});
+            return $q.when();
+        }
+    }
+})();

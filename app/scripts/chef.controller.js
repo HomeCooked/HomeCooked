@@ -22,7 +22,7 @@
         vm.go = go;
         vm.openAddDish = openAddDish;
         vm.adjustRange = adjustRange;
-        vm.removePortions = removePortions;
+        vm.deleteBatch = deleteBatch;
         vm.showBatchOrder = showBatchOrder;
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
@@ -143,7 +143,7 @@
             });
         }
 
-        function removePortions(batch) {
+        function deleteBatch(batch) {
             $ionicPopup.confirm({
                 title: batch.dishName + ', ' + batch.quantity + ' portion(s)',
                 template: 'Do you want to delete this batch?',
@@ -152,18 +152,17 @@
                 okType: 'button-assertive'
             }).then(function(res) {
                 if (res) {
-                    doRemovePortions(batch);
+                    _deleteBatch(batch);
                 }
             });
         }
 
-        function doRemovePortions(batch) {
+        function _deleteBatch(batch) {
             $ionicLoading.show({template: 'Removing...'});
-            ChefService.removeBatchAvailablePortions(batch)
+            ChefService.deleteBatch(batch)
                 .then(function(batches) {
                     vm.batches = batches;
                     $ionicLoading.hide();
-                    modal.hide();
                 })
                 .catch(HCMessaging.showError);
         }

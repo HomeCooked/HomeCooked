@@ -1,11 +1,12 @@
 [
   {
-    "dishImage": "images/logo.png",
-    "dishId": "3",
-    "dishName": "Duck",
-    "price": 6,
-    "quantity": 6,
-    "quantityOrdered": 5,
+    "dish": {
+      "picture": "images/logo.png",
+      "id": 3,
+      "title": "food",
+      "price": 6
+    },
+    "remaining": 6,
     "orders": [
       {
         "userName": "Valdrin",
