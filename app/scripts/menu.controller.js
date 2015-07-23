@@ -34,10 +34,11 @@
         }, {
             name: 'Payment methods',
             path: 'app.settings-payment'
-        }, {
+        }];
+        var becomeChefLink = {
             name: 'Become a chef!',
             path: 'app.enroll'
-        }];
+        };
 
         // will be same instance during all the session
         var user = LoginService.getUser();
@@ -48,6 +49,7 @@
         $scope.$watch(function() {
             return user.isLoggedIn;
         }, init);
+
         $scope.$watch(function() {
             return user.is_chef;
         }, init);
@@ -57,8 +59,9 @@
             $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
             vm.userFirstName = user.first_name || '';
             vm.isChef = user.is_chef;
-            if (vm.isChef && buyerLinks[buyerLinks.length - 1].path === 'app.enroll') {
-                buyerLinks.pop();
+            _.remove(buyerLinks, becomeChefLink);
+            if (!vm.isChef) {
+                buyerLinks.push(becomeChefLink);
             }
             updateStateIfNeeded($state.current);
         }
