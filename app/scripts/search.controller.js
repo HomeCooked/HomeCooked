@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$timeout', '$ionicLoading', '$ionicPopup', 'mapService', 'SearchService', '_'];
+    SearchCtrl.$inject = ['$state', '$scope', '$timeout', 'mapService', 'SearchService', 'LocationService', '_'];
 
-    function SearchCtrl($state, $timeout, $ionicLoading, $ionicPopup, mapService, SearchService, _) {
+    function SearchCtrl($state, $scope, $timeout, mapService, SearchService, LocationService, _) {
 
         var mapId = 'chefmap';
         var userLocation = null;
@@ -30,10 +30,9 @@
                 longitude: vm.map.center.lng,
             });
 
-            //center the map on user location
-            $timeout(function() {
-                navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError);
-            }, 500);
+            $scope.$watch(function() {
+                return LocationService.getCurrentLocation();
+            }, onLocationChange);
         }
 
         function getChefs(location) {
@@ -45,7 +44,7 @@
             displayMarkers();
         }
 
-        function onLocationSuccess(position) {
+        function onLocationChange(position) {
             userLocation = position.coords;
             displayMarkers();
         }
@@ -98,13 +97,6 @@
                 iconAnchor: [6, 6],
                 html: ''
             };
-        }
-
-        function onLocationError() {
-            $ionicPopup.alert({
-                title: 'Error',
-                template: 'Unable to retrieve your location'
-            });
         }
 
         function initMapProperties() {
