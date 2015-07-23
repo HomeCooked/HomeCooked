@@ -11,6 +11,7 @@
         modalScope.vm = vm;
 
         vm.dishes = [];
+        vm.chefId = LoginService.getUser().id;
         vm.showModal = showModal;
         vm.hideModal = hideModal;
         vm.addDish = addDish;
@@ -67,7 +68,7 @@
         }
 
         function getEmptyDish() {
-            return {user: LoginService.getUser().id};
+            return {user: vm.chefId};
         }
 
         function showTutorial() {

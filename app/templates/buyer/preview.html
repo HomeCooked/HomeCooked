@@ -16,11 +16,11 @@
           <div class="dish-card" ng-repeat="dish in vm.chef.dishes" ng-click="vm.go('app.dish-preview', {id: vm.chef.id, dishId: dish.id})">
               <div class="dish-cover">
                   <img ng-src="{{::dish.picture}}" />
-                  <div class="dish-price">{{::dish.price}}</div>
+                  <div class="dish-price">{{::dish.price}} $</div>
               </div>
               <div class="dish-details">
                   <div class="rating"><span>★★★★★</span><br />{{::dish.review_count}} reviews</div>
-                  <div class="title"><span>{{::dish.title}}</span><br />{{::dish.available_qty}} remaining at {{::dish.pickup_time}}</div>
+                  <div class="title"><span>{{::dish.title}}</span><br />{{::dish.remaining}} remaining<br>{{::dish.pickup_time | amCalendar}}</div>
                   <div class="btn"><button class="button button-assertive">Details</button></div>
               </div>
           </div>

@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
-    ChefPreviewCtrl.$inject = ['$state', '$stateParams', '$scope', 'ChefService', 'LocationService'];
+    ChefPreviewCtrl.$inject = ['$state', '$stateParams', '$scope', '$ionicLoading', 'ChefService', 'LocationService', 'HCMessaging', '_'];
 
-    function ChefPreviewCtrl($state, $stateParams, $scope, ChefService, LocationService) {
+    function ChefPreviewCtrl($state, $stateParams, $scope, $ionicLoading, ChefService, LocationService, HCMessaging, _) {
         var vm = this;
 
         vm.go = $state.go;
@@ -18,18 +18,22 @@
         activate();
 
         function activate() {
-            ChefService.getChef($stateParams.id)
+            $ionicLoading.show();
+            ChefService.getChef($stateParams.id, true)
                 .then(function(chef) {
                     vm.chef = chef;
+                    vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.dishId)});
                     onLocationChange();
-                });
+                })
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
             $scope.$watch(function() {
                 return LocationService.getCurrentLocation();
             }, onLocationChange);
         }
 
         function onLocationChange() {
-            vm.chef.distance = LocationService.getDistanceFrom(vm.chef.location) + 'mi.';
+            vm.chef.distance = LocationService.getDistanceFrom(vm.chef.location);
         }
 
     }

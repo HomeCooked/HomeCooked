@@ -2,7 +2,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngAnimate', 'config', 'HomeCooked.controllers',
-    'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'google.places']);
+    'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'google.places', 'angularMoment']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
@@ -53,7 +53,7 @@ HomeCooked
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/dish-detail.html',
-                        controller: 'DishDetailCtrl as vm'
+                        controller: 'ChefPreviewCtrl as vm'
                     }
                 }
             })

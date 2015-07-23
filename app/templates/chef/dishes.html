@@ -16,7 +16,7 @@
         <h2>{{dish.title}}</h2>
 
         <p>{{dish.description}}</p>
-        <a ng-href="#/dish/{{dish.id}}">{{dish.rating || 0}}/5 ({{dish.voters || 0}} reviews)</a>
+        <a ng-href="#/chef/{{::vm.chefId}}/dish/{{::dish.id}}/reviews">{{::dish.rating || 0}}/5 ({{::dish.review_count || 0}} reviews)</a>
         <button class="button button-clear button-stable" ng-click="vm.deleteDish(dish)">
           <i class="icon ion-trash-a"></i>
         </button>

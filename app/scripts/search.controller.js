@@ -41,12 +41,20 @@
 
         function setChefs(chefs) {
             vm.chefs = chefs;
+            updateChefsDistance();
             displayMarkers();
         }
 
         function onLocationChange(location) {
             userLocation = location;
+            updateChefsDistance();
             displayMarkers();
+        }
+
+        function updateChefsDistance() {
+            _.forEach(vm.chefs, function(chef) {
+                chef.distance = LocationService.getDistanceFrom(chef.location);
+            });
         }
 
         function displayMarkers() {

@@ -21,9 +21,9 @@
 
         function getDistanceFrom(l) {
             if (!location || !l) {
-                return 0;
+                return '';
             }
-            return distance(location.latitude, location.longitude, l.latitude, l.longitude).toFixed(1);
+            return distance(location.latitude, location.longitude, l.latitude, l.longitude).toFixed(1) + ' miles';
         }
 
         function distance(lat1, lon1, lat2, lon2) {

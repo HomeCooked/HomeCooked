@@ -6,7 +6,7 @@
         <div class="padding">
           <div class="title-price">
             <h2>{{::vm.dish.title}}</h2>
-            <span>{{::vm.dish.price}}</span>
+            <span>{{::vm.dish.price}} $</span>
           </div>
 
           <p class="ingredients">Ingredients: {{::vm.dish.ingredients}}</p>
@@ -19,17 +19,17 @@
 
           <a class="item" ng-click="vm.go('app.dish-review', {id: vm.chef.id, dishId: dish.id})">
             Reviews
-            <span class="item-note"><span>★★★★★</span> ({{::vm.dish.review_count}} reviews)</span>
+            <span class="item-note"><span>★★★★★</span> ({{vm.dish.review_count}} reviews)</span>
           </a>
 
           <a class="item">
             Pickup Time
-            <span class="item-note">{{::vm.dish.pickup_time}}</span>
+            <span class="item-note">{{vm.dish.pickup_time | amCalendar}}</span>
           </a>
 
           <a class="item">
-            Pickup Location
-            <span class="item-note">{{::vm.chef.cross_street}} ({{::vm.chef.distance}})</span>
+            Pickup Distance
+            <span class="item-note">{{vm.chef.distance}}</span>
           </a>
 
           <label class="item item-input item-select">
