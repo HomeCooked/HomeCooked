@@ -44,8 +44,8 @@
             displayMarkers();
         }
 
-        function onLocationChange(position) {
-            userLocation = position.coords;
+        function onLocationChange(location) {
+            userLocation = location;
             displayMarkers();
         }
 
