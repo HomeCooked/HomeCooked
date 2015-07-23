@@ -1,54 +1,51 @@
 <ion-view title="{{::vm.dish.title}}" class="buyer-dish-preview">
     <ion-content class="has-footer">
-      <div class="image-container">
-        <img ng-src="{{vm.dish.picture}}">
-      </div>
+        <div class="image-container">
+            <img ng-src="{{vm.dish.picture}}">
+        </div>
         <div class="padding">
-          <div class="title-price">
-            <h2>{{::vm.dish.title}}</h2>
-            <span>{{::vm.dish.price}} $</span>
-          </div>
+            <div class="title-price">
+                <h2>{{::vm.dish.title}}</h2>
+                <span>{{::vm.dish.price}} $</span>
+            </div>
 
-          <p class="ingredients">Ingredients: {{::vm.dish.ingredients}}</p>
+            <p class="ingredients">Ingredients: {{::vm.dish.ingredients}}</p>
         </div>
         <div class="list">
 
-          <div class="item item-divider">
-            Details
-          </div>
-
-          <a class="item" ng-click="vm.go('app.dish-review', {id: vm.chef.id, dishId: dish.id})">
-            Reviews
-            <span class="item-note"><span>★★★★★</span> ({{vm.dish.review_count}} reviews)</span>
-          </a>
-
-          <a class="item">
-            Pickup Time
-            <span class="item-note">{{vm.dish.pickup_time | amCalendar}}</span>
-          </a>
-
-          <a class="item">
-            Pickup Distance
-            <span class="item-note">{{vm.chef.distance}}</span>
-          </a>
-
-          <label class="item item-input item-select">
-            <div class="input-label">
-              Quantity
+            <div class="item item-divider">
+                Details
             </div>
-            <select>
-              <option value="1" selected>1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-          </label>
+
+            <a class="item" ng-click="vm.go('app.dish-review', {id: vm.chef.id, dishId: dish.id})">
+                Reviews
+                <span class="item-note"><span>★★★★★</span> ({{vm.dish.review_count}} reviews)</span>
+            </a>
+
+            <a class="item">
+                Pickup Time
+                <span class="item-note">{{vm.dish.pickup_time | amCalendar}}</span>
+            </a>
+
+            <a class="item">
+                Pickup Distance
+                <span class="item-note">{{vm.chef.distance}}</span>
+            </a>
+
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Quantity
+                </div>
+                <select ng-model="qty"
+                        ng-options="i as i for i in vm.getNumber(dish.remaining)"></select>
+            </label>
 
         </div>
     </ion-content>
-    <div class="bar bar-footer bar-dark place-order-btn">
-        <div class="title">Place Order</div>
+    <div class="bar bar-footer bar-dark button-bar">
+        <button class="button button-clear" ng-if="!vm.user.isLoggedIn" ng-click="vm.signin()">Sign in</button>
+        <button class="button button-clear" ng-if="vm.user.isLoggedIn" ng-disabled="!qty"
+                ng-click="vm.order(qty)">Place Order
+        </button>
     </div>
 </ion-view>
