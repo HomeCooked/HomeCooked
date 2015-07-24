@@ -16,7 +16,6 @@
         vm.user = user;
         vm.signin = signin;
         vm.order = order;
-        vm.getQuantities = getQuantities;
         vm.chef = {};
 
         activate();
@@ -26,7 +25,11 @@
             ChefService.getChef($stateParams.id, true)
                 .then(function(chef) {
                     vm.chef = chef;
-                    vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.dishId)});
+                    if ($stateParams.dishId) {
+                        vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.dishId)});
+                        vm.quantity = 1;
+                        vm.dish.quantities = getQuantities(vm.dish.remaining);
+                    }
                     onLocationChange();
                 })
                 .catch(HCMessaging.showError)
@@ -40,9 +43,9 @@
             vm.chef.distance = LocationService.getDistanceFrom(vm.chef.location);
         }
 
-        function order(qty) {
+        function order() {
             if (user.hasPaymentInfo) {
-                PaymentService.order({dishId: $stateParams.dishId, quantity: qty});
+                PaymentService.order({dishId: $stateParams.dishId, quantity: vm.quantity});
             }
             else {
                 $state.go('app.settings-payment');
@@ -52,7 +55,7 @@
         function getQuantities(remaining) {
             var a = [];
             for (var i = 0; i < remaining; i++) {
-                a.push(i);
+                a.push(i + 1);
             }
             return a;
         }
