@@ -10,6 +10,7 @@
     function EnrollCtrl($state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
         var vm = this;
         var user = LoginService.getUser();
+        vm.pictureCropped = '';
         vm.form = {
             first_name: user.first_name,
             last_name: user.last_name,
@@ -17,8 +18,10 @@
             phone_number: user.phone_number
         };
 
-        vm.enroll = function(form) {
-            form.picture = form.picture.base64;
+        vm.enroll = enroll;
+
+        function enroll(form) {
+            form.picture = form.picture.split(';base64,').pop();
             calculateAddress(form, form.address);
             $ionicLoading.show({
                 template: 'Enrolling...'
@@ -40,7 +43,7 @@
                     $ionicLoading.hide();
                 })
                 .catch(HCMessaging.showError);
-        };
+        }
 
         function calculateAddress(form, place) {
             if (typeof place === 'string') {

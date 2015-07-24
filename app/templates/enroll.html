@@ -4,13 +4,14 @@
 
             <div class="hc-image-container">
                 <div class="button button-positive button-clear button-block hc-button-upload">
-                    {{vm.form.picture ? 'Upload Another Image' : 'Upload Image'}}
-                    <input type="file" name="picture" required accept="image/*" ng-model="vm.form.picture"
-                           base-sixty-four-input/>
+                    {{pictureData ? 'Upload Another Image' : 'Upload Image'}}
+                    <input type="file" name="picture" required accept="image/*" ng-model="pictureData"
+                           base-sixty-four-input
+                           ng-change="vm.form.picture=''; vm.picture='data:' + pictureData.filetype + ';base64,' + pictureData.base64;"/>
                 </div>
-                <img ng-if="vm.form.picture"
-                     ng-src="data:{{vm.form.picture.filetype}};base64,{{vm.form.picture.base64}}"
-                     height="180">
+                <div class="hc-crop-area" ng-if="vm.picture">
+                    <img-crop image="vm.picture" result-image="vm.form.picture" change-on-fly="false" result-image-quality="1"></img-crop>
+                </div>
             </div>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">First name</span>
