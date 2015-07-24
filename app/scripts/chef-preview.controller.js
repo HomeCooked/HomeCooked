@@ -16,7 +16,7 @@
         vm.user = user;
         vm.signin = signin;
         vm.order = order;
-        vm.getNumber = getNumber;
+        vm.getQuantities = getQuantities;
         vm.chef = {};
 
         activate();
@@ -41,7 +41,7 @@
         }
 
         function order(qty) {
-            if (user.hasCC) {
+            if (user.hasPaymentInfo) {
                 PaymentService.order({dishId: $stateParams.dishId, quantity: qty});
             }
             else {
@@ -49,9 +49,9 @@
             }
         }
 
-        function getNumber(num) {
+        function getQuantities(remaining) {
             var a = [];
-            for (var i = 0; i < num; i++) {
+            for (var i = 0; i < remaining; i++) {
                 a.push(i);
             }
             return a;
