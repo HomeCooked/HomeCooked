@@ -51,7 +51,7 @@
         }
 
         function setUserHasPaymentInfo(hasPaymentInfo){
-            user.hasPaymentInfo = hasPaymentInfo;
+            user.has_payment = hasPaymentInfo;
             CacheService.setValue({user: user});
         }
 

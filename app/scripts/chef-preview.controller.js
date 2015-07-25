@@ -44,7 +44,7 @@
         }
 
         function order() {
-            if (user.hasPaymentInfo) {
+            if (user.has_payment) {
                 PaymentService.order({dishId: $stateParams.dishId, quantity: vm.quantity});
             }
             else {
