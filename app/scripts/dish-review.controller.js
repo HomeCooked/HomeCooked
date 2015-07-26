@@ -6,41 +6,23 @@
         .module('HomeCooked.controllers')
         .controller('DishReviewCtrl', DishReviewCtrl);
 
-    DishReviewCtrl.$inject = [];
+    DishReviewCtrl.$inject = ['$stateParams', '$ionicLoading', 'DishesService', 'HCMessaging'];
 
-    function DishReviewCtrl() {
+    function DishReviewCtrl($stateParams, $ionicLoading, DishesService, HCMessaging) {
         var vm = this;
 
         vm.reviews = [];
 
-        activate();
+        getReviews();
 
-        function activate() {
-            vm.reviews = [{
-                first_name: 'Didier',
-                last_name: 'Baquier',
-                picture: 'http://didierbaquier.fr/img/me.jpg',
-                rating: 4.7,
-                comment: 'It was so delicious, the meat was perfectly cooked!'
-            },{
-                first_name: 'Didier',
-                last_name: 'Baquier',
-                picture: 'http://didierbaquier.fr/img/me.jpg',
-                rating: 4.7,
-                comment: 'It was so delicious, the meat was perfectly cooked!'
-            },{
-                first_name: 'Didier',
-                last_name: 'Baquier',
-                picture: 'http://didierbaquier.fr/img/me.jpg',
-                rating: 4.7,
-                comment: 'It was so delicious, the meat was perfectly cooked!'
-            },{
-                first_name: 'Didier',
-                last_name: 'Baquier',
-                picture: 'http://didierbaquier.fr/img/me.jpg',
-                rating: 4.7,
-                comment: 'It was so delicious, the meat was perfectly cooked!'
-            },];
+        function getReviews() {
+            $ionicLoading.show();
+            DishesService.getDishReviews($stateParams.dishId)
+                .then(function(reviews) {
+                    vm.reviews = reviews;
+                })
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
         }
 
 

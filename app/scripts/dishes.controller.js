@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', '$ionicScrollDelegate', 'ChefService', 'LoginService', 'HCMessaging', '_'];
-    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, $ionicScrollDelegate, ChefService, LoginService, HCMessaging, _) {
+    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', '$ionicScrollDelegate', 'DishesService', 'LoginService', 'HCMessaging', '_'];
+    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, $ionicScrollDelegate, DishesService, LoginService, HCMessaging, _) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -23,7 +23,7 @@
         function addDish(dish, form) {
             dish.picture = dish.picture.base64;
             $ionicLoading.show({template: 'Adding dish...'});
-            ChefService.addDish(dish)
+            DishesService.addDish(dish)
                 .then(function added(dishes) {
                     modalScope.dish = getEmptyDish();
                     form.$setPristine();
@@ -36,7 +36,7 @@
 
         function deleteDish(dish) {
             $ionicLoading.show({template: 'Deleting dish...'});
-            ChefService.deleteDish(dish)
+            DishesService.deleteDish(dish)
                 .then(function deleted() {
                     _.remove(vm.dishes, dish);
                 })
@@ -82,7 +82,7 @@
                     tutorialModal.remove();
                     tutorialModal = undefined;
                     tutorialScope.$destroy();
-                    ChefService.setDishesTutorialDone();
+                    DishesService.setDishesTutorialDone();
                 }
             };
             $ionicModal.fromTemplateUrl('templates/dishes-tutorial.html', {
@@ -105,7 +105,7 @@
             modalScope.dish = getEmptyDish();
 
             $ionicLoading.show({template: 'Getting dishes...'});
-            $q.all([ChefService.getDishes(), ChefService.isDishesTutorialDone()])
+            $q.all([DishesService.getDishes(), DishesService.isDishesTutorialDone()])
                 .then(function(values) {
                     var dishes = values[0],
                         tutorialDone = values[1];

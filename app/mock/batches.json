@@ -6,6 +6,7 @@
       "title": "food",
       "price": 6
     },
+    "price": 4,
     "remaining": 6,
     "orders": [
       {

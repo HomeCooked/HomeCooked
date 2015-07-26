@@ -1,6 +1,7 @@
 <ion-view title="Become a chef!" hide-back-button="true">
     <ion-content class="has-header">
         <form novalidate class="list" name="enrollForm">
+            <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
 
             <div class="hc-image-container">
                 <div class="button button-positive button-clear button-block hc-button-upload">
@@ -10,7 +11,8 @@
                            ng-change="vm.form.picture=''; vm.picture='data:' + pictureData.filetype + ';base64,' + pictureData.base64;"/>
                 </div>
                 <div class="hc-crop-area" ng-if="vm.picture">
-                    <img-crop image="vm.picture" result-image="vm.form.picture" change-on-fly="false" result-image-quality="1"></img-crop>
+                    <img-crop image="vm.picture" result-image="vm.form.picture" change-on-fly="false"
+                              result-image-quality="1"></img-crop>
                 </div>
             </div>
             <label class="item item-input item-stacked-label">
@@ -44,8 +46,9 @@
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Address</span>
+                <input style="display:none" type="text" name="address"/>
                 <input type="text" name="address" placeholder="Address, city, zipcode" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.address" g-places-autocomplete force-selection="true">
+                       ng-maxlength="50" ng-model="vm.form.address" g-places-autocomplete force-selection="true"/>
             </label>
 
             <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"

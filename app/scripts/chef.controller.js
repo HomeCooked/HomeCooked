@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
-    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging'];
+    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'DishesService', 'LoginService', 'HCMessaging'];
 
-    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
+    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, DishesService, LoginService, HCMessaging) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -60,7 +60,7 @@
 
         function onBeforeEnter() {
             $ionicLoading.show({template: 'Getting orders'});
-            $q.all([ChefService.getBatches(), ChefService.getDishes(), ChefService.getChefData()])
+            $q.all([ChefService.getBatches(), DishesService.getDishes(), ChefService.getChefData()])
                 .then(function(values) {
                     $ionicLoading.hide();
 
