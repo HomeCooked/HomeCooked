@@ -27,7 +27,7 @@
         </div>
         <a class="item item-icon-right" ui-sref="app.settings-payment">
             Payment method
-            <span class="item-note">Visa ending in xxxx</span>
+            <span class="item-note" ng-if="vm.user.has_payment">{{vm.user.payment_info.card_type}} ending in {{vm.user.payment_info.last_four}}</span>
             <i class="icon ion-ios-arrow-right"></i>
         </a>
     </div>

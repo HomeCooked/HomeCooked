@@ -16,6 +16,7 @@
 
         $scope.$on('$ionicView.beforeEnter', function() {
             vm.number = vm.expiry = vm.cvc = undefined;
+            vm.user = LoginService.getUser();
         });
 
         function showLoading() {
