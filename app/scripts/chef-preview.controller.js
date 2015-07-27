@@ -18,17 +18,7 @@
         vm.order = order;
         vm.checkout = checkout;
         vm.chef = {};
-        vm.checkoutDetails = [{
-            id: 1,
-            dish: {
-                id: 1,
-                title: 'chicken',
-                picture: 'https://homecookedstatic.s3.amazonaws.com/1d9ee1fc-23b.png'
-                // all dish info
-            },
-            quantity: 1,
-            total_price: 10
-        }];
+        vm.checkoutDetails = [];
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
 
