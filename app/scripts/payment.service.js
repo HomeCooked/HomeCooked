@@ -9,7 +9,8 @@
 
         return {
             savePaymentInfo: savePaymentInfo,
-            order: order,
+            holdBatch: holdBatch,
+            cancelOrder: cancelOrder,
             getCheckoutDetails: getCheckoutDetails,
             checkout: checkout
         };
@@ -18,12 +19,16 @@
             return $http.post(baseUrl + 'users/' + LoginService.getUser().id + '/add_payment_method/', info);
         }
 
-        function order(payload) {
+        function holdBatch(payload) {
             return $http.post(baseUrl + 'batches/' + payload.dishId + '/hold_batch_for_user/', payload);
         }
 
         function getCheckoutDetails(chefId) {
             return $http.get(baseUrl + 'users/' + LoginService.getUser().id + '/held_batches/' + chefId + '/');
+        }
+
+        function cancelOrder(chefId) {
+            return $http.delete(baseUrl + 'users/' + LoginService.getUser().id + '/held_batches/' + chefId + '/');
         }
 
         function checkout(payload) {

@@ -6,13 +6,14 @@
         .module('HomeCooked.controllers')
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
-    ChefPreviewCtrl.$inject = ['$window', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', '_'];
+    ChefPreviewCtrl.$inject = ['$window', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', '_'];
 
-    function ChefPreviewCtrl($window, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, ChefService, LocationService, HCMessaging, LoginService, PaymentService, _) {
+    function ChefPreviewCtrl($window, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, _) {
         var vm = this;
         var user = LoginService.getUser();
 
         vm.go = $state.go;
+        vm.back = back;
         vm.user = user;
         vm.signin = signin;
         vm.order = order;
@@ -54,7 +55,7 @@
         function order() {
             if (user.has_payment) {
                 $ionicLoading.show();
-                PaymentService.order({dishId: $stateParams.dishId, quantity: vm.quantity})
+                PaymentService.holdBatch({dishId: $stateParams.dishId, quantity: vm.quantity})
                     .then(function() {
                         $window.history.back();
                     })
@@ -67,17 +68,10 @@
         }
 
         function checkout() {
-            var confirmScope = $rootScope.$new();
-            confirmScope.checkoutDetails = vm.checkoutDetails;
-            var price = 0;
-            _.forEach(vm.checkoutDetails, function(detail) {
-                price += detail.total_price;
-            });
-            confirmScope.totalPrice = price;
             $ionicPopup.show({
                 title: 'Confirm checkout',
                 templateUrl: 'templates/confirm-checkout.html',
-                scope: confirmScope,
+                scope: getCheckoutScope(),
                 buttons: [{
                     text: 'Confirm',
                     type: 'button-positive',
@@ -86,6 +80,17 @@
                     text: 'Cancel'
                 }]
             });
+        }
+
+        function getCheckoutScope() {
+            var confirmScope = $rootScope.$new();
+            confirmScope.checkoutDetails = vm.checkoutDetails;
+            var price = 0;
+            _.forEach(vm.checkoutDetails, function(detail) {
+                price += detail.total_price;
+            });
+            confirmScope.totalPrice = price;
+            return confirmScope;
         }
 
         function doCheckout() {
@@ -100,6 +105,11 @@
                             text: 'Got it!',
                             type: 'button-positive',
                             onTap: function() {
+                                vm.checkoutDetails = [];
+                                $ionicHistory.nextViewOptions({
+                                    historyRoot: true,
+                                    disableAnimate: true
+                                });
                                 $state.go('app.orders');
                             }
                         }]
@@ -121,5 +131,31 @@
             LoginService.login('facebook');
         }
 
+        function back() {
+            if (_.size(vm.checkoutDetails)) {
+                $ionicPopup.show({
+                    title: 'Delete order?',
+                    templateUrl: 'templates/confirm-checkout.html',
+                    scope: getCheckoutScope(),
+                    buttons: [{
+                        text: 'Delete',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            PaymentService.cancelOrder();
+                            goBack();
+                        }
+                    }, {
+                        text: 'Keep'
+                    }]
+                });
+            }
+            else {
+                goBack();
+            }
+        }
+
+        function goBack() {
+            $state.go('app.buyer');
+        }
     }
 })();

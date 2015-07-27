@@ -4,7 +4,7 @@
             <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
             <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
             <p>{{vm.chef.distance}} away - ★ {{::vm.chef.review_score || '-'}}/5</p>
-            <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.go('app.buyer')" >
+            <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.back()" >
             </button>
         </div>
         <div class="bio">
