@@ -34,7 +34,7 @@
                         LoginService.setUserHasPaymentInfo(true);
                     })
                     .then(function() {
-                        $state.go('app.settings');
+                        $window.history.back();
                         $ionicPopup.alert({
                             title: 'Save successful',
                             template: 'Your payment information was saved!',

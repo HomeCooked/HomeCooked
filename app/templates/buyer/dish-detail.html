@@ -17,9 +17,9 @@
                 Details
             </div>
 
-            <a class="item" ng-click="vm.go('app.dish-review', {id: vm.chef.id, dishId: dish.id})">
+            <a class="item" ng-click="vm.go('app.dish-review', {id: vm.chef.id, dishId: vm.dish.id})">
                 Reviews
-                <span class="item-note"><span>★★★★★</span> ({{vm.dish.review_count}} reviews)</span>
+                <span class="item-note"><span>★ {{vm.dish.review_score || '-'}}/5</span> ({{vm.dish.review_count}} reviews)</span>
             </a>
 
             <a class="item">

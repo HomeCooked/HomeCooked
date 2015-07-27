@@ -9,7 +9,8 @@
 
         return {
             savePaymentInfo: savePaymentInfo,
-            order: order
+            order: order,
+            checkout: checkout
         };
 
         function savePaymentInfo(info) {
@@ -17,7 +18,10 @@
         }
 
         function order(payload) {
-            return $http.post(baseUrl + ':dishId/order/', payload);
+            return $http.post(baseUrl + 'batches/' + payload.dishId + '/hold_batch_for_user/', payload);
+        }
+        function checkout(payload) {
+            return $http.post(baseUrl + 'orders/order_meal', payload);
         }
     }
 })();
