@@ -70,7 +70,7 @@ HomeCooked
                 url: '/orders',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/chef/orders.html',
+                        templateUrl: 'templates/buyer/orders.html',
                         controller: 'OrdersCtrl as vm'
                     }
                 }

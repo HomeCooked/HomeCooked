@@ -1,0 +1,14 @@
+<div class="list">
+    <label class="item item-avatar" ng-repeat="batch in checkoutDetails">
+        <img src="{{batch.dish.picture}}"/>
+
+        <div>{{batch.dish.title}}</div>
+
+        <div>{{batch.quantity}} portion(s)</div>
+        <span class="item-note">{{batch.total_price}} $</span>
+    </label>
+    <label class="item">
+        <span>Total price:</span>
+        <span class="item-note"><b>{{totalPrice}} $</b></span>
+    </label>
+</div>

@@ -1,5 +1,5 @@
 <ion-view title="{{::vm.chef.first_name}} {{::vm.chef.last_name}}" class="buyer-search-preview" hide-nav-bar="true">
-    <ion-content has-bouncing="false">
+    <ion-content has-bouncing="false" class="has-footer">
         <div class="preview">
             <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
             <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
@@ -26,4 +26,9 @@
           </div>
         </div>
     </ion-content>
+    <div class="bar bar-footer bar-dark button-bar">
+        <button class="button button-clear" ng-disabled="!vm.checkoutDetails.length"
+                ng-click="vm.checkout()">Checkout
+        </button>
+    </div>
 </ion-view>

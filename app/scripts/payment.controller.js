@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('PaymentCtrl', PaymentCtrl);
 
-    PaymentCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'HCMessaging', 'PaymentService', 'LoginService'];
+    PaymentCtrl.$inject = ['$window', '$scope', '$ionicPopup', '$ionicLoading', 'HCMessaging', 'PaymentService', 'LoginService'];
 
-    function PaymentCtrl($scope, $state, $ionicPopup, $ionicLoading, HCMessaging, PaymentService, LoginService) {
+    function PaymentCtrl($window, $scope, $ionicPopup, $ionicLoading, HCMessaging, PaymentService, LoginService) {
 
         var vm = this;
 

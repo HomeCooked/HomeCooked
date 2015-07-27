@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
-    ChefPreviewCtrl.$inject = ['$state', '$stateParams', '$scope', '$ionicLoading', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', '_'];
+    ChefPreviewCtrl.$inject = ['$window', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', '_'];
 
-    function ChefPreviewCtrl($state, $stateParams, $scope, $ionicLoading, ChefService, LocationService, HCMessaging, LoginService, PaymentService, _) {
+    function ChefPreviewCtrl($window, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, ChefService, LocationService, HCMessaging, LoginService, PaymentService, _) {
         var vm = this;
         var user = LoginService.getUser();
 
@@ -16,13 +16,30 @@
         vm.user = user;
         vm.signin = signin;
         vm.order = order;
+        vm.checkout = checkout;
         vm.chef = {};
+        vm.checkoutDetails = [{
+            id: 1,
+            dish: {
+                id: 1,
+                title: 'chicken',
+                picture: 'https://homecookedstatic.s3.amazonaws.com/1d9ee1fc-23b.png'
+                // all dish info
+            },
+            quantity: 1,
+            total_price: 10
+        }];
 
-        activate();
+        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
 
-        function activate() {
+        $scope.$watch(function() {
+            return LocationService.getCurrentLocation();
+        }, onLocationChange);
+
+        function onBeforeEnter() {
+            vm.chefId = $stateParams.id;
             $ionicLoading.show();
-            ChefService.getChef($stateParams.id, true)
+            ChefService.getChef(vm.chefId, true)
                 .then(function(chef) {
                     vm.chef = chef;
                     if ($stateParams.dishId) {
@@ -34,9 +51,10 @@
                 })
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
-            $scope.$watch(function() {
-                return LocationService.getCurrentLocation();
-            }, onLocationChange);
+
+            PaymentService.getCheckoutDetails(vm.chefId).then(function(details) {
+                vm.checkoutDetails = details;
+            });
         }
 
         function onLocationChange() {
@@ -45,17 +63,66 @@
 
         function order() {
             if (user.has_payment) {
-                PaymentService.order({dishId: $stateParams.dishId, quantity: vm.quantity});
+                $ionicLoading.show();
+                PaymentService.order({dishId: $stateParams.dishId, quantity: vm.quantity})
+                    .then(function() {
+                        $window.history.back();
+                    })
+                    .catch(HCMessaging.showError)
+                    .finally($ionicLoading.hide);
             }
             else {
                 $state.go('app.settings-payment');
             }
         }
 
+        function checkout() {
+            var confirmScope = $rootScope.$new();
+            confirmScope.checkoutDetails = vm.checkoutDetails;
+            var price = 0;
+            _.forEach(vm.checkoutDetails, function(detail) {
+                price += detail.total_price;
+            });
+            confirmScope.totalPrice = price;
+            $ionicPopup.show({
+                title: 'Confirm checkout',
+                templateUrl: 'templates/confirm-checkout.html',
+                scope: confirmScope,
+                buttons: [{
+                    text: 'Confirm',
+                    type: 'button-positive',
+                    onTap: doCheckout
+                }, {
+                    text: 'Cancel'
+                }]
+            });
+        }
+
+        function doCheckout() {
+            $ionicLoading.show();
+            var batches = _.pluck(vm.checkoutDetails, 'id');
+            PaymentService.checkout(vm.chefId, batches)
+                .then(function() {
+                    $ionicPopup.show({
+                        title: 'Checkout successful!',
+                        template: 'Your order is confirmed, remember to go pick it up!',
+                        buttons: [{
+                            text: 'Got it!',
+                            type: 'button-positive',
+                            onTap: function() {
+                                $state.go('app.orders');
+                            }
+                        }]
+                    });
+                })
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
+        }
+
         function getQuantities(remaining) {
             var a = [];
-            for (var i = 0; i < remaining; i++) {
-                a.push(i + 1);
+            for (var i = 1; i <= remaining; i++) {
+                a.push(i);
             }
             return a;
         }

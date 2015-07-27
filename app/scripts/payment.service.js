@@ -10,6 +10,7 @@
         return {
             savePaymentInfo: savePaymentInfo,
             order: order,
+            getCheckoutDetails: getCheckoutDetails,
             checkout: checkout
         };
 
@@ -20,6 +21,11 @@
         function order(payload) {
             return $http.post(baseUrl + 'batches/' + payload.dishId + '/hold_batch_for_user/', payload);
         }
+
+        function getCheckoutDetails(chefId) {
+            return $http.get(baseUrl + 'users/' + LoginService.getUser().id + '/held_batches/' + chefId + '/');
+        }
+
         function checkout(payload) {
             return $http.post(baseUrl + 'orders/order_meal', payload);
         }
