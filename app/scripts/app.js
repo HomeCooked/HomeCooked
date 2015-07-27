@@ -1,7 +1,7 @@
 'use strict';
 
 var HomeCooked = angular.module('HomeCooked', [
-    'ionic', 'ngAnimate', 'config', 'HomeCooked.controllers',
+    'ionic', 'ionic.rating', 'ngAnimate', 'config', 'HomeCooked.controllers',
     'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'ngImgCrop', 'google.places', 'angularMoment']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
@@ -70,7 +70,8 @@ HomeCooked
                 url: '/orders',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/chef/orders.html'
+                        templateUrl: 'templates/chef/orders.html',
+                        controller: 'OrdersCtrl as vm'
                     }
                 }
             })
