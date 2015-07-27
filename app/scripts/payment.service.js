@@ -3,8 +3,8 @@
 
     angular.module('HomeCooked.services').factory('PaymentService', PaymentService);
 
-    PaymentService.$inject = ['$http', 'ENV'];
-    function PaymentService($http, ENV) {
+    PaymentService.$inject = ['$http', 'LoginService', 'ENV'];
+    function PaymentService($http, LoginService, ENV) {
         var baseUrl = ENV.BASE_URL + '/api/v1/';
 
         return {
@@ -13,7 +13,7 @@
         };
 
         function savePaymentInfo(info) {
-            return $http.post(baseUrl + 'payment-info/', info);
+            return $http.post(baseUrl + 'users/' + LoginService.getUser().id + '/add_payment_method/', info);
         }
 
         function order(payload) {

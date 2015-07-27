@@ -44,7 +44,7 @@ module.exports = function (grunt) {
             BASE_URL: '//localhost:8000',
             CLIENT_ID: '111',
             FACEBOOK_APP_ID: '845407792180025',
-            STRIPE_KEY: 'pk_test_mtSOdGkIRn82r80ymyrzOmmk'
+            STRIPE_KEY: 'pk_test_b7DNvcW0ILbXaqffYQNo2DWU'
           }
         }
       },
@@ -55,7 +55,7 @@ module.exports = function (grunt) {
             BASE_URL: '//homecooked.herokuapp.com',
             CLIENT_ID: '111',
             FACEBOOK_APP_ID: '805673482820123',
-            STRIPE_KEY: 'pk_test_mtSOdGkIRn82r80ymyrzOmmk'
+            STRIPE_KEY: 'pk_test_b7DNvcW0ILbXaqffYQNo2DWU'
           }
         }
       }
