@@ -134,7 +134,7 @@
         function back() {
             if (_.size(vm.checkoutDetails)) {
                 $ionicPopup.show({
-                    title: 'Delete order?',
+                    title: 'Order pending',
                     templateUrl: 'templates/confirm-checkout.html',
                     scope: getCheckoutScope(),
                     buttons: [{
