@@ -2,28 +2,36 @@
     <ion-content has-bouncing="false" class="has-footer">
         <div class="preview">
             <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
+
             <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
+
             <p>{{vm.chef.distance}} away - ★ {{::vm.chef.review_score || '-'}}/5</p>
-            <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.back()" >
+            <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.back()">
             </button>
         </div>
-        <div class="bio">
-            <blockquote>
-                {{::vm.chef.bio}}
-            </blockquote>
+        <div class="bio" ng-if="vm.chef.bio.length">
+            <blockquote>{{::vm.chef.bio}}</blockquote>
         </div>
         <div class="dishes-container">
-          <div class="dish-card" ng-repeat="dish in vm.chef.dishes" ng-click="vm.go('app.dish-preview', {id: vm.chef.id, dishId: dish.id})">
-              <div class="dish-cover">
-                  <img ng-src="{{::dish.picture}}" />
-                  <div class="dish-price">{{::dish.price}} $</div>
-              </div>
-              <div class="dish-details">
-                  <div class="rating"><span>★ {{::dish.review_score || '-'}}/5</span><br />{{::dish.review_count}} reviews</div>
-                  <div class="title"><span>{{::dish.title}}</span><br />{{::dish.remaining}} remaining<br>{{::dish.pickup_time | amCalendar}}</div>
-                  <div class="btn"><button class="button button-assertive">Details</button></div>
-              </div>
-          </div>
+            <div class="dish-card" ng-repeat="dish in vm.chef.dishes"
+                 ng-click="vm.go('app.dish-preview', {id: vm.chef.id, dishId: dish.id})">
+                <div class="dish-cover">
+                    <img ng-src="{{::dish.picture}}"/>
+
+                    <div class="dish-price">{{::dish.price}} $</div>
+                </div>
+                <div class="dish-details">
+                    <div class="rating"><span>★ {{::dish.review_score || '-'}}/5</span><br/>{{::dish.review_count}}
+                        reviews
+                    </div>
+                    <div class="title"><span>{{::dish.title}}</span><br/>{{::dish.remaining}} remaining<br>{{::dish.pickup_time
+                        | amCalendar}}
+                    </div>
+                    <div class="btn">
+                        <button class="button button-assertive">Details</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </ion-content>
     <div class="bar bar-footer bar-dark button-bar">
