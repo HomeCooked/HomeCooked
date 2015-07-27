@@ -10,6 +10,7 @@
             </div>
 
             <p class="ingredients">Ingredients: {{::vm.dish.ingredients}}</p>
+            <p>{{::vm.dish.specialIngredients}}</p>
         </div>
         <div class="list">
 
@@ -39,7 +40,6 @@
                 <select ng-model="vm.quantity"
                         ng-options="i as i for i in vm.dish.quantities"></select>
             </label>
-
         </div>
     </ion-content>
     <div class="bar bar-footer bar-dark button-bar">

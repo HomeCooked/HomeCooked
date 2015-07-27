@@ -37,6 +37,7 @@
                         vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.dishId)});
                         vm.quantity = 1;
                         vm.dish.quantities = getQuantities(vm.dish.remaining);
+                        vm.dish.specialIngredients = getSpecialIngredients(vm.dish);
                     }
                     onLocationChange();
                 })
@@ -125,6 +126,13 @@
                 a.push(i);
             }
             return a;
+        }
+
+        function getSpecialIngredients(dish) {
+            var ingredients = _.filter(['milk', 'peanuts', 'eggs', 'vegetarian'], function(ingredient) {
+                return dish[ingredient] === true;
+            });
+            return ingredients.join(', ');
         }
 
         function signin() {
