@@ -11,6 +11,7 @@
     function ChefPreviewCtrl($window, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, _) {
         var vm = this;
         var user = LoginService.getUser();
+        var popup;
 
         vm.go = $state.go;
         vm.back = back;
@@ -28,6 +29,7 @@
         }, onLocationChange);
 
         function onBeforeEnter() {
+            popup = undefined;
             vm.chefId = $stateParams.id;
             $ionicLoading.show();
             ChefService.getChef(vm.chefId, true)
@@ -69,7 +71,7 @@
         }
 
         function checkout() {
-            $ionicPopup.show({
+            popup = $ionicPopup.show({
                 title: 'Confirm checkout',
                 templateUrl: 'templates/confirm-checkout.html',
                 scope: getCheckoutScope(),
@@ -88,16 +90,17 @@
             confirmScope.checkoutDetails = vm.checkoutDetails;
             var price = 0;
             _.forEach(vm.checkoutDetails, function(detail) {
-                price += detail.total_price;
+                price += (detail.total_price || 0);
             });
             confirmScope.totalPrice = price;
+            confirmScope.deleteBatch = deleteBatch;
             return confirmScope;
         }
 
         function doCheckout() {
             $ionicLoading.show();
-            var batches = _.pluck(vm.checkoutDetails, 'id');
-            PaymentService.checkout(vm.chefId, batches)
+            var portionsIds = _.pluck(vm.checkoutDetails, 'id');
+            PaymentService.checkout(portionsIds)
                 .then(function() {
                     $ionicPopup.show({
                         title: 'Checkout successful!',
@@ -141,7 +144,7 @@
 
         function back() {
             if (_.size(vm.checkoutDetails)) {
-                $ionicPopup.show({
+                popup = $ionicPopup.show({
                     title: 'Order pending',
                     templateUrl: 'templates/confirm-checkout.html',
                     scope: getCheckoutScope(),
@@ -164,6 +167,20 @@
 
         function goBack() {
             $state.go('app.buyer');
+        }
+
+        function deleteBatch(batchId) {
+            $ionicLoading.show();
+            PaymentService.deleteBatch(batchId)
+                .then(function() {
+                    // vm.checkoutDetails is the same array of the modal
+                    _.remove(vm.checkoutDetails, {id: batchId});
+                    if (popup && _.isEmpty(vm.checkoutDetails)) {
+                        popup.close();
+                    }
+                })
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
         }
     }
 })();

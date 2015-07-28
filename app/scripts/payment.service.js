@@ -10,29 +10,44 @@
         return {
             savePaymentInfo: savePaymentInfo,
             holdBatch: holdBatch,
+            deleteBatch: deleteBatch,
             cancelOrder: cancelOrder,
             getCheckoutDetails: getCheckoutDetails,
             checkout: checkout
         };
 
         function savePaymentInfo(info) {
-            return $http.post(baseUrl + 'users/' + LoginService.getUser().id + '/add_payment_method/', info);
+            return handleResponses($http.post(baseUrl + 'users/' + LoginService.getUser().id + '/add_payment_method/', info));
         }
 
         function holdBatch(payload) {
-            return $http.post(baseUrl + 'batches/' + payload.dishId + '/hold_batch_for_user/', payload);
+            return handleResponses($http.post(baseUrl + 'batches/' + payload.dishId + '/hold_batch_for_user/', payload));
         }
 
-        function getCheckoutDetails(chefId) {
-            return $http.get(baseUrl + 'users/' + LoginService.getUser().id + '/held_batches/' + chefId + '/');
+        function deleteBatch(batchId) {
+            return handleResponses($http.delete(baseUrl + 'users/' + batchId + '/remove_portion_from_cart/'));
         }
 
-        function cancelOrder(chefId) {
-            return $http.delete(baseUrl + 'users/' + LoginService.getUser().id + '/held_batches/' + chefId + '/');
+        function getCheckoutDetails() {
+            return handleResponses($http.get(baseUrl + 'users/held_batches/'));
         }
 
-        function checkout(payload) {
-            return $http.post(baseUrl + 'orders/order_meal', payload);
+        function cancelOrder() {
+            return handleResponses($http.delete(baseUrl + 'users/held_batches/'));
+        }
+
+        function checkout(portions) {
+            var payload = {
+                card_id: LoginService.getUser().payment_info.id,
+                portions: portions
+            };
+            return handleResponses($http.post(baseUrl + 'orders/order_meal/', payload));
+        }
+
+        function handleResponses(httpPromise) {
+            return httpPromise.then(function(response) {
+                return response.data;
+            });
         }
     }
 })();
