@@ -31,8 +31,13 @@
         function onBeforeEnter() {
             popup = undefined;
             vm.chefId = $stateParams.id;
+            getChefDetails();
+            getCheckoutInfo();
+        }
+
+        function getChefDetails() {
             $ionicLoading.show();
-            ChefService.getChef(vm.chefId, true)
+            return ChefService.getChef(vm.chefId, true)
                 .then(function(chef) {
                     vm.chef = chef;
                     if ($stateParams.dishId) {
@@ -42,11 +47,10 @@
                         vm.dish.specialIngredients = getSpecialIngredients(vm.dish);
                     }
                     onLocationChange();
+                    return chef;
                 })
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
-
-            getCheckoutInfo();
         }
 
         function getCheckoutInfo() {
@@ -175,7 +179,10 @@
         function deleteDishPortions(portion) {
             $ionicLoading.show();
             PaymentService.deleteBatch(portion.portion_id_list)
-                .then(getCheckoutInfo)
+                .then(function() {
+                    getChefDetails();
+                    return getCheckoutInfo();
+                })
                 .then(function(info) {
                     if (popup && _.isEmpty(info.portions)) {
                         popup.close();

@@ -36,13 +36,12 @@
             now.setHours(now.getHours() + batch.start_time);
             batch.start_time = now.toISOString().split('.').shift();
 
-            $ionicLoading.show({template: 'Adding batch'});
+            $ionicLoading.show();
             ChefService.addBatch(batch)
                 .then(function(batches) {
                     modalScope.batch = emptyBatch();
                     form.$setPristine();
                     vm.batches = batches;
-                    setBatchesDishInfo(vm.batches, vm.dishes);
                     $ionicLoading.hide();
                     modal.hide();
                 })
@@ -59,14 +58,13 @@
         }
 
         function onBeforeEnter() {
-            $ionicLoading.show({template: 'Getting orders'});
+            $ionicLoading.show();
             $q.all([ChefService.getBatches(), DishesService.getDishes(), ChefService.getChefData()])
                 .then(function(values) {
                     $ionicLoading.hide();
 
-                    vm.dishes = values[1];
                     vm.batches = values[0];
-                    setBatchesDishInfo(vm.batches, vm.dishes);
+                    vm.dishes = values[1];
                     var chefData = values[2];
                     vm.maxPrice = chefData.maxPrice;
                     vm.maxQuantity = chefData.maxQuantity;
@@ -86,17 +84,6 @@
                 modal = undefined;
                 modalScope.$destroy();
             }
-        }
-
-        function setBatchesDishInfo(batches, dishes) {
-            _.forEach(batches, function(batch) {
-                var dish = _.find(dishes, {'id': batch.dish}) || {};
-                _.extend(batch, {
-                    'dishName': dish.title,
-                    'dishImage': dish.image,
-                    'dishPrice': dish.price
-                });
-            });
         }
 
         function hideModal() {
@@ -136,11 +123,30 @@
             }
         }
 
-        function showBatchOrder(batch, order) {
+        function showBatchOrder(order) {
+            var scope = getOrderScope(order);
             $ionicPopup.alert({
                 title: 'Order details',
-                template: 'user: ' + order.userName
+                scope: scope,
+                templateUrl: 'templates/chef/order-details.html',
+                buttons: [{
+                    text: 'Close',
+                    type: 'button-stable',
+                }, {
+                    text: 'Delivered',
+                    type: 'button-balanced'
+                }, {
+                    text: 'Cancel',
+                    type: 'button-assertive'
+                }]
             });
+        }
+
+        function getOrderScope(order) {
+            var orderScope = $rootScope.$new();
+            orderScope.order = order;
+            orderScope.cancelOrder = cancelOrder;
+            return orderScope;
         }
 
         function deleteBatch(batch) {
@@ -165,6 +171,29 @@
                     $ionicLoading.hide();
                 })
                 .catch(HCMessaging.showError);
+        }
+
+        function cancelOrder(order) {
+            var confirmScope = $rootScope.$new();
+            confirmScope.reason = '';
+            $ionicPopup.show({
+                title: 'Cancel order?',
+                templateUrl: 'templates/chef/confirm-cancel-order.html',
+                scope: confirmScope,
+                buttons: [{
+                    text: 'Confirm',
+                    type: 'button-assertive',
+                    onTap: function() {
+                        doCancelOrder(order, confirmScope.reason);
+                    }
+                }, {
+                    text: 'Cancel'
+                }]
+            });
+        }
+
+        function doCancelOrder(order, reason) {
+            console.log(order.id, reason);
         }
     }
 })();

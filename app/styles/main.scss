@@ -23,10 +23,14 @@ body {
   background-color: #eef;
 }
 
-@media (min-width: 800px) {
-  .popup-container .popup {
-    width: 40%;
-  }
+.popup-container .popup {
+  width: 320px;
+}
+
+.item .button-right {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .hc {

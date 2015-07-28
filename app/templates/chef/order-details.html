@@ -1,0 +1,9 @@
+<div class="list">
+    <label class="item item-avatar">
+        <img ng-src="{{::order.user.picture || 'images/logo.png'}}"/>
+
+        <div>{{::order.user.first_name}} {{::order.user.last_name}}</div>
+        <div>{{::order.portions.length}} portion(s)</div>
+        <span class="item-note">{{::order.cost}} $</span>
+    </label>
+</div>

@@ -1,11 +1,11 @@
 <div class="list">
-    <label class="item item-avatar item-button-right" ng-repeat="portion in checkoutInfo.portions">
+    <label class="item item-avatar" ng-repeat="portion in checkoutInfo.portions">
         <img ng-src="{{::portion.dish.picture || 'images/logo.png'}}"/>
 
         <div>{{::portion.dish.title}}</div>
         <div>{{::portion.portion_id_list.length}} portion(s)</div>
         <span class="item-note">{{::portion.cost}} $</span>
-        <button class="button button-clear button-stable" ng-click="deleteDishPortions(portion)">
+        <button class="button button-clear button-stable button-right" ng-click="deleteDishPortions(portion)">
             <i class="icon ion-trash-a"></i>
         </button>
     </label>

@@ -24,8 +24,6 @@
 
                 <h2>{{batch.dish.title}}</h2>
 
-                <p>{{batch.dish.price || 0}} $ per portion</p>
-
                 <p ng-if="batch.remaining > 0" class="title">
                     {{batch.remaining}} portion{{batch.remaining===1 ? "" : "s"}} available
                     <a href class="item-note" ng-click="vm.deleteBatch(batch)">
@@ -38,11 +36,11 @@
                     <p class="title">{{batch.orders.length || 0}} order{{batch.orders.length===1 ?
                         "" : "s"}}</p>
 
-                    <div ng-repeat="order in batch.orders" class="hc-order" ng-click="vm.showBatchOrder(batch, order)">
-                        <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
+                    <div ng-repeat="order in batch.orders" class="hc-order" ng-click="vm.showBatchOrder(order)">
+                        <img ng-src="{{order.user.picture || 'images/user.png'}}" width="100%">
 
-                        <div class="hc-order-username">{{order.userName}}</div>
-                        <div class="hc-order-quantity">{{order.quantity}}</div>
+                        <div class="hc-order-username">{{::order.user.first_name}} {{::order.user.last_name}}</div>
+                        <div class="hc-order-quantity">{{::order.quantity}}</div>
                     </div>
                 </div>
             </div>
