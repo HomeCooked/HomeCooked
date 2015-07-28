@@ -1,6 +1,6 @@
 <div class="list">
     <label class="item item-avatar item-button-right" ng-repeat="batch in checkoutDetails">
-        <img src="{{::batch.dish.picture || 'images/logo.png'}}"/>
+        <img ng-src="{{::batch.dish.picture || 'images/logo.png'}}"/>
 
         <div>{{::batch.dish.title}}</div>
         <div>{{::batch.quantity}} portion(s)</div>

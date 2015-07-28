@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('OrdersCtrl', OrdersCtrl);
 
-    OrdersCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'ChefService', 'HCMessaging'];
-    function OrdersCtrl($rootScope, $scope, $ionicModal, $ionicLoading, DishesService, ChefService, HCMessaging) {
+    OrdersCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'OrdersService', 'HCMessaging'];
+    function OrdersCtrl($rootScope, $scope, $ionicModal, $ionicLoading, DishesService, OrdersService, HCMessaging) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -61,8 +61,8 @@
             // show modal only if pending reviews
             // modalScope.review = getEmptyReview();
             // showModal();
-            $ionicLoading.show({template: 'Getting orders...'});
-            ChefService.getOrders()
+            $ionicLoading.show();
+            OrdersService.getOrders()
                 .then(function(orders) {
                     vm.orders = orders;
                 })
