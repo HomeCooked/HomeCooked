@@ -6,8 +6,6 @@
     function ChefService($q, $http, ENV) {
         var baseUrl = ENV.BASE_URL + '/api/v1/';
 
-        var ordersReady;
-
         return {
             getOrders: getOrders,
             getBatches: getBatches,
@@ -26,8 +24,7 @@
         }
 
         function getOrders() {
-            ordersReady = ordersReady || handleResponses($http.get('mock/orders.json'));
-            return ordersReady;
+            return handleResponses($http.get(baseUrl + 'orders/current_orders/'));
         }
 
         function getBatches() {
