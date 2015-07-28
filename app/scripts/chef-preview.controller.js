@@ -20,7 +20,7 @@
         vm.order = order;
         vm.checkout = checkout;
         vm.chef = {};
-        vm.checkoutDetails = [];
+        vm.checkoutInfo = {};
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
 
@@ -46,8 +46,13 @@
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
 
-            PaymentService.getCheckoutDetails(vm.chefId).then(function(details) {
-                vm.checkoutDetails = details;
+            getCheckoutInfo();
+        }
+
+        function getCheckoutInfo() {
+            return PaymentService.getCheckoutInfo(vm.chefId).then(function(info) {
+                vm.checkoutInfo = info;
+                return info;
             });
         }
 
@@ -87,19 +92,14 @@
 
         function getCheckoutScope() {
             var confirmScope = $rootScope.$new();
-            confirmScope.checkoutDetails = vm.checkoutDetails;
-            var price = 0;
-            _.forEach(vm.checkoutDetails, function(detail) {
-                price += (detail.total_price || 0);
-            });
-            confirmScope.totalPrice = price;
-            confirmScope.deleteBatch = deleteBatch;
+            confirmScope.checkoutInfo = vm.checkoutInfo;
+            confirmScope.deleteDishPortions = deleteDishPortions;
             return confirmScope;
         }
 
         function doCheckout() {
             $ionicLoading.show();
-            var portionsIds = _.pluck(vm.checkoutDetails, 'id');
+            var portionsIds = vm.checkoutInfo.portion_id_list;
             PaymentService.checkout(portionsIds)
                 .then(function() {
                     $ionicPopup.show({
@@ -109,7 +109,7 @@
                             text: 'Got it!',
                             type: 'button-positive',
                             onTap: function() {
-                                vm.checkoutDetails = [];
+                                vm.checkoutInfo = [];
                                 $ionicHistory.nextViewOptions({
                                     historyRoot: true,
                                     disableAnimate: true
@@ -143,7 +143,7 @@
         }
 
         function back() {
-            if (_.size(vm.checkoutDetails)) {
+            if (_.size(vm.checkoutInfo.portions)) {
                 popup = $ionicPopup.show({
                     title: 'Order pending',
                     templateUrl: 'templates/confirm-checkout.html',
@@ -152,7 +152,10 @@
                         text: 'Delete',
                         type: 'button-assertive',
                         onTap: function() {
-                            PaymentService.cancelOrder();
+                            $ionicLoading.show();
+                            PaymentService.cancelOrder()
+                                .catch(HCMessaging.showError)
+                                .finally($ionicLoading.hide);
                             goBack();
                         }
                     }, {
@@ -169,13 +172,12 @@
             $state.go('app.buyer');
         }
 
-        function deleteBatch(batchId) {
+        function deleteDishPortions(portion) {
             $ionicLoading.show();
-            PaymentService.deleteBatch(batchId)
-                .then(function() {
-                    // vm.checkoutDetails is the same array of the modal
-                    _.remove(vm.checkoutDetails, {id: batchId});
-                    if (popup && _.isEmpty(vm.checkoutDetails)) {
+            PaymentService.deleteBatch(portion.portion_id_list)
+                .then(getCheckoutInfo)
+                .then(function(info) {
+                    if (popup && _.isEmpty(info.portions)) {
                         popup.close();
                     }
                 })

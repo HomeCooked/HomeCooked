@@ -1,16 +1,16 @@
 <div class="list">
-    <label class="item item-avatar item-button-right" ng-repeat="batch in checkoutDetails">
-        <img ng-src="{{::batch.dish.picture || 'images/logo.png'}}"/>
+    <label class="item item-avatar item-button-right" ng-repeat="portion in checkoutInfo.portions">
+        <img ng-src="{{::portion.dish.picture || 'images/logo.png'}}"/>
 
-        <div>{{::batch.dish.title}}</div>
-        <div>{{::batch.quantity}} portion(s)</div>
-        <span class="item-note">{{::batch.total_price}} $</span>
-        <button class="button button-clear button-stable" ng-click="deleteBatch(batch.id)">
+        <div>{{::portion.dish.title}}</div>
+        <div>{{::portion.portion_id_list.length}} portion(s)</div>
+        <span class="item-note">{{::portion.cost}} $</span>
+        <button class="button button-clear button-stable" ng-click="deleteDishPortions(portion)">
             <i class="icon ion-trash-a"></i>
         </button>
     </label>
     <label class="item">
         <span>Total price:</span>
-        <span class="item-note"><b>{{::totalPrice}} $</b></span>
+        <span class="item-note"><b>{{::checkoutInfo.total_price}} $</b></span>
     </label>
 </div>

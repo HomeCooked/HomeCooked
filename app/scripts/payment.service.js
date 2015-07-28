@@ -12,7 +12,7 @@
             holdBatch: holdBatch,
             deleteBatch: deleteBatch,
             cancelOrder: cancelOrder,
-            getCheckoutDetails: getCheckoutDetails,
+            getCheckoutInfo: getCheckoutInfo,
             checkout: checkout
         };
 
@@ -24,11 +24,14 @@
             return handleResponses($http.post(baseUrl + 'batches/' + payload.dishId + '/hold_batch_for_user/', payload));
         }
 
-        function deleteBatch(batchId) {
-            return handleResponses($http.delete(baseUrl + 'users/' + batchId + '/remove_portion_from_cart/'));
+        function deleteBatch(batches) {
+            var payload = {
+                portions: batches
+            };
+            return handleResponses($http.post(baseUrl + 'users/remove_portions_from_cart/', payload));
         }
 
-        function getCheckoutDetails() {
+        function getCheckoutInfo() {
             return handleResponses($http.get(baseUrl + 'users/held_batches/'));
         }
 
