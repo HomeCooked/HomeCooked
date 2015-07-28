@@ -1,9 +1,43 @@
-<ion-view title="My Order" hide-back-button="true">
-  <ion-content class="has-header">
-    <p class="padding" align="center">
-      You haven't placed any order yet.<br>
-      <a href="#/buyer">Place one</a>
-    </p>
+<ion-view title="My Orders" hide-back-button="true">
+    <ion-content class="has-header">
+        <p class="padding" align="center" ng-if="!vm.activeOrders.length">
+            You haven't placed any order yet.<br>
+            <a href="#/buyer">Place one</a>
+        </p>
 
-  </ion-content>
+        <div class="list card" ng-repeat="order in vm.activeOrders">
+
+            <div class="item item-body">
+                <h2>{{::order.chef.first_name}} {{::order.chef.last_name}}</h2>
+
+                <p>{{order.chef.address}}</p>
+
+                <p>{{order.chef.distance}} away - pickup {{order.pickup_time | amCalendar}}</p>
+
+                <div class="map-container" style="height: 300px" data-tab-disable="true">
+                    <leaflet id="{{vm.getMapId(order)}}" defaults="vm.map.defaults" tiles="vm.map.tiles"
+                             center="order.center"></leaflet>
+                </div>
+            </div>
+            <div class="item item-avatar" ng-repeat="dish in order.dishes">
+                <img ng-src="{{dish.picture || 'images/logo.png'}}">
+
+                <h2>{{dish.title}}</h2>
+
+                <p>{{dish.portions.length}} portion(s)</p>
+                <span class="item-right">{{dish.cost}} $</span>
+            </div>
+            <div class="item">
+                Total paid:
+                <span class="item-right">{{order.total_price}} $</span>
+            </div>
+
+            <div class="button-bar">
+                <button class="button button-dark">
+                    <i class="icon ion-chatbox"></i>
+                    Notify chef I arrived!
+                </button>
+            </div>
+        </div>
+    </ion-content>
 </ion-view>

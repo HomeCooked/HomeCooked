@@ -29,7 +29,7 @@
             name: 'Find local chefs',
             path: 'app.buyer'
         }, {
-            name: 'My Order',
+            name: 'My Orders',
             path: 'app.orders'
         }, {
             name: 'Payment methods',

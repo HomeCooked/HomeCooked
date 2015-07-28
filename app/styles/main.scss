@@ -32,6 +32,11 @@ body {
   top: 0;
   right: 0;
 }
+.item .item-right {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
 
 .hc {
   &-orders {

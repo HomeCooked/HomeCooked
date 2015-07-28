@@ -66,7 +66,7 @@
         }
 
 
-        /** 
+        /**
          * reset all the markers and add new markers to the map
          * @param mapId the map id
          * @param markers an array of markers object
@@ -81,7 +81,7 @@
             });
         }
 
-        /** 
+        /**
          * add a HTML Marker to the leaflet featureGroup layer
          * this method computes automatically the iconSize and its position in the map
          * @param mapId the map id

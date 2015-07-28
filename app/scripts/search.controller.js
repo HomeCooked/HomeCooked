@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$scope', '$timeout', 'mapService', 'SearchService', 'LocationService', '_'];
+    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading', 'mapService', 'SearchService', 'LocationService', '_'];
 
-    function SearchCtrl($state, $scope, $timeout, mapService, SearchService, LocationService, _) {
+    function SearchCtrl($state, $scope, $ionicLoading, mapService, SearchService, LocationService, _) {
 
         var mapId = 'chefmap';
         var userLocation = null;
@@ -19,24 +19,27 @@
         vm.chefs = [];
         vm.goToPreview = goToPreview;
 
-        activate();
+        //init the map
+        initMapProperties();
+        $scope.$watch(function() {
+            return LocationService.getCurrentLocation();
+        }, onLocationChange);
 
-        function activate() {
-            //init the map
-            initMapProperties();
+        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+
+        function onBeforeEnter() {
             //retrieve chefs
             getChefs({
                 latitude: vm.map.center.lat,
                 longitude: vm.map.center.lng,
             });
-
-            $scope.$watch(function() {
-                return LocationService.getCurrentLocation();
-            }, onLocationChange);
         }
 
         function getChefs(location) {
-            SearchService.getChefs(location).then(setChefs);
+            $ionicLoading.show();
+            SearchService.getChefs(location)
+                .then(setChefs)
+                .finally($ionicLoading.hide);
         }
 
         function setChefs(chefs) {
@@ -69,9 +72,7 @@
             }
             if (_.size(markers)) {
                 mapService.addMarkers(mapId, markers);
-                $timeout(function() {
-                    mapService.fitMarkers(mapId);
-                }, 100);
+                mapService.fitMarkers(mapId);
             }
         }
 

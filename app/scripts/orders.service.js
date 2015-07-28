@@ -7,7 +7,8 @@
         var baseUrl = ENV.BASE_URL + '/api/v1/';
 
         return {
-            getOrders: getOrders
+            getOrders: getOrders,
+            getActiveOrders: getActiveOrders
         };
 
         function returnData(response) {
@@ -16,6 +17,10 @@
 
         function getOrders() {
             return $http.get(baseUrl + 'orders/current_orders/').then(returnData);
+        }
+
+        function getActiveOrders() {
+            return $http.get(baseUrl + 'orders/active_orders/').then(returnData);
         }
     }
 })();
