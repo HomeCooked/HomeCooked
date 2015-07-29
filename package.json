@@ -2,8 +2,7 @@
   "name": "HomeCooked",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "cordova": "~3.5.0-0.2.6",
     "glob": "~4.0.5",
@@ -51,8 +50,21 @@
     "test": "grunt test"
   },
   "cordovaPlugins": [
-    "https://github.com/driftyco/ionic-plugins-keyboard.git",
-    "org.apache.cordova.statusbar",
-    "org.apache.cordova.console"
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-whitelist",
+    "com.ionic.keyboard",
+    "cordova-plugin-console",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-statusbar",
+    "https://github.com/Wizcorp/phonegap-facebook-plugin.git",
+    "cordova-plugin-whitelist@^1.0.0",
+    "cordova-plugin-console@^1.0.1",
+    "cordova-plugin-statusbar@^1.0.1",
+    "cordova-plugin-geolocation@^1.0.1",
+    "cordova-plugin-splashscreen@^2.1.0"
+  ],
+  "cordovaPlatforms": [
+    "ios",
+    "android"
   ]
 }

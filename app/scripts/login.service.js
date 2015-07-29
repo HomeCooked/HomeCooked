@@ -2,8 +2,8 @@
 (function() {
     angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', '_'];
-    function LoginService($q, $http, ENV, CacheService, _) {
+    LoginService.$inject = ['$q', '$http', '$cordovaFacebook', 'ENV', 'CacheService', '_'];
+    function LoginService($q, $http, $cordovaFacebook, ENV, CacheService, _) {
         var user = CacheService.getValue('user') || {},
             baseUrl = ENV.BASE_URL + '/api/v1/';
 
@@ -89,20 +89,29 @@
         }
 
         function getAccessToken(provider) {
-            var deferred = $q.defer();
             if (provider === 'facebook') {
-                window.openFB.login(function(response) {
-                    if (response && response.authResponse && response.authResponse.token) {
-                        deferred.resolve(response.authResponse.token);
-                    }
-                    else {
-                        deferred.reject('not connected');
-                    }
-                }, {scope: 'email'});
+                return doFacebookLogin()
+                    .then(function(response) {
+                        var token = _.get(response, 'authResponse.token') || _.get(response, 'authResponse.accessToken');
+                        if (token) {
+                            return token;
+                        }
+                        return $q.reject('not connected');
+                    });
+            }
+            return $q.reject('not supported');
+        }
+
+        function doFacebookLogin() {
+            var deferred = $q.defer();
+            var scope = ['public_profile', 'email'];
+            if (window.cordova) {
+                $cordovaFacebook.login(scope).then(deferred.resolve, deferred.reject);
             }
             else {
-                deferred.reject('not supported');
+                window.openFB.login(deferred.resolve, {scope: scope});
             }
+            _.delay(deferred.reject.bind(deferred, 'timeout'), 60000);
             return deferred.promise;
         }
     }
