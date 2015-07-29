@@ -13,7 +13,8 @@
             deleteBatch: deleteBatch,
             getChefData: getChefData,
             getChef: getChef,
-            setChefBio: setChefBio
+            setChefBio: setChefBio,
+            getPickupTimes:getPickupTimes
         };
 
 
@@ -55,6 +56,14 @@
 
         function setChefBio(chefId, bio) {
             return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
+        }
+
+        function getPickupTimes(){
+            return $q.when([
+                {'id': 0, 'title': 'Friday (6pm-9pm)'},
+                {'id': 24, 'title': 'Saturday (6pm-9pm)'}
+            ])
+
         }
     }
 })();
