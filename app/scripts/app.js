@@ -1,8 +1,8 @@
 'use strict';
 
 var HomeCooked = angular.module('HomeCooked', [
-    'ionic', 'ionic.rating', 'ngAnimate', 'config', 'HomeCooked.controllers',
-    'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'ngImgCrop', 'google.places', 'angularMoment']);
+    'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
+    'ionic.rating', 'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'ngImgCrop', 'google.places', 'angularMoment']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
@@ -16,12 +16,7 @@ HomeCooked
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
 
-        window.openFB.init({
-            appId: ENV.FACEBOOK_APP_ID
-        });
-
         stripeProvider.setPublishableKey(ENV.STRIPE_KEY);
-
 
         $stateProvider
             .state('app', {
@@ -183,8 +178,16 @@ HomeCooked
     .run(function(LoginService) {
         LoginService.reloadUser();
     })
-    .run(function($ionicPlatform) {
+    .run(function($ionicPlatform, ENV) {
         $ionicPlatform.ready(function() {
+            if (window.cordova) {
+                window.facebookConnectPlugin.browserInit(ENV.FACEBOOK_APP_ID, 'v2.2');
+            }
+            else {
+                window.openFB.init({
+                    appId: ENV.FACEBOOK_APP_ID
+                });
+            }
             // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
