@@ -1,41 +1,58 @@
-<ion-view ng-controller="ChefCtrl as ctrl" title="Dishes I'm cooking" hide-back-button="true">
-  <ion-content class="has-header">
-    <div class="list">
-      <div class="item item-avatar" ng-repeat="batch in ctrl.batches">
-        <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
-
-        <h2>{{batch.dishName}}</h2>
-
-        <p>{{batch.dishPrice || 0}} $ per portion</p>
-
-        <p ng-if="batch.remaining > 0" class="title">
-          {{batch.remaining}} portion{{batch.remaining===1 ? "" : "s"}} available
-          <a href class="item-note" ng-click="ctrl.removePortions(batch)">
-            <i class="icon ion-minus-circled"></i> Remove
-          </a>
-        </p>
-
-
-        <div class="hc-orders" ng-hide="batch.quantity===batch.remaining">
-          <p class="title">{{batch.quantity - batch.remaining}} order{{batch.quantity - batch.remaining===1 ? "" : "s"}}</p>
-          <div ng-repeat="order in batch.orders" class="hc-order" ng-click="ctrl.showBatchOrder(batch, order)">
-            <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
-
-            <div class="hc-order-username">{{order.userName}}</div>
-            <div class="hc-order-quantity">{{order.quantity}}</div>
-          </div>
-        </div>
-      </div>
-      <div class="item item-text-wrap">
-        <button class="button button-block button-positive" ng-click="ctrl.openAddDish()"
-                ng-disabled="ctrl.batches.length>=ctrl.maxBatches">Add Batch
+<ion-view title="My Batches" hide-back-button="true">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="vm.openAddDish()"
+                ng-disabled="vm.dishes.length===0 || vm.batches.length>=vm.maxBatches">
+            Add
+            <i class="icon ion-plus-round"></i>
         </button>
-        <div align="center" ng-show="ctrl.batches.length>=ctrl.maxBatches">You can have maximum {{ctrl.maxBatches}} dish
-          types active.
-          After you sell and deliver all the dishes, you will be able to add new ones.
-        </div>
-      </div>
-    </div>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div class="list">
 
-  </ion-content>
+            <p class="padding" align="center" ng-if="vm.dishes.length===0">You need to create a dish before being able
+                to sell it!<br>
+                <a href ng-click="vm.go('app.dishes', {v:'new'})">Add a new dish</a>
+            </p>
+
+            <p class="padding" align="center" ng-if="vm.dishes.length>0 && vm.batches.length===0">Create your first batch!<br>
+                <a href ng-click="vm.openAddDish()">Add a new batch</a>
+            </p>
+
+            <div class="item item-avatar" ng-if="vm.dishes.length>0" ng-repeat="batch in vm.batches">
+                <img ng-src="{{batch.dishImage || 'images/logo.png'}}">
+
+                <h2>{{batch.dishName}}</h2>
+
+                <p>{{batch.dishPrice || 0}} $ per portion</p>
+
+                <p ng-if="batch.remaining > 0" class="title">
+                    {{batch.remaining}} portion{{batch.remaining===1 ? "" : "s"}} available
+                    <a href class="item-note" ng-click="vm.removePortions(batch)">
+                        <i class="icon ion-minus-circled"></i> Remove
+                    </a>
+                </p>
+
+
+                <div class="hc-orders" ng-hide="batch.quantity===batch.remaining">
+                    <p class="title">{{batch.quantity - batch.remaining}} order{{batch.quantity - batch.remaining===1 ?
+                        "" : "s"}}</p>
+
+                    <div ng-repeat="order in batch.orders" class="hc-order" ng-click="vm.showBatchOrder(batch, order)">
+                        <img ng-src="{{order.userImage || 'images/user.png'}}" width="100%">
+
+                        <div class="hc-order-username">{{order.userName}}</div>
+                        <div class="hc-order-quantity">{{order.quantity}}</div>
+                    </div>
+                </div>
+            </div>
+            <div align="center" ng-if="vm.dishes.length>0 && vm.batches.length>=vm.maxBatches"
+                 class="item item-text-wrap">
+                You can have maximum {{vm.maxBatches}}
+                dish
+                types active.
+                After you sell and deliver all the dishes, you will be able to add new ones.
+            </div>
+        </div>
+
+    </ion-content>
 </ion-view>

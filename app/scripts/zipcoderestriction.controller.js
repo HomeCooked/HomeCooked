@@ -5,9 +5,10 @@
         .module('HomeCooked.controllers')
         .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
-    ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup', 'LoginService'];
+    ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup',
+        'LoginService', 'ZipcodesService'];
 
-    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService) {
+    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService, ZipcodesService) {
 
         var vm = this;
         vm.validZipCode = validZipCode;
@@ -43,7 +44,7 @@
             $ionicPopup.alert({
                 title: 'Error',
                 template: 'Unable to retrieve your location'
-           });
+            });
         }
 
         function initMapProperties() {
@@ -82,24 +83,22 @@
                 $ionicLoading.show({
                     template: 'Checking...'
                 });
-                //FAKE API CALL
-                $timeout(function() {
-                    $ionicLoading.hide();
-                    var availableZipCodes = [94114, 94131, 94110, 94102, 94103, 95117];
-                    var isAvailable = availableZipCodes.indexOf(parseInt(vm.zipcode)) !== -1;
-                    if (isAvailable) {
-                        LoginService.setUserZipCode(vm.zipcode);
-                        $ionicHistory.nextViewOptions({
-                          historyRoot: true
-                        });
-                        $state.go('app.buyer');
-                    }
-                    else {
-                        $state.go('zipcode-unavailable', {
-                            zipcode: vm.zipcode
-                        });
-                    }
-                }, 1000);
+                ZipcodesService.isValidZipcode(parseInt(vm.zipcode))
+                    .then(function(isAvailable) {
+                        $ionicLoading.hide();
+                        if (isAvailable) {
+                            LoginService.setUserZipCode(vm.zipcode);
+                            $ionicHistory.nextViewOptions({
+                                historyRoot: true
+                            });
+                            $state.go('app.buyer');
+                        }
+                        else {
+                            $state.go('zipcode-unavailable', {
+                                zipcode: vm.zipcode
+                            });
+                        }
+                    });
             }
         }
 
@@ -115,7 +114,7 @@
                     $ionicPopup.alert({
                         title: 'Thank you for registering',
                         template: 'Thank you, we will be in touch shortly.'
-                   });
+                    });
                 }, 1000);
             }
         }

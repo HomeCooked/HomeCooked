@@ -21,7 +21,7 @@
       $ionicLoading.show({
         template: 'Updating...'
       });
-      ChefService.setChefBio(vm.chefInfo.user, vm.chefInfo.bio)
+      ChefService.setChefBio(vm.chefInfo.id, vm.chefInfo.bio)
         .then(function() {
           vm.modify = false;
           $ionicLoading.show({

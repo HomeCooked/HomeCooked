@@ -2,24 +2,24 @@
   <ion-header-bar>
     <h1 class="title">Add Batch</h1>
 
-    <div class="button button-clear" ng-click="ctrl.hideModal()">Cancel</div>
+    <div class="button button-clear" ng-click="vm.hideModal()">Cancel</div>
   </ion-header-bar>
   <ion-content>
     <form novalidate class="list" name="batchForm">
       <label class="item item-input item-select">
         <div class="input-label">Select Dish</div>
         <select name="dish" ng-model="batch.dish"
-                ng-options="dish.id as dish.title for dish in ctrl.dishes"></select>
+                ng-options="dish.id as dish.title for dish in vm.dishes"></select>
       </label>
       <label class="item item-input">
         <span class="input-label">Portions</span>
         <input name="quantity" ng-model="batch.quantity" type="number" pattern="[0-9]*" value="batch.quantity" required
-               placeholder="(max {{ctrl.maxQuantity}})" ng-minlength="1" min="1" max="{{ctrl.maxQuantity}}" ng-change="batch.quantity = ctrl.adjustRange(batch.quantity, 1, ctrl.maxQuantity)"/>
+               placeholder="(max {{vm.maxQuantity}})" ng-minlength="1" min="1" max="{{vm.maxQuantity}}" ng-change="batch.quantity = vm.adjustRange(batch.quantity, 1, vm.maxQuantity)"/>
       </label>
       <!--<label class="item item-input">
-        <input name="price" ng-model="batch.price" type="number" placeholder="Price per portion (max {{ctrl.maxPrice}})"
+        <input name="price" ng-model="batch.price" type="number" placeholder="Price per portion (max {{vm.maxPrice}})"
                pattern="[0-9]*" required ng-minlength="1"
-               ng-change="batch.price = ctrl.adjustRange(batch.price, 0, ctrl.maxPrice)"/>
+               ng-change="batch.price = vm.adjustRange(batch.price, 0, vm.maxPrice)"/>
       </label>-->
 
       <label class="item item-input item-select">
@@ -37,7 +37,7 @@
       </label>
 
       <div class="item button-bar">
-        <div class="button button-positive" ng-click="ctrl.addBatch(batch, batchForm)"
+        <div class="button button-positive" ng-click="vm.addBatch(batch, batchForm)"
              ng-disabled="batchForm.$invalid">Add
         </div>
       </div>

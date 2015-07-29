@@ -26,8 +26,13 @@
          */
 
         function getChefs(location) {
-            return $http.get('mock/chefs.json', {
-                location: location
+            return $http({
+                url: baseUrl + 'chefs/',
+                method: 'GET',
+                params: {
+                    location: location,
+                    distance: 50
+                }
             }).then(function(resp) {
                 return resp.data;
             });

@@ -2,32 +2,28 @@
 (function() {
     angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$q', '$http', 'ENV', 'CacheService', 'ChefService', '$cordovaFacebook', '_'];
-    function LoginService($q, $http, ENV, CacheService, ChefService, $cordovaFacebook, _) {
-        var user = CacheService.getValue('user') || {};
+    LoginService.$inject = ['$q', '$http', '$cordovaFacebook', 'ENV', 'CacheService', '_'];
+    function LoginService($q, $http, $cordovaFacebook, ENV, CacheService, _) {
+        var user = CacheService.getValue('user') || {},
+            baseUrl = ENV.BASE_URL + '/api/v1/';
 
         return {
+            init: init,
             login: login,
             logout: logout,
             getUser: getUser,
             setUserZipCode: setUserZipCode,
-            becomeChef: becomeChef,
-            setIsChef: setIsChef
+            becomeChef: becomeChef
         };
 
-        function setIsChef() {
-            if (user.isLoggedIn && !user.isChef) {
-                return ChefService.getChefInfo(user.id)
-                    .then(function() {
-                        user.isChef = true;
-                        return true;
-                    })
-                    .catch(function() {
-                        user.isChef = false;
-                        return false;
+        function init() {
+            if (user.isLoggedIn && user.id) {
+                $http.get(baseUrl + 'users/' + user.id + '/')
+                    .success(function(userData) {
+                        _.assign(user, userData);
+                        CacheService.setValue({user: user});
                     });
             }
-            return $q.when(user.isChef);
         }
 
         function login(type) {
@@ -56,15 +52,11 @@
         function becomeChef(chefInfo) {
             chefInfo.user = user.id;
             var deferred = $q.defer();
-            $http.post(ENV.BASE_URL + '/api/v1/enroll/', chefInfo)
+            $http.post(baseUrl + 'chefs/enroll/', chefInfo)
                 .success(deferred.resolve)
                 .error(function(data) {
-                    if (data.email && data.email[0] === 'This field must be unique.') {
-                        deferred.resolve();
-                    }
-                    else {
-                        deferred.reject(JSON.stringify(data));
-                    }
+                    deferred.reject(JSON.stringify(data));
+
                 });
             return deferred.promise;
         }
@@ -79,12 +71,12 @@
                     var data = response.data;
                     // TODO this should come from the server
                     data.user.zipcode = user.zipcode;
-                    _.assign(user, data.user, {isLoggedIn: true, isChef: false});
+                    _.assign(user, data.user, {isLoggedIn: true});
                     CacheService.setValue({
                         provider: provider,
                         credential: data.credential
                     });
-                    return setIsChef();
+                    return user.is_chef;
                 })
                 .finally(function() {
                     if (user.isLoggedIn) {
@@ -120,7 +112,6 @@
                 window.openFB.login(deferred.resolve, {scope: scope});
             }
             _.delay(deferred.reject.bind(deferred, 'timeout'), 60000);
-
             return deferred.promise;
         }
     }

@@ -1,149 +1,171 @@
-'use strict';
+(function() {
+    'use strict';
 
-angular.module('HomeCooked.controllers').controller('ChefCtrl', [
-  // TODO reduce injections
-  '_', '$rootScope', '$scope', '$log', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging',
-  function(_, $rootScope, $scope, $log, $state, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
-    var that = this;
-    var modalScope = $rootScope.$new();
+    angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
+    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'LoginService', 'HCMessaging'];
 
-    var init = function() {
-      that.dishes = [];
-      that.batches = [];
+    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, LoginService, HCMessaging) {
+        var vm = this,
+            modal,
+            modalScope = $rootScope.$new();
 
-      modalScope.ctrl = that;
-      modalScope.batch = emptyBatch();
-      modalScope.startTimes = [
-        {'id': 0, 'title': 'Friday (6pm-9pm)'},
-        {'id': 24, 'title': 'Saturday (6pm-9pm)'}
-      ];
+        modalScope.vm = vm;
+        modalScope.startTimes = [
+            {'id': 0, 'title': 'Friday (6pm-9pm)'},
+            {'id': 24, 'title': 'Saturday (6pm-9pm)'}
+        ];
 
-      $ionicModal.fromTemplateUrl('templates/add-batch.html', {
-        scope: modalScope
-      }).then(function(modal) {
-        that.modal = modal;
-      });
-    };
+        vm.dishes = [];
+        vm.batches = [];
+        vm.addBatch = addBatch;
+        vm.hideModal = hideModal;
+        vm.go = go;
+        vm.openAddDish = openAddDish;
+        vm.adjustRange = adjustRange;
+        vm.removePortions = removePortions;
+        vm.showBatchOrder = showBatchOrder;
 
-    var emptyBatch = function() {
-      var firstDish = that.dishes[0] || {};
-      return {
-        dish: firstDish.id,
-        start_time: 0,
-        duration: 1
-      };
-    };
+        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+        $scope.$on('$destroy', onDestroy);
 
-    var loadOrders = function() {
-      $ionicLoading.show({template: 'Getting orders'});
-      $q.all([ChefService.getBatches(), ChefService.getDishes(), ChefService.getChefData()])
-        .then(function(values) {
-          $ionicLoading.hide();
+        function addBatch(batch, form) {
+            batch.chef = LoginService.getUser().id;
+            batch.is_active = true;
 
-          that.dishes = values[1];
-          that.batches = values[0];
-          setBatchesDishInfo(that.batches, that.dishes);
-          var chefData = values[2];
-          that.maxPrice = chefData.maxPrice;
-          that.maxQuantity = chefData.maxQuantity;
-          that.maxBatches = chefData.maxBatches;
+            var now = new Date();
+            now.setHours(now.getHours() + batch.start_time);
+            batch.start_time = now.toISOString().split('.').shift();
 
-          modalScope.batch = emptyBatch();
-        })
-        .catch(HCMessaging.showError);
-    };
-
-    var setBatchesDishInfo = function(batches, dishes) {
-      _.forEach(batches, function(batch) {
-        var dish = _.find(dishes, {'id': batch.dish}) || {};
-        _.extend(batch, {
-          'dishName': dish.title,
-          'dishImage': dish.image,
-          'dishPrice': dish.price
-        });
-      });
-    };
-
-    var removePortions = function(batch) {
-      $ionicLoading.show({template: 'Removing...'});
-      ChefService.removeBatchAvailablePortions(batch)
-        .then(function(batches) {
-          that.batches = batches;
-          $ionicLoading.hide();
-          that.modal.hide();
-        })
-        .catch(HCMessaging.showError);
-    };
-
-    that.hideModal = function() {
-      that.modal.hide();
-    };
-
-    that.addBatch = function(batch, form) {
-      batch.chef = LoginService.getUser().id;
-      batch.remaining = batch.quantity;
-
-      var now = new Date();
-      now.setHours(now.getHours() + batch.start_time);
-      batch.start_time = now.toISOString();
-
-      $ionicLoading.show({template: 'Adding batch'});
-      ChefService.addBatch(batch)
-        .then(function(batches) {
-          modalScope.batch = emptyBatch();
-          form.$setPristine();
-          that.batches = batches;
-          setBatchesDishInfo(that.batches, that.dishes);
-          $ionicLoading.hide();
-          that.modal.hide();
-        })
-        .catch(HCMessaging.showError);
-    };
-
-    that.adjustRange = function(qty, min, max) {
-      if (_.isNumber(qty)) {
-        if (qty < min) {
-          qty = min;
+            $ionicLoading.show({template: 'Adding batch'});
+            ChefService.addBatch(batch)
+                .then(function(batches) {
+                    modalScope.batch = emptyBatch();
+                    form.$setPristine();
+                    vm.batches = batches;
+                    setBatchesDishInfo(vm.batches, vm.dishes);
+                    $ionicLoading.hide();
+                    modal.hide();
+                })
+                .catch(HCMessaging.showError);
         }
-        else if (qty > max) {
-          qty = max;
+
+        function emptyBatch() {
+            var firstDish = vm.dishes[0] || {};
+            return {
+                dish: firstDish.id,
+                start_time: 0,
+                duration: 1
+            };
         }
-      }
-      return qty;
-    };
 
-    that.go = function(path) {
-      $state.go(path);
-    };
+        function onBeforeEnter() {
+            $ionicLoading.show({template: 'Getting orders'});
+            $q.all([ChefService.getBatches(), ChefService.getDishes(), ChefService.getChefData()])
+                .then(function(values) {
+                    $ionicLoading.hide();
 
-    that.openAddDish = function() {
-      that.modal.show();
-    };
+                    vm.dishes = values[1];
+                    vm.batches = values[0];
+                    setBatchesDishInfo(vm.batches, vm.dishes);
+                    var chefData = values[2];
+                    vm.maxPrice = chefData.maxPrice;
+                    vm.maxQuantity = chefData.maxQuantity;
+                    vm.maxBatches = chefData.maxBatches;
 
-    that.removePortions = function(batch) {
-      $ionicPopup.confirm({
-        title: batch.dishName + ', ' + batch.quantity + ' portion(s)',
-        template: 'Do you want to delete this batch?',
-        cancelText: 'No',
-        okText: 'Yes, Delete',
-        okType: 'button-assertive'
-      }).then(function(res) {
-        if (res) {
-          removePortions(batch);
+                    modalScope.batch = emptyBatch();
+                    if ($stateParams.v === 'new' && vm.dishes.length) {
+                        openAddDish();
+                    }
+                })
+                .catch(HCMessaging.showError);
         }
-      });
-    };
 
-    that.showBatchOrder = function(batch, order) {
-      $ionicPopup.alert({
-        title: 'Order details',
-        template: 'user: ' + order.userName
-      });
-    };
+        function onDestroy() {
+            if (modal) {
+                modal.remove();
+                modal = undefined;
+                modalScope.$destroy();
+            }
+        }
 
-    init();
+        function setBatchesDishInfo(batches, dishes) {
+            _.forEach(batches, function(batch) {
+                var dish = _.find(dishes, {'id': batch.dish}) || {};
+                _.extend(batch, {
+                    'dishName': dish.title,
+                    'dishImage': dish.image,
+                    'dishPrice': dish.price
+                });
+            });
+        }
 
+        function hideModal() {
+            modal.hide();
+        }
 
-    $scope.$on('$ionicView.beforeEnter', loadOrders);
-  }
-]);
+        function go(path, params) {
+            $ionicHistory.nextViewOptions({
+                historyRoot: true
+            });
+            $state.go(path, params);
+        }
+
+        function adjustRange(qty, min, max) {
+            if (_.isNumber(qty)) {
+                if (qty < min) {
+                    qty = min;
+                }
+                else if (qty > max) {
+                    qty = max;
+                }
+            }
+            return qty;
+        }
+
+        function openAddDish() {
+            if (!modal) {
+                $ionicModal.fromTemplateUrl('templates/add-batch.html', {
+                    scope: modalScope
+                }).then(function(m) {
+                    modal = m;
+                    modal.show();
+                });
+            }
+            else {
+                modal.show();
+            }
+        }
+
+        function showBatchOrder(batch, order) {
+            $ionicPopup.alert({
+                title: 'Order details',
+                template: 'user: ' + order.userName
+            });
+        }
+
+        function removePortions(batch) {
+            $ionicPopup.confirm({
+                title: batch.dishName + ', ' + batch.quantity + ' portion(s)',
+                template: 'Do you want to delete this batch?',
+                cancelText: 'No',
+                okText: 'Yes, Delete',
+                okType: 'button-assertive'
+            }).then(function(res) {
+                if (res) {
+                    doRemovePortions(batch);
+                }
+            });
+        }
+
+        function doRemovePortions(batch) {
+            $ionicLoading.show({template: 'Removing...'});
+            ChefService.removeBatchAvailablePortions(batch)
+                .then(function(batches) {
+                    vm.batches = batches;
+                    $ionicLoading.hide();
+                    modal.hide();
+                })
+                .catch(HCMessaging.showError);
+        }
+    }
+})();

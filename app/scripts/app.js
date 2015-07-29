@@ -2,7 +2,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngAnimate', 'ngCordova', 'config', 'HomeCooked.controllers',
-    'leaflet-directive', 'angular-stripe', 'angularPayments', 'lr.upload']);
+    'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'google.places']);
 
 angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
@@ -73,20 +73,22 @@ HomeCooked
                 url: '/enroll',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/enroll.html'
+                        templateUrl: 'templates/enroll.html',
+                        controller: 'EnrollCtrl as vm'
                     }
                 }
             })
             .state('app.seller', {
-                url: '/seller',
+                url: '/seller/:v',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/chef/chef.html'
+                        templateUrl: 'templates/chef/chef.html',
+                        controller: 'ChefCtrl as vm'
                     }
                 }
             })
             .state('app.dishes', {
-                url: '/dishes',
+                url: '/dishes/:v',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/chef/dishes.html',
@@ -173,12 +175,10 @@ HomeCooked
         });
     })
     .run(function(LoginService) {
-        LoginService.setIsChef();
+        LoginService.init();
     })
     .run(function($ionicPlatform, ENV) {
         $ionicPlatform.ready(function() {
-            // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
             if (window.cordova) {
                 window.facebookConnectPlugin.browserInit(ENV.FACEBOOK_APP_ID, 'v2.2');
             }
@@ -187,6 +187,8 @@ HomeCooked
                     appId: ENV.FACEBOOK_APP_ID
                 });
             }
+            // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             }
