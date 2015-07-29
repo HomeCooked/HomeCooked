@@ -17,7 +17,7 @@
         };
 
         function savePaymentInfo(info) {
-            return handleResponses($http.post(baseUrl + 'users/' + LoginService.getUser().id + '/add_payment_method/', info));
+            return handleResponses($http.post(baseUrl + 'users/' + LoginService.getUser().id + '/add_payment_method/', info)).then(LoginService.reloadUser);
         }
 
         function holdBatch(payload) {

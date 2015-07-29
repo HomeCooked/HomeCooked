@@ -36,7 +36,7 @@
         }
 
         function deleteBatch(batch) {
-            return handleResponses($http.delete(baseUrl + 'batches/' + batch.id + '/')).then(getBatches);
+            return handleResponses($http.post(baseUrl + 'batches/' + batch.id + '/deactivate_batch/')).then(getBatches);
         }
 
         function getChefData() {

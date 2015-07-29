@@ -8,7 +8,7 @@
             baseUrl = ENV.BASE_URL + '/api/v1/';
 
         return {
-            init: init,
+            reloadUser: reloadUser,
             login: login,
             logout: logout,
             getUser: getUser,
@@ -17,14 +17,15 @@
             becomeChef: becomeChef
         };
 
-        function init() {
+        function reloadUser() {
             if (user.isLoggedIn && user.id) {
-                $http.get(baseUrl + 'users/' + user.id + '/')
-                    .success(function(userData) {
-                        _.assign(user, userData);
-                        CacheService.setValue({user: user});
-                    });
+                return $http.get(baseUrl + 'users/' + user.id + '/').then(function(response) {
+                    _.assign(user, response.data);
+                    CacheService.setValue({user: user});
+                    return user;
+                });
             }
+            return $q.when(user);
         }
 
         function login(type) {
@@ -50,7 +51,7 @@
             CacheService.setValue({user: user});
         }
 
-        function setUserHasPaymentInfo(hasPaymentInfo){
+        function setUserHasPaymentInfo(hasPaymentInfo) {
             user.has_payment = hasPaymentInfo;
             CacheService.setValue({user: user});
         }

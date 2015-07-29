@@ -181,7 +181,7 @@ HomeCooked
         });
     })
     .run(function(LoginService) {
-        LoginService.init();
+        LoginService.reloadUser();
     })
     .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {
