@@ -142,6 +142,15 @@ HomeCooked
                     }
                 }
             })
+            .state('app.pending-reviews', {
+                url: '/pending-reviews',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/buyer/pending-reviews.html',
+                        controller: 'PendingReviewsCtrl as vm'
+                    }
+                }
+            })
             .state('app.not-found', {
                 url: '/not-found',
                 views: {

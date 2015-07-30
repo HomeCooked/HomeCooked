@@ -2,20 +2,12 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('OrdersCtrl', OrdersCtrl);
 
-    OrdersCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'LocationService', 'OrdersService', 'HCMessaging', 'mapService', '_'];
-    function OrdersCtrl($rootScope, $scope, $ionicModal, $ionicLoading, DishesService, LocationService, OrdersService, HCMessaging, mapService, _) {
+    OrdersCtrl.$inject = ['$scope', '$ionicLoading', 'LocationService', 'OrdersService', 'HCMessaging', 'mapService', '_'];
+    function OrdersCtrl($scope, $ionicLoading, LocationService, OrdersService, HCMessaging, mapService, _) {
         var vm = this,
-            modal,
-            userLocation,
-            modalScope = $rootScope.$new();
-
-        modalScope.vm = vm;
+            userLocation;
 
         vm.activeOrders = [];
-        vm.pastOrders = [];
-        vm.showModal = showModal;
-        vm.hideModal = hideModal;
-        vm.addReview = addReview;
         vm.getMapId = getMapId;
 
         vm.map = {
@@ -47,51 +39,8 @@
         }, onLocationChange);
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
-        $scope.$on('$destroy', onDestroy);
-
-        function addReview(review, form) {
-            $ionicLoading.show({template: 'Saving review...'});
-
-            var dishId = 11;
-            window.alert('hardcoded dishId! ' + dishId);
-            DishesService.addDishReview(dishId, review)
-                .then(function added() {
-                    hideModal();
-                    modalScope.review = getEmptyReview();
-                    form.$setPristine();
-                })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
-        }
-
-        function showModal() {
-            if (!modal) {
-                $ionicModal.fromTemplateUrl('templates/add-review.html', {
-                    scope: modalScope
-                }).then(function(m) {
-                    modal = m;
-                    modal.show();
-                });
-            }
-            else {
-                modal.show();
-            }
-        }
-
-        function hideModal() {
-            if (modal) {
-                modal.hide();
-            }
-        }
-
-        function getEmptyReview() {
-            return {score: 0, comment: ''};
-        }
 
         function onBeforeEnter() {
-            // show modal only if pending reviews
-            // modalScope.review = getEmptyReview();
-            // showModal();
             $ionicLoading.show();
             OrdersService.getActiveOrders()
                 .then(function(orders) {
@@ -102,14 +51,6 @@
                 })
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
-        }
-
-        function onDestroy() {
-            if (modal) {
-                modal.remove();
-                modal = undefined;
-                modalScope.$destroy();
-            }
         }
 
         function initMapProperties() {

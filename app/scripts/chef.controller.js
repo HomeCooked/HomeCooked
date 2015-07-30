@@ -137,7 +137,10 @@
                     type: 'button-balanced'
                 }, {
                     text: 'Cancel',
-                    type: 'button-assertive'
+                    type: 'button-assertive',
+                    onTap: function() {
+                        cancelOrder(order);
+                    }
                 }]
             });
         }
@@ -145,7 +148,6 @@
         function getOrderScope(order) {
             var orderScope = $rootScope.$new();
             orderScope.order = order;
-            orderScope.cancelOrder = cancelOrder;
             return orderScope;
         }
 
@@ -164,7 +166,7 @@
         }
 
         function _deleteBatch(batch) {
-            $ionicLoading.show({template: 'Removing...'});
+            $ionicLoading.show();
             ChefService.deleteBatch(batch)
                 .then(function(batches) {
                     vm.batches = batches;
@@ -181,19 +183,21 @@
                 templateUrl: 'templates/chef/confirm-cancel-order.html',
                 scope: confirmScope,
                 buttons: [{
-                    text: 'Confirm',
+                    text: 'Cancel Order',
                     type: 'button-assertive',
                     onTap: function() {
                         doCancelOrder(order, confirmScope.reason);
                     }
                 }, {
-                    text: 'Cancel'
+                    text: 'Close'
                 }]
             });
         }
 
         function doCancelOrder(order, reason) {
-            console.log(order.id, reason);
+            $ionicLoading.show();
+            ChefService.cancelOrder(order.id, reason)
+                .catch(HCMessaging.showError);
         }
     }
 })();

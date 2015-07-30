@@ -51,6 +51,10 @@
         }, init);
 
         $scope.$watch(function() {
+            return user.has_pending_reviews;
+        }, init);
+
+        $scope.$watch(function() {
             return user.is_chef;
         }, init);
 
@@ -59,6 +63,8 @@
             $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
             vm.userFirstName = user.first_name || '';
             vm.isChef = user.is_chef;
+            vm.hasPendingReviews = user.has_pending_reviews;
+
             _.remove(buyerLinks, becomeChefLink);
             if (!vm.isChef) {
                 buyerLinks.push(becomeChefLink);
@@ -67,6 +73,12 @@
         }
 
         function getCorrectPath(path) {
+            if (vm.hasPendingReviews) {
+                return 'app.pending-reviews';
+            }
+            else if (path === 'app.pending-reviews') {
+                path = 'app.buyer';
+            }
             if (vm.isChef && path === 'app.enroll') {
                 return chefLinks[0].path;
             }

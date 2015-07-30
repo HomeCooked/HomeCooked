@@ -14,6 +14,7 @@
             deleteDish: deleteDish,
             getDishReviews: getDishReviews,
             addDishReview: addDishReview,
+            getPendingReviews: getPendingReviews,
             isDishesTutorialDone: isDishesTutorialDone,
             setDishesTutorialDone: setDishesTutorialDone
         };
@@ -56,6 +57,10 @@
         function setDishesTutorialDone() {
             CacheService.setValue({'dishesTutorialDone': true});
             return $q.when();
+        }
+
+        function getPendingReviews() {
+            return handleResponses($http.get(baseUrl + 'dishes/dishes_to_review/'));
         }
     }
 })();

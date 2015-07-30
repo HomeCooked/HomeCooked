@@ -14,7 +14,8 @@
             getChefData: getChefData,
             getChef: getChef,
             setChefBio: setChefBio,
-            getPickupTimes:getPickupTimes
+            cancelOrder: cancelOrder,
+            getPickupTimes: getPickupTimes
         };
 
 
@@ -58,12 +59,15 @@
             return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
         }
 
-        function getPickupTimes(){
+        function getPickupTimes() {
             return $q.when([
                 {'id': 0, 'title': 'Friday (6pm-9pm)'},
                 {'id': 24, 'title': 'Saturday (6pm-9pm)'}
-            ])
+            ]);
+        }
 
+        function cancelOrder(orderId, reason) {
+            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {orderId: orderId, reason: reason}));
         }
     }
 })();
