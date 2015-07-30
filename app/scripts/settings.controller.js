@@ -5,11 +5,11 @@
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$scope', '$state', '$timeout', '$ionicPlatform',
-        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService'];
+    SettingsCtrl.$inject = ['$scope', '$state', '$ionicPlatform',
+        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService', 'ChefService', 'HCMessaging'];
 
-    function SettingsCtrl($scope, $state, $timeout, $ionicPlatform,
-        $ionicPopup, $ionicLoading, $ionicHistory, LoginService) {
+    function SettingsCtrl($scope, $state, $ionicPlatform,
+                          $ionicPopup, $ionicLoading, $ionicHistory, LoginService, ChefService, HCMessaging) {
 
         var vm = this;
         vm.onChange = onChange;
@@ -19,20 +19,29 @@
         vm.confirmLogout = confirmLogout;
 
         $scope.$on('$ionicView.beforeEnter', function() {
-          vm.user = LoginService.getUser();
+            var user = LoginService.getUser();
+            if (user.is_chef && LoginService.getChefMode()) {
+                ChefService.getChef(user.id).then(function(chef) {
+                    vm.user = chef;
+                });
+            }
+            else {
+                vm.user = user;
+            }
         });
 
         function updateUserProperties() {
             if (vm.userPropertiesChanged) {
-                $ionicLoading.show({
-                    template: 'Saving...'
-                });
-                $timeout(function() {
-                    //API CALL
-                    console.log(vm.user);
-                    $ionicLoading.hide();
-                    $ionicHistory.goBack();
-                }, 1500);
+                $ionicLoading.show();
+                LoginService.saveUserData({
+                    email: vm.user.email,
+                    phone_number: vm.user.phone_number
+                })
+                    .then(function() {
+                        $state.go('app.settings');
+                    })
+                    .catch(HCMessaging.showError)
+                    .finally($ionicLoading.hide);
             }
         }
 
@@ -59,7 +68,7 @@
                 template: 'Signing out will remove your HomeCooked data from this device. Do you want to sign out?'
             });
             confirmPopup.then(function(res) {
-                if(res) {
+                if (res) {
                     LoginService.logout();
                     $ionicHistory.nextViewOptions({
                         historyRoot: true,

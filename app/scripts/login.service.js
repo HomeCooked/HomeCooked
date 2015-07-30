@@ -7,6 +7,8 @@
         var user = CacheService.getValue('user') || {},
             baseUrl = ENV.BASE_URL + '/api/v1/';
 
+        var chefMode = CacheService.getValue('chefMode');
+
         return {
             reloadUser: reloadUser,
             login: login,
@@ -14,7 +16,10 @@
             getUser: getUser,
             setUserZipCode: setUserZipCode,
             setUserHasPaymentInfo: setUserHasPaymentInfo,
-            becomeChef: becomeChef
+            saveUserData: saveUserData,
+            becomeChef: becomeChef,
+            getChefMode: getChefMode,
+            setChefMode: setChefMode
         };
 
         function reloadUser() {
@@ -120,6 +125,19 @@
             }
             _.delay(deferred.reject.bind(deferred, 'timeout'), 60000);
             return deferred.promise;
+        }
+
+        function getChefMode() {
+            return chefMode;
+        }
+
+        function setChefMode(mode) {
+            chefMode = (mode === true);
+            CacheService.setValue({chefMode: chefMode});
+        }
+
+        function saveUserData(data) {
+            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(reloadUser);
         }
     }
 })();

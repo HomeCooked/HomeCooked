@@ -11,6 +11,7 @@
 
         var vm = this;
         vm.login = login;
+        vm.chefMode = LoginService.getChefMode();
         vm.switchView = switchView;
         vm.go = go;
 
@@ -113,6 +114,7 @@
             // if one of the main links, and if not settings
             if ((chefMode || buyerMode) && path !== 'app.settings') {
                 vm.chefMode = chefMode;
+                LoginService.setChefMode(chefMode);
             }
             vm.links = vm.chefMode ? chefLinks : buyerLinks;
 
