@@ -8,7 +8,8 @@
 
         return {
             getOrders: getOrders,
-            getActiveOrders: getActiveOrders
+            getActiveOrders: getActiveOrders,
+            notifyReadyForPickup: notifyReadyForPickup
         };
 
         function returnData(response) {
@@ -21,6 +22,10 @@
 
         function getActiveOrders() {
             return $http.get(baseUrl + 'orders/active_orders/').then(returnData);
+        }
+
+        function notifyReadyForPickup(orderId) {
+            return $http.post(baseUrl + 'users/notify_ready_for_pickup/', {orderId: orderId}).then(returnData);
         }
     }
 })();

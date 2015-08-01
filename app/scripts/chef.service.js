@@ -15,7 +15,7 @@
             getChef: getChef,
             setChefBio: setChefBio,
             cancelOrder: cancelOrder,
-            getPickupTimes: getPickupTimes
+            notifyDelivered: notifyDelivered
         };
 
 
@@ -44,11 +44,51 @@
         function getChefData() {
             //TODO read this from server!!
             var chefData = {
-                maxPrice: 100,
-                maxQuantity: 25,
-                maxBatches: 3
+                maxDishes: 100,
+                maxDishPrice: 100,
+                maxBatches: 3,
+                maxBatchQuantity: 25,
+                serviceDays: [   // array of 7 objects --> 7 days of the week
+                    {
+                        week_day: 0,
+                        is_active: false,
+                        start_minute: null,
+                        end_minute: null
+                    }, {
+                        week_day: 1,
+                        is_active: true,
+                        start_minute: 1, // 1 day = 1440 minutes. These values can be integer from 1 to 1440
+                        end_minute: 1439
+                    }, {
+                        week_day: 2,
+                        is_active: false,
+                        start_minute: null,
+                        end_minute: null
+                    }, {
+                        week_day: 3,
+                        is_active: false,
+                        start_minute: null,
+                        end_minute: null
+                    }, {
+                        week_day: 4,
+                        is_active: false,
+                        start_minute: null,
+                        end_minute: null
+                    }, {
+                        week_day: 5,
+                        is_active: false,
+                        start_minute: null,
+                        end_minute: null
+                    }, {
+                        week_day: 6,
+                        is_active: false,
+                        start_minute: null,
+                        end_minute: null
+                    }
+                ]
             };
             return $q.when(chefData);
+            return handleResponses($http.get(baseUrl + 'chefs/chef_config/'));
         }
 
         function getChef(chefId, details) {
@@ -59,15 +99,12 @@
             return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
         }
 
-        function getPickupTimes() {
-            return $q.when([
-                {'id': 0, 'title': 'Friday (6pm-9pm)'},
-                {'id': 24, 'title': 'Saturday (6pm-9pm)'}
-            ]);
+        function cancelOrder(orderId, reason) {
+            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {id: orderId, reason: reason}));
         }
 
-        function cancelOrder(orderId, reason) {
-            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {orderId: orderId, reason: reason}));
+        function notifyDelivered(orderId) {
+            return handleResponses($http.post(baseUrl + 'chefs/notify_delivered_order/', {orderId: orderId}));
         }
     }
 })();

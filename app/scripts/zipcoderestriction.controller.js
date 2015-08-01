@@ -6,9 +6,9 @@
         .controller('ZipCodeRestrictionCtrl', ZipCodeRestrictionCtrl);
 
     ZipCodeRestrictionCtrl.$inject = ['$stateParams', '$timeout', '$ionicHistory', '$state', '$ionicLoading', '$ionicPopup',
-        'LoginService', 'ZipcodesService'];
+        'LoginService', 'ZipcodesService', 'HCMessaging'];
 
-    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService, ZipcodesService) {
+    function ZipCodeRestrictionCtrl($stateParams, $timeout, $ionicHistory, $state, $ionicLoading, $ionicPopup, LoginService, ZipcodesService, HCMessaging) {
 
         var vm = this;
         vm.validZipCode = validZipCode;
@@ -107,15 +107,16 @@
                 $ionicLoading.show({
                     template: 'Registering...'
                 });
-                //FAKE API CALL PASSING THE EMAIL ADDRESS AND THE ZIP CODE
-                $timeout(function() {
-                    $ionicLoading.hide();
-                    vm.email_address = null;
-                    $ionicPopup.alert({
-                        title: 'Thank you for registering',
-                        template: 'Thank you, we will be in touch shortly.'
-                    });
-                }, 1000);
+                LoginService.getNotified($stateParams.zipcode, vm.email_address)
+                    .then(function() {
+                        vm.email_address = null;
+                        $ionicPopup.alert({
+                            title: 'Thank you for registering',
+                            template: 'Thank you, we will be in touch shortly.'
+                        });
+                    })
+                    .catch(HCMessaging.showError)
+                    .finally($ionicLoading.hide);
             }
         }
     }

@@ -19,7 +19,8 @@
             saveUserData: saveUserData,
             becomeChef: becomeChef,
             getChefMode: getChefMode,
-            setChefMode: setChefMode
+            setChefMode: setChefMode,
+            getNotified: getNotified
         };
 
         function reloadUser() {
@@ -138,6 +139,13 @@
 
         function saveUserData(data) {
             return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(reloadUser);
+        }
+
+        function getNotified(zipcode, email) {
+            return $http.post(baseUrl + 'users/get_notified/', {
+                zipcode: zipcode,
+                email: email
+            });
         }
     }
 })();

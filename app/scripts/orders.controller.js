@@ -9,6 +9,7 @@
 
         vm.activeOrders = [];
         vm.getMapId = getMapId;
+        vm.notifyChef = notifyChef;
 
         vm.map = {
             defaults: {
@@ -112,6 +113,19 @@
                 iconAnchor: [6, 6],
                 html: ''
             };
+        }
+
+        function notifyChef(order){
+            $ionicLoading.show();
+            OrdersService.notifyReadyForPickup(order.id)
+                .then(function() {
+                    $ionicLoading.show({
+                        template: 'Chef notified!',
+                        duration: 2000
+                    });
+                })
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
         }
     }
 })();

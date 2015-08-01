@@ -10,10 +10,7 @@
             modalScope = $rootScope.$new();
 
         modalScope.vm = vm;
-        modalScope.startTimes = [
-            {'id': 0, 'title': 'Friday (6pm-9pm)'},
-            {'id': 24, 'title': 'Saturday (6pm-9pm)'}
-        ];
+        modalScope.startTimes = [];
 
         vm.dishes = [];
         vm.batches = [];
@@ -31,10 +28,7 @@
         function addBatch(batch, form) {
             batch.chef = LoginService.getUser().id;
             batch.is_active = true;
-
-            var now = new Date();
-            now.setHours(now.getHours() + batch.start_time);
-            batch.start_time = now.toISOString().split('.').shift();
+            batch.start_time = batch.start_time.split('.').shift();
 
             $ionicLoading.show();
             ChefService.addBatch(batch)
@@ -66,9 +60,11 @@
                     vm.batches = values[0];
                     vm.dishes = values[1];
                     var chefData = values[2];
-                    vm.maxPrice = chefData.maxPrice;
-                    vm.maxQuantity = chefData.maxQuantity;
+                    vm.maxPrice = chefData.maxDishPrice;
+                    vm.maxQuantity = chefData.maxBatchQuantity;
                     vm.maxBatches = chefData.maxBatches;
+
+                    modalScope.startTimes = getStartTimes(chefData.serviceDays);
 
                     modalScope.batch = emptyBatch();
                     if ($stateParams.v === 'new' && vm.dishes.length) {
@@ -76,6 +72,43 @@
                     }
                 })
                 .catch(HCMessaging.showError);
+        }
+
+        function getStartTimes(serviceDays) {
+            var now = new Date(),
+                weekDay = now.getDay();
+            now.setHours(0);
+            now.setMinutes(0);
+            now.setSeconds(0);
+            now.setMilliseconds(0);
+            var time = now.getTime();
+            var i = _.findIndex(serviceDays, {week_day: weekDay});
+            if (i > 0) {
+                var split1 = _.slice(serviceDays, 0, i);
+                var split2 = _.slice(serviceDays, i);
+                _.forEach(split1, function(day) {
+                    day.week_day += 7;
+                });
+                serviceDays = split2.concat(split1);
+            }
+            var days = _.filter(serviceDays, 'is_active');
+            return _.map(days, function(day) {
+                var t = time + (day.week_day - weekDay) * 86400000;
+                return {
+                    start_time: getDate(t, day.start_minute),
+                    end_time: getDate(t, day.end_minute)
+                };
+            });
+        }
+
+        function getDate(time, minute) {
+            var date = new Date(),
+                hours = Math.floor(minute / 60),
+                minutes = minute % 60;
+            date.setTime(time);
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            return date.toISOString();
         }
 
         function onDestroy() {
@@ -134,7 +167,10 @@
                     type: 'button-stable',
                 }, {
                     text: 'Delivered',
-                    type: 'button-balanced'
+                    type: 'button-balanced',
+                    onTap: function() {
+                        notifyDelivered(order);
+                    }
                 }, {
                     text: 'Cancel',
                     type: 'button-assertive',
@@ -197,7 +233,15 @@
         function doCancelOrder(order, reason) {
             $ionicLoading.show();
             ChefService.cancelOrder(order.id, reason)
-                .catch(HCMessaging.showError);
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
+        }
+
+        function notifyDelivered(order) {
+            $ionicLoading.show();
+            ChefService.notifyDelivered(order.id)
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
         }
     }
 })();
