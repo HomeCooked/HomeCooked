@@ -34,11 +34,11 @@
         }
 
         function addBatch(batch) {
-            return handleResponses($http.post(baseUrl + 'batches/', batch)).then(getBatches);
+            return handleResponses($http.post(baseUrl + 'batches/', batch));
         }
 
         function deleteBatch(batch) {
-            return handleResponses($http.post(baseUrl + 'batches/' + batch.id + '/deactivate_batch/')).then(getBatches);
+            return handleResponses($http.post(baseUrl + 'batches/' + batch.id + '/deactivate_batch/'));
         }
 
         function getChefData() {
@@ -56,9 +56,9 @@
                         end_minute: null
                     }, {
                         week_day: 1,
-                        is_active: true,
-                        start_minute: 1, // 1 day = 1440 minutes. These values can be integer from 1 to 1440
-                        end_minute: 1439
+                        is_active: false,
+                        start_minute: null,
+                        end_minute: null
                     }, {
                         week_day: 2,
                         is_active: false,
@@ -66,14 +66,14 @@
                         end_minute: null
                     }, {
                         week_day: 3,
-                        is_active: false,
-                        start_minute: null,
-                        end_minute: null
+                        is_active: true,
+                        start_minute: 18 * 60,
+                        end_minute: 21 * 60
                     }, {
                         week_day: 4,
-                        is_active: false,
-                        start_minute: null,
-                        end_minute: null
+                        is_active: true,
+                        start_minute: 18 * 60,
+                        end_minute: 21 * 60
                     }, {
                         week_day: 5,
                         is_active: false,
@@ -99,8 +99,8 @@
             return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
         }
 
-        function cancelOrder(orderId, reason) {
-            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {id: orderId, reason: reason}));
+        function cancelOrder(orderId) {
+            return handleResponses($http.delete(baseUrl + 'orders/' + orderId + '/'));
         }
 
         function notifyDelivered(orderId) {

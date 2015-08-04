@@ -32,14 +32,15 @@
 
             $ionicLoading.show();
             ChefService.addBatch(batch)
-                .then(function(batches) {
+                .then(getBatches)
+                .then(function() {
                     modalScope.batch = emptyBatch();
                     form.$setPristine();
-                    vm.batches = batches;
-                    $ionicLoading.hide();
                     modal.hide();
                 })
-                .catch(HCMessaging.showError);
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
+
         }
 
         function emptyBatch() {
@@ -53,25 +54,39 @@
 
         function onBeforeEnter() {
             $ionicLoading.show();
-            $q.all([ChefService.getBatches(), DishesService.getDishes(), ChefService.getChefData()])
-                .then(function(values) {
-                    $ionicLoading.hide();
-
-                    vm.batches = values[0];
-                    vm.dishes = values[1];
-                    var chefData = values[2];
-                    vm.maxPrice = chefData.maxDishPrice;
-                    vm.maxQuantity = chefData.maxBatchQuantity;
-                    vm.maxBatches = chefData.maxBatches;
-
-                    modalScope.startTimes = getStartTimes(chefData.serviceDays);
-
+            $q.all([getBatches(), getDishes(), getChefData()])
+                .then(function() {
                     modalScope.batch = emptyBatch();
                     if ($stateParams.v === 'new' && vm.dishes.length) {
                         openAddDish();
                     }
                 })
-                .catch(HCMessaging.showError);
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
+        }
+
+        function getBatches() {
+            return ChefService.getBatches().then(function(batches) {
+                vm.batches = batches;
+                return batches;
+            });
+        }
+
+        function getDishes() {
+            return DishesService.getDishes().then(function(dishes) {
+                vm.dishes = dishes;
+                return dishes;
+            });
+        }
+
+        function getChefData() {
+            return ChefService.getChefData().then(function(chefData) {
+                vm.maxPrice = chefData.maxDishPrice;
+                vm.maxQuantity = chefData.maxBatchQuantity;
+                vm.maxBatches = chefData.maxBatches;
+                modalScope.startTimes = getStartTimes(chefData.serviceDays);
+                return chefData;
+            });
         }
 
         function getStartTimes(serviceDays) {
@@ -196,33 +211,28 @@
                 okType: 'button-assertive'
             }).then(function(res) {
                 if (res) {
-                    _deleteBatch(batch);
+                    doDeleteBatch(batch);
                 }
             });
         }
 
-        function _deleteBatch(batch) {
+        function doDeleteBatch(batch) {
             $ionicLoading.show();
             ChefService.deleteBatch(batch)
-                .then(function(batches) {
-                    vm.batches = batches;
-                    $ionicLoading.hide();
-                })
-                .catch(HCMessaging.showError);
+                .then(getBatches)
+                .catch(HCMessaging.showError)
+                .finally($ionicLoading.hide);
         }
 
         function cancelOrder(order) {
-            var confirmScope = $rootScope.$new();
-            confirmScope.reason = '';
             $ionicPopup.show({
                 title: 'Cancel order?',
-                templateUrl: 'templates/chef/confirm-cancel-order.html',
-                scope: confirmScope,
+                template: 'Are you sure you want to cancel this order? It will result in a 0 star rating for each dish.',
                 buttons: [{
                     text: 'Cancel Order',
                     type: 'button-assertive',
                     onTap: function() {
-                        doCancelOrder(order, confirmScope.reason);
+                        doCancelOrder(order);
                     }
                 }, {
                     text: 'Close'
@@ -230,9 +240,10 @@
             });
         }
 
-        function doCancelOrder(order, reason) {
+        function doCancelOrder(order) {
             $ionicLoading.show();
-            ChefService.cancelOrder(order.id, reason)
+            ChefService.cancelOrder(order.id)
+                .then(getBatches)
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
         }
@@ -240,6 +251,7 @@
         function notifyDelivered(order) {
             $ionicLoading.show();
             ChefService.notifyDelivered(order.id)
+                .then(getBatches)
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
         }
