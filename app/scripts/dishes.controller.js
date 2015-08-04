@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', '$ionicScrollDelegate', 'DishesService', 'LoginService', 'HCMessaging', '_'];
-    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, $ionicScrollDelegate, DishesService, LoginService, HCMessaging, _) {
+    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'ChefService', 'LoginService', 'HCMessaging', 'HCModalHelper', '_'];
+    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, DishesService, ChefService, LoginService, HCMessaging, HCModalHelper, _) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -11,7 +11,6 @@
         modalScope.vm = vm;
 
         vm.dishes = [];
-        vm.chefId = LoginService.getUser().id;
         vm.showModal = showModal;
         vm.hideModal = hideModal;
         vm.addDish = addDish;
@@ -72,45 +71,30 @@
         }
 
         function showTutorial() {
-            var tutorialModal,
-                tutorialScope = $rootScope.$new();
-            tutorialScope.step = 0;
-            tutorialScope.next = function() {
-                scrollTop();
-                tutorialScope.step++;
-                if (tutorialScope.step === 2) {
-                    tutorialModal.remove();
-                    tutorialModal = undefined;
-                    tutorialScope.$destroy();
-                    DishesService.setDishesTutorialDone();
-                }
-            };
-            $ionicModal.fromTemplateUrl('templates/dishes-tutorial.html', {
-                scope: tutorialScope
-            }).then(function(m) {
-                tutorialModal = m;
-                tutorialModal.show();
+            HCModalHelper.showTutorial([{
+                title: 'Build your own menu',
+                image: 'images/chef1.jpg',
+                message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>Use this section to describe your meals and make your customers want more!</p>'
+            }, {
+                title: 'Before you start',
+                image: 'images/chef2.jpg',
+                message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
+            }], function() {
+                ChefService.setDishesTutorialDone(vm.chefId)
             });
-        }
-
-        function scrollTop() {
-            // TODO use $getByHandle once fixed in ionic
-            var handle = _.find($ionicScrollDelegate._instances, function(s) {
-                return s.$$delegateHandle === 'dishesTutorialContent';
-            });
-            handle.scrollTop();
         }
 
         function onBeforeEnter() {
+            vm.chefId = LoginService.getUser().id;
             modalScope.dish = getEmptyDish();
 
-            $ionicLoading.show({template: 'Getting dishes...'});
-            $q.all([DishesService.getDishes(), DishesService.isDishesTutorialDone()])
+            $ionicLoading.show();
+            $q.all([DishesService.getDishes(), ChefService.getChef(vm.chefId)])
                 .then(function(values) {
                     var dishes = values[0],
-                        tutorialDone = values[1];
+                        tutorialDone = values[1].dishes_tutorial_completed;
                     vm.dishes = dishes;
-                    if (_.size(dishes) === 0 && !tutorialDone) {
+                    if (!tutorialDone) {
                         showTutorial();
                     }
                     if ($stateParams.v === 'new') {

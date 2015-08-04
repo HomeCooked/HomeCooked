@@ -2,8 +2,8 @@
 (function() {
     angular.module('HomeCooked.services').factory('DishesService', DishesService);
 
-    DishesService.$inject = ['$q', '$http', 'ENV', 'CacheService'];
-    function DishesService($q, $http, ENV, CacheService) {
+    DishesService.$inject = ['$http', 'ENV'];
+    function DishesService($http, ENV) {
         var baseUrl = ENV.BASE_URL + '/api/v1/';
         var dishesUrl = baseUrl + 'dishes/';
 
@@ -14,9 +14,7 @@
             deleteDish: deleteDish,
             getDishReviews: getDishReviews,
             addDishReview: addDishReview,
-            getPendingReviews: getPendingReviews,
-            isDishesTutorialDone: isDishesTutorialDone,
-            setDishesTutorialDone: setDishesTutorialDone
+            getPendingReviews: getPendingReviews
         };
 
         function handleResponses(httpPromise) {
@@ -47,16 +45,6 @@
 
         function addDishReview(review) {
             return handleResponses($http.post(baseUrl + 'reviews/', review));
-        }
-
-        function isDishesTutorialDone() {
-            var tutorialDone = CacheService.getValue('dishesTutorialDone') === true;
-            return $q.when(tutorialDone);
-        }
-
-        function setDishesTutorialDone() {
-            CacheService.setValue({'dishesTutorialDone': true});
-            return $q.when();
         }
 
         function getPendingReviews() {

@@ -2,13 +2,14 @@
     'use strict';
     angular.module('HomeCooked.controllers').factory('HCModalHelper', HCModalHelper);
 
-    HCModalHelper.$inject = ['$rootScope', '$ionicLoading', '$ionicModal', 'HCMessaging', 'PaymentService', 'LoginService'];
+    HCModalHelper.$inject = ['$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService'];
 
-    function HCModalHelper($rootScope, $ionicLoading, $ionicModal, HCMessaging, PaymentService, LoginService) {
+    function HCModalHelper($rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService) {
 
         var modals = {};
         return {
-            showUpdatePayment: showUpdatePayment
+            showUpdatePayment: showUpdatePayment,
+            showTutorial: showTutorial
         };
 
         function showUpdatePayment() {
@@ -45,6 +46,40 @@
                     })
                     .catch(HCMessaging.showError);
             }
+        }
+
+        function showTutorial(steps, onCompleteCb) {
+            var tutorialScope = $rootScope.$new();
+            tutorialScope.steps = steps;
+            tutorialScope.step = 0;
+            tutorialScope.next = function next() {
+                if (tutorialScope.step === tutorialScope.steps.length - 1) {
+                    modals['tutorial'].remove();
+                    delete modals['tutorial'];
+                    tutorialScope.$destroy();
+                    if (typeof onCompleteCb == 'function') {
+                        onCompleteCb();
+                    }
+                }
+                else {
+                    scrollTop();
+                    tutorialScope.step++;
+                }
+            };
+            $ionicModal.fromTemplateUrl('templates/tutorial.html', {
+                scope: tutorialScope
+            }).then(function(m) {
+                m.show();
+                modals['tutorial'] = m;
+            });
+        }
+
+        function scrollTop() {
+            // TODO use $getByHandle once fixed in ionic
+            var handle = _.find($ionicScrollDelegate._instances, function(s) {
+                return s.$$delegateHandle === 'tutorialContent';
+            });
+            handle.scrollTop();
         }
     }
 

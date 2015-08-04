@@ -15,7 +15,9 @@
             getChef: getChef,
             setChefBio: setChefBio,
             cancelOrder: cancelOrder,
-            notifyDelivered: notifyDelivered
+            notifyDelivered: notifyDelivered,
+            setDishesTutorialDone: setDishesTutorialDone,
+            setBatchesTutorialDone:setBatchesTutorialDone
         };
 
 
@@ -105,6 +107,17 @@
 
         function notifyDelivered(orderId) {
             return handleResponses($http.post(baseUrl + 'chefs/notify_delivered_order/', {orderId: orderId}));
+        }
+
+        function setDishesTutorialDone(chefId) {
+            return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {
+                dishes_tutorial_completed: true
+            }));
+        }
+        function setBatchesTutorialDone(chefId) {
+            return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {
+                batches_tutorial_completed: true
+            }));
         }
     }
 })();

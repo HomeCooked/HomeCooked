@@ -1,0 +1,17 @@
+<div class="modal dishes-tutorial">
+    <ion-header-bar>
+        <h1 class="title">{{steps[step].title}}</h1>
+
+        <div class="button button-clear" ng-class="step===(steps.length-1) ? 'button-positive' : ''" ng-click="next()">
+            {{step<(steps.length-1) ? 'Next' : 'Got it!'}}
+        </div>
+    </ion-header-bar>
+    <ion-content delegate-handle="tutorialContent">
+        <div class="instructions">
+            <img ng-src="{{steps[step].image}}" />
+
+            <div ng-bind-html="steps[step].message"></div>
+        </div>
+    </ion-content>
+</div>
+
