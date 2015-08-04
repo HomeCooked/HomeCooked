@@ -19,7 +19,7 @@
         $scope.$on('$destroy', onDestroy);
 
         function addReview(review, form) {
-            $ionicLoading.show({template: 'Saving review...'});
+            $ionicLoading.show();
 
             DishesService.addDishReview(review)
                 .catch(HCMessaging.showError)
@@ -32,8 +32,8 @@
                 });
         }
 
-        function showModal(dishId) {
-            modalScope.review = getEmptyReview(dishId);
+        function showModal(dish) {
+            modalScope.review = getEmptyReview(dish.id, dish.order_id);
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-review.html', {
                     scope: modalScope
@@ -53,8 +53,8 @@
             }
         }
 
-        function getEmptyReview(dishId) {
-            return {score: 0, comment: '', dishId: dishId};
+        function getEmptyReview(dishId, orderId) {
+            return {score: 0, comment: '', dishId: dishId, orderId: orderId};
         }
 
         function loadPendingReviews() {

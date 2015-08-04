@@ -1,7 +1,7 @@
 <ion-view title="Pending Reviews" hide-back-button="true">
     <ion-content>
         <div class="list card">
-            <div class="item item-avatar" ng-repeat="dish in vm.dishes" href ng-click="vm.showModal(dish.id)">
+            <div class="item item-avatar" ng-repeat="dish in vm.dishes" href ng-click="vm.showModal(dish)">
                 <img ng-src="{{dish.picture && dish.picture.length ? dish.picture : 'images/logo.png'}}">
 
                 <h2>{{::dish.title}}</h2>
