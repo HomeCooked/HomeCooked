@@ -5,15 +5,16 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', '$ionicSideMenuDelegate', 'LoginService', '_'];
+    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', '$ionicSideMenuDelegate', 'LoginService', 'HCModalHelper', '_'];
 
-    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, $ionicSideMenuDelegate, LoginService, _) {
+    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, $ionicSideMenuDelegate, LoginService, HCModalHelper, _) {
 
         var vm = this;
         vm.login = login;
         vm.chefMode = LoginService.getChefMode();
         vm.switchView = switchView;
         vm.go = go;
+        vm.showUpdatePayment = showUpdatePayment;
 
         var chefLinks = [{
             name: 'My Dishes',
@@ -32,9 +33,6 @@
         }, {
             name: 'My Orders',
             path: 'app.orders'
-        }, {
-            name: 'Payment methods',
-            path: 'app.settings-payment'
         }];
         var becomeChefLink = {
             name: 'Become a chef!',
@@ -138,6 +136,10 @@
                 disableAnimate: true
             });
             $state.go(path);
+        }
+
+        function showUpdatePayment() {
+            HCModalHelper.showUpdatePayment();
         }
 
         function login() {

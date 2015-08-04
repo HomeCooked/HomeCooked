@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
-    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'DishesService', 'LoginService', 'HCMessaging'];
+    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'DishesService', 'LoginService', 'HCMessaging', 'HCModalHelper'];
 
-    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, DishesService, LoginService, HCMessaging) {
+    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, DishesService, LoginService, HCMessaging, HCModalHelper) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -17,7 +17,7 @@
         vm.addBatch = addBatch;
         vm.hideModal = hideModal;
         vm.go = go;
-        vm.openAddDish = openAddDish;
+        vm.openAddBatch = openAddBatch;
         vm.adjustRange = adjustRange;
         vm.deleteBatch = deleteBatch;
         vm.showBatchOrder = showBatchOrder;
@@ -58,7 +58,7 @@
                 .then(function() {
                     modalScope.batch = emptyBatch();
                     if ($stateParams.v === 'new' && vm.dishes.length) {
-                        openAddDish();
+                        openAddBatch();
                     }
                 })
                 .catch(HCMessaging.showError)
@@ -157,7 +157,11 @@
             return qty;
         }
 
-        function openAddDish() {
+        function openAddBatch() {
+            if (!LoginService.getUser().has_payment) {
+                HCModalHelper.showUpdatePayment();
+                return;
+            }
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-batch.html', {
                     scope: modalScope

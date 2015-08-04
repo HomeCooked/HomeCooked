@@ -6,10 +6,10 @@
         .controller('SettingsCtrl', SettingsCtrl);
 
     SettingsCtrl.$inject = ['$scope', '$state', '$ionicPlatform',
-        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService', 'ChefService', 'HCMessaging'];
+        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService', 'ChefService', 'HCMessaging', 'HCModalHelper'];
 
     function SettingsCtrl($scope, $state, $ionicPlatform,
-                          $ionicPopup, $ionicLoading, $ionicHistory, LoginService, ChefService, HCMessaging) {
+                          $ionicPopup, $ionicLoading, $ionicHistory, LoginService, ChefService, HCMessaging, HCModalHelper) {
 
         var vm = this;
         vm.onChange = onChange;
@@ -17,6 +17,7 @@
         vm.openExternalLink = openExternalLink;
         vm.openRatingLink = openRatingLink;
         vm.confirmLogout = confirmLogout;
+        vm.showUpdatePayment = showUpdatePayment;
 
         $scope.$on('$ionicView.beforeEnter', function() {
             var user = LoginService.getUser();
@@ -77,6 +78,10 @@
                     $state.go('zipcode-validation');
                 }
             });
+        }
+
+        function showUpdatePayment() {
+            HCModalHelper.showUpdatePayment();
         }
     }
 

@@ -25,7 +25,7 @@
         <div class="item item-divider">
             Billing information
         </div>
-        <a class="item item-icon-right" ui-sref="app.settings-payment">
+        <a class="item item-icon-right" ng-click="vm.showUpdatePayment()">
             Payment method
             <span class="item-note" ng-if="vm.user.has_payment">{{vm.user.payment_info.card_type}} ending in {{vm.user.payment_info.last_four}}</span>
             <i class="icon ion-ios-arrow-right"></i>

@@ -6,16 +6,14 @@
         .module('HomeCooked.controllers')
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
-    ChefPreviewCtrl.$inject = ['$window', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', '_'];
+    ChefPreviewCtrl.$inject = ['$window', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', 'HCModalHelper', '_'];
 
-    function ChefPreviewCtrl($window, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, _) {
+    function ChefPreviewCtrl($window, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, HCModalHelper, _) {
         var vm = this;
-        var user = LoginService.getUser();
-        var popup;
+        var user, popup;
 
         vm.go = $state.go;
         vm.back = back;
-        vm.user = user;
         vm.signin = signin;
         vm.order = order;
         vm.checkout = checkout;
@@ -30,6 +28,8 @@
 
         function onBeforeEnter() {
             popup = undefined;
+            user = LoginService.getUser()
+            vm.user = user;
             vm.chefId = $stateParams.id;
             getChefDetails();
             getCheckoutInfo();
@@ -75,7 +75,7 @@
                     .finally($ionicLoading.hide);
             }
             else {
-                $state.go('app.settings-payment');
+                HCModalHelper.showUpdatePayment();
             }
         }
 

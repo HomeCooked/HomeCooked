@@ -133,15 +133,6 @@ HomeCooked
                     }
                 }
             })
-            .state('app.settings-payment', {
-                url: '/settings/payment',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/settings/payment.html',
-                        controller: 'PaymentCtrl as vm'
-                    }
-                }
-            })
             .state('app.pending-reviews', {
                 url: '/pending-reviews',
                 views: {
