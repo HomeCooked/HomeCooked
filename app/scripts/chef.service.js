@@ -56,7 +56,7 @@
         }
 
         function cancelOrder(orderId) {
-            return handleResponses($http.delete(baseUrl + 'chefs/cancel_order/', {id: orderId}));
+            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {id: orderId}));
         }
 
         function notifyDelivered(orderId) {
