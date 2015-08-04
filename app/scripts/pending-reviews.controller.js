@@ -21,7 +21,7 @@
         function addReview(review, form) {
             $ionicLoading.show({template: 'Saving review...'});
 
-            DishesService.addDishReview(review.dishId, review)
+            DishesService.addDishReview(review)
                 .catch(HCMessaging.showError)
                 .then(function added() {
                     hideModal();

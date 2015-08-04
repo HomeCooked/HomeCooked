@@ -45,8 +45,8 @@
             return handleResponses($http.get(dishesUrl + dishId + '/reviews/'));
         }
 
-        function addDishReview(dishId, review) {
-            return handleResponses($http.post(dishesUrl + dishId + '/reviews/', review));
+        function addDishReview(review) {
+            return handleResponses($http.post(baseUrl + 'reviews/', review));
         }
 
         function isDishesTutorialDone() {
