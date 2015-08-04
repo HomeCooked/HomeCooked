@@ -17,7 +17,7 @@
             cancelOrder: cancelOrder,
             notifyDelivered: notifyDelivered,
             setDishesTutorialDone: setDishesTutorialDone,
-            setBatchesTutorialDone:setBatchesTutorialDone
+            setBatchesTutorialDone: setBatchesTutorialDone
         };
 
 
@@ -56,7 +56,7 @@
         }
 
         function cancelOrder(orderId) {
-            return handleResponses($http.delete(baseUrl + 'orders/' + orderId + '/'));
+            return handleResponses($http.delete(baseUrl + 'chefs/cancel_order/', {id: orderId}));
         }
 
         function notifyDelivered(orderId) {
@@ -68,6 +68,7 @@
                 dishes_tutorial_completed: true
             }));
         }
+
         function setBatchesTutorialDone(chefId) {
             return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {
                 batches_tutorial_completed: true
