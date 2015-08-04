@@ -15,8 +15,8 @@
             </p>
 
             <p class="padding" align="center" ng-if="vm.dishes.length>0 && vm.batches.length===0">
-                Create your first batch!<br>
-                <a href ng-click="vm.openAddDish()">Add a new batch</a>
+                No items on sale.<br>
+                <a href ng-click="vm.openAddDish()">Start selling</a>
             </p>
 
             <div class="item item-avatar" ng-if="vm.dishes.length>0" ng-repeat="batch in vm.batches">
@@ -45,11 +45,8 @@
                 </div>
             </div>
             <div align="center" ng-if="vm.dishes.length>0 && vm.batches.length>=vm.maxBatches"
-                 class="item item-text-wrap">
-                You can have maximum {{vm.maxBatches}}
-                dish
-                types active.
-                After you sell and deliver all the dishes, you will be able to add new ones.
+                 class="item item-text-wrap">You can have maximum {{vm.maxBatches}} items on sale.
+                After you sell and deliver all the items, you will be able to add new ones.
             </div>
         </div>
 

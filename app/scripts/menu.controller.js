@@ -16,10 +16,10 @@
         vm.go = go;
 
         var chefLinks = [{
-            name: 'My dishes',
+            name: 'My Dishes',
             path: 'app.dishes'
         }, {
-            name: 'My Batches',
+            name: 'For Sale',
             path: 'app.seller'
         }, {
             name: 'Edit Bio',
