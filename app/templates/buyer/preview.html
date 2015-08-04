@@ -13,6 +13,9 @@
             <blockquote>{{::vm.chef.bio}}</blockquote>
         </div>
         <div class="dishes-container">
+            <p class="padding" align="center" ng-if="vm.chef.dishes.length===0">
+                No items on sale.
+            </p>
             <div class="dish-card" ng-repeat="dish in vm.chef.dishes"
                  ng-click="vm.go('app.dish-preview', {id: vm.chef.id, dishId: dish.id})">
                 <div class="dish-cover">
