@@ -77,7 +77,7 @@
             checkTutorial();
 
             $ionicLoading.show();
-            $q.all(DishesService.getDishes())
+            DishesService.getDishes()
                 .then(function(dishes) {
                     vm.dishes = dishes;
                     if ($stateParams.v === 'new') {
@@ -101,7 +101,7 @@
                             image: 'images/chef2.jpg',
                             message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
                         }], function() {
-                            ChefService.setDishesTutorialDone(vm.chefId)
+                            ChefService.setDishesTutorialDone(vm.chefId);
                         });
                     }
                 });

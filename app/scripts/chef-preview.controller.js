@@ -28,7 +28,7 @@
 
         function onBeforeEnter() {
             popup = undefined;
-            user = LoginService.getUser()
+            user = LoginService.getUser();
             vm.user = user;
             vm.chefId = $stateParams.id;
             getChefDetails();

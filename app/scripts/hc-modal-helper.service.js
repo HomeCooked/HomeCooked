@@ -2,9 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').factory('HCModalHelper', HCModalHelper);
 
-    HCModalHelper.$inject = ['$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService'];
+    HCModalHelper.$inject = ['_', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService'];
 
-    function HCModalHelper($rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService) {
+    function HCModalHelper(_, $rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService) {
 
         var modals = {};
         return {
@@ -57,7 +57,7 @@
                     modals['tutorial'].remove();
                     delete modals['tutorial'];
                     tutorialScope.$destroy();
-                    if (typeof onCompleteCb == 'function') {
+                    if (typeof onCompleteCb === 'function') {
                         onCompleteCb();
                     }
                 }

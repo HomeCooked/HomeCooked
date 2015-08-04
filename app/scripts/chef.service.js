@@ -44,52 +44,6 @@
         }
 
         function getChefData() {
-            //TODO read this from server!!
-            var chefData = {
-                maxDishes: 100,
-                maxDishPrice: 100,
-                maxBatches: 3,
-                maxBatchQuantity: 25,
-                serviceDays: [   // array of 7 objects --> 7 days of the week
-                    {
-                        week_day: 0,
-                        is_active: false,
-                        start_minute: null,
-                        end_minute: null
-                    }, {
-                        week_day: 1,
-                        is_active: false,
-                        start_minute: null,
-                        end_minute: null
-                    }, {
-                        week_day: 2,
-                        is_active: false,
-                        start_minute: null,
-                        end_minute: null
-                    }, {
-                        week_day: 3,
-                        is_active: true,
-                        start_minute: 18 * 60,
-                        end_minute: 21 * 60
-                    }, {
-                        week_day: 4,
-                        is_active: true,
-                        start_minute: 18 * 60,
-                        end_minute: 21 * 60
-                    }, {
-                        week_day: 5,
-                        is_active: false,
-                        start_minute: null,
-                        end_minute: null
-                    }, {
-                        week_day: 6,
-                        is_active: false,
-                        start_minute: null,
-                        end_minute: null
-                    }
-                ]
-            };
-            return $q.when(chefData);
             return handleResponses($http.get(baseUrl + 'chefs/chef_config/'));
         }
 
