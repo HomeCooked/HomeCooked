@@ -44,11 +44,10 @@
         }
 
         function emptyBatch() {
-            var firstDish = vm.dishes[0] || {};
             return {
-                dish: firstDish.id,
-                start_time: 0,
-                duration: 1
+                dish: (vm.dishes[0] || {}).id,
+                duration: 1,
+                start_time: (modalScope.startTimes[0] || {}).start_time
             };
         }
 
@@ -114,11 +113,11 @@
 
         function getChefData() {
             return ChefService.getChefData().then(function(chefData) {
+                chefData = chefData[0];
                 vm.maxPrice = chefData.maxDishPrice;
                 vm.maxQuantity = chefData.maxBatchQuantity;
                 vm.maxBatches = chefData.maxBatches;
                 modalScope.startTimes = getStartTimes(chefData.serviceDays);
-                modalScope.start_time = modalScope.startTimes[0].start_time;
                 return chefData;
             });
         }
@@ -153,7 +152,7 @@
                 }
                 indexed[d] = day;
             }
-            return _.sortBy(indexed.values(), 'week_day');
+            return _.chain(indexed).values().sortBy('week_day').value();
         }
 
         function getDate(time, minute) {
