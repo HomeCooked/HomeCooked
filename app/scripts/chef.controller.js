@@ -53,6 +53,7 @@
         }
 
         function onBeforeEnter() {
+            checkTutorial();
             $ionicLoading.show();
             $q.all([getBatches(), getDishes(), getChefData()])
                 .then(function() {
@@ -63,6 +64,38 @@
                 })
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
+        }
+
+        function checkTutorial() {
+            var chefId = LoginService.getUser().id
+            ChefService.getChef(chefId)
+                .then(function(chef) {
+                    if (!chef.batches_tutorial_completed) {
+                        HCModalHelper.showTutorial([{
+                            title: 'Ready to cook?',
+                            image: 'images/chef3.jpg',
+                            message: '<p>This is the part where you post your meal, and cook on your schedule! Select the meal, quantity, and pickup time, and see the orders trickling in.</p>'
+                        }, {
+                            title: 'Easy payment',
+                            image: 'images/chef3.jpg',
+                            message: '<p>Payment is automatic and goes directly to your account, even if the buyer doesn\'t show up.</p>'
+                        }, {
+                            title: 'Simple end-to-end',
+                            image: 'images/chef3.jpg',
+                            message: '<p>First: you select the meal, quantity and time of pick-up<br>Second: you watch orders tickling in<br>Third: we notify you when the buyer arrives for pickup!</p>'
+                        }, {
+                            title: 'Plan ahead!',
+                            image: 'images/chef3.jpg',
+                            message: '<p>We recommend to post your meals several days ahead of the due date, to collect maximum orders</p>'
+                        }, {
+                            title: 'Cancellation Policy',
+                            image: 'images/chef3.jpg',
+                            message: '<p>Cancelling before the delivery time results in negative ratings. Cancelling during or after pick-up time results in stronger penalties and potential exclusion.</p>'
+                        }], function() {
+                            ChefService.setBatchesTutorialDone(chefId)
+                        });
+                    }
+                });
         }
 
         function getBatches() {

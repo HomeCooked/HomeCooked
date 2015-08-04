@@ -70,39 +70,41 @@
             return {user: vm.chefId};
         }
 
-        function showTutorial() {
-            HCModalHelper.showTutorial([{
-                title: 'Build your own menu',
-                image: 'images/chef1.jpg',
-                message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>Use this section to describe your meals and make your customers want more!</p>'
-            }, {
-                title: 'Before you start',
-                image: 'images/chef2.jpg',
-                message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
-            }], function() {
-                ChefService.setDishesTutorialDone(vm.chefId)
-            });
-        }
-
         function onBeforeEnter() {
             vm.chefId = LoginService.getUser().id;
             modalScope.dish = getEmptyDish();
 
+            checkTutorial();
+
             $ionicLoading.show();
-            $q.all([DishesService.getDishes(), ChefService.getChef(vm.chefId)])
-                .then(function(values) {
-                    var dishes = values[0],
-                        tutorialDone = values[1].dishes_tutorial_completed;
+            $q.all(DishesService.getDishes())
+                .then(function(dishes) {
                     vm.dishes = dishes;
-                    if (!tutorialDone) {
-                        showTutorial();
-                    }
                     if ($stateParams.v === 'new') {
                         showModal();
                     }
                 })
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
+        }
+
+        function checkTutorial() {
+            ChefService.getChef(vm.chefId)
+                .then(function(chef) {
+                    if (!chef.dishes_tutorial_completed) {
+                        HCModalHelper.showTutorial([{
+                            title: 'Build your own menu',
+                            image: 'images/chef1.jpg',
+                            message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>Use this section to describe your meals and make your customers want more!</p>'
+                        }, {
+                            title: 'Before you start',
+                            image: 'images/chef2.jpg',
+                            message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
+                        }], function() {
+                            ChefService.setDishesTutorialDone(vm.chefId)
+                        });
+                    }
+                });
         }
 
         function onDestroy() {
