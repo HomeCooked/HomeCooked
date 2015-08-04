@@ -44,11 +44,10 @@
         }
 
         function emptyBatch() {
-            var firstDish = vm.dishes[0] || {};
             return {
-                dish: firstDish.id,
-                start_time: 0,
-                duration: 1
+                dish: (vm.dishes[0] || {}).id,
+                duration: 1,
+                start_time: (modalScope.startTimes[0] || {}).start_time
             };
         }
 
@@ -114,6 +113,7 @@
 
         function getChefData() {
             return ChefService.getChefData().then(function(chefData) {
+                chefData = chefData[0];
                 vm.maxPrice = chefData.maxDishPrice;
                 vm.maxQuantity = chefData.maxBatchQuantity;
                 vm.maxBatches = chefData.maxBatches;
@@ -130,15 +130,9 @@
             now.setSeconds(0);
             now.setMilliseconds(0);
             var time = now.getTime();
-            var i = _.findIndex(serviceDays, {week_day: weekDay});
-            if (i > 0) {
-                var split1 = _.slice(serviceDays, 0, i);
-                var split2 = _.slice(serviceDays, i);
-                _.forEach(split1, function(day) {
-                    day.week_day += 7;
-                });
-                serviceDays = split2.concat(split1);
-            }
+
+            serviceDays = orderedServiceDays(serviceDays, weekDay);
+
             var days = _.filter(serviceDays, 'is_active');
             return _.map(days, function(day) {
                 var t = time + (day.week_day - weekDay) * 86400000;
@@ -147,6 +141,18 @@
                     end_time: getDate(t, day.end_minute)
                 };
             });
+        }
+
+        function orderedServiceDays(serviceDays, weekDay) {
+            var indexed = _.indexBy(serviceDays, 'week_day');
+            for (var d = 0; d < 7; d++) {
+                var day = indexed[d] || {week_day: d};
+                if (d > weekDay) {
+                    day.week_day += 7;
+                }
+                indexed[d] = day;
+            }
+            return _.chain(indexed).values().sortBy('week_day').value();
         }
 
         function getDate(time, minute) {
