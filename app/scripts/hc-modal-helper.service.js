@@ -2,18 +2,22 @@
     'use strict';
     angular.module('HomeCooked.controllers').factory('HCModalHelper', HCModalHelper);
 
-    HCModalHelper.$inject = ['_', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService'];
+    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService'];
 
-    function HCModalHelper(_, $rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService) {
+    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService) {
 
         var modals = {};
         return {
             showUpdatePayment: showUpdatePayment,
-            showTutorial: showTutorial
+            showTutorial: showTutorial,
+            showUpdatePhoneNumber: showUpdatePhoneNumber
         };
 
         function showUpdatePayment() {
             var modalScope = $rootScope.$new();
+            var deferred = $q.defer();
+            modals['update-payment'] = modalScope;
+            modalScope.deferred = deferred;
             modalScope.showLoading = showLoading;
             modalScope.stripeCallback = stripeCallback;
             modalScope.user = LoginService.getUser();
@@ -22,8 +26,8 @@
             }).then(function(modal) {
                 modal.show();
                 modalScope.modal = modal;
-                modals['update-payment'] = modal;
             });
+            return deferred.promise;
         }
 
         function showLoading(msg) {
@@ -41,7 +45,13 @@
                         // TODO remove this
                         LoginService.setUserHasPaymentInfo(true);
                         LoginService.reloadUser();
-                        modals['update-payment'].hide();
+
+                        var scope = modals['update-payment'];
+                        scope.modal.remove();
+
+                        scope.deferred.resolve();
+                        scope.$destroy();
+                        delete modals['update-payment'];
                         $ionicLoading.show({template: 'Your payment information was saved!', duration: 3000});
                     })
                     .catch(HCMessaging.showError);
@@ -50,13 +60,14 @@
 
         function showTutorial(steps, onCompleteCb) {
             var tutorialScope = $rootScope.$new();
+            modals['tutorial'] = tutorialScope;
             tutorialScope.steps = steps;
             tutorialScope.step = 0;
             tutorialScope.next = function next() {
                 if (tutorialScope.step === tutorialScope.steps.length - 1) {
-                    modals['tutorial'].remove();
+                    modals['tutorial'].modal.remove();
+                    modals['tutorial'].$destroy();
                     delete modals['tutorial'];
-                    tutorialScope.$destroy();
                     if (typeof onCompleteCb === 'function') {
                         onCompleteCb();
                     }
@@ -70,7 +81,7 @@
                 scope: tutorialScope
             }).then(function(m) {
                 m.show();
-                modals['tutorial'] = m;
+                tutorialScope.modal = m;
             });
         }
 
@@ -80,6 +91,34 @@
                 return s.$$delegateHandle === 'tutorialContent';
             });
             handle.scrollTop();
+        }
+
+        function showUpdatePhoneNumber() {
+            var modalScope = $rootScope.$new();
+            var deferred = $q.defer();
+            modals['update-phone'] = modalScope;
+            modalScope.deferred = deferred;
+            modalScope.phoneForm = {phone_number: LoginService.getUser().phone_number};
+            modalScope.savePhone = savePhone;
+            $ionicModal.fromTemplateUrl('templates/update-phone.html', {
+                scope: modalScope
+            }).then(function(modal) {
+                modal.show();
+                modalScope.modal = modal;
+            });
+            return deferred.promise;
+        }
+
+        function savePhone(form) {
+            LoginService.saveUserData(form).then(function() {
+                var scope = modals['update-phone'];
+                scope.modal.remove();
+                scope.deferred.resolve();
+                scope.$destroy();
+                delete modals['update-phone'];
+                $ionicLoading.show({template: 'Your phone information was saved!', duration: 3000});
+            })
+                .catch(HCMessaging.showError);
         }
     }
 

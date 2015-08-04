@@ -1,0 +1,22 @@
+<div class="modal">
+    <ion-header-bar>
+        <h1 class="title">Update Phone Number</h1>
+
+        <div class="button button-clear" ng-click="modal.hide()">Cancel</div>
+    </ion-header-bar>
+    <ion-content>
+        <form class="list" name="phoneForm">
+            <label class="item item-input">
+                <i class="icon ion-android-call placeholder-icon"></i>
+                <input type="text" placeholder="Phone Number" ng-model="phoneForm.phone_number" required min-length="3"/>
+            </label>
+
+            <div class="item button-bar">
+                <button type="submit" class="button button-positive" ng-disabled="phoneForm.$invalid"
+                        ng-click="savePhone(phoneForm)">
+                    Save
+                    <i class="icon ion-ios-checkmark-empty"></i></button>
+            </div>
+        </form>
+    </ion-content>
+</div>

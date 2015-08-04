@@ -6,9 +6,8 @@
         .module('HomeCooked.controllers')
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
-    ChefPreviewCtrl.$inject = ['$window', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', 'HCModalHelper', '_'];
-
-    function ChefPreviewCtrl($window, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, HCModalHelper, _) {
+    ChefPreviewCtrl.$inject = ['$q', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', 'HCModalHelper', '_'];
+    function ChefPreviewCtrl($q, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, HCModalHelper, _) {
         var vm = this;
         var user, popup;
 
@@ -65,18 +64,39 @@
         }
 
         function order() {
+            showUpdatePayment().then(showUpdatePhone).then(holdBatch);
+        }
+
+        function showUpdatePayment() {
             if (user.has_payment) {
-                $ionicLoading.show();
-                PaymentService.holdBatch({dishId: $stateParams.dishId, quantity: vm.quantity})
-                    .then(function() {
-                        $window.history.back();
-                    })
-                    .catch(HCMessaging.showError)
-                    .finally($ionicLoading.hide);
+                return $q.when();
             }
-            else {
-                HCModalHelper.showUpdatePayment();
+            $ionicLoading.show({
+                template: 'Please provide a payment method',
+                duration: 2000
+            });
+            return HCModalHelper.showUpdatePayment();
+        }
+
+        function showUpdatePhone() {
+            if (user.phone_number && user.phone_number.length > 2) {
+                return $q.when();
             }
+            $ionicLoading.show({
+                template: 'Please provide a valid phone number',
+                duration: 2000
+            });
+            return HCModalHelper.showUpdatePhoneNumber();
+        }
+
+        function holdBatch() {
+            $ionicLoading.show();
+            return PaymentService.holdBatch({dishId: $stateParams.dishId, quantity: vm.quantity})
+                .then(function() {
+                    $ionicLoading.show({template: 'Item added to the cart!', duration: 2000});
+                    $state.go('app.chef-preview', {id: $stateParams.id});
+                })
+                .catch(HCMessaging.showError);
         }
 
         function checkout() {
