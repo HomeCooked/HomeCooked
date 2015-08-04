@@ -56,7 +56,7 @@
         }
 
         function getDevice() {
-            var platform = ionic.Platform.isIOS() ? 'ios' : ionic.Platform.isAndroid() ? 'android' : '';
+            var platform = window.ionic.Platform.isIOS() ? 'ios' : window.ionic.Platform.isAndroid() ? 'android' : '';
             return devices[platform] || {};
         }
 
