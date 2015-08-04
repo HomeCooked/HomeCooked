@@ -61,7 +61,8 @@
     "cordova-plugin-console@^1.0.1",
     "cordova-plugin-statusbar@^1.0.1",
     "cordova-plugin-geolocation@^1.0.1",
-    "cordova-plugin-splashscreen@^2.1.0"
+    "cordova-plugin-splashscreen@^2.1.0",
+    "https://github.com/phonegap-build/PushPlugin.git"
   ],
   "cordovaPlatforms": [
     "android",

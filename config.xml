@@ -73,8 +73,8 @@
     <plugin name="cordova-plugin-geolocation" spec="^1.0.1" />
     <plugin name="cordova-plugin-statusbar" spec="^1.0.1" />
     <plugin name="com.phonegap.plugins.facebookconnect" spec="https://github.com/Wizcorp/phonegap-facebook-plugin.git">
-        <!--this APP_ID won't matter here, as we override this value in scrips/app.js (see last .run). Setting it to prod app anyways-->
         <variable name="APP_ID" value="805673482820123" />
         <variable name="APP_NAME" value="HomeCooked" />
     </plugin>
+    <plugin name="com.phonegap.plugins.PushPlugin" spec="https://github.com/phonegap-build/PushPlugin.git" />
 </widget>

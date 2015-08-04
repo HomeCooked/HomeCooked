@@ -193,7 +193,7 @@ HomeCooked
             }], CacheService.setWelcomeTutorialComplete);
         }
     })
-    .run(function($ionicPlatform, ENV) {
+    .run(function($ionicPlatform, NotificationService, ENV) {
         $ionicPlatform.ready(function() {
             if (window.cordova) {
                 window.facebookConnectPlugin.browserInit(ENV.FACEBOOK_APP_ID, 'v2.2');
@@ -212,5 +212,9 @@ HomeCooked
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
+            if (window.cordova) {
+                NotificationService.register();
+            }
+
         });
     });
