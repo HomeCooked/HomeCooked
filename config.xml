@@ -72,9 +72,4 @@
     <plugin name="cordova-plugin-console" spec="^1.0.1" />
     <plugin name="cordova-plugin-geolocation" spec="^1.0.1" />
     <plugin name="cordova-plugin-statusbar" spec="^1.0.1" />
-    <plugin name="com.phonegap.plugins.facebookconnect" spec="https://github.com/Wizcorp/phonegap-facebook-plugin.git">
-        <variable name="APP_ID" value="805673482820123" />
-        <variable name="APP_NAME" value="HomeCooked" />
-    </plugin>
-    <plugin name="com.phonegap.plugins.PushPlugin" spec="https://github.com/phonegap-build/PushPlugin.git" />
 </widget>

@@ -50,19 +50,23 @@
     "test": "grunt test"
   },
   "cordovaPlugins": [
-    "cordova-plugin-splashscreen",
-    "cordova-plugin-whitelist",
-    "com.ionic.keyboard",
-    "cordova-plugin-console",
-    "cordova-plugin-geolocation",
-    "cordova-plugin-statusbar",
-    "https://github.com/Wizcorp/phonegap-facebook-plugin.git",
     "cordova-plugin-whitelist@^1.0.0",
     "cordova-plugin-console@^1.0.1",
-    "cordova-plugin-statusbar@^1.0.1",
     "cordova-plugin-geolocation@^1.0.1",
+    "cordova-plugin-statusbar@^1.0.1",
     "cordova-plugin-splashscreen@^2.1.0",
-    "https://github.com/phonegap-build/PushPlugin.git"
+    {
+      "locator": "https://github.com/Wizcorp/phonegap-facebook-plugin.git",
+      "id": "com.phonegap.plugins.facebookconnect",
+      "variables": {
+        "APP_ID": "123456789",
+        "APP_NAME": "myApplication"
+      }
+    },
+    {
+      "locator": "https://github.com/phonegap-build/PushPlugin.git",
+      "id": "com.phonegap.plugins.PushPlugin"
+    }
   ],
   "cordovaPlatforms": [
     "android",
