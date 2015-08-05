@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('EnrollCtrl', EnrollCtrl);
 
-    EnrollCtrl.$inject = ['$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging'];
+    EnrollCtrl.$inject = ['$state', '$scope', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging'];
 
-    function EnrollCtrl($state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
+    function EnrollCtrl($state, $scope, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
         var vm = this;
         var user = LoginService.getUser();
         vm.pictureCropped = '';
@@ -17,15 +17,26 @@
             email: user.email,
             phone_number: user.phone_number
         };
+        resetCard();
 
         vm.enroll = enroll;
+        // crap needed by angular-payments
+        $scope.stripeCallback = stripeCallback;
 
-        function enroll(form) {
-            form.picture = form.picture.split(';base64,').pop();
-            calculateAddress(form, form.address);
+        function enroll(formElement) {
             $ionicLoading.show({
                 template: 'Enrolling...'
             });
+            resetCard();
+            if(formElement){
+                formElement.$setPristine();
+            }
+            var form = vm.form;
+            if (!form.stripe) {
+                return;
+            }
+            form.picture = form.picture.split(';base64,').pop();
+            calculateAddress(form, form.address);
             LoginService.becomeChef(form)
                 .then(function() {
                     $ionicPopup.show({
@@ -53,6 +64,20 @@
             else {
                 form.address = place.formatted_address;
                 form.coordinates = {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng()};
+            }
+        }
+
+        function resetCard(){
+            $scope.number = $scope.expiry = $scope.cvc = undefined;
+        }
+
+        function stripeCallback(code, result) {
+            if (result.error) {
+                HCMessaging.showError(result.error);
+            }
+            else {
+                vm.form.stripe = result;
+                enroll();
             }
         }
     }
