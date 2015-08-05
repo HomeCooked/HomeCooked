@@ -17,7 +17,7 @@
 
         <p>{{dish.description || '- no description for this dish -'}}</p>
         <p>{{dish.price}} $</p>
-        <a ng-href="#/chef/{{::vm.chefId}}/dish/{{::dish.id}}/reviews">{{::dish.rating || 0}}/5 ({{::dish.review_count || 0}} reviews)</a>
+        <a ui-sref="app.dish-preview({id: vm.chefId, dishId: dish.id})">{{::dish.rating || 0}}/5 ({{::dish.review_count || 0}} reviews)</a>
         <button class="button button-clear button-stable" ng-click="vm.deleteDish(dish)">
           <i class="icon ion-trash-a"></i>
         </button>

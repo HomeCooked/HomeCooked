@@ -26,7 +26,7 @@ HomeCooked
                 controller: 'MenuCtrl as menuVm'
             })
             .state('app.buyer', {
-                url: '/buyer',
+                url: '/buyer/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/search.html',
@@ -35,7 +35,7 @@ HomeCooked
                 }
             })
             .state('app.chef-preview', {
-                url: '/chef/:id/preview',
+                url: '/chef/:id/preview/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/preview.html',
@@ -44,7 +44,7 @@ HomeCooked
                 }
             })
             .state('app.dish-preview', {
-                url: '/chef/:id/dish/:dishId',
+                url: '/chef/:id/dish/:dishId/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/dish-detail.html',
@@ -53,7 +53,7 @@ HomeCooked
                 }
             })
             .state('app.dish-review', {
-                url: '/chef/:id/dish/:dishId/reviews',
+                url: '/chef/:id/dish/:dishId/reviews/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/dish-review.html',
@@ -62,7 +62,7 @@ HomeCooked
                 }
             })
             .state('app.orders', {
-                url: '/orders',
+                url: '/orders/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/orders.html',
@@ -71,7 +71,7 @@ HomeCooked
                 }
             })
             .state('app.enroll', {
-                url: '/enroll',
+                url: '/enroll/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/enroll.html',
@@ -98,7 +98,7 @@ HomeCooked
                 }
             })
             .state('app.bio', {
-                url: '/bio',
+                url: '/bio/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/chef/bio.html',
@@ -107,7 +107,7 @@ HomeCooked
                 }
             })
             .state('app.settings', {
-                url: '/settings',
+                url: '/settings/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/settings/settings.html',
@@ -116,7 +116,7 @@ HomeCooked
                 }
             })
             .state('app.settings-email', {
-                url: '/settings/email',
+                url: '/settings/email/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/settings/email.html',
@@ -124,17 +124,8 @@ HomeCooked
                     }
                 }
             })
-            .state('app.settings-phonenumber', {
-                url: '/settings/phonenumber',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/settings/phonenumber.html',
-                        controller: 'SettingsCtrl as vm'
-                    }
-                }
-            })
             .state('app.pending-reviews', {
-                url: '/pending-reviews',
+                url: '/pending-reviews/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/pending-reviews.html',
@@ -143,7 +134,7 @@ HomeCooked
                 }
             })
             .state('app.not-found', {
-                url: '/not-found',
+                url: '/not-found/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/not-found.html'
@@ -151,11 +142,11 @@ HomeCooked
                 }
             })
             .state('zipcode-validation', {
-                url: '/zipcode-validation',
+                url: '/zipcode-validation/',
                 templateUrl: 'templates/zipcode/form.html',
                 controller: 'ZipCodeRestrictionCtrl as vm'
             })
-            .state('zipcode-unavailable', {
+            .state('zipcode-unavailable/', {
                 url: '/zipcode-unavailable/:zipcode',
                 templateUrl: 'templates/zipcode/unavailable.html',
                 controller: 'ZipCodeRestrictionCtrl as vm'

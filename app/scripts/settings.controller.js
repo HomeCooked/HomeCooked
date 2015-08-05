@@ -5,10 +5,10 @@
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$scope', '$state', '$ionicPlatform',
+    SettingsCtrl.$inject = ['$window', '$scope', '$state', '$ionicPlatform',
         '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService', 'ChefService', 'HCMessaging', 'HCModalHelper'];
 
-    function SettingsCtrl($scope, $state, $ionicPlatform,
+    function SettingsCtrl($window, $scope, $state, $ionicPlatform,
                           $ionicPopup, $ionicLoading, $ionicHistory, LoginService, ChefService, HCMessaging, HCModalHelper) {
 
         var vm = this;
@@ -60,7 +60,8 @@
         }
 
         function openExternalLink(link) {
-            return window.open(link, '_system');
+            $window.open(link, '_system');
+            return true;
         }
 
         function confirmLogout() {

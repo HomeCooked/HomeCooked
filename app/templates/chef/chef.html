@@ -11,7 +11,7 @@
 
             <p class="padding" align="center" ng-if="vm.dishes.length===0">
                 You need to create a dish before being able to sell it!<br>
-                <a href ng-click="vm.go('app.dishes', {v:'new'})">Add a new dish</a>
+                <a ui-sref="app.dishes({v:'new'})">Add a new dish</a>
             </p>
 
             <p class="padding" align="center" ng-if="vm.dishes.length>0 && vm.batches.length===0">

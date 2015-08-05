@@ -17,7 +17,6 @@
         vm.query = '';
         vm.visible = false;
         vm.chefs = [];
-        vm.goToPreview = goToPreview;
 
         //init the map
         initMapProperties();
