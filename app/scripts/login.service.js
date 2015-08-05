@@ -4,8 +4,9 @@
 
     LoginService.$inject = ['$q', '$http', '$cordovaFacebook', 'ENV', 'CacheService', '_'];
     function LoginService($q, $http, $cordovaFacebook, ENV, CacheService, _) {
-        var user = CacheService.getValue('user') || {},
+        var user = {},
             baseUrl = ENV.BASE_URL + '/api/v1/';
+        setUser(CacheService.getValue('user'));
 
         var chefMode = CacheService.getValue('chefMode');
 
@@ -26,7 +27,7 @@
         function reloadUser() {
             if (user.isLoggedIn && user.id) {
                 return $http.get(baseUrl + 'users/' + user.id + '/').then(function(response) {
-                    _.assign(user, response.data);
+                    setUser(response.data);
                     CacheService.setValue({user: user});
                     return user;
                 });
@@ -52,6 +53,12 @@
             return user;
         }
 
+        function setUser(newUser) {
+            newUser = newUser || {};
+            newUser.phone_number = deserializePhone(newUser.phone_number);
+            _.assign(user, newUser);
+        }
+
         function setUserZipCode(zipcode) {
             user.zipcode = zipcode;
             CacheService.setValue({user: user});
@@ -64,6 +71,8 @@
 
         function becomeChef(chefInfo) {
             chefInfo.user = user.id;
+            chefInfo.phone_number = serializePhone(chefInfo.phone_number);
+
             var deferred = $q.defer();
             $http.post(baseUrl + 'chefs/enroll/', chefInfo)
                 .success(deferred.resolve)
@@ -82,9 +91,8 @@
             })
                 .then(function(response) {
                     var data = response.data;
-                    // TODO this should come from the server
-                    data.user.zipcode = user.zipcode;
-                    _.assign(user, data.user, {isLoggedIn: true});
+                    data.user.isLoggedIn = true;
+                    setUser(data.user);
                     CacheService.setValue({
                         provider: provider,
                         credential: data.credential
@@ -138,6 +146,7 @@
         }
 
         function saveUserData(data) {
+            data.phone_number = serializePhone(data.phone_number);
             return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(reloadUser);
         }
 
@@ -146,6 +155,20 @@
                 zipcode: zipcode,
                 email: email
             });
+        }
+
+        function serializePhone(phone) {
+            if (phone && (phone + '').indexOf('1') !== 0) {
+                return '1' + phone;
+            }
+            return phone;
+        }
+
+        function deserializePhone(phone) {
+            if (typeof phone === 'string') {
+                return parseInt(phone, 10);
+            }
+            return phone;
         }
     }
 })();

@@ -98,7 +98,7 @@
             var deferred = $q.defer();
             modals['update-phone'] = modalScope;
             modalScope.deferred = deferred;
-            modalScope.phoneForm = {phone_number: LoginService.getUser().phone_number};
+            modalScope.phone_number = LoginService.getUser().phone_number;
             modalScope.savePhone = savePhone;
             $ionicModal.fromTemplateUrl('templates/update-phone.html', {
                 scope: modalScope
@@ -109,8 +109,9 @@
             return deferred.promise;
         }
 
-        function savePhone(form) {
-            LoginService.saveUserData(form).then(function() {
+        function savePhone(phone) {
+            $ionicLoading.show();
+            LoginService.saveUserData({phone_number: phone}).then(function() {
                 var scope = modals['update-phone'];
                 scope.modal.remove();
                 scope.deferred.resolve();

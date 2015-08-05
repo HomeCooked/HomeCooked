@@ -18,6 +18,7 @@
         vm.openRatingLink = openRatingLink;
         vm.confirmLogout = confirmLogout;
         vm.showUpdatePayment = showUpdatePayment;
+        vm.showUpdatePhone = showUpdatePhone;
 
         $scope.$on('$ionicView.beforeEnter', function() {
             var user = LoginService.getUser();
@@ -35,8 +36,7 @@
             if (vm.userPropertiesChanged) {
                 $ionicLoading.show();
                 LoginService.saveUserData({
-                    email: vm.user.email,
-                    phone_number: vm.user.phone_number
+                    email: vm.user.email
                 })
                     .then(function() {
                         $state.go('app.settings');
@@ -82,6 +82,10 @@
 
         function showUpdatePayment() {
             HCModalHelper.showUpdatePayment();
+        }
+
+        function showUpdatePhone() {
+            HCModalHelper.showUpdatePhoneNumber();
         }
     }
 

@@ -8,12 +8,13 @@
         <form class="list" name="phoneForm">
             <label class="item item-input">
                 <i class="icon ion-android-call placeholder-icon"></i>
-                <input type="text" placeholder="Phone Number" ng-model="phoneForm.phone_number" required min-length="3"/>
+                <input type="number" placeholder="Phone Number" ng-model="phone_number" required
+                       ng-minlength="10" ng-maxlength="11"/>
             </label>
 
             <div class="item button-bar">
                 <button type="submit" class="button button-positive" ng-disabled="phoneForm.$invalid"
-                        ng-click="savePhone(phoneForm)">
+                        ng-click="savePhone(phone_number)">
                     Save
                     <i class="icon ion-ios-checkmark-empty"></i></button>
             </div>
