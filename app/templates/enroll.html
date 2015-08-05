@@ -16,39 +16,58 @@
                 </div>
             </div>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">First name</span>
-                <input type="text" name="first_name" placeholder="First name" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.first_name">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Last name</span>
-                <input type="text" name="last_name" placeholder="Last name" required ng-minlength="2" ng-maxlength="50"
-                       ng-model="vm.form.last_name">
-            </label>
-            <label class="item item-input item-stacked-label">
                 <span class="input-label">Date of birth</span>
                 <input type="date" name="dob" required ng-minlength="10" ng-maxlength="10" ng-model="vm.form.dob">
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-floating-label">
                 <span class="input-label">Email</span>
                 <input type="email" name="email" placeholder="Email" required ng-model="vm.form.email">
-                <span ng-show="enrollForm.email.$dirty && enrollForm.email.$invalid">This is not a valid email.</span>
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-floating-label">
                 <span class="input-label">Phone</span>
                 <input type="text" name="phone_number" placeholder="Phone" required ng-minlength="5" ng-maxlength="15"
                        ng-model="vm.form.phone_number">
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-floating-label">
                 <span class="input-label">Social Security Number</span>
-                <input type="text" name="ssn" placeholder="SSN" required ng-minlength="9" ng-maxlength="9"
+                <input type="text" name="ssn" placeholder="Social Security Number" required ng-minlength="9"
+                       ng-maxlength="9"
                        ng-model="vm.form.ssn">
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Address</span>
-                <input style="display:none" type="text" name="address"/>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Address, city, zipcode</span>
                 <input type="text" name="address" placeholder="Address, city, zipcode" required ng-minlength="2"
                        ng-maxlength="50" ng-model="vm.form.address" g-places-autocomplete force-selection="true"/>
+            </label>
+
+            <h4 class="padding">Payment information</h4>
+
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Debit Card Number</span>
+                <input type="text" ng-model="number" placeholder="Debit Card Number" payments-format="card"
+                       payments-validate="card" name="card"
+                       ng-minlength="1"/>
+            </label>
+
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Expiration</span>
+                <input type="text" ng-model="expiry" placeholder="Expiration" payments-format="expiry"
+                       payments-validate="expiry" name="expiry"
+                       ng-minlength="1" ng-class="{'invalid-input' : enrollForm.expiry
+                        && enrollForm.expiry.$invalid}"/>
+            </label>
+
+            <label class="item item-input item-floating-label">
+                <span class="input-label">CVC</span>
+                <input type="text" ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"
+                       name="cvc"
+                       ng-minlength="1"/>
+            </label>
+
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Cardholder's name (as it appears on card)</span>
+                <input type="text" name="cardholder_name" placeholder="Cardholder's name (as it appears on card)" required ng-minlength="2"
+                       ng-maxlength="50">
             </label>
 
             <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"
