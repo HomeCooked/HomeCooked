@@ -5,6 +5,9 @@
     HCMessaging.$inject = ['$log', '$rootScope', '$ionicLoading', '$ionicPopup'];
 
     function HCMessaging($log, $rootScope, $ionicLoading, $ionicPopup) {
+
+        $rootScope.$on('unauthorized', notifyUnauthorized);
+
         return {
             showError: showError,
             showMessage: showMessage
@@ -32,6 +35,10 @@
                 scope: scope,
                 templateUrl: 'templates/hc-messaging/error.html'
             });
+        }
+
+        function notifyUnauthorized() {
+            showMessage('Session expired', 'Please login again');
         }
     }
 })();
