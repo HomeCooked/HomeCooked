@@ -2,14 +2,16 @@
 (function() {
     angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$q', '$http', '$cordovaFacebook', 'ENV', 'CacheService', '_'];
-    function LoginService($q, $http, $cordovaFacebook, ENV, CacheService, _) {
+    LoginService.$inject = ['$q', '$rootScope', '$http', '$cordovaFacebook', 'ENV', 'CacheService', '_'];
+    function LoginService($q, $rootScope, $http, $cordovaFacebook, ENV, CacheService, _) {
         var user = {},
             baseUrl = ENV.BASE_URL + '/api/v1/';
         setUser(CacheService.getValue('user'));
 
         var chefMode = CacheService.getValue('chefMode');
 
+        $rootScope.$on('unauthorized', logout);
+        
         return {
             reloadUser: reloadUser,
             login: login,

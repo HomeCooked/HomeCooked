@@ -1,7 +1,7 @@
 'use strict';
 angular.module('HomeCooked.services')
-    .factory('AuthInterceptor', ['$q', 'CacheService', 'LoginService',
-        function($q, CacheService, LoginService) {
+    .factory('AuthInterceptor', ['$q', '$rootScope', 'CacheService',
+        function($q, $rootScope, CacheService) {
             return {
                 request: function(config) {
                     config.headers = config.headers || {};
@@ -13,7 +13,7 @@ angular.module('HomeCooked.services')
                 },
                 response: function(response) {
                     if (response.status === 401) {
-                        LoginService.logout();
+                        $rootScope.$emit('unauthorized');
                     }
                     return response || $q.when(response);
                 }
