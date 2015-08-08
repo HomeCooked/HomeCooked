@@ -77,7 +77,8 @@
                         }, {
                             title: 'Easy payment',
                             image: 'images/chef3.jpg',
-                            message: '<p>Payment is automatic and goes directly to your account, even if the buyer doesn\'t show up.</p>'
+                            message: '<p>Payment is automatic and goes directly to your account, even if the buyer doesn\'t show up.</p>' +
+                            '<p>For each dish, we will take an average commission of $1, which includes all bank and transaction fees</p>'
                         }, {
                             title: 'Simple end-to-end',
                             image: 'images/chef3.jpg',
