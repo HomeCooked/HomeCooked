@@ -11,7 +11,7 @@
         var chefMode = CacheService.getValue('chefMode');
 
         $rootScope.$on('unauthorized', logout);
-        
+
         return {
             reloadUser: reloadUser,
             login: login,
@@ -44,11 +44,13 @@
         }
 
         function logout() {
-            CacheService.invalidateCache();
+            var zipcode = user.zipcode;
             _.forEach(user, function(val, key) {
                 user[key] = undefined;
                 delete user[key];
             });
+            user.zipcode = zipcode;
+            CacheService.setValue({user: user});
         }
 
         function getUser() {

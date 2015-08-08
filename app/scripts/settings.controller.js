@@ -76,7 +76,7 @@
                         historyRoot: true,
                         disableAnimate: true
                     });
-                    $state.go('zipcode-validation');
+                    $state.go('app.buyer');
                 }
             });
         }
