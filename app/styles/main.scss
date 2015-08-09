@@ -44,6 +44,25 @@ input.ng-dirty.ng-invalid {
   right: 15px;
 }
 
+.item-input.item-select{
+  display: block;
+
+  .input-label {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  select {
+    position: relative;
+    padding: 0;
+  }
+
+  &:after {
+    top: 75%;
+  }
+}
+
+
 .hc {
   &-orders {
     width: 100%;

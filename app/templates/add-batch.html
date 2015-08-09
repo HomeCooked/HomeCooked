@@ -1,49 +1,54 @@
 <div class="modal">
-  <ion-header-bar>
-    <h1 class="title">Add Item for Sale</h1>
+    <ion-header-bar>
+        <h1 class="title">Add Item for Sale</h1>
 
-    <div class="button button-clear" ng-click="vm.hideModal()">Cancel</div>
-  </ion-header-bar>
-  <ion-content>
-    <form novalidate class="list" name="batchForm">
-      <label class="item item-input item-select">
-        <div class="input-label">Select Dish</div>
-        <select name="dish" ng-model="batch.dish"
-                ng-options="dish.id as dish.title for dish in vm.dishes"></select>
-      </label>
-      <label class="item item-input">
-        <span class="input-label">Portions</span>
-        <input name="quantity" ng-model="batch.quantity" type="number" pattern="[0-9]*" value="batch.quantity" required
-               placeholder="(max {{vm.maxQuantity}})" ng-minlength="1" min="1" max="{{vm.maxQuantity}}" ng-change="batch.quantity = vm.adjustRange(batch.quantity, 1, vm.maxQuantity)"/>
-      </label>
-      <!--<label class="item item-input">
-        <input name="price" ng-model="batch.price" type="number" placeholder="Price per portion (max {{vm.maxPrice}})"
-               pattern="[0-9]*" required ng-minlength="1"
-               ng-change="batch.price = vm.adjustRange(batch.price, 0, vm.maxPrice)"/>
-      </label>-->
+        <div class="button button-clear" ng-click="vm.hideModal()">Cancel</div>
+    </ion-header-bar>
+    <ion-content>
+        <form novalidate class="list" name="batchForm">
+            <label class="item item-input item-select">
+                <span class="input-label">Select Dish</span>
+                <select name="dish" ng-model="batch.dish"
+                        ng-options="dish.id as dish.title for dish in vm.dishes"></select>
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Portions (max {{vm.maxQuantity}})</span>
+                <input name="quantity" ng-model="batch.quantity" type="number" pattern="[0-9]*" value="batch.quantity"
+                       required
+                       placeholder="Portions (max {{vm.maxQuantity}})" ng-minlength="1" min="1" max="{{vm.maxQuantity}}"
+                       ng-change="batch.quantity = vm.adjustRange(batch.quantity, 1, vm.maxQuantity)"/>
+            </label>
+            <!--<label class="item item-input">
+              <input name="price" ng-model="batch.price" type="number" placeholder="Price per portion (max {{vm.maxPrice}})"
+                     pattern="[0-9]*" required ng-minlength="1"
+                     ng-change="batch.price = vm.adjustRange(batch.price, 0, vm.maxPrice)"/>
+            </label>-->
 
-      <label class="item item-input item-select">
-        <div class="input-label">When will be available?</div>
-        <select name="start_time" ng-model="batch.start_time">
-          <option ng-repeat="time in startTimes" value="{{::time.start_time}}">{{::time.start_time | amDateFormat:'dddd, MMMM Do (h:mma'}} to {{::time.end_time | amDateFormat:'h:mma'}})</option>
-        </select>
-        <input type="hidden" ng-model="batch.start_time" required minlength="1">
-      </label>
-      <!--<label class="item item-input">
-        <span class="input-label">For how many days?</span>
-        <input name="duration" ng-model="batch.duration" type="number" pattern="[0-9]*" required ng-minlength="1"/>
-      </label>-->
-      <label class="item item-input">
-        <span class="input-label">Estimated preparation time</span>
-        <input name="prep_time" ng-model="batch.prep_time" type="number" pattern="[0-9]*" required ng-minlength="1" placeholder="(minutes)"/>
-      </label>
+            <label class="item item-input item-select">
+                <div class="input-label">When will be available?</div>
+                <select name="start_time" ng-model="batch.start_time">
+                    <option ng-repeat="time in startTimes" value="{{::time.start_time}}">{{::time.start_time |
+                        amDateFormat:'ddd, MMM D (h:mma'}} to {{::time.end_time | amDateFormat:'h:mma'}})
+                    </option>
+                </select>
+                <input type="hidden" ng-model="batch.start_time" required minlength="1">
+            </label>
+            <!--<label class="item item-input">
+              <span class="input-label">For how many days?</span>
+              <input name="duration" ng-model="batch.duration" type="number" pattern="[0-9]*" required ng-minlength="1"/>
+            </label>-->
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Estimated preparation time (minutes)</span>
+                <input name="prep_time" ng-model="batch.prep_time" type="number" pattern="[0-9]*" required
+                       ng-minlength="1" placeholder="Estimated preparation time (minutes)"/>
+            </label>
 
-      <div class="item button-bar">
-        <div class="button button-positive" ng-click="vm.addBatch(batch, batchForm)"
-             ng-disabled="batchForm.$invalid">Add
-        </div>
-      </div>
-    </form>
-  </ion-content>
+            <div class="item button-bar">
+                <div class="button button-positive" ng-click="vm.addBatch(batch, batchForm)"
+                     ng-disabled="batchForm.$invalid">Add
+                </div>
+            </div>
+        </form>
+    </ion-content>
 </div>
 
