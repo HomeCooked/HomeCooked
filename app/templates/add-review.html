@@ -7,8 +7,8 @@
     <ion-content>
         <form novalidate class="list" name="reviewForm">
             <label class="item item-input">
-                <!--<rating name="score" ng-model="review.score" max="5"></rating>-->
-                <input type="number" ng-model="review.score" placeholder="Score" />
+                Score
+                <reviews-rating score="{{review.score}}" read-only="false"></reviews-rating>
             </label>
             <label class="item item-input">
                 <textarea ng-model="review.comment" placeholder="Comments" rows="4"></textarea>
