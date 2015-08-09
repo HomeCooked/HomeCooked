@@ -2,13 +2,22 @@
 (function() {
     angular.module('HomeCooked.services').factory('LocationService', LocationService);
 
-    LocationService.$inject = ['$timeout', '$window', 'HCMessaging'];
-    function LocationService($timeout, $window, HCMessaging) {
-        //center the map on user location
+    LocationService.$inject = ['$cordovaGeolocation'];
+    function LocationService($cordovaGeolocation) {
         var location;
-        $timeout(function() {
-            $window.navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationFail, {maximumAge: 30000});
-        }, 200);
+
+        var posOptions = {timeout: 10000, enableHighAccuracy: false};
+        $cordovaGeolocation.getCurrentPosition(posOptions)
+            .then(onLocationSuccess, onLocationFail);
+
+        var watchOptions = {
+            frequency: 1000,
+            timeout: 3000,
+            enableHighAccuracy: false // may cause errors if true
+        };
+
+        var watch = $cordovaGeolocation.watchPosition(watchOptions);
+        watch.then(null, onLocationFail, onLocationSuccess);
 
         return {
             getCurrentLocation: getCurrentLocation,
@@ -47,7 +56,7 @@
         }
 
         function onLocationFail() {
-            HCMessaging.showMessage('Error', 'Unable to retrieve your location');
+            //HCMessaging.showMessage('Error', 'Unable to retrieve your location');
         }
     }
 })();

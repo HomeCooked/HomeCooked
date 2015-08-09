@@ -5,9 +5,9 @@
         .module('HomeCooked.services')
         .service('mapService', MapService);
 
-    MapService.$inject = ['$window', '$log', '$timeout', 'leafletData'];
+    MapService.$inject = ['$window', '$timeout', 'leafletData'];
 
-    function MapService($window, $log, $timeout, leafletData) {
+    function MapService($window, $timeout, leafletData) {
 
         var featureGroups = []; // an array containing each leaflet map feature group
 
@@ -56,12 +56,8 @@
 
         function fitMarkers(mapId) {
             leafletData.getMap(mapId).then(function(map) {
-                var maxZoom = map.getMaxZoom();
+                map.fitBounds(featureGroups[mapId].getBounds().pad(0.2));
                 map.options.maxZoom = 18;
-                $timeout(function() {
-                    map.fitBounds(featureGroups[mapId].getBounds().pad(0.2));
-                    map.options.maxZoom = maxZoom;
-                });
             });
         }
 
