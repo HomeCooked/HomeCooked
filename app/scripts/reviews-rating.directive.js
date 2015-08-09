@@ -17,9 +17,9 @@
                 readOnly: '@'
             },
             templateUrl: 'templates/reviews-rating.html',
-            link: function(scope) {
+            link: function(scope, element) {
                 if (scope.readOnly !== false) {
-                    scope.readOnly = true;
+                    element.addClass('read-only');
                 }
                 scope.max = 5;
             }

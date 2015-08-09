@@ -1,5 +1,8 @@
 reviews-rating {
     display: inline-block;
+    .read-only rating {
+        pointer-events: none;
+    }
     ul.rating li {
         display: inline;
         border: 0px;
