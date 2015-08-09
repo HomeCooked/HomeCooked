@@ -5,7 +5,7 @@
 
             <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
 
-            <p>{{vm.chef.distance}} away - ★ {{::vm.chef.review_score || '-'}}/5</p>
+            <p>{{vm.chef.distance}} away - <reviews-rating class="rating" score="{{::vm.chef.review_score}}" count="{{::vm.chef.review_count}}"></reviews-rating></p>
             <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.back()">
             </button>
         </div>
@@ -16,6 +16,7 @@
             <p class="padding" align="center" ng-if="vm.chef.dishes.length===0">
                 No items on sale.
             </p>
+
             <div class="dish-card" ng-repeat="dish in vm.chef.dishes"
                  ui-sref="app.dish-preview({id: vm.chef.id, dishId: dish.id})">
                 <div class="dish-cover">
@@ -24,11 +25,10 @@
                     <div class="dish-price">{{::dish.price}} $</div>
                 </div>
                 <div class="dish-details">
-                    <div class="rating"><span>★ {{::dish.review_score || '-'}}/5</span><br/>{{::dish.review_count}}
-                        reviews
-                    </div>
-                    <div class="title"><span>{{::dish.title}}</span><br/>{{::dish.remaining}} remaining<br>{{::dish.pickup_time
-                        | amCalendar}}
+                    <reviews-rating score="{{::dish.review_score}}" count="{{::dish.review_count}}"></reviews-rating>
+                    <div class="title">
+                        <span>{{::dish.title}}</span><br/>
+                        {{::dish.remaining}} remaining<br>{{::dish.pickup_time | amCalendar}}
                     </div>
                     <div class="btn">
                         <button class="button button-assertive">Details</button>

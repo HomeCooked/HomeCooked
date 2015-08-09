@@ -10,6 +10,7 @@
             </div>
 
             <p class="ingredients">Ingredients: {{::vm.dish.ingredients}}</p>
+
             <p>{{::vm.dish.specialIngredients}}</p>
         </div>
         <div class="list">
@@ -20,7 +21,8 @@
 
             <a class="item" ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.id})">
                 Reviews
-                <span class="item-note"><span>★ {{vm.dish.review_score || '-'}}/5</span> ({{vm.dish.review_count}} reviews)</span>
+                <reviews-rating class="item-note" score="{{::dish.review_score}}"
+                                count="{{::dish.review_count}}"></reviews-rating>
             </a>
 
             <a class="item">

@@ -4,8 +4,9 @@ var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
     'ionic.rating', 'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'ngImgCrop', 'google.places', 'angularMoment']);
 
-angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
+angular.module('HomeCooked.directives', []);
+angular.module('HomeCooked.controllers', ['HomeCooked.services', 'HomeCooked.directives']);
 
 HomeCooked
     .constant('_', window._) //lodash

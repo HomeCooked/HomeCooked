@@ -1,0 +1,12 @@
+reviews-rating {
+    display: inline-block;
+    ul.rating li {
+        display: inline;
+        border: 0px;
+        background: none;
+        padding: 2px;
+        i {
+            font-size: 16px;
+        }
+    }
+}
