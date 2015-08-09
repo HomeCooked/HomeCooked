@@ -148,12 +148,28 @@
             var indexed = _.indexBy(serviceDays, 'week_day');
             for (var d = 0; d < 7; d++) {
                 var day = indexed[d] || {week_day: d};
-                if (d > weekDay) {
+                if (d < weekDay) {
+                    day.week_day += 7;
+                }
+                else if (d === weekDay && isExpiredTime(day.end_minute)) {
                     day.week_day += 7;
                 }
                 indexed[d] = day;
             }
             return _.chain(indexed).values().sortBy('week_day').value();
+        }
+
+        function isExpiredTime(endMinute) {
+            if (!endMinute) {
+                return true;
+            }
+            var now = new Date(),
+                date = new Date(),
+                hours = Math.floor(endMinute / 60),
+                minutes = endMinute % 60;
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            return now >= date.getTime();
         }
 
         function getDate(time, minute) {
