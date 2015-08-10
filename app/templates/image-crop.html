@@ -6,7 +6,7 @@
                ng-change="picture='data:' + pictureData.filetype + ';base64,' + pictureData.base64;"/>
     </div>
     <div class="hc-crop-area" ng-if="picture.length">
-        <img-crop image="picture" result-image="cropped" change-on-fly="false" on-change="onCropChange($dataURI)"
+        <img-crop image="picture" result-image="cropped" change-on-fly="false" on-change="onCropChange($dataURI)" on-load-begin="onLoadBegin()" on-load-done="onLoadDone()" on-load-error="onLoadError()"
                   result-image-quality="1" area-type="square"></img-crop>
     </div>
 </div>
