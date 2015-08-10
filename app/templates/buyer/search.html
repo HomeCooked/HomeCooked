@@ -12,27 +12,29 @@
             <i class="icon" ng-class="{'ion-map': vm.isListVisible, 'ion-ios-list-outline': !vm.isListVisible}"></i>
         </button>
     </ion-nav-buttons>
-    <ion-pane has-header="true" ng-hide="vm.isListVisible">
-        <div class="map-container" data-tab-disable="true">
-            <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"></leaflet>
+    <ion-content overflow-scroll="true">
+        <div class="map-container" ng-hide="vm.isListVisible">
+            <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"
+                     data-tap-disabled="true"></leaflet>
         </div>
-    </ion-pane>
-    <ion-content ng-hide="!vm.isListVisible">
-        <p class="padding" align="center" ng-if="vm.chefs.length===0">
-            No items on sale.
-        </p>
-        <div class="list">
-            <div class="item item-thumbnail-left item-icon-right" ng-repeat="chef in vm.chefs"
-                 ui-sref="app.chef-preview({id:chef.id})">
-                <img ng-src="{{chef.picture}}">
+        <div ng-show="vm.isListVisible">
+            <p class="padding" align="center" ng-if="vm.chefs.length===0">
+                No items on sale.
+            </p>
 
-                <h2>{{chef.first_name}} {{chef.last_name}}</h2>
-                <span style="color:#F4C304; font-size: 90%">★ {{chef.rating}}</span>
-                <span style="font-size: 90%"> - {{chef.num_active_dishes}} items on sale</span>
-                <span style="font-size: 90%"> - {{chef.distance}}</span>
+            <div class="list">
+                <div class="item item-thumbnail-left item-icon-right" ng-repeat="chef in vm.chefs"
+                     ui-sref="app.chef-preview({id:chef.id})">
+                    <img ng-src="{{chef.picture}}">
 
-                <p>{{chef.bio}}</p>
-                <i class="icon ion-ios-arrow-forward"></i>
+                    <h2>{{chef.first_name}} {{chef.last_name}}</h2>
+                    <span style="color:#F4C304; font-size: 90%">★ {{chef.rating}}</span>
+                    <span style="font-size: 90%"> - {{chef.num_active_dishes}} items on sale</span>
+                    <span style="font-size: 90%"> - {{chef.distance}}</span>
+
+                    <p>{{chef.bio}}</p>
+                    <i class="icon ion-ios-arrow-forward"></i>
+                </div>
             </div>
         </div>
     </ion-content>
