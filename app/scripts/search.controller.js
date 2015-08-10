@@ -44,13 +44,14 @@
         function setChefs(chefs) {
             vm.chefs = chefs;
             updateChefsDistance();
-            displayMarkers();
+            displayMarkers(true);
         }
 
         function onLocationChange(location) {
+            var fit = !userLocation && !!location;
             userLocation = location;
             updateChefsDistance();
-            displayMarkers();
+            displayMarkers(fit);
         }
 
         function updateChefsDistance() {
@@ -59,7 +60,7 @@
             });
         }
 
-        function displayMarkers() {
+        function displayMarkers(fit) {
             var markers = _.chain(vm.chefs)
                 .filter(function(chef) {
                     return _.isObject(chef.location);
@@ -71,7 +72,9 @@
             }
             if (_.size(markers)) {
                 mapService.addMarkers(mapId, markers);
-                mapService.fitMarkers(mapId);
+                if (fit) {
+                    mapService.fitMarkers(mapId);
+                }
             }
         }
 
@@ -80,7 +83,7 @@
                 '<span class="badge">' + chef.num_active_dishes + '</span>';
 
             var onClickFn = function() {
-                goToPreview(parseInt(this.options.icon.options.id));
+                goToPreview(parseInt(chef.id));
             };
 
             return {

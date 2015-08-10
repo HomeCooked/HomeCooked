@@ -28,11 +28,17 @@
 
         function reloadUser() {
             if (user.isLoggedIn && user.id) {
-                return $http.get(baseUrl + 'users/' + user.id + '/').then(function(response) {
-                    setUser(response.data);
-                    CacheService.setValue({user: user});
-                    return user;
-                });
+                return $http.get(baseUrl + 'users/' + user.id + '/')
+                    .then(function(response) {
+                        setUser(response.data);
+                        CacheService.setValue({user: user});
+                        return user;
+                    })
+                    .catch(function(response) {
+                        if (response.status === 401) {
+                            logout();
+                        }
+                    });
             }
             return $q.when(user);
         }

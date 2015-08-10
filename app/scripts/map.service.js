@@ -5,9 +5,9 @@
         .module('HomeCooked.services')
         .service('mapService', MapService);
 
-    MapService.$inject = ['$window', '$timeout', 'leafletData'];
+    MapService.$inject = ['$window', 'leafletData'];
 
-    function MapService($window, $timeout, leafletData) {
+    function MapService($window, leafletData) {
 
         var featureGroups = []; // an array containing each leaflet map feature group
 
