@@ -59,15 +59,20 @@
       "locator": "https://github.com/Wizcorp/phonegap-facebook-plugin.git",
       "id": "com.phonegap.plugins.facebookconnect",
       "variables": {
-        "APP_ID": "123456789",
-        "APP_NAME": "myApplication"
+        "APP_ID": "805673482820123",
+        "APP_NAME": "HomeCooked"
       }
     },
     {
       "locator": "https://github.com/phonegap-build/PushPlugin.git",
       "id": "com.phonegap.plugins.PushPlugin"
     },
-    "cordova-plugin-geolocation"
+    "cordova-plugin-geolocation",
+    "org.apache.cordova.console",
+    "org.apache.cordova.device",
+    "org.apache.cordova.dialogs",
+    "org.apache.cordova.file",
+    "org.apache.cordova.media"
   ],
   "cordovaPlatforms": [
     "android",

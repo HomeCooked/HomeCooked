@@ -28,7 +28,7 @@
                 <div class="input-label">When will be available?</div>
                 <select name="start_time" ng-model="batch.start_time">
                     <option ng-repeat="time in startTimes" value="{{::time.start_time}}">{{::time.start_time |
-                        amDateFormat:'ddd, MMM D (h:mma'}} to {{::time.end_time | amDateFormat:'h:mma'}})
+                        amDateFormat:'ddd, MMM D (ha'}} to {{::time.end_time | amDateFormat:'ha'}})
                     </option>
                 </select>
                 <input type="hidden" ng-model="batch.start_time" required minlength="1">
