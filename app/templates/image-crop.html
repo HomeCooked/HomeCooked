@@ -1,0 +1,12 @@
+<div class="image-crop">
+    <div class="button button-positive button-clear button-block hc-button-upload">
+        {{pictureData ? 'Upload Another Image' : 'Upload Image'}}
+        <input type="file" name="picture" name="{{inputName}}" required accept="image/*" ng-model="pictureData"
+               base-sixty-four-input
+               ng-change="picture='data:' + pictureData.filetype + ';base64,' + pictureData.base64;"/>
+    </div>
+    <div class="hc-crop-area" ng-if="picture.length">
+        <img-crop image="picture" result-image="cropped" change-on-fly="false" on-change="onCropChange($dataURI)"
+                  result-image-quality="1" area-type="square"></img-crop>
+    </div>
+</div>

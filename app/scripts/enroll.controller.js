@@ -10,7 +10,6 @@
     function EnrollCtrl($state, $scope, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
         var vm = this;
         var user = LoginService.getUser();
-        vm.pictureCropped = '';
         vm.form = {
             first_name: user.first_name,
             last_name: user.last_name,
@@ -35,7 +34,6 @@
             if (!form.stripe) {
                 return;
             }
-            form.picture = form.picture.split(';base64,').pop();
             calculateAddress(form, form.address);
             LoginService.becomeChef(form)
                 .then(function() {

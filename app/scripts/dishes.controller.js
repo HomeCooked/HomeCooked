@@ -20,7 +20,6 @@
         $scope.$on('$destroy', onDestroy);
 
         function addDish(dish, form) {
-            dish.picture = dish.picture.base64;
             $ionicLoading.show({template: 'Adding dish...'});
             DishesService.addDish(dish)
                 .then(function added(dishes) {

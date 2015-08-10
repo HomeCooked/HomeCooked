@@ -6,15 +6,7 @@
     </ion-header-bar>
     <ion-content>
         <form novalidate class="list" name="dishForm">
-            <div class="hc-image-container">
-                <div class="button button-positive button-clear button-block hc-button-upload">
-                    {{dish.picture ? 'Upload Another Image' : 'Upload Image'}}
-                    <input type="file" name="picture" required accept="image/*" ng-model="dish.picture"
-                           base-sixty-four-input/>
-                </div>
-                <img ng-if="dish.picture" ng-src="data:{{dish.picture.filetype}};base64,{{dish.picture.base64}}"
-                     height="180">
-            </div>
+            <image-crop class="hc-image-container" input-name="picture" result="dish.picture"></image-crop>
             <label class="item item-input">
                 <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required/>
             </label>
@@ -22,6 +14,7 @@
         <textarea name="description" placeholder="Description" ng-model="dish.description" ng-minlength="2"
                   maxlength="160" required
                   class="hc-dish-description"></textarea>
+
                 <p class="hc-char-count subdued">{{dish.description.length || 0}}/160</p>
             </label>
             <label class="item item-input">
