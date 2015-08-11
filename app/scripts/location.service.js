@@ -2,8 +2,8 @@
 (function() {
     angular.module('HomeCooked.services').factory('LocationService', LocationService);
 
-    LocationService.$inject = ['$cordovaGeolocation'];
-    function LocationService($cordovaGeolocation) {
+    LocationService.$inject = ['$cordovaGeolocation', '$ionicPlatform'];
+    function LocationService($cordovaGeolocation, $ionicPlatform) {
         var location;
 
         var posOptions = {timeout: 10000, enableHighAccuracy: false};

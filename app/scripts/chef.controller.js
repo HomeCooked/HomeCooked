@@ -214,10 +214,6 @@
         }
 
         function openAddBatch() {
-            if (!LoginService.getUser().has_payment) {
-                HCModalHelper.showUpdatePayment();
-                return;
-            }
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-batch.html', {
                     scope: modalScope
