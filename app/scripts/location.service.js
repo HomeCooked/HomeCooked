@@ -5,19 +5,20 @@
     LocationService.$inject = ['$cordovaGeolocation', '$ionicPlatform'];
     function LocationService($cordovaGeolocation, $ionicPlatform) {
         var location;
-
         var posOptions = {timeout: 10000, enableHighAccuracy: false};
-        $cordovaGeolocation.getCurrentPosition(posOptions)
-            .then(onLocationSuccess, onLocationFail);
-
         var watchOptions = {
             frequency: 1000,
             timeout: 3000,
             enableHighAccuracy: false // may cause errors if true
         };
 
-        var watch = $cordovaGeolocation.watchPosition(watchOptions);
-        watch.then(null, onLocationFail, onLocationSuccess);
+        $ionicPlatform.ready(function() {
+            $cordovaGeolocation.getCurrentPosition(posOptions)
+                .then(onLocationSuccess, onLocationFail);
+
+            var watch = $cordovaGeolocation.watchPosition(watchOptions);
+            watch.then(null, onLocationFail, onLocationSuccess);
+        });
 
         return {
             getCurrentLocation: getCurrentLocation,
