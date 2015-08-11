@@ -18,7 +18,6 @@
             logout: logout,
             getUser: getUser,
             setUserZipCode: setUserZipCode,
-            setUserHasPaymentInfo: setUserHasPaymentInfo,
             saveUserData: saveUserData,
             becomeChef: becomeChef,
             getChefMode: getChefMode,
@@ -71,11 +70,6 @@
 
         function setUserZipCode(zipcode) {
             user.zipcode = zipcode;
-            CacheService.setValue({user: user});
-        }
-
-        function setUserHasPaymentInfo(hasPaymentInfo) {
-            user.has_payment = hasPaymentInfo;
             CacheService.setValue({user: user});
         }
 

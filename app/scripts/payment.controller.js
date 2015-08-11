@@ -30,9 +30,7 @@
             }
             else {
                 PaymentService.savePaymentInfo(result)
-                    .then(function() {
-                        LoginService.setUserHasPaymentInfo(true);
-                    })
+                    .then(LoginService.reloadUser)
                     .then(function() {
                         $window.history.back();
                         $ionicPopup.alert({

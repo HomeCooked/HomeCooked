@@ -41,11 +41,8 @@
             }
             else {
                 PaymentService.savePaymentInfo(result)
+                    .then(LoginService.reloadUser)
                     .then(function() {
-                        // TODO remove this
-                        LoginService.setUserHasPaymentInfo(true);
-                        LoginService.reloadUser();
-
                         var scope = modals['update-payment'];
                         scope.modal.remove();
 
