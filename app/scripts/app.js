@@ -147,7 +147,7 @@ HomeCooked
                 templateUrl: 'templates/zipcode/form.html',
                 controller: 'ZipCodeRestrictionCtrl as vm'
             })
-            .state('zipcode-unavailable/', {
+            .state('zipcode-unavailable', {
                 url: '/zipcode-unavailable/:zipcode',
                 templateUrl: 'templates/zipcode/unavailable.html',
                 controller: 'ZipCodeRestrictionCtrl as vm'
@@ -187,10 +187,10 @@ HomeCooked
     })
     .run(function($ionicPlatform, NotificationService, ENV) {
         $ionicPlatform.ready(function() {
-            if (window.cordova) {
+            if (window.cordova && window.facebookConnectPlugin) {
                 window.facebookConnectPlugin.browserInit(ENV.FACEBOOK_APP_ID, 'v2.2');
             }
-            else {
+            if (!window.cordova && window.openFB) {
                 window.openFB.init({
                     appId: ENV.FACEBOOK_APP_ID
                 });
