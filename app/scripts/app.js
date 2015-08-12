@@ -187,7 +187,7 @@ HomeCooked
     })
     .run(function($ionicPlatform, NotificationService, ENV) {
         $ionicPlatform.ready(function() {
-            if (window.cordova && window.facebookConnectPlugin) {
+            if (window.cordova && window.facebookConnectPlugin.browserInit) {
                 window.facebookConnectPlugin.browserInit(ENV.FACEBOOK_APP_ID, 'v2.2');
             }
             if (!window.cordova && window.openFB) {
