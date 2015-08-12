@@ -7,7 +7,7 @@
         var baseUrl = ENV.BASE_URL + '/api/v1/';
         var devices = {
             ios: {
-                url: 'apns',
+                url: 'apns/',
                 config: {
                     'badge': true,
                     'sound': true,
@@ -16,7 +16,7 @@
                 }
             },
             android: {
-                url: 'gcm',
+                url: 'gcm/',
                 config: {
                     'senderID': 'YOUR_GCM_PROJECT_ID' // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/43420598907
                 }
