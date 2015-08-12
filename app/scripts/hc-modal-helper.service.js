@@ -20,7 +20,7 @@
             modalScope.deferred = deferred;
             modalScope.showLoading = showLoading;
             modalScope.stripeCallback = stripeCallback;
-            modalScope.user = LoginService.getUser();
+            modalScope.user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
             $ionicModal.fromTemplateUrl('templates/update-payment.html', {
                 scope: modalScope
             }).then(function(modal) {
