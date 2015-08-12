@@ -14,9 +14,9 @@
 
                 <p>{{order.chef.distance}} away - pickup {{order.pickup_time | amCalendar}}</p>
 
-                <div class="map-container" style="height: 300px" data-tab-disable="true">
-                    <leaflet id="{{vm.getMapId(order)}}" defaults="vm.map.defaults" tiles="vm.map.tiles"
-                             center="order.center"></leaflet>
+                <div class="map-container" style="height: 300px; pointer-events: none">
+                    <leaflet id="{{::order.mapId}}" defaults="::vm.map.defaults" tiles="::vm.map.tiles"
+                             center="::order.center"></leaflet>
                 </div>
             </div>
             <div class="item item-avatar" ng-repeat="dish in order.dishes">

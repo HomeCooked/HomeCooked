@@ -34,12 +34,10 @@
          */
 
         function initMap(mapId) {
-
-            delete featureGroups[mapId];
+            var mapFeatureGroup = $window.L.featureGroup();
+            featureGroups[mapId] = mapFeatureGroup;
             leafletData.getMap(mapId).then(function(map) {
-                var mapFeatureGroup = $window.L.featureGroup();
                 mapFeatureGroup.addTo(map);
-                featureGroups[mapId] = mapFeatureGroup;
             });
         }
 
@@ -55,7 +53,7 @@
          */
 
         function fitMarkers(mapId) {
-            leafletData.getMap(mapId).then(function(map) {
+            return leafletData.getMap(mapId).then(function(map) {
                 map.fitBounds(featureGroups[mapId].getBounds().pad(0.2));
                 map.options.maxZoom = 18;
             });
@@ -69,12 +67,11 @@
          */
 
         function addMarkers(mapId, markers) {
-            leafletData.getMap(mapId).then(function() {
-                featureGroups[mapId].clearLayers();
-                for (var i = 0; i < markers.length; i++) {
-                    addMarker(mapId, markers[i]);
-                }
-            });
+            featureGroups[mapId].clearLayers();
+            for (var i = 0; i < markers.length; i++) {
+                addMarker(mapId, markers[i]);
+            }
+            featureGroups[mapId].bringToFront();
         }
 
         /**

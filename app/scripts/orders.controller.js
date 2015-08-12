@@ -5,10 +5,10 @@
     OrdersCtrl.$inject = ['$scope', '$ionicLoading', 'LocationService', 'OrdersService', 'HCMessaging', 'mapService', '_'];
     function OrdersCtrl($scope, $ionicLoading, LocationService, OrdersService, HCMessaging, mapService, _) {
         var vm = this,
-            userLocation;
+            userLocation,
+            MAP_COUNT = 0;
 
         vm.activeOrders = [];
-        vm.getMapId = getMapId;
         vm.notifyChef = notifyChef;
 
         vm.map = {
@@ -57,12 +57,13 @@
         function initMapProperties() {
             _.forEach(vm.activeOrders, function(order) {
                 order.center = {lat: order.chef.location.latitude, lng: order.chef.location.longitude, zoom: 14};
-                mapService.initMap(getMapId(order));
+                order.mapId = createMapId(order);
+                mapService.initMap(order.mapId);
             });
         }
 
-        function getMapId(order) {
-            return 'order-map-' + order.id;
+        function createMapId() {
+            return 'order-map-' + (MAP_COUNT++);
         }
 
         function onLocationChange(location) {
@@ -80,7 +81,7 @@
         function displayMarkers() {
             _.forEach(vm.activeOrders, function(order) {
                 var markers = [getChefMarker(order.chef)],
-                    mapId = getMapId(order);
+                    mapId = order.mapId;
                 if (userLocation) {
                     markers.push(getUserMarker(userLocation));
                 }
@@ -115,7 +116,7 @@
             };
         }
 
-        function notifyChef(order){
+        function notifyChef(order) {
             $ionicLoading.show();
             OrdersService.notifyReadyForPickup(order.id)
                 .then(function() {

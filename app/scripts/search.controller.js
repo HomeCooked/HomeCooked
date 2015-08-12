@@ -30,7 +30,7 @@
             //retrieve chefs
             getChefs({
                 latitude: vm.map.center.lat,
-                longitude: vm.map.center.lng,
+                longitude: vm.map.center.lng
             });
         }
 
