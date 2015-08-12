@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$cordovaMedia', '$http', 'CacheService', 'ENV', 'LoginService'];
-    function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $cordovaMedia, $http, CacheService, ENV, LoginService) {
+    NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService'];
+    function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService) {
         var baseUrl = ENV.BASE_URL + '/api/v1/';
         var devices = {
             ios: {
@@ -106,10 +106,7 @@
             // the notification when this code runs (weird).
             if (notification.foreground === '1') {
                 // Play custom audio if a sound specified.
-                if (notification.sound) {
-                    var mediaSrc = $cordovaMedia.newMedia(notification.sound);
-                    mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
-                }
+		//TODO
 
                 if (notification.body && notification.messageFrom) {
                     $cordovaDialogs.alert(notification.body, notification.messageFrom);
