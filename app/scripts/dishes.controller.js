@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'ChefService', 'LoginService', 'HCMessaging', 'HCModalHelper', '_'];
-    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, DishesService, ChefService, LoginService, HCMessaging, HCModalHelper, _) {
+    DishesCtrl.$inject = ['$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'LoginService', 'HCMessaging', 'HCModalHelper', '_'];
+    function DishesCtrl($rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, LoginService, HCMessaging, HCModalHelper, _) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -33,6 +33,20 @@
         }
 
         function deleteDish(dish) {
+            $ionicPopup.confirm({
+                title: dish.title,
+                template: 'Do you want to delete this dish?<br>You will loose all the reviews',
+                cancelText: 'No',
+                okText: 'Yes, Delete',
+                okType: 'button-assertive'
+            }).then(function(res) {
+                if (res) {
+                    doDeleteDish(dish);
+                }
+            });
+        }
+
+        function doDeleteDish(dish) {
             $ionicLoading.show({template: 'Deleting dish...'});
             DishesService.deleteDish(dish)
                 .then(function deleted() {

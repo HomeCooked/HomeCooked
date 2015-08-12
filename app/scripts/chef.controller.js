@@ -260,7 +260,7 @@
         function deleteBatch(batch) {
             $ionicPopup.confirm({
                 title: batch.dishName + ', ' + batch.quantity + ' portion(s)',
-                template: 'Do you want to delete this batch?',
+                template: 'Do you want to delete this item?',
                 cancelText: 'No',
                 okText: 'Yes, Delete',
                 okType: 'button-assertive'
