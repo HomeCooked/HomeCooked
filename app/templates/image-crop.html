@@ -3,10 +3,9 @@
         {{pictureData ? 'Upload Another Image' : 'Upload Image'}}
         <input type="file" name="picture" name="{{inputName}}" required accept="image/*" ng-model="pictureData"
                base-sixty-four-input
-               ng-change="picture='data:' + pictureData.filetype + ';base64,' + pictureData.base64;"/>
+               ng-change="cropPicture(pictureData)"/>
     </div>
-    <div class="hc-crop-area" ng-if="picture.length">
-        <img-crop image="picture" result-image="cropped" change-on-fly="false" on-change="onCropChange($dataURI)" on-load-begin="onLoadBegin()" on-load-done="onLoadDone()" on-load-error="onLoadError()"
-                  result-image-quality="1" area-type="square"></img-crop>
+    <div class="hc-crop-area" ng-if="cropped">
+        <img ng-src="{{cropped}}"/>
     </div>
 </div>

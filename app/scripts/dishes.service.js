@@ -32,6 +32,7 @@
         }
 
         function addDish(dish) {
+            dish.picture = dish.picture.split(';base64,').pop();
             return handleResponses($http.post(dishesUrl, dish)).then(getDishes);
         }
 

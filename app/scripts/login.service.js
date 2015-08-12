@@ -76,6 +76,7 @@
         function becomeChef(chefInfo) {
             chefInfo.user = user.id;
             chefInfo.phone_number = serializePhone(chefInfo.phone_number);
+            chefInfo.picture = chefInfo.picture.split(';base64,').pop();
 
             var deferred = $q.defer();
             $http.post(baseUrl + 'chefs/enroll/', chefInfo)
