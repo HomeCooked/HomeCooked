@@ -66,8 +66,7 @@
         }
 
         function checkTutorial() {
-            var chefId = LoginService.getUser().id;
-            ChefService.getChef(chefId)
+            ChefService.chefReady()
                 .then(function(chef) {
                     if (!chef.batches_tutorial_completed) {
                         HCModalHelper.showTutorial([{
@@ -92,7 +91,7 @@
                             image: 'images/chef3.jpg',
                             message: '<p>Cancelling before the delivery time results in negative ratings. Cancelling during or after pick-up time results in stronger penalties and potential exclusion.</p>'
                         }], function() {
-                            ChefService.setBatchesTutorialDone(chefId);
+                            ChefService.saveChefData({batches_tutorial_completed: true});
                         });
                     }
                 });

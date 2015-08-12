@@ -2,9 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').factory('HCModalHelper', HCModalHelper);
 
-    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService'];
+    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService', 'ChefService'];
 
-    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService) {
+    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService, ChefService) {
 
         var modals = {};
         return {
@@ -95,20 +95,24 @@
             var deferred = $q.defer();
             modals['update-phone'] = modalScope;
             modalScope.deferred = deferred;
-            modalScope.phone_number = LoginService.getUser().phone_number;
             modalScope.savePhone = savePhone;
+
+            var user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
+            modalScope.phone_number = user.phone_number;
+
             $ionicModal.fromTemplateUrl('templates/update-phone.html', {
                 scope: modalScope
             }).then(function(modal) {
-                modal.show();
                 modalScope.modal = modal;
+                modal.show();
             });
             return deferred.promise;
         }
 
         function savePhone(phone) {
             $ionicLoading.show();
-            LoginService.saveUserData({phone_number: phone}).then(function() {
+            var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
+            fn({phone_number: phone}).then(function() {
                 var scope = modals['update-phone'];
                 scope.modal.remove();
                 scope.deferred.resolve();

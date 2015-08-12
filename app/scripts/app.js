@@ -167,8 +167,8 @@ HomeCooked
             $state.go(nextState);
         });
     })
-    .run(function(LoginService, CacheService, HCModalHelper) {
-        LoginService.reloadUser();
+    .run(function(LoginService, ChefService, CacheService, HCModalHelper) {
+        LoginService.reloadUser().then(ChefService.reloadChef);
         if (!CacheService.getWelcomeTutorialComplete()) {
             HCModalHelper.showTutorial([{
                 title: 'An everyday option to food!',

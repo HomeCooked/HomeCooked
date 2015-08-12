@@ -88,7 +88,7 @@
         }
 
         function checkTutorial() {
-            ChefService.getChef(vm.chefId)
+            ChefService.chefReady()
                 .then(function(chef) {
                     if (!chef.dishes_tutorial_completed) {
                         HCModalHelper.showTutorial([{
@@ -100,7 +100,7 @@
                             image: 'images/chef2.jpg',
                             message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
                         }], function() {
-                            ChefService.setDishesTutorialDone(vm.chefId);
+                            ChefService.saveChefData({dishes_tutorial_completed: true});
                         });
                     }
                 });

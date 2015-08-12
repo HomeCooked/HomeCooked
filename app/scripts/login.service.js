@@ -28,11 +28,7 @@
         function reloadUser() {
             if (user.isLoggedIn && user.id) {
                 return $http.get(baseUrl + 'users/' + user.id + '/')
-                    .then(function(response) {
-                        setUser(response.data);
-                        CacheService.setValue({user: user});
-                        return user;
-                    })
+                    .then(handleUser)
                     .catch(function(response) {
                         if (response.status === 401) {
                             logout();
@@ -50,10 +46,7 @@
 
         function logout() {
             var zipcode = user.zipcode;
-            _.forEach(user, function(val, key) {
-                user[key] = undefined;
-                delete user[key];
-            });
+            setUser();
             user.zipcode = zipcode;
             CacheService.setValue({user: user});
         }
@@ -63,9 +56,16 @@
         }
 
         function setUser(newUser) {
-            newUser = newUser || {};
-            newUser.phone_number = deserializePhone(newUser.phone_number);
-            _.assign(user, newUser);
+            if (_.isEmpty(newUser)) {
+                _.forEach(user, function(val, key) {
+                    user[key] = undefined;
+                    delete user[key];
+                });
+            }
+            else {
+                newUser.phone_number = deserializePhone(newUser.phone_number);
+                _.assign(user, newUser);
+            }
         }
 
         function setUserZipCode(zipcode) {
@@ -151,7 +151,7 @@
 
         function saveUserData(data) {
             data.phone_number = serializePhone(data.phone_number);
-            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(reloadUser);
+            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(handleUser);
         }
 
         function getNotified(zipcode, email) {
@@ -173,6 +173,12 @@
                 return parseInt(phone, 10);
             }
             return phone;
+        }
+
+        function handleUser(response) {
+            setUser(response.data);
+            CacheService.setValue({user: user});
+            return user;
         }
     }
 })();

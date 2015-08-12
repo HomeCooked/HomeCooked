@@ -12,17 +12,14 @@
 
         $scope.$on('$ionicView.beforeEnter', function() {
             vm.modify = false;
-            ChefService.getChef(LoginService.getUser().id)
-                .then(function(info) {
-                    vm.chefInfo = info;
-                });
+            vm.chefInfo = ChefService.getChef();
         });
 
         function updateBio() {
             $ionicLoading.show({
                 template: 'Updating...'
             });
-            ChefService.setChefBio(vm.chefInfo.id, vm.chefInfo.bio)
+            ChefService.saveChefData({bio:vm.chefInfo.bio})
                 .then(function() {
                     vm.modify = false;
                     $ionicLoading.show({

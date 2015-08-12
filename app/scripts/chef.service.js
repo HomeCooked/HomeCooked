@@ -2,22 +2,29 @@
     'use strict';
     angular.module('HomeCooked.services').factory('ChefService', ChefService);
 
-    ChefService.$inject = ['$q', '$http', 'ENV'];
-    function ChefService($q, $http, ENV) {
-        var baseUrl = ENV.BASE_URL + '/api/v1/';
+    ChefService.$inject = ['$q', '$rootScope', '$http', 'ENV', 'CacheService', 'LoginService', '_'];
+    function ChefService($q, $rootScope, $http, ENV, CacheService, LoginService, _) {
+        var chef = {},
+            chefDeferred = $q.defer(),
+            baseUrl = ENV.BASE_URL + '/api/v1/';
+        setChef(CacheService.getValue('chef'));
+        $rootScope.$watch(function() {
+            return LoginService.getUser().is_chef;
+        }, reloadChef);
 
         return {
+            chefReady: chefReady,
+            reloadChef: reloadChef,
             getOrders: getOrders,
             getBatches: getBatches,
             addBatch: addBatch,
             deleteBatch: deleteBatch,
             getChefData: getChefData,
             getChef: getChef,
-            setChefBio: setChefBio,
+            getChefDetails: getChefDetails,
             cancelOrder: cancelOrder,
             notifyDelivered: notifyDelivered,
-            setDishesTutorialDone: setDishesTutorialDone,
-            setBatchesTutorialDone: setBatchesTutorialDone
+            saveChefData: saveChefData
         };
 
 
@@ -47,12 +54,16 @@
             return handleResponses($http.get(baseUrl + 'chefs/chef_config/'));
         }
 
-        function getChef(chefId, details) {
-            return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/' + (details ? 'get_chef_details/' : '')));
+        function getChef() {
+            return chef;
         }
 
-        function setChefBio(chefId, bio) {
-            return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
+        function chefReady() {
+            return chefDeferred.promise;
+        }
+
+        function getChefDetails(chefId) {
+            return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/get_chef_details/'));
         }
 
         function cancelOrder(orderId) {
@@ -63,16 +74,54 @@
             return handleResponses($http.post(baseUrl + 'chefs/notify_delivered_order/', {orderId: orderId}));
         }
 
-        function setDishesTutorialDone(chefId) {
-            return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {
-                dishes_tutorial_completed: true
-            }));
+        function saveChefData(data) {
+            data.phone_number = serializePhone(data.phone_number);
+            return handleResponses($http.patch(baseUrl + 'chefs/' + chef.id + '/', data)).then(handleChef);
         }
 
-        function setBatchesTutorialDone(chefId) {
-            return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {
-                batches_tutorial_completed: true
-            }));
+
+        function serializePhone(phone) {
+            if (phone && (phone + '').indexOf('1') !== 0) {
+                return '1' + phone;
+            }
+            return phone;
+        }
+
+        function deserializePhone(phone) {
+            if (typeof phone === 'string') {
+                return parseInt(phone, 10);
+            }
+            return phone;
+        }
+
+        function reloadChef() {
+            var user = LoginService.getUser();
+            if (!user.isLoggedIn || !user.is_chef) {
+                setChef();
+                CacheService.setValue({chef: chef});
+                return $q.when(chef);
+            }
+            return handleResponses($http.get(baseUrl + 'chefs/' + user.id + '/')).then(handleChef);
+        }
+
+        function handleChef(newChef){
+            setChef(newChef);
+            CacheService.setValue({chef: chef});
+            chefDeferred.resolve(chef);
+            return chef;
+        }
+
+        function setChef(newChef) {
+            if (_.isEmpty(newChef)) {
+                _.forEach(chef, function(val, key) {
+                    chef[key] = undefined;
+                    delete chef[key];
+                });
+            }
+            else {
+                newChef.phone_number = deserializePhone(newChef.phone_number);
+                _.assign(chef, newChef);
+            }
         }
     }
 })();

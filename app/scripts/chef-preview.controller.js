@@ -36,7 +36,7 @@
 
         function getChefDetails() {
             $ionicLoading.show();
-            return ChefService.getChef(vm.chefId, true)
+            return ChefService.getChefDetails(vm.chefId)
                 .then(function(chef) {
                     vm.chef = chef;
                     if ($stateParams.dishId) {

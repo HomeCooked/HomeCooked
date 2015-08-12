@@ -21,33 +21,20 @@
         vm.showUpdatePhone = showUpdatePhone;
 
         $scope.$on('$ionicView.beforeEnter', function() {
-            var user = LoginService.getUser();
-            if (user.is_chef && LoginService.getChefMode()) {
-                ChefService.getChef(user.id).then(function(chef) {
-                    vm.user = chef;
-                });
-            }
-            else {
-                vm.user = user;
-            }
+            vm.user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
         });
 
-        function updateUserProperties() {
+        function onSave() {
             if (vm.userPropertiesChanged) {
                 $ionicLoading.show();
-                LoginService.saveUserData({
-                    email: vm.user.email
+                var data = {email: vm.user.email};
+                var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
+                fn(data).then(function() {
+                    $state.go('app.settings');
                 })
-                    .then(function() {
-                        $state.go('app.settings');
-                    })
                     .catch(HCMessaging.showError)
                     .finally($ionicLoading.hide);
             }
-        }
-
-        function onSave() {
-            updateUserProperties();
         }
 
         function onChange() {
