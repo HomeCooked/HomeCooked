@@ -58,7 +58,6 @@
             return user.is_chef;
         }, init);
 
-
         function init() {
             vm.isUserLoggedIn = user.isLoggedIn === true;
             $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
