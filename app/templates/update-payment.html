@@ -9,7 +9,7 @@
             {{user.payment_info.card_type}} ending in {{user.payment_info.last_four}}, expiring on
             {{user.payment_info.exp_date}}</p>
 
-        <form class="list" stripe-form="stripeCallback" name="paymentForm">
+        <form class="list" name="paymentForm">
             <label class="item item-input">
                 <input type="text" ng-model="number" placeholder="Card Number"
                        payments-format="card" payments-validate="card" name="card" ng-minlength="1"/>
@@ -28,7 +28,7 @@
 
             <div class="item button-bar">
                 <button type="submit" class="button button-positive" ng-disabled="paymentForm.$invalid"
-                        ng-click="showLoading()">
+                        ng-click="updatePayment(paymentForm)">
                     Save
                     <i class="icon ion-ios-checkmark-empty"></i></button>
             </div>

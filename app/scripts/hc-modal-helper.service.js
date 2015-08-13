@@ -18,8 +18,7 @@
             var deferred = $q.defer();
             modals['update-payment'] = modalScope;
             modalScope.deferred = deferred;
-            modalScope.showLoading = showLoading;
-            modalScope.stripeCallback = stripeCallback;
+            modalScope.updatePayment = updatePayment;
             modalScope.user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
             $ionicModal.fromTemplateUrl('templates/update-payment.html', {
                 scope: modalScope
@@ -30,29 +29,23 @@
             return deferred.promise;
         }
 
-        function showLoading(msg) {
-            var params = msg ? {template: msg} : undefined;
-            $ionicLoading.show(params);
-        }
-
-        function stripeCallback(code, result) {
-            if (result.error) {
-                HCMessaging.showError(result.error);
-            }
-            else {
-                PaymentService.savePaymentInfo(result)
-                    .then(LoginService.reloadUser)
-                    .then(function() {
-                        var scope = modals['update-payment'];
-                        scope.modal.remove();
-
-                        scope.deferred.resolve();
-                        scope.$destroy();
-                        delete modals['update-payment'];
-                        $ionicLoading.show({template: 'Your payment information was saved!', duration: 3000});
-                    })
-                    .catch(HCMessaging.showError);
-            }
+        function updatePayment(paymentForm) {
+            var scope = modals['update-payment'];
+            $ionicLoading.show();
+            PaymentService.savePaymentInfo({
+                card: paymentForm.card.$modelValue,
+                cvc: paymentForm.cvc.$modelValue,
+                expiry: paymentForm.expiry.$modelValue
+            })
+                .then(LoginService.reloadUser)
+                .then(function() {
+                    scope.modal.remove();
+                    scope.deferred.resolve();
+                    scope.$destroy();
+                    delete modals['update-payment'];
+                    $ionicLoading.show({template: 'Your payment information was saved!', duration: 3000});
+                })
+                .catch(HCMessaging.showError);
         }
 
         function showTutorial(steps, onCompleteCb) {

@@ -2,7 +2,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
-    'ionic.rating', 'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'google.places', 'angularMoment', 'jrCrop']);
+    'ionic.rating', 'leaflet-directive', 'angularPayments', 'naif.base64', 'google.places', 'angularMoment', 'jrCrop']);
 
 angular.module('HomeCooked.services', []);
 angular.module('HomeCooked.directives', []);
@@ -13,11 +13,9 @@ HomeCooked
     .config(function($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
     })
-    .config(function($stateProvider, $urlRouterProvider, $compileProvider, ENV, stripeProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
-
-        stripeProvider.setPublishableKey(ENV.STRIPE_KEY);
 
         $stateProvider
             .state('app', {
