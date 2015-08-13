@@ -1,11 +1,14 @@
 <ion-view title="{{::vm.chef.first_name}} {{::vm.chef.last_name}}" class="buyer-search-preview" hide-nav-bar="true">
-    <ion-content has-bouncing="false" class="has-footer">
+    <ion-content has-bouncing="false" ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
         <div class="preview">
             <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
 
             <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
 
-            <p>{{vm.chef.distance}} away - <reviews-rating class="rating" score="{{::vm.chef.review_score}}" count="{{::vm.chef.review_count}}"></reviews-rating></p>
+            <p>{{vm.chef.distance}} away -
+                <reviews-rating class="rating" score="{{::vm.chef.review_score}}"
+                                count="{{::vm.chef.review_count}}"></reviews-rating>
+            </p>
             <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.back()">
             </button>
         </div>
@@ -37,9 +40,8 @@
             </div>
         </div>
     </ion-content>
-    <div class="bar bar-footer bar-dark button-bar">
-        <button class="button button-clear" ng-disabled="!vm.checkoutInfo.portions || !vm.checkoutInfo.portions.length"
-                ng-click="vm.checkout()">Checkout
-        </button>
+    <div class="bar bar-footer bar-positive button-bar"
+         ng-if="vm.checkoutInfo.portions && vm.checkoutInfo.portions.length">
+        <button class="button button-clear" ng-click="vm.checkout()">Checkout</button>
     </div>
 </ion-view>
