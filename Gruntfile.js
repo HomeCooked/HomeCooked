@@ -41,7 +41,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'development',
-            BASE_URL: 'http://localhost:8000',
+            BASE_URL: 'http://homecooked.herokuapp.com',
             CLIENT_ID: '111',
             FACEBOOK_APP_ID: '845407792180025',
             STRIPE_KEY: 'pk_test_mtSOdGkIRn82r80ymyrzOmmk'
