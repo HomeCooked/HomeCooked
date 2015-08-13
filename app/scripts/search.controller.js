@@ -17,6 +17,7 @@
         vm.query = '';
         vm.visible = false;
         vm.chefs = [];
+        vm.isListVisible = false;
 
         //init the map
         initMapProperties();
@@ -53,14 +54,22 @@
         function getChefs(location) {
             $ionicLoading.show();
             SearchService.getChefs(location)
-                .then(setChefs)
-                .finally($ionicLoading.hide);
+                .then(setChefs);
         }
 
         function setChefs(chefs) {
             vm.chefs = chefs;
             updateChefsDistance();
             displayMarkers(true);
+            if (!vm.isListVisible && _.isEmpty(chefs)) {
+                $ionicLoading.show({
+                    template: 'No chefs currently available',
+                    duration: 3000
+                });
+            }
+            else {
+                $ionicLoading.hide();
+            }
         }
 
         function onLocationChange(location) {
