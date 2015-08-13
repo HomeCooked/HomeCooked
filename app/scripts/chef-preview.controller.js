@@ -80,7 +80,7 @@
 
         function showUpdatePhone() {
             // us numbers are 10 & the +1 at the beginning make length = 11
-            if (user.phone_number && user.phone_number.toString().length > 10) {
+            if (user.phone_number && user.phone_number.length > 10) {
                 return $q.when();
             }
             $ionicLoading.show({

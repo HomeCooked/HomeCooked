@@ -10,18 +10,18 @@
         <a href ng-click="vm.showModal()">Add a new dish</a>
       </p>
 
-      <div class="item item-avatar item-button-right" ng-repeat="dish in vm.dishes">
+      <a class="item item-avatar item-button-right" ng-repeat="dish in vm.dishes" ui-sref="app.dish-review({id: vm.chefId, dishId: dish.id})">
         <img ng-src="{{dish.picture || 'images/logo.png'}}">
 
         <h2>{{dish.title}}</h2>
 
         <p>{{dish.description || '- no description for this dish -'}}</p>
         <p>{{dish.price}} $</p>
-        <a ui-sref="app.dish-preview({id: vm.chefId, dishId: dish.id})">{{::dish.rating || 0}}/5 ({{::dish.review_count || 0}} reviews)</a>
-        <button class="button button-clear button-stable" ng-click="vm.deleteDish(dish)">
+        <p>{{::dish.rating || 0}}/5 ({{::dish.review_count || 0}} reviews)</p>
+        <button class="button button-clear button-stable" ng-click="vm.deleteDish(dish, $event)">
           <i class="icon ion-trash-a"></i>
         </button>
-      </div>
+      </a>
     </ion-list>
   </ion-content>
 </ion-view>

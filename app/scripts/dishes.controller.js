@@ -32,7 +32,11 @@
                 .finally($ionicLoading.hide);
         }
 
-        function deleteDish(dish) {
+        function deleteDish(dish, $event) {
+            if ($event) {
+                $event.stopPropagation();
+                $event.preventDefault();
+            }
             $ionicPopup.confirm({
                 title: dish.title,
                 template: 'Do you want to delete this dish?<br>You will loose all the reviews',
