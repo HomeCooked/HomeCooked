@@ -1,8 +1,6 @@
 <ion-view title="Become a chef!" hide-back-button="true">
     <ion-content class="has-header">
-        <form novalidate class="list" name="enrollForm" stripe-form="stripeCallback">
-            <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
-
+        <form novalidate class="list" name="enrollForm">
             <image-crop class="hc-image-container" input-name="picture" result="vm.form.picture"></image-crop>
             <label class="item item-input item-floating-label">
                 <span class="input-label">First name</span>
@@ -40,18 +38,19 @@
                        ng-maxlength="50" ng-model="vm.form.address" g-places-autocomplete force-selection="true"/>
             </label>
 
-            <h4 class="padding">Payment information</h4>
+            <h4 class="padding-top padding-left">Payment information</h4>
+            <h6 class="padding-left">(so we can pay you!)</h6>
 
             <label class="item item-input item-floating-label">
                 <span class="input-label">Debit Card Number</span>
-                <input type="text" ng-model="number" placeholder="Debit Card Number" payments-format="card"
+                    <input type="text" ng-model="vm.form.card.number" placeholder="Debit Card Number" payments-format="card"
                        payments-validate="card" name="card"
                        ng-minlength="1"/>
             </label>
 
             <label class="item item-input item-floating-label">
                 <span class="input-label">Expiration</span>
-                <input type="text" ng-model="expiry" placeholder="Expiration" payments-format="expiry"
+                <input type="text" ng-model="vm.form.card.expiry" placeholder="Expiration" payments-format="expiry"
                        payments-validate="expiry" name="expiry"
                        ng-minlength="1" ng-class="{'invalid-input' : enrollForm.expiry
                         && enrollForm.expiry.$invalid}"/>
@@ -59,7 +58,7 @@
 
             <label class="item item-input item-floating-label">
                 <span class="input-label">CVC</span>
-                <input type="text" ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"
+                <input type="text" ng-model="vm.form.card.cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"
                        name="cvc"
                        ng-minlength="1"/>
             </label>
@@ -68,12 +67,12 @@
                 <span class="input-label">Cardholder's name (as it appears on card)</span>
                 <input type="text" name="cardholder_name" placeholder="Cardholder's name (as it appears on card)"
                        required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.cardholder_name">
+                       ng-maxlength="50" ng-model="vm.form.card.cardholder_name">
             </label>
 
-            <button type="submit" class="button button-positive button-block" ng-disabled="enrollForm.$invalid"
+            <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"
                     ng-click="vm.enroll(enrollForm)">Enroll
-            </button>
+            </div>
         </form>
     </ion-content>
 </ion-view>

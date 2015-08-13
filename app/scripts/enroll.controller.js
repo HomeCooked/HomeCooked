@@ -5,38 +5,24 @@
         .module('HomeCooked.controllers')
         .controller('EnrollCtrl', EnrollCtrl);
 
-    EnrollCtrl.$inject = ['$state', '$scope', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging'];
-
-    function EnrollCtrl($state, $scope, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
+    EnrollCtrl.$inject = ['$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging'];
+    function EnrollCtrl($state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
         var vm = this;
-        var user = LoginService.getUser();
-        vm.form = {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            phone_number: user.phone_number
-        };
-        resetCard();
 
+        vm.form = getEmptyForm();
         vm.enroll = enroll;
-        // crap needed by angular-payments
-        $scope.stripeCallback = stripeCallback;
 
         function enroll(formElement) {
             $ionicLoading.show({
                 template: 'Enrolling...'
             });
-            resetCard();
-            if(formElement){
-                formElement.$setPristine();
-            }
-            var form = vm.form;
-            if (!form.stripe) {
-                return;
-            }
-            calculateAddress(form, form.address);
-            LoginService.becomeChef(form)
+            calculateAddress(vm.form, vm.form.address);
+            LoginService.becomeChef(vm.form)
                 .then(function() {
+                    vm.form = getEmptyForm();
+                    if (formElement) {
+                        formElement.$setPristine();
+                    }
                     $ionicPopup.show({
                         title: 'You\'re enrolled!',
                         template: 'We\'ll reach out to you soon with further instructions.',
@@ -65,18 +51,15 @@
             }
         }
 
-        function resetCard(){
-            $scope.number = $scope.expiry = $scope.cvc = undefined;
-        }
-
-        function stripeCallback(code, result) {
-            if (result.error) {
-                HCMessaging.showError(result.error);
-            }
-            else {
-                vm.form.stripe = result;
-                enroll();
-            }
+        function getEmptyForm() {
+            var user = LoginService.getUser();
+            return {
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                phone_number: user.phone_number,
+                card: {}
+            };
         }
     }
 
