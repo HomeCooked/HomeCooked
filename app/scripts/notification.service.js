@@ -54,7 +54,7 @@
             if (user.isLoggedIn && device.token) {
                 loginWatcher();
                 // Success -- send deviceToken to server, and store for future use
-                $http.post(device.url + 'register/', {deviceToken: device.token}).then(function() {
+                $http.post(device.url + 'register/', {registration_id: device.token}).then(function() {
                     CacheService.setValue('device-token', device.token);
                 });
             }
