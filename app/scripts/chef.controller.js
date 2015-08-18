@@ -28,7 +28,6 @@
         function addBatch(batch, form) {
             batch.chef = LoginService.getUser().id;
             batch.is_active = true;
-            batch.start_time = batch.start_time.split('.').shift();
 
             $ionicLoading.show();
             ChefService.addBatch(batch)
