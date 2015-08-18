@@ -4,10 +4,9 @@
 
     NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService'];
     function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService) {
-        var baseUrl = ENV.BASE_URL + '/api/v1/';
         var devices = {
             ios: {
-                url: 'apns/',
+                url: ENV.BASE_URL + '/apns/v1/device/',
                 config: {
                     'badge': true,
                     'sound': true,
@@ -16,7 +15,7 @@
                 }
             },
             android: {
-                url: 'gcm/',
+                url: ENV.BASE_URL + '/gcm/v1/device/',
                 config: {
                     'senderID': 'YOUR_GCM_PROJECT_ID' // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/43420598907
                 }
@@ -55,7 +54,7 @@
             if (user.isLoggedIn && device.token) {
                 loginWatcher();
                 // Success -- send deviceToken to server, and store for future use
-                $http.post(baseUrl + 'device/' + device.url, {deviceToken: device.token}).then(function() {
+                $http.post(device.url + 'register/', {deviceToken: device.token}).then(function() {
                     CacheService.setValue('device-token', device.token);
                 });
             }
@@ -106,7 +105,7 @@
             // the notification when this code runs (weird).
             if (notification.foreground === '1') {
                 // Play custom audio if a sound specified.
-		//TODO
+                //TODO
 
                 if (notification.body && notification.messageFrom) {
                     $cordovaDialogs.alert(notification.body, notification.messageFrom);
