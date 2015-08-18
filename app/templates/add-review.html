@@ -6,13 +6,16 @@
     </ion-header-bar>
     <ion-content>
         <form novalidate class="list" name="reviewForm">
-            <label class="item item-input">
-                Score
-                <reviews-rating score="{{review.score}}" read-only="false"></reviews-rating>
-            </label>
-            <label class="item item-input">
-                <textarea ng-model="review.comment" placeholder="Comments" rows="4"></textarea>
-            </label>
+            <div class="item item-input item-stacked-label">
+                <label class="input-label">Score</label>
+                <div>
+                    <reviews-rating score="{{review.score}}" read-only="false"></reviews-rating>
+                </div>
+            </div>
+            <div class="item item-input item-stacked-label">
+                <label class="input-label">Comments</label>
+                <textarea ng-model="review.comment" placeholder="How was the food?" rows="4"></textarea>
+            </div>
 
             <div class="item button-bar">
                 <div class="button button-positive" ng-click="vm.addReview(review, reviewForm)"

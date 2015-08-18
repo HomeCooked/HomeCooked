@@ -13,11 +13,11 @@
             transclude: true,
             scope: {
                 score: '@',
-                rating: '@',
-                readOnly: '@'
+                rating: '@'
             },
             templateUrl: 'templates/reviews-rating.html',
-            link: function(scope, element) {
+            link: function(scope, element, attrs) {
+                scope.readOnly = scope.$eval(attrs.readOnly);
                 if (scope.readOnly !== false) {
                     element.addClass('read-only');
                 }
