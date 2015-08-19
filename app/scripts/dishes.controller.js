@@ -20,6 +20,7 @@
         $scope.$on('$destroy', onDestroy);
 
         function addDish(dish, form) {
+            document.activeElement.blur();
             $ionicLoading.show({template: 'Adding dish...'});
             DishesService.addDish(dish)
                 .then(function added(dishes) {

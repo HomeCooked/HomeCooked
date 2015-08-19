@@ -22,15 +22,16 @@
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Phone</span>
-                <input type="number" name="phone_number" placeholder="Phone" required ng-minlength="10"
+                <input type="tel" name="phone_number" placeholder="Phone" required ng-minlength="10"
                        ng-maxlength="11"
                        ng-model="vm.form.phone_number">
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Social Security Number</span>
-                <input type="text" name="ssn" placeholder="Social Security Number" required ng-minlength="9"
+                <input type="tel" name="ssn" placeholder="Social Security Number" required ng-minlength="9"
                        ng-maxlength="9"
                        ng-model="vm.form.ssn">
+                <label class="subdued">(we will perform background verification)</label>
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Address, city, zipcode</span>
@@ -39,13 +40,13 @@
             </label>
 
             <h4 class="padding-top padding-left">Payment information</h4>
-            <h6 class="padding-left">(so we can pay you!)</h6>
 
             <label class="item item-input item-floating-label">
                 <span class="input-label">Debit Card Number</span>
-                    <input type="tel" ng-model="vm.form.card.number" placeholder="Debit Card Number" payments-format="card"
+                <input type="tel" ng-model="vm.form.card.number" placeholder="Debit Card Number" payments-format="card"
                        payments-validate="card" name="card"
                        ng-minlength="1"/>
+                <label class="subdued">(so we can pay you!)</label>
             </label>
 
             <label class="item item-input item-floating-label">
@@ -58,7 +59,8 @@
 
             <label class="item item-input item-floating-label">
                 <span class="input-label">CVC</span>
-                <input type="tel" ng-model="vm.form.card.cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"
+                <input type="tel" ng-model="vm.form.card.cvc" placeholder="CVC" payments-format="cvc"
+                       payments-validate="cvc"
                        name="cvc"
                        ng-minlength="1"/>
             </label>
@@ -71,7 +73,7 @@
             </label>
 
             <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"
-                    ng-click="vm.enroll(enrollForm)">Enroll
+                 ng-click="vm.enroll(enrollForm)">Enroll
             </div>
         </form>
     </ion-content>

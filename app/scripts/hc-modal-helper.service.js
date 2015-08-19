@@ -30,6 +30,7 @@
         }
 
         function updatePayment(paymentForm) {
+            document.activeElement.blur();
             var scope = modals['update-payment'];
             $ionicLoading.show();
             PaymentService.savePaymentInfo({
@@ -103,6 +104,7 @@
         }
 
         function savePhone(phone) {
+            document.activeElement.blur();
             $ionicLoading.show();
             var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
             fn({phone_number: phone}).then(function() {

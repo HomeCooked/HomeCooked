@@ -13,7 +13,7 @@
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Portions (max {{vm.maxQuantity}})</span>
-                <input name="quantity" ng-model="batch.quantity" type="number" pattern="[0-9]*" value="batch.quantity"
+                <input name="quantity" ng-model="batch.quantity" type="tel" pattern="[0-9]*" value="batch.quantity"
                        required
                        placeholder="Portions (max {{vm.maxQuantity}})" ng-minlength="1" min="1" max="{{vm.maxQuantity}}"
                        ng-change="batch.quantity = vm.adjustRange(batch.quantity, 1, vm.maxQuantity)"/>
@@ -39,7 +39,7 @@
             </label>-->
             <label class="item item-input item-floating-label">
                 <span class="input-label">Estimated preparation time (minutes)</span>
-                <input name="prep_time" ng-model="batch.prep_time" type="number" pattern="[0-9]*" required
+                <input name="prep_time" ng-model="batch.prep_time" type="tel" pattern="[0-9]*" required
                        ng-minlength="1" placeholder="Estimated preparation time (minutes)"/>
             </label>
 

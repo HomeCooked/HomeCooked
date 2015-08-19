@@ -20,6 +20,9 @@
             link: function(scope) {
                 scope.pictureData = undefined;
                 scope.cropped = undefined;
+                scope.blur = function() {
+                    document.activeElement.blur();
+                };
                 scope.cropPicture = function(pictureData) {
                     if (!pictureData) {
                         return;

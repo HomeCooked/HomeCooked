@@ -13,6 +13,8 @@
         vm.enroll = enroll;
 
         function enroll(formElement) {
+            document.activeElement.blur();
+
             $ionicLoading.show({
                 template: 'Enrolling...'
             });
