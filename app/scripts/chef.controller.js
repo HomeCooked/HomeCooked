@@ -26,7 +26,8 @@
         $scope.$on('$destroy', onDestroy);
 
         function addBatch(batch, form) {
-            batch.chef = LoginService.getUser().id;
+            document.activeElement.blur();
+            batch.chef = ChefService.getChef().id;
             batch.is_active = true;
 
             $ionicLoading.show();
@@ -257,8 +258,12 @@
         }
 
         function deleteBatch(batch) {
+            var title = batch.dish.title;
+            if (batch.quantity) {
+                title += ', ' + batch.quantity + ' portion' + (batch.quantity === 1 ? '' : 's');
+            }
             $ionicPopup.confirm({
-                title: batch.dishName + ', ' + batch.quantity + ' portion(s)',
+                title: title,
                 template: 'Do you want to delete this item?',
                 cancelText: 'No',
                 okText: 'Yes, Delete',

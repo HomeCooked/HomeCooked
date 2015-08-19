@@ -3,7 +3,7 @@
         {{pictureData ? 'Upload Another Image' : 'Upload Image'}}
         <input type="file" name="picture" name="{{inputName}}" required accept="image/*" ng-model="pictureData"
                base-sixty-four-input
-               ng-change="cropPicture(pictureData)"/>
+               ng-change="cropPicture(pictureData)" ng-click="blur()"/>
     </div>
     <div class="hc-crop-area" ng-if="cropped">
         <img ng-src="{{cropped}}"/>

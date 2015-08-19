@@ -23,7 +23,7 @@
                        required/>
             </label>
             <label class="item item-input">
-                <input name="price" ng-model="dish.price" placeholder="Price (USD)" type="number" pattern="[0-9.]*"
+                <input name="price" ng-model="dish.price" placeholder="Price (USD)" type="tel" pattern="[0-9.]*"
                        min="0.1" max="200"
                        value="price"
                        required ng-minlength="1" ng-change="dish.price = dish.price < 0 ? 0 : dish.price"/>

@@ -6,7 +6,7 @@
     function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService) {
         var devices = {
             ios: {
-                url: ENV.BASE_URL + '/api/v1/device/apns/',
+                url: ENV.BASE_URL + '/apns/v1/device/',
                 config: {
                     'badge': true,
                     'sound': true,
@@ -15,9 +15,9 @@
                 }
             },
             android: {
-                url: ENV.BASE_URL + '/api/v1/device/gcm/',
+                url: ENV.BASE_URL + '/gcm/v1/device/',
                 config: {
-                    'senderID': '510294279480' // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/43420598907
+                    'senderID': 'homecooked-1027'
                 }
             }
         };
@@ -40,8 +40,10 @@
                 return;
             }
             var device = getDevice();
+            console.log('register start');
             $cordovaPush.register(device.config)
                 .then(function(deviceToken) {
+                    console.log('register success ' + deviceToken);
                     if (window.ionic.Platform.isIOS()) {
                         device.token = deviceToken;
                         handleToken();
@@ -53,8 +55,10 @@
             var device = getDevice();
             if (user.isLoggedIn && device.token) {
                 loginWatcher();
+                console.log('handleToken start');
                 // Success -- send deviceToken to server, and store for future use
                 $http.post(device.url + 'register/', {registration_id: device.token}).then(function() {
+                    console.log('handleToken success');
                     CacheService.setValue('device-token', device.token);
                 });
             }

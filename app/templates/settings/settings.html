@@ -26,7 +26,8 @@
             Billing information
         </div>
         <a class="item item-icon-right" ng-click="vm.showUpdatePayment()">
-            Payment method
+            Payment Info
+            <span class="item-note" ng-if="!vm.user.has_payment">None</span>
             <span class="item-note" ng-if="vm.user.has_payment">{{vm.user.payment_info.card_type}} ending in {{vm.user.payment_info.last_four}}</span>
             <i class="icon ion-ios-arrow-right"></i>
         </a>

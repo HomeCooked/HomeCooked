@@ -27,13 +27,7 @@
 
         function reloadUser() {
             if (user.isLoggedIn && user.id) {
-                return $http.get(baseUrl + 'users/' + user.id + '/')
-                    .then(handleUser)
-                    .catch(function(response) {
-                        if (response.status === 401) {
-                            logout();
-                        }
-                    });
+                return $http.get(baseUrl + 'users/' + user.id + '/').then(handleUser);
             }
             return $q.when(user);
         }
