@@ -4,23 +4,23 @@
 
     NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService'];
     function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService) {
-        var devices = {
-            ios: {
-                url: ENV.BASE_URL + '/apns/v1/device/',
-                config: {
-                    'badge': true,
-                    'sound': true,
-                    'alert': true,
-                    'ecb': 'onNotificationAPN'
-                }
-            },
-            android: {
-                url: ENV.BASE_URL + '/gcm/v1/device/',
-                config: {
-                    'senderID': 'homecooked-1027'
-                }
-            }
-        };
+       var devices = {
+           ios: {
+               url: ENV.BASE_URL + '/api/v1/device/apns/',
+               config: {
+                   'badge': true,
+                   'sound': true,
+                   'alert': true,
+                   'ecb': 'onNotificationAPN'
+               }
+           },
+           android: {
+               url: ENV.BASE_URL + '/api/v1/device/gcm/',
+               config: {
+                   'senderID': '510294279480' // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/43420598907
+               }
+           }
+       };
         var user = LoginService.getUser();
 
         var loginWatcher = $rootScope.$watch(function() {
