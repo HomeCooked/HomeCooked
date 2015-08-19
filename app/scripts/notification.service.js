@@ -40,8 +40,10 @@
                 return;
             }
             var device = getDevice();
+            console.log('register start');
             $cordovaPush.register(device.config)
                 .then(function(deviceToken) {
+                    console.log('register success ' + deviceToken);
                     if (window.ionic.Platform.isIOS()) {
                         device.token = deviceToken;
                         handleToken();
@@ -53,8 +55,10 @@
             var device = getDevice();
             if (user.isLoggedIn && device.token) {
                 loginWatcher();
+                console.log('handleToken start');
                 // Success -- send deviceToken to server, and store for future use
                 $http.post(device.url + 'register/', {registration_id: device.token}).then(function() {
+                    console.log('handleToken success');
                     CacheService.setValue('device-token', device.token);
                 });
             }
