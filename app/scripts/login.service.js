@@ -152,10 +152,6 @@
 
         function saveUserData(data) {
             data.phone_number = serializePhone(data.phone_number);
-            var url = baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/';
-            if (data.email && chefMode) {
-                url += 'update_email/';
-            }
             return $http.patch(url, data).then(handleUser);
         }
 
