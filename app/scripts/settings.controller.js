@@ -20,8 +20,10 @@
         vm.showUpdatePayment = showUpdatePayment;
         vm.showUpdatePhone = showUpdatePhone;
 
-        $scope.$on('$ionicView.beforeEnter', function() {
-            vm.user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
+        $scope.$watch(function() {
+            return LoginService.getChefMode();
+        }, function(chefMode) {
+            vm.user = chefMode ? ChefService.getChef() : LoginService.getUser();
         });
 
         function onSave() {

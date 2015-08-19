@@ -29,10 +29,6 @@
             name: 'My Orders',
             path: 'app.orders'
         }];
-        var becomeChefLink = {
-            name: 'Become a chef!',
-            path: 'app.enroll'
-        };
 
         // will be same instance during all the session
         var user = LoginService.getUser();
@@ -64,11 +60,6 @@
             vm.userFirstName = user.first_name || '';
             vm.isChef = user.is_chef;
             vm.hasPendingReviews = user.has_pending_reviews;
-
-            _.remove(buyerLinks, becomeChefLink);
-            if (!vm.isChef) {
-                buyerLinks.push(becomeChefLink);
-            }
             updateStateIfNeeded($state.current);
         }
 
@@ -99,7 +90,7 @@
             var path = state.name;
             var correctPath = getCorrectPath(path);
             if (path !== correctPath) {
-                $state.go(correctPath);
+                go(correctPath);
                 return true;
             }
 
@@ -127,8 +118,13 @@
         }
 
         function switchView() {
-            var path = vm.chefMode ? chefLinks[0].path : buyerLinks[0].path;
-            go(path);
+            vm.chefMode = !vm.chefMode;
+            LoginService.setChefMode(vm.chefMode);
+            if ($state.current.name !== 'app.settings') {
+                _.delay(function() {
+                    go(vm.chefMode ? chefLinks[0].path : buyerLinks[0].path);
+                }, 300);
+            }
         }
 
         function go(path) {
