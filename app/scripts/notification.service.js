@@ -17,7 +17,7 @@
             android: {
                 url: ENV.BASE_URL + '/gcm/v1/device/',
                 config: {
-                    'senderID': 'YOUR_GCM_PROJECT_ID' // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/43420598907
+                    'senderID': 'homecooked-1027'
                 }
             }
         };
