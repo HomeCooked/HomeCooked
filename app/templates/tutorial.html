@@ -1,12 +1,11 @@
 <div class="modal dishes-tutorial">
-    <ion-header-bar>
-        <h1 class="title">{{steps[step].title}}</h1>
-    </ion-header-bar>
     <ion-content delegate-handle="tutorialContent">
+        <h1 class="title">{{steps[step].title}}</h1>
         <div class="instructions">
+
             <img ng-src="{{steps[step].image}}" />
 
-            <div ng-bind-html="steps[step].message"></div>
+            <div class="message" ng-bind-html="steps[step].message"></div>
 
             <div class="button button-block button-positive icon-right" ng-class="step===(steps.length-1) ? 'ion-ios-checkmark-empty' : 'ion-chevron-right'" ng-click="next()">
                 <span ng-if="step<steps.length-1">Next</span>

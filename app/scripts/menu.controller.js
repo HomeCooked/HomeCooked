@@ -128,7 +128,7 @@
 
         function switchView() {
             var path = vm.chefMode ? chefLinks[0].path : buyerLinks[0].path;
-            vm.go(path);
+            go(path);
         }
 
         function go(path) {
