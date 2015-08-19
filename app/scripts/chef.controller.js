@@ -258,8 +258,12 @@
         }
 
         function deleteBatch(batch) {
+            var title = batch.dish.title;
+            if (batch.quantity) {
+                title += ', ' + batch.quantity + ' portion' + (batch.quantity === 1 ? '' : 's');
+            }
             $ionicPopup.confirm({
-                title: batch.dish.title + ', ' + batch.quantity + ' portion(s)',
+                title: title,
                 template: 'Do you want to delete this item?',
                 cancelText: 'No',
                 okText: 'Yes, Delete',

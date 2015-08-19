@@ -45,7 +45,7 @@
 
             <div class="item button-bar">
                 <div class="button button-positive" ng-click="vm.addBatch(batch, batchForm)"
-                     ng-disabled="batchForm.$invalid">Add
+                     ng-disabled="batchForm.$invalid || !batch.start_time">Add
                 </div>
             </div>
         </form>
