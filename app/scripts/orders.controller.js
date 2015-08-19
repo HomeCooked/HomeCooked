@@ -125,8 +125,7 @@
                         duration: 2000
                     });
                 })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                .catch(HCMessaging.showError);
         }
     }
 })();
