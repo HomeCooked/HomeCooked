@@ -16,6 +16,12 @@ angular.module('HomeCooked.services')
                         $rootScope.$emit('unauthorized');
                     }
                     return response || $q.when(response);
+                },
+                responseError: function(rejection) {
+                    if (rejection.status === 401) {
+                        $rootScope.$emit('unauthorized');
+                    }
+                    return $q.reject(rejection);
                 }
             };
         }]
