@@ -111,11 +111,11 @@
                     if (!chef.dishes_tutorial_completed) {
                         HCModalHelper.showTutorial([{
                             title: 'Build your own menu',
-                            image: 'images/chef1.jpg',
+                            image: 'images/chef8.jpg',
                             message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>Use this section to describe your meals and make your customers want more!</p>'
                         }, {
                             title: 'Before you start',
-                            image: 'images/chef2.jpg',
+                            image: 'images/chef8.jpg',
                             message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
                         }], function() {
                             ChefService.saveChefData({dishes_tutorial_completed: true});

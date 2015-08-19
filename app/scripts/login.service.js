@@ -152,7 +152,7 @@
 
         function saveUserData(data) {
             data.phone_number = serializePhone(data.phone_number);
-            return $http.patch(url, data).then(handleUser);
+            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(handleUser);
         }
 
         function getNotified(zipcode, email) {
