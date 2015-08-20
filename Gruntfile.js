@@ -41,6 +41,7 @@ module.exports = function(grunt) {
                 constants: {
                     ENV: {
                         name: 'development',
+                        version: '0.0.8',
                         BASE_URL: 'http://homecooked.herokuapp.com',
                         CLIENT_ID: '111',
                         FACEBOOK_APP_ID: '845407792180025'
@@ -51,6 +52,7 @@ module.exports = function(grunt) {
                 constants: {
                     ENV: {
                         name: 'production',
+                        version: '0.0.8',
                         BASE_URL: 'http://homecooked.herokuapp.com',
                         CLIENT_ID: '111',
                         FACEBOOK_APP_ID: '805673482820123'

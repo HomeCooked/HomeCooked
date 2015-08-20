@@ -6,12 +6,13 @@
         .controller('SettingsCtrl', SettingsCtrl);
 
     SettingsCtrl.$inject = ['$window', '$scope', '$state', '$ionicPlatform',
-        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService', 'ChefService', 'HCMessaging', 'HCModalHelper'];
+        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService', 'ChefService', 'HCMessaging', 'HCModalHelper', 'ENV'];
 
     function SettingsCtrl($window, $scope, $state, $ionicPlatform,
-                          $ionicPopup, $ionicLoading, $ionicHistory, LoginService, ChefService, HCMessaging, HCModalHelper) {
+                          $ionicPopup, $ionicLoading, $ionicHistory, LoginService, ChefService, HCMessaging, HCModalHelper, ENV) {
 
         var vm = this;
+        vm.version = ENV.version;
         vm.onChange = onChange;
         vm.onSave = onSave;
         vm.openExternalLink = openExternalLink;
