@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging', '_'];
-    function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService, HCMessaging, _) {
+    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging', '_'];
+    function NotificationService($log, $rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService, HCMessaging, _) {
         var devices = {
             ios: {
                 url: ENV.BASE_URL + '/api/v1/device/apns/',
@@ -32,18 +32,20 @@
         $rootScope.$on('$cordovaPush:notificationReceived', handleNotification);
 
         return {
+            isRegistered: isRegistered,
             register: register
         };
 
+        function isRegistered() {
+            return !!CacheService.getValue('device-token');
+        }
+
         function register() {
-            if (getCurrentDeviceToken()) {
-                return;
-            }
             var device = getDevice();
-            console.log('register start');
+            $log.info('register start');
             $cordovaPush.register(device.config)
                 .then(function(deviceToken) {
-                    console.log('register success ' + deviceToken);
+                    $log.info('register success ' + deviceToken);
                     if (window.ionic.Platform.isIOS()) {
                         device.token = deviceToken;
                         handleToken();
@@ -55,10 +57,10 @@
             var device = getDevice();
             if (user.isLoggedIn && device.token) {
                 loginWatcher();
-                console.log('handleToken start');
+                $log.info('handleToken start');
                 // Success -- send deviceToken to server, and store for future use
                 $http.post(device.url, {registration_id: device.token}).then(function() {
-                    console.log('handleToken success');
+                    $log.info('handleToken success');
                     CacheService.setValue({'device-token': device.token});
                 }, function(err) {
                     // if we sent already
@@ -86,15 +88,11 @@
             return devices[platform] || {};
         }
 
-        function getCurrentDeviceToken() {
-            return CacheService.getValue('device-token');
-        }
-
         // Android Notification Received Handler
         function handleAndroid(notification) {
             // ** NOTE: ** You could add code for when app is in foreground or not, or coming from coldstart here too
             //             via the console fields as shown.
-            console.log('In foreground ' + notification.foreground + ' Coldstart ' + notification.coldstart);
+            $log.info('In foreground ' + notification.foreground + ' Coldstart ' + notification.coldstart);
             if (notification.event === 'registered') {
                 devices.android.token = notification.regid;
                 handleToken();

@@ -165,9 +165,14 @@ HomeCooked
             $state.go(nextState);
         });
     })
-    .run(function($ionicPlatform, ENV, NotificationService, LoginService, ChefService) {
-        LoginService.reloadUser().then(ChefService.reloadChef);
+    .run(function($log, $ionicPlatform, ENV, NotificationService, LoginService, ChefService) {
+        reloadUserInfos();
         $ionicPlatform.ready(function() {
+            $ionicPlatform.on('resume', function(event) {
+                $log.info('app resume event', event);
+                reloadUserInfos();
+            });
+
             if (window.cordova && window.facebookConnectPlugin.browserInit) {
                 window.facebookConnectPlugin.browserInit(ENV.FACEBOOK_APP_ID, 'v2.2');
             }
@@ -184,9 +189,12 @@ HomeCooked
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            if (window.cordova) {
+            if (!NotificationService.isRegistered() && window.cordova) {
                 NotificationService.register();
             }
-
         });
+
+        function reloadUserInfos() {
+            LoginService.reloadUser().then(ChefService.reloadChef);
+        }
     });
