@@ -2,25 +2,25 @@
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService'];
-    function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService) {
-       var devices = {
-           ios: {
-               url: ENV.BASE_URL + '/api/v1/device/apns/',
-               config: {
-                   'badge': true,
-                   'sound': true,
-                   'alert': true,
-                   'ecb': 'onNotificationAPN'
-               }
-           },
-           android: {
-               url: ENV.BASE_URL + '/api/v1/device/gcm/',
-               config: {
-                   'senderID': '510294279480' // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/43420598907
-               }
-           }
-       };
+    NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging'];
+    function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService, HCMessaging) {
+        var devices = {
+            ios: {
+                url: ENV.BASE_URL + '/api/v1/device/apns/',
+                config: {
+                    'badge': true,
+                    'sound': true,
+                    'alert': true,
+                    'ecb': 'onNotificationAPN'
+                }
+            },
+            android: {
+                url: ENV.BASE_URL + '/api/v1/device/gcm/',
+                config: {
+                    'senderID': '510294279480' // REPLACE THIS WITH YOURS FROM GCM CONSOLE - also in the project URL like: https://console.developers.google.com/project/43420598907
+                }
+            }
+        };
         var user = LoginService.getUser();
 
         var loginWatcher = $rootScope.$watch(function() {
@@ -57,10 +57,10 @@
                 loginWatcher();
                 console.log('handleToken start');
                 // Success -- send deviceToken to server, and store for future use
-                $http.post(device.url + 'register/', {registration_id: device.token}).then(function() {
+                $http.post(device.url, {registration_id: device.token}).then(function() {
                     console.log('handleToken success');
-                    CacheService.setValue('device-token', device.token);
-                });
+                    CacheService.setValue({'device-token': device.token});
+                }, HCMessaging.showError);
             }
         }
 
