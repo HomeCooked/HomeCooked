@@ -119,6 +119,7 @@
 
         function switchView() {
             vm.chefMode = !vm.chefMode;
+            vm.links = vm.chefMode ? chefLinks : buyerLinks;
             LoginService.setChefMode(vm.chefMode);
             if ($state.current.name !== 'app.settings') {
                 _.delay(function() {
