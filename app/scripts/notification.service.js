@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging'];
-    function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService, HCMessaging) {
+    NotificationService.$inject = ['$rootScope', '$cordovaPush', '$cordovaDialogs', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging', '_'];
+    function NotificationService($rootScope, $cordovaPush, $cordovaDialogs, $http, CacheService, ENV, LoginService, HCMessaging, _) {
         var devices = {
             ios: {
                 url: ENV.BASE_URL + '/api/v1/device/apns/',
@@ -60,7 +60,15 @@
                 $http.post(device.url, {registration_id: device.token}).then(function() {
                     console.log('handleToken success');
                     CacheService.setValue({'device-token': device.token});
-                }, HCMessaging.showError);
+                }, function(err) {
+                    // if we sent already
+                    if (_.get(err, 'data.registration_id[0]') === 'This field must be unique.') {
+                        CacheService.setValue({'device-token': device.token});
+                    }
+                    else {
+                        HCMessaging.showError('Error registering the device', 'We cannot send you push notifications :(');
+                    }
+                });
             }
         }
 

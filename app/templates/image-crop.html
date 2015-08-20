@@ -1,9 +1,9 @@
 <div class="image-crop">
-    <div class="button button-positive button-clear button-block hc-button-upload">
+    <div class="button button-positive button-clear button-block hc-button-upload" ng-click="takePicture()">
         {{pictureData ? 'Upload Another Image' : 'Upload Image'}}
-        <input type="file" name="picture" name="{{inputName}}" required accept="image/*" ng-model="pictureData"
+        <input ng-if="!isMobile" type="file" name="picture" name="{{inputName}}" required accept="image/*" ng-model="pictureData"
                base-sixty-four-input
-               ng-change="cropPicture(pictureData)" ng-click="blur()"/>
+               ng-change="cropPicture(pictureData)"/>
     </div>
     <div class="hc-crop-area" ng-if="cropped">
         <img ng-src="{{cropped}}"/>

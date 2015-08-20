@@ -72,7 +72,11 @@
     "org.apache.cordova.device",
     "org.apache.cordova.dialogs",
     "org.apache.cordova.file",
-    "org.apache.cordova.inappbrowser"
+    "org.apache.cordova.inappbrowser",
+    {
+      "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
+      "id": "cordova-plugin-camera"
+    }
   ],
   "cordovaPlatforms": [
     "android",
