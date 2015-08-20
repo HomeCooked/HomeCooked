@@ -43,9 +43,8 @@
         function onChange() {
             vm.userPropertiesChanged = true;
         }
-
         function openRatingLink() {
-            var link = $ionicPlatform.is('android') ? 'market://details?id=' : 'itms://itunes.apple.com/app/';
+            var link = $ionicPlatform.is('android') ? 'market://details?id=com.homecooked.app' : 'itms://itunes.apple.com/app/homecooked/id1027256050';
             return openExternalLink(link);
         }
 
