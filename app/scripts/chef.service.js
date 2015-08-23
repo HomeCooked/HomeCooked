@@ -88,10 +88,11 @@
         }
 
         function deserializePhone(phone) {
-            if (typeof phone === 'string') {
-                return parseInt(phone, 10);
+            var res = parseInt(phone, 10);
+            if (isNaN(res)) {
+                return '';
             }
-            return phone;
+            return res;
         }
 
         function reloadChef() {
@@ -104,7 +105,7 @@
             return handleResponses($http.get(baseUrl + 'chefs/' + user.id + '/')).then(handleChef);
         }
 
-        function handleChef(newChef){
+        function handleChef(newChef) {
             setChef(newChef);
             CacheService.setValue({chef: chef});
             chefDeferred.resolve(chef);
