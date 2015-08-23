@@ -13,20 +13,25 @@
 
         var chefLinks = [{
             name: 'My Dishes',
+            icon: 'ion-pizza',
             path: 'app.dishes'
         }, {
             name: 'For Sale',
+            icon: 'ion-social-usd',
             path: 'app.seller'
         }, {
             name: 'Edit Bio',
+            icon: 'ion-person',
             path: 'app.bio'
         }];
 
         var buyerLinks = [{
             name: 'Find local chefs',
+            icon: 'ion-ios-location',
             path: 'app.buyer'
         }, {
             name: 'My Orders',
+            icon: 'ion-ios-cart',
             path: 'app.orders'
         }];
 

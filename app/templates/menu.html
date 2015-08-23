@@ -18,12 +18,17 @@
                ng-if="menuVm.isUserLoggedIn"></a>
         </ion-header-bar>
         <ion-content>
-            <a class="button button-block button-positive button-clear" ng-repeat="link in menuVm.links"
-               nav-clear menu-close ng-click="menuVm.go(link.path)">{{::link.name}}</a>
+            <div class="list">
+                <a class="item item-icon-left dark" ng-repeat="link in menuVm.links"
+                   nav-clear menu-close ng-click="menuVm.go(link.path)">
+                    <i class="icon {{::link.icon}}"></i>
+                    {{::link.name}}</a>
 
-            <a nav-clear class="button button-block button-positive button-clear"
-               ng-click="menuVm.showUpdatePayment()">Payment Info</a>
-
+                <a nav-clear class="item item-icon-left dark"
+                   ng-click="menuVm.showUpdatePayment()">
+                    <i class="icon ion-card"></i>
+                    Payment</a>
+            </div>
             <a ng-if="!menuVm.isChef" nav-clear menu-close class="button button-block button-positive button-clear"
                style="margin-top: 40px"
                ng-click="menuVm.go('app.enroll')">Become a chef!</a>
