@@ -54,7 +54,7 @@
             if (!vm.isListVisible && _.isEmpty(chefs)) {
                 $ionicLoading.show({
                     template: 'No chefs currently available',
-                    duration: 3000
+                    duration: 1500
                 });
             }
             else {
