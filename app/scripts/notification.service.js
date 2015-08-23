@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', 'ENV', 'LoginService', 'HCMessaging', '_'];
-    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, ENV, LoginService, HCMessaging, _) {
+    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging'];
+    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, CacheService, ENV, LoginService, HCMessaging) {
         var devices = {
             ios: {
                 url: ENV.BASE_URL + '/api/v1/device/apns/',
@@ -52,15 +52,16 @@
             var device = getDevice();
             if (user.isLoggedIn && device.token) {
                 loginWatcher();
+                if (CacheService.getValue('device-token') === device.token) {
+                    return;
+                }
                 $log.info('handleToken start');
                 // Success -- send deviceToken to server, and store for future use
                 $http.post(device.url, {registration_id: device.token}).then(function() {
                     $log.info('handleToken success');
-                }, function(err) {
-                    // if we sent already
-                    if (!_.get(err, 'data.registration_id[0]') === 'This field must be unique.') {
-                        HCMessaging.showError('Error registering the device', 'We cannot send you push notifications :(');
-                    }
+                    CacheService.setValue({'device-token': device.token});
+                }, function() {
+                    HCMessaging.showError('Error registering the device', 'We cannot send you push notifications :(');
                 });
             }
         }
