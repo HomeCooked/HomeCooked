@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading', 'mapService', 'SearchService', 'LocationService', 'CacheService', 'HCModalHelper', 'HCMessaging', '_'];
+    SearchCtrl.$inject = ['$q', '$state', '$scope', '$ionicLoading', 'mapService', 'SearchService', 'LocationService', 'CacheService', 'HCModalHelper', 'HCMessaging', '_'];
 
-    function SearchCtrl($state, $scope, $ionicLoading, mapService, SearchService, LocationService, CacheService, HCModalHelper, HCMessaging, _) {
+    function SearchCtrl($q, $state, $scope, $ionicLoading, mapService, SearchService, LocationService, CacheService, HCModalHelper, HCMessaging, _) {
 
         var mapId = 'chefmap';
         var userLocation = null;
@@ -28,27 +28,16 @@
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
 
         function onBeforeEnter() {
-            //retrieve chefs
-            getChefs({
-                latitude: vm.map.center.lat,
-                longitude: vm.map.center.lng
-            });
-
+            var promise = $q.when();
             if (!CacheService.getWelcomeTutorialComplete()) {
-                HCModalHelper.showTutorial([{
-                    title: 'An everyday option to food!',
-                    image: 'images/welcome1.jpg',
-                    message: '<p>Find the best amateur chefs in your neighborhood and pick-up their delicious, affordable home cooked meals minutes after they come out of the oven.</p>'
-                }, {
-                    title: 'Fresh ingredients, talented cooks',
-                    image: 'images/welcome2.jpg',
-                    message: '<p>Our amateur chefs go through a rigorous testing process and abide to strict safety guidelines. Your ratings and reviews showcase the best of the best.</p>'
-                }, {
-                    title: 'Ready when you are',
-                    image: 'images/welcome5.jpg',
-                    message: '<p>Select a nearby chef and choose the best time to pick up your hot dinner.</p>'
-                }], CacheService.setWelcomeTutorialComplete);
+                promise = HCModalHelper.showTutorial('welcome').then(CacheService.setWelcomeTutorialComplete);
             }
+            promise.finally(function() {
+                getChefs({
+                    latitude: vm.map.center.lat,
+                    longitude: vm.map.center.lng
+                });
+            });
         }
 
         function getChefs(location) {

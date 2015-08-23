@@ -7,10 +7,59 @@
     function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService, ChefService) {
 
         var modals = {};
+
+        var tutorials = {
+            'welcome': [{
+                title: 'An everyday option to food!',
+                image: 'images/welcome1.jpg',
+                message: '<p>Find the best amateur chefs in your neighborhood and pick-up their delicious, affordable home cooked meals minutes after they come out of the oven.</p>'
+            }, {
+                title: 'Fresh ingredients, talented cooks',
+                image: 'images/welcome2.jpg',
+                message: '<p>Our amateur chefs go through a rigorous testing process and abide to strict safety guidelines. Your ratings and reviews showcase the best of the best.</p>'
+            }, {
+                title: 'Ready when you are',
+                image: 'images/welcome5.jpg',
+                message: '<p>Select a nearby chef and choose the best time to pick up your hot dinner.</p>'
+            }],
+            'dishes': [{
+                title: 'Build your own menu',
+                image: 'images/chef8.jpg',
+                message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>Use this section to describe your meals and make your customers want more!</p>'
+            }, {
+                title: 'Before you start',
+                image: 'images/chef8.jpg',
+                message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
+            }],
+            'batches': [{
+                title: 'Ready to cook?',
+                image: 'images/chef5.jpg',
+                message: '<p>This is the part where you post your meal, and cook on your schedule! Select the meal, quantity, and pickup time, and see the orders trickling in.</p>'
+            }, {
+                title: 'Easy payment',
+                image: 'images/chef5.jpg',
+                message: '<p>Payment is automatic and goes directly to your account, even if the buyer doesn\'t show up.</p>' +
+                '<p>For each dish, we will take an average commission of $1, which includes all bank and transaction fees</p>'
+            }, {
+                title: 'Simple end-to-end',
+                image: 'images/chef5.jpg',
+                message: '<p>First: you select the meal, quantity and time of pick-up<br>Second: you watch orders tickling in<br>Third: we notify you when the buyer arrives for pickup!</p>'
+            }, {
+                title: 'Plan ahead!',
+                image: 'images/chef5.jpg',
+                message: '<p>We recommend to post your meals several days ahead of the due date, to collect maximum orders</p>'
+            }, {
+                title: 'Cancellation Policy',
+                image: 'images/chef5.jpg',
+                message: '<p>Cancelling before the delivery time results in negative ratings. Cancelling during or after pick-up time results in stronger penalties and potential exclusion.</p>'
+            }]
+        };
+
         return {
             showUpdatePayment: showUpdatePayment,
             showTutorial: showTutorial,
-            showUpdatePhoneNumber: showUpdatePhoneNumber
+            showUpdatePhoneNumber: showUpdatePhoneNumber,
+            showSignup: showSignup
         };
 
         function showUpdatePayment() {
@@ -19,6 +68,7 @@
             modals['update-payment'] = modalScope;
             modalScope.deferred = deferred;
             modalScope.updatePayment = updatePayment;
+            modalScope.closeModal = closeModal;
             modalScope.user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
             $ionicModal.fromTemplateUrl('templates/update-payment.html', {
                 scope: modalScope
@@ -31,7 +81,6 @@
 
         function updatePayment(paymentForm) {
             document.activeElement.blur();
-            var scope = modals['update-payment'];
             $ionicLoading.show();
             PaymentService.savePaymentInfo({
                 card: paymentForm.card.$modelValue,
@@ -40,46 +89,46 @@
             })
                 .then(LoginService.reloadUser)
                 .then(function() {
-                    scope.modal.remove();
+                    var scope = closeModal('update-payment');
                     scope.deferred.resolve();
-                    scope.$destroy();
-                    delete modals['update-payment'];
                     $ionicLoading.show({template: 'Your payment information was saved!', duration: 3000});
                 })
                 .catch(HCMessaging.showError);
         }
 
-        function showTutorial(steps, onCompleteCb) {
+        function showTutorial(tutorialId) {
             var tutorialScope = $rootScope.$new();
             modals['tutorial'] = tutorialScope;
-            tutorialScope.steps = steps;
+            var deferred = $q.defer();
+            tutorialScope.deferred = deferred;
+            tutorialScope.steps = tutorials[tutorialId];
             tutorialScope.step = 0;
-            tutorialScope.next = function next() {
-                if (tutorialScope.step === tutorialScope.steps.length - 1) {
-                    modals['tutorial'].modal.remove();
-                    modals['tutorial'].$destroy();
-                    delete modals['tutorial'];
-                    if (typeof onCompleteCb === 'function') {
-                        onCompleteCb();
-                    }
-                }
-                else {
-                    scrollTop();
-                    tutorialScope.step++;
-                }
-            };
+            tutorialScope.next = next;
             $ionicModal.fromTemplateUrl('templates/tutorial.html', {
                 scope: tutorialScope
             }).then(function(m) {
                 m.show();
                 tutorialScope.modal = m;
             });
+            return deferred.promise;
         }
 
-        function scrollTop() {
+        function next() {
+            var scope = modals['tutorial'];
+            if (scope.step === scope.steps.length - 1) {
+                closeModal('tutorial');
+                scope.deferred.resolve();
+            }
+            else {
+                scrollTop('tutorialContent');
+                scope.step++;
+            }
+        }
+
+        function scrollTop(sId) {
             // TODO use $getByHandle once fixed in ionic
             var handle = _.find($ionicScrollDelegate._instances, function(s) {
-                return s.$$delegateHandle === 'tutorialContent';
+                return s.$$delegateHandle === sId;
             });
             handle.scrollTop();
         }
@@ -90,6 +139,7 @@
             modals['update-phone'] = modalScope;
             modalScope.deferred = deferred;
             modalScope.savePhone = savePhone;
+            modalScope.closeModal = closeModal;
 
             var user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
             modalScope.phone_number = user.phone_number;
@@ -108,14 +158,46 @@
             $ionicLoading.show();
             var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
             fn({phone_number: phone}).then(function() {
-                var scope = modals['update-phone'];
-                scope.modal.remove();
+                var scope = closeModal('update-phone');
                 scope.deferred.resolve();
-                scope.$destroy();
-                delete modals['update-phone'];
                 $ionicLoading.show({template: 'Your phone information was saved!', duration: 3000});
             })
                 .catch(HCMessaging.showError);
+        }
+
+        function showSignup() {
+            var modalScope = $rootScope.$new();
+            var deferred = $q.defer();
+            modals['signup'] = modalScope;
+            modalScope.deferred = deferred;
+            modalScope.closeModal = closeModal;
+            modalScope.signIn = signIn;
+
+            $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
+                animation: 'slide-in-up',
+                scope: modalScope
+            }).then(function(modal) {
+                modalScope.modal = modal;
+                modal.show();
+            });
+            return deferred.promise;
+        }
+
+        function signIn(loginType, user, pass) {
+            $ionicLoading.show();
+            LoginService.login(loginType, user, pass).then(function didLogin() {
+                $ionicLoading.hide();
+                var scope = closeModal('signup');
+                scope.deferred.resolve();
+            }, HCMessaging.showError);
+        }
+
+        function closeModal(scopeName) {
+            var scope = modals[scopeName];
+            scope.modal.remove();
+            scope.$destroy();
+            delete modals[scopeName];
+            return scope;
         }
     }
 

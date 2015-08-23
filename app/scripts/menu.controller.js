@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', '$ionicSideMenuDelegate', 'LoginService', 'HCModalHelper', '_'];
+    MenuCtrl.$inject = ['$scope', '$state', '$ionicHistory', '$ionicSideMenuDelegate', 'LoginService', 'HCModalHelper', '_'];
 
-    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, $ionicSideMenuDelegate, LoginService, HCModalHelper, _) {
+    function MenuCtrl($scope, $state, $ionicHistory, $ionicSideMenuDelegate, LoginService, HCModalHelper, _) {
 
         var vm = this;
 
@@ -141,26 +141,7 @@
         }
 
         function login() {
-            if (!vm.modal) {
-                var modalScope = $rootScope.$new();
-                $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
-                    animation: 'slide-in-up',
-                    scope: modalScope
-                }).then(function(modal) {
-                    vm.modal = modal;
-                    vm.modal.show();
-                });
-                modalScope.closeModal = function() {
-                    vm.modal.hide();
-                    init();
-                };
-                $scope.$on('$destroy', function() {
-                    vm.modal.remove();
-                });
-            }
-            else {
-                vm.modal.show();
-            }
+            HCModalHelper.showSignup();
         }
     }
 })();

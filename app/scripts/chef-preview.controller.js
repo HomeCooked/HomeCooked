@@ -164,7 +164,7 @@
         }
 
         function signin() {
-            LoginService.login('facebook');
+            HCModalHelper.showSignup();
         }
 
         function back() {

@@ -1,8 +1,8 @@
-<ion-modal-view class="signup-page" ng-controller="SignupCtrl as vm">
+<ion-modal-view class="signup-page">
     <ion-header-bar align-title="center" class="bar-stable">
         <h1 class="title">Sign in</h1>
         <div class="buttons">
-            <button class="button button-clear" ng-click="closeModal()">
+            <button class="button button-clear" ng-click="closeModal('signup')">
                 Close
             </button>
         </div>
@@ -12,7 +12,7 @@
             Use Facebook to securely access your account.
         </p>
         <div class="signup-btns">
-            <a class="btn" title="" ng-click="vm.signIn('facebook')">
+            <a class="btn" title="" ng-click="signIn('facebook')">
                 <div class="btn-icon">
                     <i class="icon ion-social-facebook"></i>
                 </div>
