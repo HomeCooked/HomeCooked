@@ -59,6 +59,7 @@
             showUpdatePayment: showUpdatePayment,
             showTutorial: showTutorial,
             showUpdatePhoneNumber: showUpdatePhoneNumber,
+            showUpdateEmail: showUpdateEmail,
             showSignup: showSignup
         };
 
@@ -163,6 +164,36 @@
                 $ionicLoading.show({template: 'Your phone information was saved!', duration: 3000});
             })
                 .catch(HCMessaging.showError);
+        }
+
+        function showUpdateEmail() {
+            var modalScope = $rootScope.$new();
+            var deferred = $q.defer();
+            modals['update-email'] = modalScope;
+            modalScope.deferred = deferred;
+            modalScope.saveEmail = saveEmail;
+            modalScope.closeModal = closeModal;
+
+            var user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
+            modalScope.email = user.email;
+
+            $ionicModal.fromTemplateUrl('templates/update-email.html', {
+                scope: modalScope
+            }).then(function(modal) {
+                modalScope.modal = modal;
+                modal.show();
+            });
+            return deferred.promise;
+        }
+
+        function saveEmail(email) {
+            $ionicLoading.show();
+            var data = {email: email};
+            var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
+            fn(data).then(function() {
+                var scope = closeModal('update-email');
+                scope.deferred.resolve();
+            }).catch(HCMessaging.showError).finally($ionicLoading.hide);
         }
 
         function showSignup() {

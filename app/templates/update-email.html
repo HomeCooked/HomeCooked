@@ -1,0 +1,23 @@
+<div class="modal">
+    <ion-header-bar>
+        <h1 class="title">Edit Email</h1>
+        <div class="button button-clear" ng-click="closeModal('update-email')">Cancel</div>
+    </ion-header-bar>
+    <ion-content>
+        <form class="list" name="emailForm">
+            <label class="item item-input">
+                <i class="icon ion-email placeholder-icon"></i>
+                <input type="email" pattern="[^ @]*@[^ @]*" placeholder="Email Address" ng-model="email" required
+                       ng-minlength="5"/>
+            </label>
+
+            <div class="item button-bar">
+                <button type="submit" class="button button-positive" ng-disabled="emailForm.$invalid"
+                        ng-click="saveEmail(email)">
+                    Save
+                    <i class="icon ion-ios-checkmark-empty"></i></button>
+            </div>
+        </form>
+    </ion-content>
+</div>
+
