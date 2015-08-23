@@ -189,7 +189,7 @@ HomeCooked
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            if (!NotificationService.isRegistered() && window.cordova) {
+            if (window.cordova) {
                 NotificationService.register();
             }
         });

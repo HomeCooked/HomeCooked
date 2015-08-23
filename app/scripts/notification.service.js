@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging', '_'];
-    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, CacheService, ENV, LoginService, HCMessaging, _) {
+    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', 'ENV', 'LoginService', 'HCMessaging', '_'];
+    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, ENV, LoginService, HCMessaging, _) {
         var devices = {
             ios: {
                 url: ENV.BASE_URL + '/api/v1/device/apns/',
@@ -32,13 +32,8 @@
         $rootScope.$on('$cordovaPush:notificationReceived', handleNotification);
 
         return {
-            isRegistered: isRegistered,
             register: register
         };
-
-        function isRegistered() {
-            return !!CacheService.getValue('device-token');
-        }
 
         function register() {
             var device = getDevice();
@@ -61,13 +56,9 @@
                 // Success -- send deviceToken to server, and store for future use
                 $http.post(device.url, {registration_id: device.token}).then(function() {
                     $log.info('handleToken success');
-                    CacheService.setValue({'device-token': device.token});
                 }, function(err) {
                     // if we sent already
-                    if (_.get(err, 'data.registration_id[0]') === 'This field must be unique.') {
-                        CacheService.setValue({'device-token': device.token});
-                    }
-                    else {
+                    if (!_.get(err, 'data.registration_id[0]') === 'This field must be unique.') {
                         HCMessaging.showError('Error registering the device', 'We cannot send you push notifications :(');
                     }
                 });
