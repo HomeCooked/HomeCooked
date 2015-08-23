@@ -128,7 +128,7 @@
 
                 if (notification.badge) {
                     $cordovaPush.setBadgeNumber(notification.badge);
-                }g
+                }
             }
         }
 
