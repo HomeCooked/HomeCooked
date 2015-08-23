@@ -98,9 +98,7 @@
                 handleToken();
             }
             else if (notification.event === 'message') {
-                if (notification.redirect) {
-                    go(notification.redirect);
-                }
+                redirectIfNeeded(notification);
                 HCMessaging.showMessage('', notification.message);
             }
             else if (notification.event === 'error') {
@@ -116,9 +114,7 @@
             // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
             // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
             // the notification when this code runs (weird).
-            if (notification.redirect) {
-                go(notification.redirect);
-            }
+            redirectIfNeeded(notification);
             if (notification.foreground === '1') {
                 // Play custom audio if a sound specified.
                 //TODO
@@ -129,6 +125,12 @@
                 if (notification.badge) {
                     $cordovaPush.setBadgeNumber(notification.badge);
                 }
+            }
+        }
+
+        function redirectIfNeeded(notification) {
+            if (notification.redirect_url) {
+                go(notification.redirect_url);
             }
         }
 
