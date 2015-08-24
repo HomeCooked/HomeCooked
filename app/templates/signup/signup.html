@@ -1,6 +1,7 @@
 <ion-modal-view class="signup-page">
     <ion-header-bar align-title="center" class="bar-stable">
-        <h1 class="title">Sign in</h1>
+        <h1 class="title">Sign up</h1>
+
         <div class="buttons">
             <button class="button button-clear" ng-click="closeModal('signup')">
                 Close
@@ -8,18 +9,10 @@
         </div>
     </ion-header-bar>
     <ion-content>
-        <p class="text">
-            Use Facebook to securely access your account.
+        <p class="padding">
+            <span>Use Facebook to securely access your account.</span><br/>
+            <a class="button button-positive button-clear icon-left ion-social-facebook" ng-click="signIn('facebook')">Connect
+                with Facebook</a>
         </p>
-        <div class="signup-btns">
-            <a class="btn" title="" ng-click="signIn('facebook')">
-                <div class="btn-icon">
-                    <i class="icon ion-social-facebook"></i>
-                </div>
-                <div class="btn-text fb-btn-text">
-                    Connect with <span class="bold">Facebook</span>
-                </div>
-            </a>
-        </div>
     </ion-content>
 </ion-modal-view>
