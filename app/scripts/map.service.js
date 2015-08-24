@@ -54,8 +54,7 @@
 
         function fitMarkers(mapId) {
             return leafletData.getMap(mapId).then(function(map) {
-                map.fitBounds(featureGroups[mapId].getBounds().pad(0.2));
-                map.options.maxZoom = 18;
+                map.fitBounds(featureGroups[mapId].getBounds(), {padding: [20, 20], maxZoom: 13});
             });
         }
 

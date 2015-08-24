@@ -28,11 +28,11 @@
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
 
         function onBeforeEnter() {
-            var promise = $q.when();
+            var tutorialPromise = $q.when();
             if (!CacheService.getWelcomeTutorialComplete()) {
-                promise = HCModalHelper.showTutorial('welcome').then(CacheService.setWelcomeTutorialComplete);
+                tutorialPromise = HCModalHelper.showTutorial('welcome').then(CacheService.setWelcomeTutorialComplete);
             }
-            promise.finally(function() {
+            tutorialPromise.finally(function() {
                 getChefs({
                     latitude: vm.map.center.lat,
                     longitude: vm.map.center.lng
