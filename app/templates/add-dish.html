@@ -6,7 +6,8 @@
     </ion-header-bar>
     <ion-content>
         <form novalidate class="list" name="dishForm">
-            <image-crop class="hc-image-container" input-name="picture" result="dish.picture" aspect-ratio="0.60"></image-crop>
+            <image-crop class="hc-image-container" input-name="picture" result="dish.picture"
+                        aspect-ratio="0.60"></image-crop>
             <label class="item item-input">
                 <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required/>
             </label>
@@ -23,7 +24,7 @@
                        required/>
             </label>
             <label class="item item-input">
-                <input name="price" ng-model="dish.price" placeholder="Price (USD)" type="tel" pattern="[0-9.]*"
+                <input name="price" ng-model="dish.price" placeholder="Price (USD)" type="text" pattern="\d+(\.\d{2})?"
                        min="0.1" max="200"
                        value="price"
                        required ng-minlength="1" ng-change="dish.price = dish.price < 0 ? 0 : dish.price"/>

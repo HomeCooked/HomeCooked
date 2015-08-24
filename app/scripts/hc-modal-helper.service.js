@@ -2,9 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').factory('HCModalHelper', HCModalHelper);
 
-    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicScrollDelegate', 'HCMessaging', 'PaymentService', 'LoginService', 'ChefService'];
+    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', 'HCMessaging', 'PaymentService', 'LoginService', 'ChefService'];
 
-    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, $ionicScrollDelegate, HCMessaging, PaymentService, LoginService, ChefService) {
+    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, HCMessaging, PaymentService, LoginService, ChefService) {
 
         var modals = {};
 
@@ -98,40 +98,24 @@
         }
 
         function showTutorial(tutorialId) {
-            var tutorialScope = $rootScope.$new();
-            modals['tutorial'] = tutorialScope;
+            var modalScope = $rootScope.$new();
+            modals['tutorial'] = modalScope;
             var deferred = $q.defer();
-            tutorialScope.deferred = deferred;
-            tutorialScope.steps = tutorials[tutorialId];
-            tutorialScope.step = 0;
-            tutorialScope.next = next;
+            modalScope.deferred = deferred;
+            modalScope.steps = tutorials[tutorialId];
+            modalScope.tutorialDone = tutorialDone;
             $ionicModal.fromTemplateUrl('templates/tutorial.html', {
-                scope: tutorialScope
-            }).then(function(m) {
-                m.show();
-                tutorialScope.modal = m;
+                scope: modalScope
+            }).then(function(modal) {
+                modal.show();
+                modalScope.modal = modal;
             });
             return deferred.promise;
         }
 
-        function next() {
-            var scope = modals['tutorial'];
-            if (scope.step === scope.steps.length - 1) {
-                closeModal('tutorial');
-                scope.deferred.resolve();
-            }
-            else {
-                scrollTop('tutorialContent');
-                scope.step++;
-            }
-        }
-
-        function scrollTop(sId) {
-            // TODO use $getByHandle once fixed in ionic
-            var handle = _.find($ionicScrollDelegate._instances, function(s) {
-                return s.$$delegateHandle === sId;
-            });
-            handle.scrollTop();
+        function tutorialDone() {
+            var scope = closeModal('tutorial');
+            scope.deferred.resolve();
         }
 
         function showUpdatePhoneNumber() {
