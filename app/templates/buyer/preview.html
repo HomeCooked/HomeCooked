@@ -1,5 +1,6 @@
 <ion-view title="{{::vm.chef.first_name}} {{::vm.chef.last_name}}" class="buyer-search-preview" hide-nav-bar="true">
-    <ion-content has-bouncing="false" ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
+    <ion-content has-bouncing="false"
+                 ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
         <div class="preview">
             <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
 
@@ -31,7 +32,9 @@
                     <reviews-rating score="{{::dish.review_score}}" count="{{::dish.review_count}}"></reviews-rating>
                     <div class="title">
                         <span>{{::dish.title}}</span><br/>
-                        {{::dish.remaining}} remaining<br>{{::dish.pickup_time | amCalendar}}
+                        {{::dish.remaining}} remaining<br>
+                        {{::dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{::dish.end_time
+                        | amDateFormat:'ha'}})
                     </div>
                     <div class="btn">
                         <button class="button button-assertive">Details</button>
