@@ -125,7 +125,9 @@
                         duration: 2000
                     });
                 })
-                .catch(HCMessaging.showError);
+                .catch(function() {
+                    HCMessaging.showError('Too early!', 'Please wait for the scheduled pickup time.');
+                });
         }
     }
 })();
