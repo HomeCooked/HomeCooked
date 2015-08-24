@@ -24,6 +24,8 @@
 
                 <h2>{{batch.dish.title}}</h2>
 
+                <p>{{::batch.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{::batch.end_time | amDateFormat:'ha'}})</p>
+
                 <p ng-if="batch.remaining > 0" class="title">
                     {{batch.remaining}} portion{{batch.remaining===1 ? "" : "s"}} available
                     <a href class="item-note" ng-click="vm.deleteBatch(batch)">

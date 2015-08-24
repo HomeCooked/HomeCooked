@@ -30,6 +30,7 @@
         function onBeforeEnter() {
             var tutorialPromise = $q.when();
             if (!CacheService.getWelcomeTutorialComplete()) {
+                $ionicLoading.hide();
                 tutorialPromise = HCModalHelper.showTutorial('welcome').then(CacheService.setWelcomeTutorialComplete);
             }
             tutorialPromise.finally(function() {
