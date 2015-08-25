@@ -178,7 +178,8 @@
 
         function go(path, params) {
             $ionicHistory.nextViewOptions({
-                historyRoot: true
+                historyRoot: true,
+                disableAnimate: true
             });
             $state.go(path, params);
         }

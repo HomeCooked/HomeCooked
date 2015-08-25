@@ -1,27 +1,36 @@
 <ion-view title="My Dishes" hide-back-button="true">
-  <ion-nav-buttons side="right">
-    <button class="button button-clear button-positive" ng-click="vm.showModal()">Add
-      <i class="icon ion-plus-round"></i>
-    </button>
-  </ion-nav-buttons>
-  <ion-content class="has-header">
-    <ion-list>
-      <p class="padding" align="center" ng-if="vm.dishes.length===0">Your menu is empty!<br>
-        <a href ng-click="vm.showModal()">Add a new dish</a>
-      </p>
-
-      <a class="item item-avatar item-button-right" ng-repeat="dish in vm.dishes" ui-sref="app.dish-review({id: vm.chefId, dishId: dish.id})">
-        <img ng-src="{{dish.picture || 'images/logo.png'}}">
-
-        <h2>{{dish.title}}</h2>
-
-        <p>{{dish.description || '- no description for this dish -'}}</p>
-        <p>{{dish.price}} $</p>
-        <p>{{::dish.rating || 0}}/5 ({{::dish.review_count || 0}} reviews)</p>
-        <button class="button button-clear button-stable" ng-click="vm.deleteDish(dish, $event)">
-          <i class="icon ion-trash-a"></i>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-positive" ng-click="vm.showModal()">Add
+            <i class="icon ion-plus-round"></i>
         </button>
-      </a>
-    </ion-list>
-  </ion-content>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <ion-list>
+            <p class="padding" align="center" ng-if="vm.dishes.length===0">Your menu is empty!<br>
+                <a href ng-click="vm.showModal()">Add a new dish</a>
+            </p>
+
+            <a class="item item-avatar item-button-right" ng-repeat="dish in vm.dishes"
+               ui-sref="app.dish-review({id: vm.chefId, dishId: dish.id})">
+                <img ng-src="{{dish.picture || 'images/logo.png'}}">
+
+                <h2>{{dish.title}}</h2>
+
+                <p>{{dish.description || '- no description for this dish -'}}</p>
+
+                <p>{{dish.price}} $</p>
+
+                <p>{{::dish.rating || 0}}/5 ({{::dish.review_count || 0}} reviews)</p>
+                <button class="button button-clear button-stable" ng-click="vm.deleteDish(dish, $event)">
+                    <i class="icon ion-trash-a"></i>
+                </button>
+            </a>
+        </ion-list>
+    </ion-content>
+    <div class="bar bar-footer bar-light">
+        <div class="button-bar">
+            <a class="button" disabled="true">All</a>
+            <a class="button"  ng-click="vm.go('app.seller')">For Sale</a>
+        </div>
+    </div>
 </ion-view>

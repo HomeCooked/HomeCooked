@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'LoginService', 'HCMessaging', 'HCModalHelper', '_'];
-    function DishesCtrl($rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, LoginService, HCMessaging, HCModalHelper, _) {
+    DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicHistory', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'LoginService', 'HCMessaging', 'HCModalHelper', '_'];
+    function DishesCtrl($rootScope, $scope, $ionicHistory, $state, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, LoginService, HCMessaging, HCModalHelper, _) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -15,6 +15,7 @@
         vm.hideModal = hideModal;
         vm.addDish = addDish;
         vm.deleteDish = deleteDish;
+        vm.go = go;
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
         $scope.$on('$destroy', onDestroy);
@@ -98,7 +99,7 @@
             DishesService.getDishes()
                 .then(function(dishes) {
                     vm.dishes = dishes;
-                    if ($stateParams.v === 'new') {
+                    if ($state.params.v === 'new') {
                         showModal();
                     }
                 })
@@ -123,6 +124,14 @@
                 modal = undefined;
                 modalScope.$destroy();
             }
+        }
+
+        function go(path) {
+            $ionicHistory.nextViewOptions({
+                historyRoot: true,
+                disableAnimate: true
+            });
+            $state.go(path);
         }
     }
 })();

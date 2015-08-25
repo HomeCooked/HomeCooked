@@ -97,9 +97,7 @@
         }
 
         function invalidateChef() {
-            setChef();
-            CacheService.setValue({chef: chef});
-            return $q.when(chef);
+            return handleChef();
         }
 
         function handleChef(newChef) {

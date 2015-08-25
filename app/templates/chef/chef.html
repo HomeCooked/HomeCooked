@@ -24,7 +24,8 @@
 
                 <h2>{{batch.dish.title}}</h2>
 
-                <p>{{::batch.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{::batch.end_time | amDateFormat:'ha'}})</p>
+                <p>{{::batch.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{::batch.end_time
+                    | amDateFormat:'ha'}})</p>
 
                 <p ng-if="batch.remaining > 0" class="title">
                     {{batch.remaining}} portion{{batch.remaining===1 ? "" : "s"}} available
@@ -53,4 +54,11 @@
         </div>
 
     </ion-content>
+
+    <div class="bar bar-footer bar-light">
+        <div class="button-bar">
+            <a class="button" ng-click="vm.go('app.dishes')">All</a>
+            <a class="button" disabled="true">For Sale</a>
+        </div>
+    </div>
 </ion-view>

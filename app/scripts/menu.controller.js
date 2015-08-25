@@ -16,10 +16,6 @@
             icon: 'ion-pizza',
             path: 'app.dishes'
         }, {
-            name: 'For Sale',
-            icon: 'ion-social-usd',
-            path: 'app.seller'
-        }, {
             name: 'Edit Bio',
             icon: 'ion-person',
             path: 'app.bio'
