@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$scope', '$state', '$ionicHistory', '$ionicSideMenuDelegate', 'LoginService', 'HCModalHelper', '_'];
+    MenuCtrl.$inject = ['$scope', '$state', '$ionicHistory', '$ionicSideMenuDelegate', 'LoginService', 'ChefService', 'HCModalHelper', '_'];
 
-    function MenuCtrl($scope, $state, $ionicHistory, $ionicSideMenuDelegate, LoginService, HCModalHelper, _) {
+    function MenuCtrl($scope, $state, $ionicHistory, $ionicSideMenuDelegate, LoginService, ChefService, HCModalHelper, _) {
 
         var vm = this;
 
@@ -37,6 +37,7 @@
 
         // will be same instance during all the session
         var user = LoginService.getUser();
+        var chef = ChefService.getChef();
 
         vm.login = login;
         vm.chefMode = LoginService.getChefMode();
@@ -56,14 +57,14 @@
         }, init);
 
         $scope.$watch(function() {
-            return user.is_chef;
+            return chef.id;
         }, init);
 
         function init() {
             vm.isUserLoggedIn = user.isLoggedIn === true;
             $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
             vm.userFirstName = user.first_name || '';
-            vm.isChef = user.is_chef;
+            vm.isChef = chef.id >= 0;
             vm.hasPendingReviews = user.has_pending_reviews;
             updateStateIfNeeded($state.current);
         }

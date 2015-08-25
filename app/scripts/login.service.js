@@ -2,8 +2,8 @@
 (function() {
     angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$q', '$rootScope', '$http', '$cordovaFacebook', 'ENV', 'CacheService', '_'];
-    function LoginService($q, $rootScope, $http, $cordovaFacebook, ENV, CacheService, _) {
+    LoginService.$inject = ['$q', '$rootScope', '$http', '$cordovaFacebook', 'ENV', 'CacheService', 'ChefService', '_'];
+    function LoginService($q, $rootScope, $http, $cordovaFacebook, ENV, CacheService, ChefService, _) {
         var user = {},
             baseUrl = ENV.BASE_URL + '/api/v1/';
         setUser(CacheService.getValue('user'));
@@ -25,11 +25,20 @@
             getNotified: getNotified
         };
 
-        function reloadUser() {
+        function reloadUser(reloadChef) {
             if (user.isLoggedIn && user.id) {
-                return $http.get(baseUrl + 'users/' + user.id + '/').then(handleUser);
+                return $http.get(baseUrl + 'users/' + user.id + '/').then(function(response) {
+                    handleUser(response);
+                    if (reloadChef !== false) {
+                        ChefService.reloadChef(user);
+                    }
+                }, invalidateUser);
             }
             return $q.when(user);
+        }
+
+        function invalidateUser() {
+            return handleUser({});
         }
 
         function login(type) {
@@ -96,7 +105,7 @@
                         provider: provider,
                         credential: data.credential
                     });
-                    return user.is_chef;
+                    return user;
                 })
                 .finally(function() {
                     if (user.isLoggedIn) {

@@ -165,12 +165,12 @@ HomeCooked
             $state.go(nextState);
         });
     })
-    .run(function($log, $ionicPlatform, ENV, NotificationService, LoginService, ChefService) {
-        reloadUserInfos();
+    .run(function($log, $ionicPlatform, ENV, NotificationService, LoginService) {
+        LoginService.reloadUser();
         $ionicPlatform.ready(function() {
             $ionicPlatform.on('resume', function(event) {
                 $log.info('app resume event', event);
-                reloadUserInfos();
+                LoginService.reloadUser();
             });
 
             if (window.cordova && window.facebookConnectPlugin.browserInit) {
@@ -193,8 +193,4 @@ HomeCooked
                 NotificationService.register();
             }
         });
-
-        function reloadUserInfos() {
-            LoginService.reloadUser().then(ChefService.reloadChef);
-        }
     });

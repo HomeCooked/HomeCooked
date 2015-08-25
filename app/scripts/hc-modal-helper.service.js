@@ -88,7 +88,6 @@
                 cvc: paymentForm.cvc.$modelValue,
                 expiry: paymentForm.expiry.$modelValue
             })
-                .then(LoginService.reloadUser)
                 .then(function() {
                     var scope = closeModal('update-payment');
                     scope.deferred.resolve();

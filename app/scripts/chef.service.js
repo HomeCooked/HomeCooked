@@ -2,15 +2,12 @@
     'use strict';
     angular.module('HomeCooked.services').factory('ChefService', ChefService);
 
-    ChefService.$inject = ['$q', '$rootScope', '$http', 'ENV', 'CacheService', 'LoginService', '_'];
-    function ChefService($q, $rootScope, $http, ENV, CacheService, LoginService, _) {
+    ChefService.$inject = ['$q', '$http', 'ENV', 'CacheService', '_'];
+    function ChefService($q, $http, ENV, CacheService, _) {
         var chef = {},
             chefDeferred = $q.defer(),
             baseUrl = ENV.BASE_URL + '/api/v1/';
         setChef(CacheService.getValue('chef'));
-        $rootScope.$watch(function() {
-            return LoginService.getUser().is_chef;
-        }, reloadChef);
 
         return {
             chefReady: chefReady,
@@ -95,14 +92,14 @@
             return res;
         }
 
-        function reloadChef() {
-            var user = LoginService.getUser();
-            if (!user.isLoggedIn || !user.is_chef) {
-                setChef();
-                CacheService.setValue({chef: chef});
-                return $q.when(chef);
-            }
-            return handleResponses($http.get(baseUrl + 'chefs/' + user.id + '/')).then(handleChef);
+        function reloadChef(user) {
+            return handleResponses($http.get(baseUrl + 'users/' + user.id + '/get_chef/')).then(handleChef, invalidateChef);
+        }
+
+        function invalidateChef() {
+            setChef();
+            CacheService.setValue({chef: chef});
+            return $q.when(chef);
         }
 
         function handleChef(newChef) {

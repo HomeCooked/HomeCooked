@@ -19,9 +19,15 @@
         function savePaymentInfo(info) {
             var sId = LoginService.getUser().id,
                 chefMode = LoginService.getChefMode(),
-                url = chefMode ? baseUrl + 'chefs/' : baseUrl + 'users/',
-                cb = chefMode ? ChefService.reloadChef : LoginService.reloadUser;
-            return handleResponses($http.post(url + sId + '/add_payment_method/', info)).then(cb);
+                url = chefMode ? baseUrl + 'chefs/' : baseUrl + 'users/';
+            return handleResponses($http.post(url + sId + '/add_payment_method/', info)).then(function() {
+                if (chefMode) {
+                    ChefService.reloadChef(LoginService.getUser());
+                }
+                else {
+                    LoginService.reloadUser(false);
+                }
+            });
         }
 
         function holdBatch(payload) {
