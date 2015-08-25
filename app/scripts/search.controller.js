@@ -26,6 +26,7 @@
         }, onLocationChange);
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+        $scope.$on('$ionicView.afterEnter', onAfterEnter);
 
         function onBeforeEnter() {
             var tutorialPromise = $q.when();
@@ -39,6 +40,11 @@
                     longitude: vm.map.center.lng
                 });
             });
+        }
+
+        function onAfterEnter() {
+            // fixes rendering issues of the map
+            window.ionic.trigger('resize');
         }
 
         function getChefs(location) {
@@ -135,7 +141,7 @@
                     doubleClickZoom: true,
                     scrollWheelZoom: true,
                     dragging: true,
-                    touchZoom: true,
+                    touchZoom: true
                 },
                 tiles: {
                     url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
