@@ -13,7 +13,7 @@
             transclude: true,
             scope: {
                 score: '@',
-                rating: '@'
+                count: '@'
             },
             templateUrl: 'templates/reviews-rating.html',
             link: function(scope, element, attrs) {

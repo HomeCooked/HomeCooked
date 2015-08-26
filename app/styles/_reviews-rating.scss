@@ -1,10 +1,11 @@
 reviews-rating {
     display: inline-block;
-    .read-only rating {
+    &.read-only {
         pointer-events: none;
     }
     ul.rating li {
         display: inline;
+        white-space: nowrap;
         border: 0px;
         background: none;
         padding: 2px;

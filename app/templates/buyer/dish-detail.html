@@ -21,8 +21,8 @@
 
             <a class="item" ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})">
                 Reviews
-                <reviews-rating class="item-note" score="{{::dish.review_score}}"
-                                count="{{::dish.review_count}}"></reviews-rating>
+                <reviews-rating class="item-note" score="{{::vm.dish.review_score}}"
+                                count="{{::vm.dish.review_count}}"></reviews-rating>
             </a>
 
             <a class="item">
