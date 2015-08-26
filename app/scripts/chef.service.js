@@ -12,6 +12,7 @@
         return {
             chefReady: chefReady,
             reloadChef: reloadChef,
+            invalidateChef: invalidateChef,
             getOrders: getOrders,
             getBatches: getBatches,
             addBatch: addBatch,

@@ -75,7 +75,8 @@
     {
       "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
       "id": "cordova-plugin-camera"
-    }
+    },
+    "org.apache.cordova.geolocation"
   ],
   "cordovaPlatforms": [
     "android",

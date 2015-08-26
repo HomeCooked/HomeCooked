@@ -27,7 +27,7 @@
                     hideModal();
                     modalScope.review = getEmptyReview();
                     form.$setPristine();
-                    LoginService.reloadUser(false);
+                    LoginService.reloadUser();
                     loadPendingReviews();
                 });
         }

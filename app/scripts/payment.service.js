@@ -20,14 +20,8 @@
             var sId = LoginService.getUser().id,
                 chefMode = LoginService.getChefMode(),
                 url = chefMode ? baseUrl + 'chefs/' : baseUrl + 'users/';
-            return handleResponses($http.post(url + sId + '/add_payment_method/', info)).then(function() {
-                if (chefMode) {
-                    ChefService.reloadChef(LoginService.getUser());
-                }
-                else {
-                    LoginService.reloadUser(false);
-                }
-            });
+            // will reload both user and chef info
+            return handleResponses($http.post(url + sId + '/add_payment_method/', info)).then(LoginService.reloadUser);
         }
 
         function holdBatch(payload) {

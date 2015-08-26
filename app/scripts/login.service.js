@@ -25,20 +25,23 @@
             getNotified: getNotified
         };
 
-        function reloadUser(reloadChef) {
+        function getData(response) {
+            return response.data;
+        }
+
+        function reloadUser() {
             if (user.isLoggedIn && user.id) {
-                return $http.get(baseUrl + 'users/' + user.id + '/').then(function(response) {
-                    handleUser(response);
-                    if (reloadChef !== false) {
-                        ChefService.reloadChef(user);
-                    }
+                return $http.get(baseUrl + 'users/' + user.id + '/').then(getData).then(function(newUser) {
+                    handleUser(newUser);
+                    ChefService.reloadChef(user);
                 }, invalidateUser);
             }
             return $q.when(user);
         }
 
         function invalidateUser() {
-            return handleUser({});
+            ChefService.invalidateChef();
+            return handleUser();
         }
 
         function login(type) {
@@ -155,7 +158,7 @@
 
         function saveUserData(data) {
             data.phone_number = serializePhone(data.phone_number);
-            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(handleUser);
+            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(getData).then(handleUser);
         }
 
         function getNotified(zipcode, email) {
@@ -180,8 +183,8 @@
             return res;
         }
 
-        function handleUser(response) {
-            setUser(response.data);
+        function handleUser(newUser) {
+            setUser(newUser);
             CacheService.setValue({user: user});
             return user;
         }
