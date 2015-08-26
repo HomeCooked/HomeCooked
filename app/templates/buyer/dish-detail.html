@@ -19,7 +19,7 @@
                 Details
             </div>
 
-            <a class="item" ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.id})">
+            <a class="item" ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})">
                 Reviews
                 <reviews-rating class="item-note" score="{{::dish.review_score}}"
                                 count="{{::dish.review_count}}"></reviews-rating>
@@ -27,8 +27,7 @@
 
             <a class="item">
                 Pickup Time
-                <span class="item-note">{{vm.dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{vm.dish.end_time
-                        | amDateFormat:'ha'}})</span>
+                <span class="item-note">{{vm.dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{vm.dish.end_time | amDateFormat:'ha'}})</span>
             </a>
 
             <a class="item">

@@ -19,6 +19,7 @@
             link: function(scope, element, attrs) {
                 scope.readOnly = scope.$eval(attrs.readOnly);
                 if (scope.readOnly !== false) {
+                    scope.readOnly = true;
                     element.addClass('read-only');
                 }
                 scope.max = 5;

@@ -1,3 +1,3 @@
-<rating ng-if="score>0 || readOnly===false" ng-model="score" max="::max"></rating>
+<rating ng-if="count>0 || readOnly===false" ng-model="score" max="::max"></rating>
 <div ng-if="count>0">{{::count}} reviews</div>
-<span ng-if="!count && !score">no reviews yet</span>
+<span ng-if="!count && readOnly">no reviews yet</span>
