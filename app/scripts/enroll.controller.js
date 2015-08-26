@@ -9,6 +9,7 @@
     function EnrollCtrl($window, $state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
         var vm = this;
 
+        vm.states = ['CA'];
         vm.form = getEmptyForm();
         vm.enroll = enroll;
         vm.openExternalLink = openExternalLink;
@@ -19,7 +20,6 @@
             $ionicLoading.show({
                 template: 'Enrolling...'
             });
-            calculateAddress(vm.form, vm.form.address);
             LoginService.becomeChef(vm.form)
                 .then(function() {
                     vm.form = getEmptyForm();
@@ -43,17 +43,6 @@
                 .catch(HCMessaging.showError);
         }
 
-        function calculateAddress(form, place) {
-            if (typeof place === 'string') {
-                form.address = place;
-                form.coordinates = {latitude: 37.7732, longitude: -122.42134};
-            }
-            else {
-                form.address = place.formatted_address;
-                form.coordinates = {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng()};
-            }
-        }
-
         function getEmptyForm() {
             var user = LoginService.getUser();
             return {
@@ -61,6 +50,9 @@
                 last_name: user.last_name,
                 email: user.email,
                 phone_number: user.phone_number,
+                address: {
+                    state: vm.states[0]
+                },
                 card: {}
             };
         }

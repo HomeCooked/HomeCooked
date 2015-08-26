@@ -33,33 +33,57 @@
                        ng-model="vm.form.ssn">
                 <label class="subdued">(we will perform background verification)</label>
             </label>
+
+            <h4 class="padding-top padding-left">Address</h4>
+
             <label class="item item-input item-floating-label">
-                <span class="input-label">Address, city, zipcode</span>
-                <input type="text" name="address" placeholder="Address, city, zipcode" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.address" g-places-autocomplete force-selection="true"/>
+                <span class="input-label">Line 1</span>
+                <input type="text" name="line1" placeholder="Line 1" required ng-minlength="2"
+                       ng-maxlength="50" ng-model="vm.form.address.line1"/>
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Line 2</span>
+                <input type="text" name="line2" placeholder="Line 2" ng-model="vm.form.address.line2"/>
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">City</span>
+                <input type="text" name="city" placeholder="City" required ng-minlength="2"
+                       ng-maxlength="50" ng-model="vm.form.address.city"/>
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Zipcode</span>
+                <input type="tel" name="zipcode" placeholder="Zipcode" required ng-minlength="5"
+                       ng-model="vm.form.address.zipcode"/>
+            </label>
+            <label class="item item-input item-select">
+                <span class="input-label">State</span>
+                <select name="state" ng-model="vm.form.address.state">
+                    <option ng-repeat="state in vm.states" value="{{::state}}">{{::state}}</option>
+                </select>
+                <input type="hidden" ng-model="vm.form.address.state" required minlength="1">
             </label>
 
             <h4 class="padding-top padding-left">Payment information</h4>
 
-            <label class="item item-input item-floating-label">
+            <label class="item item-input item-stacked-label">
                 <span class="input-label">Debit Card Number</span>
-                <input type="tel" ng-model="vm.form.card.number" placeholder="Debit Card Number" payments-format="card"
+                <input type="tel" ng-model="vm.form.card.number" placeholder="1234 1234 1234 1234" payments-format="card"
                        payments-validate="card" name="card"
                        ng-minlength="1"/>
                 <label class="subdued">(so we can pay you!)</label>
             </label>
 
-            <label class="item item-input item-floating-label">
+            <label class="item item-input item-stacked-label">
                 <span class="input-label">Expiration</span>
-                <input type="tel" ng-model="vm.form.card.expiry" placeholder="Expiration" payments-format="expiry"
+                <input type="tel" ng-model="vm.form.card.expiry" placeholder="11/16" payments-format="expiry"
                        payments-validate="expiry" name="expiry"
                        ng-minlength="1" ng-class="{'invalid-input' : enrollForm.expiry
                         && enrollForm.expiry.$invalid}"/>
             </label>
 
-            <label class="item item-input item-floating-label">
+            <label class="item item-input item-stacked-label">
                 <span class="input-label">CVC</span>
-                <input type="tel" ng-model="vm.form.card.cvc" placeholder="CVC" payments-format="cvc"
+                <input type="tel" ng-model="vm.form.card.cvc" placeholder="123" payments-format="cvc"
                        payments-validate="cvc"
                        name="cvc"
                        ng-minlength="1"/>
@@ -76,7 +100,7 @@
                  ng-click="vm.enroll(enrollForm)">Enroll
             </div>
 
-            <p class="padding">By enrolling you are accepting these
+            <p class="padding" align="center">By enrolling, you are accepting these
                 <a href ng-click="vm.openExternalLink('http://www.gohomecooked.com/terms.html')">Terms and
                     Conditions</a></p>
         </form>

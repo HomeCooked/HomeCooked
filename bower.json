@@ -9,7 +9,6 @@
     "angular-leaflet-directive": "~0.8.2",
     "angular-payments": "*",
     "angular-base64-upload": "~0.1.11",
-    "angular-google-places-autocomplete": "~0.2.7",
     "angular-moment": "~0.10.1",
     "ionic-rating": "~0.1.0",
     "ngCordova": "~0.1.17-alpha",
