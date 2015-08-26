@@ -114,15 +114,6 @@ HomeCooked
                     }
                 }
             })
-            .state('app.settings-email', {
-                url: '/settings/email/',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/settings/email.html',
-                        controller: 'SettingsCtrl as vm'
-                    }
-                }
-            })
             .state('app.pending-reviews', {
                 url: '/pending-reviews/',
                 views: {

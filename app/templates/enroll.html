@@ -75,6 +75,10 @@
             <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"
                  ng-click="vm.enroll(enrollForm)">Enroll
             </div>
+
+            <p class="padding">By enrolling you are accepting these
+                <a href ng-click="vm.openExternalLink('http://www.gohomecooked.com/terms.html')">Terms and
+                    Conditions</a></p>
         </form>
     </ion-content>
 </ion-view>

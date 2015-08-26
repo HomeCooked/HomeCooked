@@ -18,6 +18,7 @@
         vm.visible = false;
         vm.chefs = [];
         vm.isListVisible = false;
+        vm.toggleListMap = toggleListMap;
 
         //init the map
         initMapProperties();
@@ -29,6 +30,7 @@
         $scope.$on('$ionicView.afterEnter', onAfterEnter);
 
         function onBeforeEnter() {
+            vm.isListVisible = false;
             var tutorialPromise = $q.when();
             if (!CacheService.getWelcomeTutorialComplete()) {
                 $ionicLoading.hide();
@@ -166,6 +168,10 @@
 
         function goToPreview(chefId) {
             return $state.go('app.chef-preview', {id: chefId});
+        }
+
+        function toggleListMap() {
+            vm.isListVisible = !vm.isListVisible;
         }
     }
 })();

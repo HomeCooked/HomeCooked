@@ -1,6 +1,7 @@
 <div class="modal">
     <ion-header-bar>
         <h1 class="title">Payment</h1>
+
         <div class="button button-clear" ng-click="closeModal('update-payment')">Cancel</div>
     </ion-header-bar>
     <ion-content>
@@ -9,19 +10,22 @@
             {{user.payment_info.exp_date}}</p>
 
         <form class="list" name="paymentForm">
-            <label class="item item-input">
-                <input type="tel" ng-model="number" placeholder="Card Number"
+            <label class="item item-input item-stacked-label">
+                <span>Card Number</span>
+                <input type="tel" ng-model="number" placeholder="1234 1234 1234 1234"
                        payments-format="card" payments-validate="card" name="card" ng-minlength="1"/>
             </label>
 
-            <label class="item item-input">
-                <input type="tel" ng-model="expiry" placeholder="Expiration" payments-format="expiry"
+            <label class="item item-input item-stacked-label">
+                <span>Expiration</span>
+                <input type="tel" ng-model="expiry" placeholder="11/16" payments-format="expiry"
                        payments-validate="expiry"
                        name="expiry" ng-minlength="1"/>
             </label>
 
-            <label class="item item-input">
-                <input type="tel" ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"
+            <label class="item item-input item-stacked-label">
+                <span>CVC</span>
+                <input type="tel" ng-model="cvc" placeholder="123" payments-format="cvc" payments-validate="cvc"
                        name="cvc" ng-minlength="1"/>
             </label>
 

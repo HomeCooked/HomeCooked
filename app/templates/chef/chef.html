@@ -1,12 +1,11 @@
-<ion-view title="For Sale" hide-back-button="true">
-    <ion-nav-buttons side="right">
-        <button class="button button-clear button-positive" ng-click="vm.openAddBatch()"
-                ng-disabled="vm.dishes.length===0 || vm.batches.length>=vm.maxBatches">
-            Add
-            <i class="icon ion-plus-round"></i>
-        </button>
-    </ion-nav-buttons>
-    <ion-content class="has-header">
+<ion-view title="My Menu" hide-back-button="true">
+    <div class="bar bar-subheader">
+        <div class="button-bar">
+            <a class="button" ng-click="vm.go('app.dishes')">Manage</a>
+            <a class="button button-positive">Sell</a>
+        </div>
+    </div>
+    <ion-content class="has-header has-subheader">
         <div class="list">
 
             <p class="padding" align="center" ng-if="vm.dishes.length===0">
@@ -15,8 +14,7 @@
             </p>
 
             <p class="padding" align="center" ng-if="vm.dishes.length>0 && vm.batches.length===0">
-                No items on sale.<br>
-                <a href ng-click="vm.openAddBatch()">Start selling</a>
+                No items on sale.
             </p>
 
             <div class="item item-avatar" ng-if="vm.dishes.length>0" ng-repeat="batch in vm.batches">
@@ -47,6 +45,10 @@
                     </div>
                 </div>
             </div>
+            <button class="button button-block button-positive button-clear" ng-click="vm.openAddBatch()"
+                    ng-if="vm.dishes.length>0" ng-disabled="vm.batches.length>=vm.maxBatches">
+                Add Dish
+            </button>
             <div align="center" ng-if="vm.dishes.length>0 && vm.batches.length>=vm.maxBatches"
                  class="item item-text-wrap">You can have maximum {{vm.maxBatches}} items on sale.
                 After you sell and deliver all the items, you will be able to add new ones.
@@ -54,11 +56,4 @@
         </div>
 
     </ion-content>
-
-    <div class="bar bar-footer bar-light">
-        <div class="button-bar">
-            <a class="button" ng-click="vm.go('app.dishes')">All</a>
-            <a class="button" disabled="true">For Sale</a>
-        </div>
-    </div>
 </ion-view>

@@ -1,14 +1,13 @@
-<ion-view title="My Dishes" hide-back-button="true">
-    <ion-nav-buttons side="right">
-        <button class="button button-clear button-positive" ng-click="vm.showModal()">Add
-            <i class="icon ion-plus-round"></i>
-        </button>
-    </ion-nav-buttons>
-    <ion-content class="has-header">
+<ion-view title="My Menu" hide-back-button="true">
+    <div class="bar bar-subheader">
+        <div class="button-bar">
+            <a class="button button-positive">Manage</a>
+            <a class="button" ng-click="vm.go('app.seller')">Sell</a>
+        </div>
+    </div>
+    <ion-content class="has-header has-subheader">
         <ion-list>
-            <p class="padding" align="center" ng-if="vm.dishes.length===0">Your menu is empty!<br>
-                <a href ng-click="vm.showModal()">Add a new dish</a>
-            </p>
+            <p class="padding" align="center" ng-if="vm.dishes.length===0">Your menu is empty!</p>
 
             <a class="item item-avatar item-button-right" ng-repeat="dish in vm.dishes"
                ui-sref="app.dish-review({id: vm.chefId, dishId: dish.id})">
@@ -26,11 +25,7 @@
                 </button>
             </a>
         </ion-list>
+        <button class="button button-block button-positive button-clear" ng-click="vm.showModal()">Add Dish
+        </button>
     </ion-content>
-    <div class="bar bar-footer bar-light">
-        <div class="button-bar">
-            <a class="button" disabled="true">All</a>
-            <a class="button"  ng-click="vm.go('app.seller')">For Sale</a>
-        </div>
-    </div>
 </ion-view>

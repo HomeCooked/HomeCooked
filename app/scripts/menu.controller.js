@@ -12,7 +12,7 @@
         var vm = this;
 
         var chefLinks = [{
-            name: 'My Dishes',
+            name: 'My Menu',
             icon: 'ion-pizza',
             path: 'app.dishes'
         }, {

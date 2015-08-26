@@ -5,12 +5,13 @@
         .module('HomeCooked.controllers')
         .controller('EnrollCtrl', EnrollCtrl);
 
-    EnrollCtrl.$inject = ['$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging'];
-    function EnrollCtrl($state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
+    EnrollCtrl.$inject = ['$window', '$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging'];
+    function EnrollCtrl($window, $state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
         var vm = this;
 
         vm.form = getEmptyForm();
         vm.enroll = enroll;
+        vm.openExternalLink = openExternalLink;
 
         function enroll(formElement) {
             document.activeElement.blur();
@@ -62,6 +63,11 @@
                 phone_number: user.phone_number,
                 card: {}
             };
+        }
+
+        function openExternalLink(link) {
+            $window.open(link, '_system');
+            return true;
         }
     }
 
