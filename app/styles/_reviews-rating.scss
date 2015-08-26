@@ -1,5 +1,6 @@
 reviews-rating {
     display: inline-block;
+    vertical-align: middle;
     &.read-only {
         pointer-events: none;
     }
