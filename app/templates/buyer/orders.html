@@ -12,7 +12,7 @@
 
                 <p>{{order.chef.address}}</p>
 
-                <p>{{order.chef.distance}} away - pickup {{order.pickup_time | amCalendar}}</p>
+                <p>{{order.chef.distance}} away - pickup {{order.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{order.end_time | amDateFormat:'ha'}})</p>
 
                 <div class="map-container" style="height: 300px; pointer-events: none">
                     <leaflet id="{{::order.mapId}}" defaults="::vm.map.defaults" tiles="::vm.map.tiles"
