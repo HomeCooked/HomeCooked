@@ -11,7 +11,7 @@
 
         <form class="list" name="paymentForm">
             <label class="item item-input item-stacked-label">
-                <span>Card Number</span>
+                <span>{{mustBeDebit ? 'Debit': ''}} Card Number</span>
                 <input type="tel" ng-model="number" placeholder="1234 1234 1234 1234"
                        payments-format="card" payments-validate="card" name="card" ng-minlength="1"/>
             </label>

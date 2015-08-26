@@ -71,6 +71,7 @@
             modalScope.updatePayment = updatePayment;
             modalScope.closeModal = closeModal;
             modalScope.user = LoginService.getChefMode() ? ChefService.getChef() : LoginService.getUser();
+            modalScope.mustBeDebit = LoginService.getChefMode();
             $ionicModal.fromTemplateUrl('templates/update-payment.html', {
                 scope: modalScope
             }).then(function(modal) {
