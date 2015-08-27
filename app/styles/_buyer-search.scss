@@ -20,12 +20,12 @@
         width: 100%;
         position: relative;
         text-align: center;
-        padding: 20px 0;
+        padding: 25px 0;
         background: url(../images/preview.jpg) top right;
 
         .button-back {
             position: absolute;
-            top: 10px;
+            top: 25px;
             left: 10px;
             color: white;
             border-color: white;
@@ -80,14 +80,14 @@
     }
     .dish-card {
         cursor: pointer;
-        padding: 20px 10px 40px;
+        padding: 20px 10px;
         box-sizing: border-box;
         width: 100%;
-        max-width: 360px;
+        max-width: 320px;
         display: inline-block;
         .dish-cover{
             position: relative;
-            min-height:340px;
+            min-height:300px;
             .dish-price {
                 position: absolute;
                 top: 10px;
@@ -100,22 +100,20 @@
             }
             img {
                 width: 100%;
+                display:block;
+                margin-bottom: 10px;
             }
         }
         .dish-details {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
+            reviews-rating {
+                float: right;
+                text-align: right;
+            }
             .title {
-                flex-grow: 2;
                 text-align: left;
                 span{
                     font-weight: bold;
                 }
-            }
-            reviews-rating {
-                text-align: right;
             }
             .btn .button {
                 height: 26px;
@@ -129,12 +127,13 @@
 
 .buyer-dish-preview {
     .image-container{
-      max-width: 360px;
+      max-width: 320px;
       margin: 0 auto;
       img {
-        width: 100%;
-        min-height: 340px;
-        margin-bottom: 10px;
+          display:block;
+          width: 100%;
+          min-height: 300px;
+          margin-bottom: 10px;
       }
     }
 

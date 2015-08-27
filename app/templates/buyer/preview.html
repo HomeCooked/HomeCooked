@@ -30,13 +30,13 @@
                     <div class="dish-price">{{::dish.price}} $</div>
                 </div>
                 <div class="dish-details">
+                    <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>
                     <div class="title">
                         <span>{{::dish.title}}</span><br/>
                         {{::dish.remaining}} remaining<br>
                         {{::dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{::dish.end_time
                         | amDateFormat:'ha'}})
                     </div>
-                    <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>
                 </div>
             </div>
         </div>
