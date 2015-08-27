@@ -94,7 +94,12 @@
         }
 
         function reloadChef(user) {
-            return handleResponses($http.get(baseUrl + 'users/' + user.id + '/get_chef/')).then(handleChef, invalidateChef);
+            return handleResponses($http.get(baseUrl + 'users/' + user.id + '/get_chef/'))
+                // TODO this then block must be removed after server returns proper stuff...
+                .then(function(newChef) {
+                    return handleResponses($http.get(baseUrl + 'chefs/' + newChef.id + '/'));
+                })
+                .then(handleChef).catch(invalidateChef);
         }
 
         function invalidateChef() {
@@ -109,13 +114,14 @@
         }
 
         function setChef(newChef) {
-            if (_.isEmpty(newChef)) {
-                _.forEach(chef, function(val, key) {
+            newChef = newChef || {};
+            _.forEach(chef, function(val, key) {
+                if (!newChef.hasOwnProperty(key)) {
                     chef[key] = undefined;
-                    delete chef[key];
-                });
-            }
-            else {
+                    delete chef[chef];
+                }
+            });
+            if (!_.isEmpty(newChef)) {
                 newChef.phone_number = deserializePhone(newChef.phone_number);
                 _.assign(chef, newChef);
             }

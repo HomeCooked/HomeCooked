@@ -30,7 +30,7 @@
         }
 
         function reloadUser() {
-            if (user.isLoggedIn && user.id) {
+            if (user.isLoggedIn && typeof user.id === 'number') {
                 return $http.get(baseUrl + 'users/' + user.id + '/').then(getData).then(function(newUser) {
                     handleUser(newUser);
                     ChefService.reloadChef(user);
@@ -58,14 +58,10 @@
             return user;
         }
 
-        /**
-         * @private
-         * @description will keep the reference to the user object and set its keys to the new object. The only key that won't be deleted is zipcode
-         * @param newUser
-         */
         function setUser(newUser) {
+            newUser = newUser || {};
             _.forEach(user, function(val, key) {
-                if (key !== 'zipcode') {
+                if (!newUser.hasOwnProperty(key) && key !== 'zipcode') {
                     user[key] = undefined;
                     delete user[key];
                 }
@@ -104,7 +100,6 @@
             })
                 .then(function(response) {
                     var data = response.data;
-                    data.user.isLoggedIn = true;
                     CacheService.setValue({
                         provider: provider,
                         credential: data.credential
@@ -179,6 +174,9 @@
         }
 
         function handleUser(newUser) {
+            if (newUser) {
+                newUser.isLoggedIn = true;
+            }
             setUser(newUser);
             CacheService.setValue({user: user});
             return user;
