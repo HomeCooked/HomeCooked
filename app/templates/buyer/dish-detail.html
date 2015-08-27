@@ -1,7 +1,9 @@
 <ion-view title="{{::vm.dish.title}}" class="buyer-dish-preview">
     <ion-content class="has-footer">
-        <div class="image-container padding">
+        <div class="image-container">
             <img ng-src="{{vm.dish.picture}}">
+        </div>
+        <div class="dish-details">
             <div class="title-price">
                 <h2>{{::vm.dish.title}}</h2>
                 <span>{{::vm.dish.price}} $</span>

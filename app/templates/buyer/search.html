@@ -28,9 +28,10 @@
                     <img ng-src="{{chef.picture}}">
 
                     <h2>{{chef.first_name}} {{chef.last_name}}</h2>
-                    <span style="color:#F4C304; font-size: 90%">★ {{chef.rating}}</span>
-                    <span style="font-size: 90%"> - {{chef.num_active_dishes}} items on sale</span>
-                    <span style="font-size: 90%"> - {{chef.distance}}</span>
+
+                    <p style="font-size: 90%">{{chef.num_active_dishes}} items on sale</p>
+                    <reviews-rating style="font-size: 90%; text-align: left;" score="::chef.review_score" count="::chef.review_count"></reviews-rating>
+                    <p style="font-size: 90%" ng-if="chef.distance">{{chef.distance}} away</p>
 
                     <p>{{chef.bio}}</p>
                     <i class="icon ion-ios-arrow-forward"></i>

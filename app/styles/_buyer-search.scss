@@ -13,7 +13,8 @@
     }
 
 }
-.buyer-search-preview{
+
+.buyer-search-preview {
     background: #efefef;
 
     .preview {
@@ -76,7 +77,7 @@
     }
 
     .dishes-container {
-      text-align: center;
+        text-align: center;
     }
     .dish-card {
         cursor: pointer;
@@ -85,9 +86,9 @@
         width: 100%;
         max-width: 320px;
         display: inline-block;
-        .dish-cover{
+        .dish-cover {
             position: relative;
-            min-height:300px;
+            min-height: 300px;
             .dish-price {
                 position: absolute;
                 top: 10px;
@@ -100,7 +101,7 @@
             }
             img {
                 width: 100%;
-                display:block;
+                display: block;
                 margin-bottom: 10px;
             }
         }
@@ -111,7 +112,7 @@
             }
             .title {
                 text-align: left;
-                span{
+                span {
                     font-weight: bold;
                 }
             }
@@ -126,15 +127,17 @@
 }
 
 .buyer-dish-preview {
-    .image-container{
-      max-width: 320px;
-      margin: 0 auto;
-      img {
-          display:block;
-          width: 100%;
-          min-height: 300px;
-          margin-bottom: 10px;
-      }
+    .image-container {
+        margin: 0 auto;
+        padding: 16px;
+        img {
+            display: block;
+            width: 100%;
+            min-height: 300px;
+        }
+    }
+    .dish-details {
+        padding: 0px 16px;
     }
 
     reviews-rating {
