@@ -40,7 +40,6 @@
         }
 
         function invalidateUser() {
-            ChefService.invalidateChef();
             return handleUser();
         }
 
@@ -67,6 +66,7 @@
                     user[key] = undefined;
                     delete user[key];
                 });
+                ChefService.invalidateChef();
             }
             else {
                 newUser.phone_number = deserializePhone(newUser.phone_number);
