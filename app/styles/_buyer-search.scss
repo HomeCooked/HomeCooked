@@ -83,10 +83,11 @@
         padding: 20px 10px 40px;
         box-sizing: border-box;
         width: 100%;
-        max-width: 350px;
+        max-width: 360px;
         display: inline-block;
         .dish-cover{
             position: relative;
+            min-height:340px;
             .dish-price {
                 position: absolute;
                 top: 10px;
@@ -108,10 +109,13 @@
             align-items: center;
             .title {
                 flex-grow: 2;
-                text-align: center;
+                text-align: left;
                 span{
                     font-weight: bold;
                 }
+            }
+            reviews-rating {
+                text-align: right;
             }
             .btn .button {
                 height: 26px;
@@ -123,13 +127,19 @@
     }
 }
 
-
 .buyer-dish-preview {
     .image-container{
-      text-align: center;
+      max-width: 360px;
+      margin: 0 auto;
       img {
-        max-height: 200px;
+        width: 100%;
+        min-height: 340px;
+        margin-bottom: 10px;
       }
+    }
+
+    reviews-rating {
+        text-align: right;
     }
 
     div.title-price {

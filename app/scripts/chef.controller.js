@@ -296,7 +296,7 @@
             ChefService.notifyDelivered(order.id)
                 .then(getBatches)
                 .catch(function() {
-                    HCMessaging.showError('Too early!', 'You can mark an order as "delivered" only after the pickup time.');
+                    HCMessaging.showMessage('Too early!', 'You can mark an order as "delivered" only after the pickup time.');
                 })
                 .finally($ionicLoading.hide);
         }

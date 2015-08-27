@@ -6,10 +6,11 @@
 
             <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
 
-            <p>{{vm.chef.distance}} away -
+            <p class="padding">
                 <reviews-rating class="rating" score="::vm.chef.review_score"
                                 count="::vm.chef.review_count"></reviews-rating>
             </p>
+            <p>{{vm.chef.distance}} away</p>
             <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.back()">
             </button>
         </div>
@@ -29,16 +30,13 @@
                     <div class="dish-price">{{::dish.price}} $</div>
                 </div>
                 <div class="dish-details">
-                    <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>
                     <div class="title">
                         <span>{{::dish.title}}</span><br/>
                         {{::dish.remaining}} remaining<br>
                         {{::dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{::dish.end_time
                         | amDateFormat:'ha'}})
                     </div>
-                    <div class="btn">
-                        <button class="button button-assertive">Details</button>
-                    </div>
+                    <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>
                 </div>
             </div>
         </div>

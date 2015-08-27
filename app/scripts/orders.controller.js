@@ -126,7 +126,7 @@
                     });
                 })
                 .catch(function() {
-                    HCMessaging.showError('Too early!', 'Please wait for the scheduled pickup time.');
+                    HCMessaging.showMessage('Too early!', 'Please wait for the scheduled pickup time.');
                 });
         }
     }

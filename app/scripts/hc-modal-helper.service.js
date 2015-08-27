@@ -175,9 +175,10 @@
             var data = {email: email};
             var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
             fn(data).then(function() {
+                $ionicLoading.hide();
                 var scope = closeModal('update-email');
                 scope.deferred.resolve();
-            }).catch(HCMessaging.showError).finally($ionicLoading.hide);
+            }).catch(HCMessaging.showError);
         }
 
         function showSignup() {

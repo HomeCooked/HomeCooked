@@ -100,7 +100,7 @@
                 HCMessaging.showMessage('', notification.message);
             }
             else if (notification.event === 'error') {
-                HCMessaging.showError(notification.msg);
+                HCMessaging.showMessage('Error', notification.msg);
             }
             else {
                 HCMessaging.showMessage('', notification.event);
