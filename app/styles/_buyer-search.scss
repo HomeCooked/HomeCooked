@@ -128,11 +128,11 @@
 
 .buyer-dish-preview {
     .image-container {
-        margin: 0 auto;
         padding: 16px;
         img {
             display: block;
-            width: 100%;
+            margin: 0 auto;
+            max-width: 100%;
             min-height: 300px;
         }
     }

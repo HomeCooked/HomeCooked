@@ -40,6 +40,7 @@
         }
 
         function invalidateUser() {
+            ChefService.invalidateChef();
             return handleUser();
         }
 
@@ -50,25 +51,26 @@
         }
 
         function logout() {
-            var zipcode = user.zipcode;
-            setUser();
-            user.zipcode = zipcode;
-            CacheService.setValue({user: user});
+            invalidateUser();
         }
 
         function getUser() {
             return user;
         }
 
+        /**
+         * @private
+         * @description will keep the reference to the user object and set its keys to the new object. The only key that won't be deleted is zipcode
+         * @param newUser
+         */
         function setUser(newUser) {
-            if (_.isEmpty(newUser)) {
-                _.forEach(user, function(val, key) {
+            _.forEach(user, function(val, key) {
+                if (key !== 'zipcode') {
                     user[key] = undefined;
                     delete user[key];
-                });
-                ChefService.invalidateChef();
-            }
-            else {
+                }
+            });
+            if (!_.isEmpty(newUser)) {
                 newUser.phone_number = deserializePhone(newUser.phone_number);
                 _.assign(user, newUser);
             }
@@ -103,21 +105,14 @@
                 .then(function(response) {
                     var data = response.data;
                     data.user.isLoggedIn = true;
-                    setUser(data.user);
                     CacheService.setValue({
                         provider: provider,
                         credential: data.credential
                     });
+                    handleUser(data.user);
+                    ChefService.reloadChef(user);
                     return user;
-                })
-                .finally(function() {
-                    if (user.isLoggedIn) {
-                        CacheService.setValue({user: user});
-                    }
-                    else {
-                        CacheService.invalidateCache();
-                    }
-                });
+                }, logout);
         }
 
         function getAccessToken(provider) {
