@@ -113,7 +113,7 @@
             _.forEach(chef, function(val, key) {
                 if (!newChef.hasOwnProperty(key)) {
                     chef[key] = undefined;
-                    delete chef[chef];
+                    delete chef[key];
                 }
             });
             if (!_.isEmpty(newChef)) {
