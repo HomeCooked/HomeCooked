@@ -42,7 +42,7 @@ module.exports = function(grunt) {
                     ENV: {
                         name: 'development',
                         version: '0.1.3',
-                        BASE_URL: 'https://homecooked.herokuapp.com',
+                        BASE_URL: 'http://127.0.0.1:8000',
                         CLIENT_ID: '111',
                         FACEBOOK_APP_ID: '845407792180025'
                     }
