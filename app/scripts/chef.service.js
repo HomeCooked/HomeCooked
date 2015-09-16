@@ -1,110 +1,125 @@
-'use strict';
-angular.module('HomeCooked.services')
-  .factory('ChefService', ['$q', '$http', '$timeout', 'ENV', 'CacheService', '_',
-    function($q, $http, $timeout, ENV, CacheService, _) {
-      var baseUrl = ENV.BASE_URL + '/api/v1/';
+(function() {
+    'use strict';
+    angular.module('HomeCooked.services').factory('ChefService', ChefService);
 
-      var ordersReady;
+    ChefService.$inject = ['$q', '$http', 'ENV', 'CacheService', '_'];
+    function ChefService($q, $http, ENV, CacheService, _) {
+        var chef = {},
+            chefDeferred = $q.defer(),
+            baseUrl = ENV.BASE_URL + '/api/v1/';
+        setChef(CacheService.getValue('chef'));
 
-      var handleResponses = function(httpPromise) {
-        return httpPromise.then(function(response) {
-          return response.data;
-        });
-      };
-      var wait = function(ms) {
-        return $timeout(function() {
-        }, ms || 0);
-      };
-
-      var getOrders = function() {
-        ordersReady = ordersReady || handleResponses($http.get('mock/orders.json'));
-        return ordersReady;
-      };
-
-      var getBatches = function() {
-        return handleResponses($http.get(baseUrl + 'batches/'));
-      };
-
-      var getDishes = function() {
-        return handleResponses($http.get(baseUrl + 'dishes/'));
-      };
-
-      var addDish = function(dish) {
-        return handleResponses($http.post(baseUrl + 'dishes/', dish)).then(getDishes);
-      };
-
-
-      var deleteDish = function(dish) {
-        return handleResponses($http.delete(baseUrl + 'dishes/' + dish.id + '/'));
-      };
-
-
-      var addBatch = function(batch) {
-        return handleResponses($http.post(baseUrl + 'batches/', batch)).then(getBatches);
-      };
-
-      var removeBatchAvailablePortions = function(batch) {
-        //FIXME remove this and call the service
-        return $q.all([getBatches(), wait(300)])
-          .then(function(values) {
-            var batches = values[0];
-            var i = _.findIndex(batches, {'dishId': batch.dishId, 'price': batch.price});
-            if (i >= 0) {
-              var localBatch = batches[i];
-              localBatch.quantity = localBatch.quantityOrdered;
-              //will remove current batch if empty
-              if (localBatch.quantity === 0) {
-                batches.splice(i, 1);
-              }
-            }
-
-            return batches;
-          });
-
-        //return handleResponses($http.delete(baseUrl + 'batches/' + batch.id)).then(getBatches);
-      };
-
-      var getChefData = function() {
-        //TODO read this from server!!
-        var chefData = {
-          maxPrice: 100,
-          maxQuantity: 25,
-          maxBatches: 3
+        return {
+            chefReady: chefReady,
+            reloadChef: reloadChef,
+            invalidateChef: invalidateChef,
+            getOrders: getOrders,
+            getBatches: getBatches,
+            addBatch: addBatch,
+            deleteBatch: deleteBatch,
+            getChefData: getChefData,
+            getChef: getChef,
+            getChefDetails: getChefDetails,
+            cancelOrder: cancelOrder,
+            notifyDelivered: notifyDelivered,
+            saveChefData: saveChefData
         };
-        return $q.when(chefData);
-      };
 
-      var getChefInfo = function(chefId) {
-        return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/'));
-      };
 
-      var setChefBio = function(chefId, bio) {
-        return handleResponses($http.patch(baseUrl + 'chefs/' + chefId + '/', {user: chefId, bio: bio}));
-      };
+        function handleResponses(httpPromise) {
+            return httpPromise.then(function(response) {
+                return response.data;
+            });
+        }
 
-      var isDishesTutorialDone = function() {
-        var tutorialDone = CacheService.getValue('dishesTutorialDone') === true;
-        return $q.when(tutorialDone);
-      };
+        function getOrders() {
+            return handleResponses($http.get(baseUrl + 'orders/current_orders/'));
+        }
 
-      var setDishesTutorialDone = function() {
-        CacheService.setValue({'dishesTutorialDone': true});
-        return $q.when();
-      };
+        function getBatches() {
+            return handleResponses($http.get(baseUrl + 'batches/'));
+        }
 
-      return {
-        getOrders: getOrders,
-        getBatches: getBatches,
-        getDishes: getDishes,
-        addDish: addDish,
-        deleteDish: deleteDish,
-        addBatch: addBatch,
-        removeBatchAvailablePortions: removeBatchAvailablePortions,
-        getChefData: getChefData,
-        getChefInfo: getChefInfo,
-        setChefBio: setChefBio,
-        isDishesTutorialDone: isDishesTutorialDone,
-        setDishesTutorialDone: setDishesTutorialDone
-      };
-    }]
-);
+        function addBatch(batch) {
+            return handleResponses($http.post(baseUrl + 'batches/', batch));
+        }
+
+        function deleteBatch(batch) {
+            return handleResponses($http.post(baseUrl + 'batches/' + batch.id + '/deactivate_batch/'));
+        }
+
+        function getChefData() {
+            return handleResponses($http.get(baseUrl + 'chefs/chef_config/'));
+        }
+
+        function getChef() {
+            return chef;
+        }
+
+        function chefReady() {
+            return chefDeferred.promise;
+        }
+
+        function getChefDetails(chefId) {
+            return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/get_chef_details/'));
+        }
+
+        function cancelOrder(orderId) {
+            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {id: orderId}));
+        }
+
+        function notifyDelivered(orderId) {
+            return handleResponses($http.post(baseUrl + 'chefs/notify_delivered_order/', {orderId: orderId}));
+        }
+
+        function saveChefData(data) {
+            data.phone_number = serializePhone(data.phone_number);
+            return handleResponses($http.patch(baseUrl + 'chefs/' + chef.id + '/', data)).then(handleChef);
+        }
+
+
+        function serializePhone(phone) {
+            if (phone && (phone + '').indexOf('1') !== 0) {
+                return '1' + phone;
+            }
+            return phone;
+        }
+
+        function deserializePhone(phone) {
+            var res = parseInt(phone, 10);
+            if (isNaN(res)) {
+                return '';
+            }
+            return res;
+        }
+
+        function reloadChef(user) {
+            return handleResponses($http.get(baseUrl + 'users/' + user.id + '/get_chef/')).then(handleChef).catch(invalidateChef);
+        }
+
+        function invalidateChef() {
+            return handleChef();
+        }
+
+        function handleChef(newChef) {
+            setChef(newChef);
+            CacheService.setValue({chef: chef});
+            chefDeferred.resolve(chef);
+            return chef;
+        }
+
+        function setChef(newChef) {
+            newChef = newChef || {};
+            _.forEach(chef, function(val, key) {
+                if (!newChef.hasOwnProperty(key)) {
+                    chef[key] = undefined;
+                    delete chef[key];
+                }
+            });
+            if (!_.isEmpty(newChef)) {
+                newChef.phone_number = deserializePhone(newChef.phone_number);
+                _.assign(chef, newChef);
+            }
+        }
+    }
+})();

@@ -1,0 +1,27 @@
+.tutorial {
+  .title {
+    font-size: 22px;
+    margin: 40px 10px 20px 10px;
+    text-align: center;
+  }
+  .instructions {
+    text-align: center;
+    padding: 10px;
+
+    img {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .message {
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .button {
+      margin-top: 40px;
+    }
+  }
+
+}
+

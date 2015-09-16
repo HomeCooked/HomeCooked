@@ -1,55 +1,108 @@
 <ion-view title="Become a chef!" hide-back-button="true">
     <ion-content class="has-header">
         <form novalidate class="list" name="enrollForm">
-
-            <div class="hc-image-container">
-                <div class="button button-positive button-clear button-block hc-button-upload">
-                    Upload Image
-                    <input type="file" name="picture" required accept="image/*" ng-model="vm.form.picture"
-                           base-sixty-four-input/>
-                </div>
-                <img ng-if="vm.form.picture"
-                     ng-src="data:{{vm.form.picture.filetype}};base64,{{vm.form.picture.base64}}"
-                     height="180">
-            </div>
-            <label class="item item-input item-stacked-label">
+            <image-crop class="hc-image-container" input-name="picture" result="vm.form.picture"></image-crop>
+            <label class="item item-input item-floating-label">
                 <span class="input-label">First name</span>
                 <input type="text" name="first_name" placeholder="First name" required ng-minlength="2"
                        ng-maxlength="50" ng-model="vm.form.first_name">
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-floating-label">
                 <span class="input-label">Last name</span>
-                <input type="text" name="last_name" placeholder="Last name" required ng-minlength="2" ng-maxlength="50"
-                       ng-model="vm.form.last_name">
+                <input type="text" name="cardholder_name" placeholder="Last name" required ng-minlength="2"
+                       ng-maxlength="50" ng-model="vm.form.last_name">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Date of birth</span>
                 <input type="date" name="dob" required ng-minlength="10" ng-maxlength="10" ng-model="vm.form.dob">
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-floating-label">
                 <span class="input-label">Email</span>
                 <input type="email" name="email" placeholder="Email" required ng-model="vm.form.email">
-                <span ng-show="enrollForm.email.$dirty && enrollForm.email.$invalid">This is not a valid email.</span>
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-floating-label">
                 <span class="input-label">Phone</span>
-                <input type="text" name="phone_number" placeholder="Phone" required ng-minlength="5" ng-maxlength="15"
+                <input type="tel" name="phone_number" placeholder="Phone" required ng-minlength="10"
+                       ng-maxlength="11"
                        ng-model="vm.form.phone_number">
             </label>
-            <label class="item item-input item-stacked-label">
+            <label class="item item-input item-floating-label">
                 <span class="input-label">Social Security Number</span>
-                <input type="text" name="ssn" placeholder="SSN" required ng-minlength="9" ng-maxlength="9"
+                <input type="tel" name="ssn" placeholder="Social Security Number" required ng-minlength="9"
+                       ng-maxlength="9"
                        ng-model="vm.form.ssn">
+                <label class="subdued">(we will perform background verification)</label>
             </label>
+
+            <h4 class="padding-top padding-left">Address</h4>
+
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Line 1</span>
+                <input type="text" name="line1" placeholder="Line 1" required ng-minlength="2"
+                       ng-maxlength="50" ng-model="vm.form.address.line1"/>
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Line 2</span>
+                <input type="text" name="line2" placeholder="Line 2" ng-model="vm.form.address.line2"/>
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">City</span>
+                <input type="text" name="city" placeholder="City" required ng-minlength="2"
+                       ng-maxlength="50" ng-model="vm.form.address.city"/>
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Zipcode</span>
+                <input type="tel" name="zipcode" placeholder="Zipcode" required ng-minlength="5"
+                       ng-model="vm.form.address.zipcode"/>
+            </label>
+            <label class="item item-input item-select">
+                <span class="input-label">State</span>
+                <select name="state" ng-model="vm.form.address.state">
+                    <option ng-repeat="state in vm.states" value="{{::state}}">{{::state}}</option>
+                </select>
+                <input type="hidden" ng-model="vm.form.address.state" required minlength="1">
+            </label>
+
+            <h4 class="padding-top padding-left">Payment information</h4>
+
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Address</span>
-                <input type="text" name="address" placeholder="Address, city, zipcode" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.address" g-places-autocomplete force-selection="true">
+                <span class="input-label">Debit Card Number</span>
+                <input type="tel" ng-model="vm.form.card.number" placeholder="1234 1234 1234 1234" payments-format="card"
+                       payments-validate="card" name="card"
+                       ng-minlength="1"/>
+                <label class="subdued">(so we can pay you!)</label>
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Expiration</span>
+                <input type="tel" ng-model="vm.form.card.expiry" placeholder="11/16" payments-format="expiry"
+                       payments-validate="expiry" name="expiry"
+                       ng-minlength="1" ng-class="{'invalid-input' : enrollForm.expiry
+                        && enrollForm.expiry.$invalid}"/>
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">CVC</span>
+                <input type="tel" ng-model="vm.form.card.cvc" placeholder="123" payments-format="cvc"
+                       payments-validate="cvc"
+                       name="cvc"
+                       ng-minlength="1"/>
+            </label>
+
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Cardholder's name (as it appears on card)</span>
+                <input type="text" name="cardholder_name" placeholder="Cardholder's name (as it appears on card)"
+                       required ng-minlength="2"
+                       ng-maxlength="50" ng-model="vm.form.card.cardholder_name">
             </label>
 
             <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"
-                 ng-click="vm.enroll(vm.form)">Enroll
+                 ng-click="vm.enroll(enrollForm)">Enroll
             </div>
+
+            <p class="padding" align="center">By enrolling, you are accepting these
+                <a href ng-click="vm.openExternalLink('http://www.gohomecooked.com/terms.html')">Terms and
+                    Conditions</a></p>
         </form>
     </ion-content>
 </ion-view>

@@ -11,13 +11,12 @@
 
 
     /* display the user picture inside as a marker with a nice border + an arrow */
-    .marker { 
-        cursor:pointer;
+    .marker {
         background:#424242;
         border-radius:5px;
         padding:0px;
-        
-        &:after {  
+
+        &:after {
             content:"";
             position: absolute;
             bottom: -10px;
@@ -29,7 +28,7 @@
             width: 0;
         }
 
-        img { 
+        img {
             width:50px;
             height:50px;
             margin:5px;
@@ -47,7 +46,7 @@
     }
 
     /* display the currentuser marker with a nice pulse */
-    .currentUserMarker { 
+    .currentUserMarker {
         cursor:pointer;
         background: #2495BF;
         border-radius:50%;
@@ -66,7 +65,7 @@
             -webkit-animation-iteration-count: infinite;
             -webkit-animation-delay: 1.4s;
             box-shadow: 0 0 1px 1px #1B6D8C;
-            
+
             background-color: rgba(36,149,191,0.2);
         }
     }
@@ -81,7 +80,7 @@
          -webkit-transform: scale(1.2, 1.2);
         opacity: 0.0 !important; }
     }
- 
+
 
 }
 

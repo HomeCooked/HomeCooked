@@ -6,51 +6,86 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$timeout', '$ionicLoading', '$ionicPopup', 'mapService', 'SearchService', '_'];
+    SearchCtrl.$inject = ['$q', '$state', '$scope', '$ionicLoading', 'mapService', 'SearchService', 'LocationService', 'CacheService', 'HCModalHelper', 'HCMessaging', '_'];
 
-    function SearchCtrl($state, $timeout, $ionicLoading, $ionicPopup, mapService, SearchService, _) {
+    function SearchCtrl($q, $state, $scope, $ionicLoading, mapService, SearchService, LocationService, CacheService, HCModalHelper, HCMessaging, _) {
 
         var mapId = 'chefmap';
         var userLocation = null;
         var vm = this;
+        var tutorialPromise;
 
         vm.query = '';
         vm.visible = false;
         vm.chefs = [];
-        vm.goToPreview = goToPreview;
+        vm.isListVisible = false;
+        vm.toggleListMap = toggleListMap;
 
-        activate();
+        //init the map
+        initMapProperties();
+        $scope.$watch(function() {
+            return LocationService.getCurrentLocation();
+        }, onLocationChange);
 
-        function activate() {
-            //init the map
-            initMapProperties();
-            //retrieve chefs
-            getChefs({
-                latitude: vm.map.center.lat,
-                longitude: vm.map.center.lng,
+        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+        $scope.$on('$ionicView.afterEnter', onAfterEnter);
+
+        function onBeforeEnter() {
+            vm.isListVisible = false;
+            tutorialPromise = $q.when();
+            if (!CacheService.getWelcomeTutorialComplete()) {
+                $ionicLoading.hide();
+                tutorialPromise = HCModalHelper.showTutorial('welcome').then(CacheService.setWelcomeTutorialComplete);
+            }
+        }
+
+        function onAfterEnter() {
+            // fixes rendering issues of the map
+            window.ionic.trigger('resize');
+            tutorialPromise.finally(function() {
+                getChefs({
+                    latitude: vm.map.center.lat,
+                    longitude: vm.map.center.lng
+                });
             });
-
-            //center the map on user location
-            $timeout(function() {
-                navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError);
-            }, 500);
         }
 
         function getChefs(location) {
-            SearchService.getChefs(location).then(setChefs);
+            $ionicLoading.show();
+            SearchService.getChefs(location)
+                .then(setChefs)
+                .catch(HCMessaging.showError);
         }
 
         function setChefs(chefs) {
             vm.chefs = chefs;
-            displayMarkers();
+            updateChefsDistance();
+            displayMarkers(true);
+            if (!vm.isListVisible && _.isEmpty(chefs)) {
+                $ionicLoading.show({
+                    template: 'No chefs currently available',
+                    duration: 1500
+                });
+            }
+            else {
+                $ionicLoading.hide();
+            }
         }
 
-        function onLocationSuccess(position) {
-            userLocation = position.coords;
-            displayMarkers();
+        function onLocationChange(location) {
+            var fit = !userLocation && !!location;
+            userLocation = location;
+            updateChefsDistance();
+            displayMarkers(fit);
         }
 
-        function displayMarkers() {
+        function updateChefsDistance() {
+            _.forEach(vm.chefs, function(chef) {
+                chef.distance = LocationService.getDistanceFrom(chef.location);
+            });
+        }
+
+        function displayMarkers(fit) {
             var markers = _.chain(vm.chefs)
                 .filter(function(chef) {
                     return _.isObject(chef.location);
@@ -62,9 +97,9 @@
             }
             if (_.size(markers)) {
                 mapService.addMarkers(mapId, markers);
-                $timeout(function() {
+                if (fit) {
                     mapService.fitMarkers(mapId);
-                }, 100);
+                }
             }
         }
 
@@ -73,7 +108,7 @@
                 '<span class="badge">' + chef.num_active_dishes + '</span>';
 
             var onClickFn = function() {
-                goToPreview(parseInt(this.options.icon.options.id));
+                goToPreview(parseInt(chef.id));
             };
 
             return {
@@ -100,13 +135,6 @@
             };
         }
 
-        function onLocationError() {
-            $ionicPopup.alert({
-                title: 'Error',
-                template: 'Unable to retrieve your location'
-            });
-        }
-
         function initMapProperties() {
             mapService.initMap(mapId);
             vm.map = {
@@ -116,7 +144,7 @@
                     doubleClickZoom: true,
                     scrollWheelZoom: true,
                     dragging: true,
-                    touchZoom: true,
+                    touchZoom: true
                 },
                 tiles: {
                     url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
@@ -141,6 +169,10 @@
 
         function goToPreview(chefId) {
             return $state.go('app.chef-preview', {id: chefId});
+        }
+
+        function toggleListMap() {
+            vm.isListVisible = !vm.isListVisible;
         }
     }
 })();

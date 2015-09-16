@@ -5,52 +5,35 @@
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$scope', '$state', '$timeout', '$ionicPlatform',
-        '$ionicPopup', '$ionicLoading', '$ionicHistory', 'LoginService'];
+    SettingsCtrl.$inject = ['$window', '$scope', '$state', '$ionicPlatform',
+        '$ionicPopup', '$ionicHistory', 'LoginService', 'ChefService', 'HCModalHelper', 'ENV'];
 
-    function SettingsCtrl($scope, $state, $timeout, $ionicPlatform,
-        $ionicPopup, $ionicLoading, $ionicHistory, LoginService) {
+    function SettingsCtrl($window, $scope, $state, $ionicPlatform,
+                          $ionicPopup, $ionicHistory, LoginService, ChefService, HCModalHelper, ENV) {
 
         var vm = this;
-        vm.onChange = onChange;
-        vm.onSave = onSave;
+        vm.version = ENV.version;
         vm.openExternalLink = openExternalLink;
         vm.openRatingLink = openRatingLink;
         vm.confirmLogout = confirmLogout;
+        vm.showUpdatePayment = showUpdatePayment;
+        vm.showUpdateEmail = showUpdateEmail;
+        vm.showUpdatePhone = showUpdatePhone;
 
-        $scope.$on('$ionicView.beforeEnter', function() {
-          vm.user = LoginService.getUser();
+        $scope.$watch(function() {
+            return LoginService.getChefMode();
+        }, function(chefMode) {
+            vm.user = chefMode ? ChefService.getChef() : LoginService.getUser();
         });
 
-        function updateUserProperties() {
-            if (vm.userPropertiesChanged) {
-                $ionicLoading.show({
-                    template: 'Saving...'
-                });
-                $timeout(function() {
-                    //API CALL
-                    console.log(vm.user);
-                    $ionicLoading.hide();
-                    $ionicHistory.goBack();
-                }, 1500);
-            }
-        }
-
-        function onSave() {
-            updateUserProperties();
-        }
-
-        function onChange() {
-            vm.userPropertiesChanged = true;
-        }
-
         function openRatingLink() {
-            var link = $ionicPlatform.is('android') ? 'market://details?id=' : 'itms://itunes.apple.com/app/';
+            var link = $ionicPlatform.is('android') ? 'market://details?id=com.homecooked.app' : 'itms://itunes.apple.com/app/homecooked/id1027256050';
             return openExternalLink(link);
         }
 
         function openExternalLink(link) {
-            return window.open(link, '_system');
+            $window.open(link, '_system');
+            return true;
         }
 
         function confirmLogout() {
@@ -59,15 +42,27 @@
                 template: 'Signing out will remove your HomeCooked data from this device. Do you want to sign out?'
             });
             confirmPopup.then(function(res) {
-                if(res) {
+                if (res) {
                     LoginService.logout();
                     $ionicHistory.nextViewOptions({
                         historyRoot: true,
                         disableAnimate: true
                     });
-                    $state.go('zipcode-validation');
+                    $state.go('app.buyer');
                 }
             });
+        }
+
+        function showUpdatePayment() {
+            HCModalHelper.showUpdatePayment();
+        }
+
+        function showUpdateEmail() {
+            HCModalHelper.showUpdateEmail();
+        }
+
+        function showUpdatePhone() {
+            HCModalHelper.showUpdatePhoneNumber();
         }
     }
 

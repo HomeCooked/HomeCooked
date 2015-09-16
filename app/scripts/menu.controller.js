@@ -5,43 +5,41 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$rootScope', '$scope', '$state', '$ionicHistory', '$ionicModal', '$ionicSideMenuDelegate', 'LoginService', '_'];
+    MenuCtrl.$inject = ['$scope', '$state', '$ionicHistory', '$ionicSideMenuDelegate', 'LoginService', 'ChefService', 'HCModalHelper', '_'];
 
-    function MenuCtrl($rootScope, $scope, $state, $ionicHistory, $ionicModal, $ionicSideMenuDelegate, LoginService, _) {
+    function MenuCtrl($scope, $state, $ionicHistory, $ionicSideMenuDelegate, LoginService, ChefService, HCModalHelper, _) {
 
         var vm = this;
-        vm.login = login;
-        vm.switchView = switchView;
-        vm.go = go;
 
         var chefLinks = [{
-            name: 'My dishes',
+            name: 'My Menu',
+            icon: 'ion-pizza',
             path: 'app.dishes'
         }, {
-            name: 'My Batches',
-            path: 'app.seller'
-        }, {
             name: 'Edit Bio',
+            icon: 'ion-person',
             path: 'app.bio'
         }];
 
         var buyerLinks = [{
             name: 'Find local chefs',
+            icon: 'ion-ios-location',
             path: 'app.buyer'
         }, {
-            name: 'My Order',
+            name: 'My Orders',
+            icon: 'ion-ios-cart',
             path: 'app.orders'
-        }, {
-            name: 'Payment methods',
-            path: 'app.settings-payment'
         }];
-        var becomeChefLink = {
-            name: 'Become a chef!',
-            path: 'app.enroll'
-        };
 
         // will be same instance during all the session
         var user = LoginService.getUser();
+        var chef = ChefService.getChef();
+
+        vm.login = login;
+        vm.chefMode = LoginService.getChefMode();
+        vm.switchView = switchView;
+        vm.go = go;
+        vm.showUpdatePayment = showUpdatePayment;
 
         init();
         $scope.$on('$stateChangeStart', onStateChanged);
@@ -51,22 +49,29 @@
         }, init);
 
         $scope.$watch(function() {
-            return user.is_chef;
+            return user.has_pending_reviews;
+        }, init);
+
+        $scope.$watch(function() {
+            return chef.id;
         }, init);
 
         function init() {
             vm.isUserLoggedIn = user.isLoggedIn === true;
             $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
             vm.userFirstName = user.first_name || '';
-            vm.isChef = user.is_chef;
-            _.remove(buyerLinks, becomeChefLink);
-            if (!vm.isChef) {
-                buyerLinks.push(becomeChefLink);
-            }
+            vm.isChef = chef.id >= 0;
+            vm.hasPendingReviews = user.has_pending_reviews;
             updateStateIfNeeded($state.current);
         }
 
         function getCorrectPath(path) {
+            if (vm.hasPendingReviews) {
+                return 'app.pending-reviews';
+            }
+            else if (path === 'app.pending-reviews') {
+                path = 'app.buyer';
+            }
             if (vm.isChef && path === 'app.enroll') {
                 return chefLinks[0].path;
             }
@@ -87,7 +92,7 @@
             var path = state.name;
             var correctPath = getCorrectPath(path);
             if (path !== correctPath) {
-                $state.go(correctPath);
+                go(correctPath);
                 return true;
             }
 
@@ -101,6 +106,7 @@
             // if one of the main links, and if not settings
             if ((chefMode || buyerMode) && path !== 'app.settings') {
                 vm.chefMode = chefMode;
+                LoginService.setChefMode(chefMode);
             }
             vm.links = vm.chefMode ? chefLinks : buyerLinks;
 
@@ -114,8 +120,14 @@
         }
 
         function switchView() {
-            var path = vm.chefMode ? chefLinks[0].path : buyerLinks[0].path;
-            vm.go(path);
+            vm.chefMode = !vm.chefMode;
+            vm.links = vm.chefMode ? chefLinks : buyerLinks;
+            LoginService.setChefMode(vm.chefMode);
+            if ($state.current.name !== 'app.settings') {
+                _.delay(function() {
+                    go(vm.chefMode ? chefLinks[0].path : buyerLinks[0].path);
+                }, 300);
+            }
         }
 
         function go(path) {
@@ -126,27 +138,12 @@
             $state.go(path);
         }
 
+        function showUpdatePayment() {
+            HCModalHelper.showUpdatePayment();
+        }
+
         function login() {
-            if (!vm.modal) {
-                var modalScope = $rootScope.$new();
-                $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
-                    animation: 'slide-in-up',
-                    scope: modalScope
-                }).then(function(modal) {
-                    vm.modal = modal;
-                    vm.modal.show();
-                });
-                modalScope.closeModal = function() {
-                    vm.modal.hide();
-                    init();
-                };
-                $scope.$on('$destroy', function() {
-                    vm.modal.remove();
-                });
-            }
-            else {
-                vm.modal.show();
-            }
+            HCModalHelper.showSignup();
         }
     }
 })();

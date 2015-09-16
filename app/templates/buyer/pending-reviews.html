@@ -1,0 +1,18 @@
+<ion-view title="Pending Reviews" hide-back-button="true">
+    <ion-content>
+        <div class="list card">
+            <div class="item item-avatar" ng-repeat="dish in vm.dishes" href ng-click="vm.showModal(dish)">
+                <img ng-src="{{dish.picture && dish.picture.length ? dish.picture : 'images/logo.png'}}">
+
+                <h2>{{::dish.title}}</h2>
+
+                <p>{{::dish.description}}</p>
+
+                <p>{{::dish.portions}} portion(s)</p>
+                <span class="item-note">{{dish.delivery_time | amTimeAgo}}</span>
+
+                <span class="item-right">{{dish.cost}} $</span>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

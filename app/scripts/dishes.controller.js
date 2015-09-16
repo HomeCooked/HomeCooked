@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$q', '$rootScope', '$stateParams', '$scope', '$ionicModal', '$ionicLoading', '$ionicScrollDelegate', 'ChefService', 'LoginService', 'HCMessaging', '_'];
-    function DishesCtrl($q, $rootScope, $stateParams, $scope, $ionicModal, $ionicLoading, $ionicScrollDelegate, ChefService, LoginService, HCMessaging, _) {
+    DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicHistory', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'LoginService', 'HCMessaging', 'HCModalHelper', '_'];
+    function DishesCtrl($rootScope, $scope, $ionicHistory, $state, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, LoginService, HCMessaging, HCModalHelper, _) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -15,14 +15,15 @@
         vm.hideModal = hideModal;
         vm.addDish = addDish;
         vm.deleteDish = deleteDish;
+        vm.go = go;
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
         $scope.$on('$destroy', onDestroy);
 
         function addDish(dish, form) {
-            dish.picture = dish.picture.base64;
+            document.activeElement.blur();
             $ionicLoading.show({template: 'Adding dish...'});
-            ChefService.addDish(dish)
+            DishesService.addDish(dish)
                 .then(function added(dishes) {
                     modalScope.dish = getEmptyDish();
                     form.$setPristine();
@@ -33,9 +34,27 @@
                 .finally($ionicLoading.hide);
         }
 
-        function deleteDish(dish) {
+        function deleteDish(dish, $event) {
+            if ($event) {
+                $event.stopPropagation();
+                $event.preventDefault();
+            }
+            $ionicPopup.confirm({
+                title: dish.title,
+                template: 'Do you want to delete this dish?<br>You will loose all the reviews',
+                cancelText: 'No',
+                okText: 'Yes, Delete',
+                okType: 'button-assertive'
+            }).then(function(res) {
+                if (res) {
+                    doDeleteDish(dish);
+                }
+            });
+        }
+
+        function doDeleteDish(dish) {
             $ionicLoading.show({template: 'Deleting dish...'});
-            ChefService.deleteDish(dish)
+            DishesService.deleteDish(dish)
                 .then(function deleted() {
                     _.remove(vm.dishes, dish);
                 })
@@ -67,57 +86,36 @@
         }
 
         function getEmptyDish() {
-            return {user: LoginService.getUser().id};
-        }
-
-        function showTutorial() {
-            var tutorialModal,
-                tutorialScope = $rootScope.$new();
-            tutorialScope.step = 0;
-            tutorialScope.next = function() {
-                scrollTop();
-                tutorialScope.step++;
-                if (tutorialScope.step === 2) {
-                    tutorialModal.remove();
-                    tutorialModal = undefined;
-                    tutorialScope.$destroy();
-                    ChefService.setDishesTutorialDone();
-                }
-            };
-            $ionicModal.fromTemplateUrl('templates/dishes-tutorial.html', {
-                scope: tutorialScope
-            }).then(function(m) {
-                tutorialModal = m;
-                tutorialModal.show();
-            });
-        }
-
-        function scrollTop() {
-            // TODO use $getByHandle once fixed in ionic
-            var handle = _.find($ionicScrollDelegate._instances, function(s) {
-                return s.$$delegateHandle === 'dishesTutorialContent';
-            });
-            handle.scrollTop();
+            return {user: vm.chefId};
         }
 
         function onBeforeEnter() {
+            vm.chefId = LoginService.getUser().id;
             modalScope.dish = getEmptyDish();
 
-            $ionicLoading.show({template: 'Getting dishes...'});
-            $q.all([ChefService.getDishes(), ChefService.isDishesTutorialDone()])
-                .then(function(values) {
-                    var dishes = values[0],
-                        tutorialDone = values[1];
+            checkTutorial();
+
+            $ionicLoading.show();
+            DishesService.getDishes()
+                .then(function(dishes) {
                     vm.dishes = dishes;
-                    if (_.size(dishes) === 0 && !tutorialDone) {
-                        showTutorial();
-                    }
-                    if ($stateParams.v === 'new') {
+                    if ($state.params.v === 'new') {
                         showModal();
                     }
                 })
                 .catch(HCMessaging.showError)
                 .finally($ionicLoading.hide);
+        }
+
+        function checkTutorial() {
+            ChefService.chefReady()
+                .then(function(chef) {
+                    if (!chef.dishes_tutorial_completed) {
+                        HCModalHelper.showTutorial('dishes').then(function() {
+                            return ChefService.saveChefData({dishes_tutorial_completed: true});
+                        });
+                    }
+                });
         }
 
         function onDestroy() {
@@ -126,6 +124,14 @@
                 modal = undefined;
                 modalScope.$destroy();
             }
+        }
+
+        function go(path) {
+            $ionicHistory.nextViewOptions({
+                historyRoot: true,
+                disableAnimate: true
+            });
+            $state.go(path);
         }
     }
 })();

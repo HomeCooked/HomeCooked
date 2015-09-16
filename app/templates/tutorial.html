@@ -1,0 +1,22 @@
+<div class="modal tutorial">
+    <ion-content scroll="false">
+        <ion-slide-box style="height: 100%;">
+            <ion-slide ng-repeat="step in steps">
+                <ion-scroll zooming="false" style="height: 100%;">
+                    <h1 class="title">{{::step.title}}</h1>
+
+                    <div class="instructions">
+                        <img ng-src="{{::step.image}}"/>
+
+                        <div class="message" ng-bind-html="::step.message"></div>
+                        <a class="button button-block button-positive icon-right ion-ios-checkmark-empty"
+                           ng-if="$index===steps.length-1" ng-click="tutorialDone()">
+                            Got it!
+                        </a>
+                    </div>
+                </ion-scroll>
+            </ion-slide>
+        </ion-slide-box>
+    </ion-content>
+</div>
+

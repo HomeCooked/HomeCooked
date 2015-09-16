@@ -1,0 +1,27 @@
+reviews-rating {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  &.read-only {
+    pointer-events: none;
+  }
+  .count {
+    padding: 0 2px;
+  }
+  ul.rating li {
+    display: inline;
+    white-space: nowrap;
+    border: 0px;
+    background: none;
+    padding: 2px;
+    i {
+      font-size: 16px;
+    }
+  }
+  ul.rating li:first-child {
+    padding-left: 0;
+  }
+  ul.rating li:last-child {
+    padding-right: 0;
+  }
+}

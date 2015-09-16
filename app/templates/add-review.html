@@ -1,0 +1,29 @@
+<div class="modal add-review">
+    <ion-header-bar>
+        <h1 class="title">Write a Review</h1>
+
+        <div class="button button-clear" ng-click="vm.hideModal()">Cancel</div>
+    </ion-header-bar>
+    <ion-content>
+        <form novalidate class="list" name="reviewForm">
+            <div class="item item-input item-stacked-label">
+                <label class="input-label">Score</label>
+                <div>
+                    <reviews-rating score="review.score" read-only="false"></reviews-rating>
+                </div>
+            </div>
+            <div class="item item-input item-stacked-label">
+                <label class="input-label">Comments</label>
+                <textarea ng-model="review.comment" placeholder="How was the food?" rows="4"></textarea>
+            </div>
+
+            <div class="item button-bar">
+                <div class="button button-positive" ng-click="vm.addReview(review, reviewForm)"
+                     ng-disabled="reviewForm.$invalid">
+                    Send
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</div>
+

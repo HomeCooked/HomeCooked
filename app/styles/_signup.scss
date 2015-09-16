@@ -4,53 +4,11 @@
     $color-border-email-btn: #4A6D80;
     $light-radius: 4px;
 
-    p.text {
+    p {
         text-align: center;
-        margin: 10px auto;
     }
-    .signup-btns{ 
-        width: 90%;
-        margin: 0 auto;
-        .btn{
-            display:block; 
-            margin: 1em auto; 
-            height:49px;
-            line-height: 49px;
-            text-align: center;
-            color: white;
-            font-size: 100%; 
-            vertical-align: middle;
-
-            .btn-icon,
-            .btn-text{
-                float:left;
-                line-height: 49px;
-                height: 49px;
-                text-shadow: 1px 1px 1px $color-text-shadow;
-                @include box-sizing(border-box);
-            }
-                
-            .btn-icon{ 
-                width:15%;
-                @include border-top-left-bottom(1px, $color-border-fb-btn);
-                @include radius-left($light-radius);
-                @include gradient(#444, #666, #555, 10%, #444, #333, 51%);  
-
-                i {
-                    font-size: 200%; 
-                }
-            }
-
-            .btn-text{
-                width:85%;
-                font-size: 110%;
-                @include radius-right($light-radius); 
-            } 
-            .fb-btn-text {
-                @include gradient(#5c7bb4, #6885bf, #6381b8, 10%, #5173b0, #3f65a3, 51%);  
-                @include border-top-right-bottom(1px, $color-border-fb-btn);
-            }
-        }
+    p > a {
+        margin-top: 10px;
     }
 }
 

@@ -12,8 +12,9 @@ plugins
 *.swo
 *.log
 *.DS_Store
-
+build-android.sh
 .idea/*
+build/*
 parse/cloud/*
 parse/public/*
 

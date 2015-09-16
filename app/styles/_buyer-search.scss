@@ -13,19 +13,20 @@
     }
 
 }
-.buyer-search-preview{
+
+.buyer-search-preview {
     background: #efefef;
 
     .preview {
         width: 100%;
         position: relative;
         text-align: center;
-        padding: 20px 0;
+        padding: 25px 0;
         background: url(../images/preview.jpg) top right;
 
         .button-back {
             position: absolute;
-            top: 10px;
+            top: 25px;
             left: 10px;
             color: white;
             border-color: white;
@@ -76,22 +77,22 @@
     }
 
     .dishes-container {
-      text-align: center;
+        text-align: center;
     }
     .dish-card {
         cursor: pointer;
-        padding: 20px 10px 40px;
+        padding: 20px 10px;
         box-sizing: border-box;
         width: 100%;
-        max-width: 350px;
+        max-width: 320px;
         display: inline-block;
-        .dish-cover{
+        .dish-cover {
             position: relative;
+            min-height: 300px;
             .dish-price {
                 position: absolute;
                 top: 10px;
                 right: 10px;
-                min-width: 74px;
                 text-align: right;
                 background-color: rgba(255, 255, 255, 0.95);
                 padding: 10px;
@@ -100,24 +101,18 @@
             }
             img {
                 width: 100%;
+                display: block;
+                margin-bottom: 10px;
             }
         }
         .dish-details {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            .rating {
-                text-align: center;
-                font-size: 90%;
-                span {
-                    font-size: 115%;
-                }
+            reviews-rating {
+                float: right;
+                text-align: right;
             }
             .title {
-                flex-grow: 2;
-                text-align: center;
-                span{
+                text-align: left;
+                span {
                     font-weight: bold;
                 }
             }
@@ -131,13 +126,22 @@
     }
 }
 
-
 .buyer-dish-preview {
-    .image-container{
-      text-align: center;
-      img {
-        max-height: 200px;
-      }
+    .image-container {
+        padding: 16px;
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            min-height: 300px;
+        }
+    }
+    .dish-details {
+        padding: 0px 16px;
+    }
+
+    reviews-rating {
+        text-align: right;
     }
 
     div.title-price {

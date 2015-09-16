@@ -1,29 +1,48 @@
 <ion-view title="{{::vm.chef.first_name}} {{::vm.chef.last_name}}" class="buyer-search-preview" hide-nav-bar="true">
-    <ion-content has-bouncing="false">
+    <ion-content has-bouncing="false"
+                 ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
         <div class="preview">
             <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
+
             <h3>{{::vm.chef.first_name}} {{::vm.chef.last_name}}</h3>
-            <p>{{::vm.chef.distance}} away - ★ {{::vm.chef.rating}}</p>
-            <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.go('app.buyer')" >
+
+            <p class="padding">
+                <reviews-rating class="rating" score="::vm.chef.review_score"
+                                count="::vm.chef.review_count"></reviews-rating>
+            </p>
+            <p ng-if="vm.chef.distance">{{vm.chef.distance}} away</p>
+            <button class="button-back button button-icon button-outline ion-close-round" ng-click="vm.back()">
             </button>
         </div>
-        <div class="bio">
-            <blockquote>
-                {{::vm.chef.bio}}
-            </blockquote>
+        <div class="bio" ng-if="vm.chef.bio.length">
+            <blockquote>{{::vm.chef.bio}}</blockquote>
         </div>
         <div class="dishes-container">
-          <div class="dish-card" ng-repeat="dish in vm.chef.dishes" ng-click="vm.go('app.dish-preview', {id: vm.chef.id, dishId: dish.id})">
-              <div class="dish-cover">
-                  <img ng-src="{{::dish.picture}}" />
-                  <div class="dish-price">{{::dish.price}}</div>
-              </div>
-              <div class="dish-details">
-                  <div class="rating"><span>★★★★★</span><br />{{::dish.review_count}} reviews</div>
-                  <div class="title"><span>{{::dish.title}}</span><br />{{::dish.available_qty}} remaining at {{::dish.pickup_time}}</div>
-                  <div class="btn"><button class="button button-assertive">Details</button></div>
-              </div>
-          </div>
+            <p class="padding" align="center" ng-if="vm.chef.dishes.length===0">
+                No items on sale.
+            </p>
+
+            <div class="dish-card" ng-repeat="dish in vm.chef.dishes"
+                 ui-sref="app.dish-preview({id: vm.chef.id, dishId: dish.id})">
+                <div class="dish-cover">
+                    <img ng-src="{{::dish.picture}}"/>
+
+                    <div class="dish-price">{{::dish.price}} $</div>
+                </div>
+                <div class="dish-details">
+                    <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>
+                    <div class="title">
+                        <span>{{::dish.title}}</span><br/>
+                        {{::dish.remaining}} remaining<br>
+                        {{::dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{::dish.end_time
+                        | amDateFormat:'ha'}})
+                    </div>
+                </div>
+            </div>
         </div>
     </ion-content>
+    <div class="bar bar-footer bar-positive button-bar"
+         ng-if="vm.checkoutInfo.portions && vm.checkoutInfo.portions.length">
+        <button class="button button-clear" ng-click="vm.checkout()">Checkout</button>
+    </div>
 </ion-view>

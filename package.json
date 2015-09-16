@@ -50,21 +50,36 @@
     "test": "grunt test"
   },
   "cordovaPlugins": [
-    "cordova-plugin-splashscreen",
-    "cordova-plugin-whitelist",
-    "com.ionic.keyboard",
-    "cordova-plugin-console",
-    "cordova-plugin-geolocation",
-    "cordova-plugin-statusbar",
-    "https://github.com/Wizcorp/phonegap-facebook-plugin.git",
     "cordova-plugin-whitelist@^1.0.0",
     "cordova-plugin-console@^1.0.1",
-    "cordova-plugin-statusbar@^1.0.1",
     "cordova-plugin-geolocation@^1.0.1",
-    "cordova-plugin-splashscreen@^2.1.0"
+    "cordova-plugin-statusbar@^1.0.1",
+    "cordova-plugin-splashscreen@^2.1.0",
+    {
+      "locator": "https://github.com/Wizcorp/phonegap-facebook-plugin.git",
+      "id": "com.phonegap.plugins.facebookconnect",
+      "variables": {
+        "APP_ID": "805673482820123",
+        "APP_NAME": "HomeCooked"
+      }
+    },
+    {
+      "locator": "https://github.com/phonegap-build/PushPlugin.git",
+      "id": "com.phonegap.plugins.PushPlugin"
+    },
+    "cordova-plugin-geolocation",
+    "org.apache.cordova.console",
+    "org.apache.cordova.device",
+    "org.apache.cordova.file",
+    "org.apache.cordova.inappbrowser",
+    {
+      "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
+      "id": "cordova-plugin-camera"
+    },
+    "org.apache.cordova.geolocation"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }

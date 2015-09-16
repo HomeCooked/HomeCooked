@@ -1,22 +1,21 @@
 'use strict';
 
 var HomeCooked = angular.module('HomeCooked', [
-    'ionic', 'ngAnimate', 'ngCordova', 'config', 'HomeCooked.controllers',
-    'leaflet-directive', 'angular-stripe', 'angularPayments', 'naif.base64', 'google.places']);
+    'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
+    'ionic.rating', 'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'jrCrop']);
 
-angular.module('HomeCooked.controllers', ['HomeCooked.services']);
 angular.module('HomeCooked.services', []);
+angular.module('HomeCooked.directives', []);
+angular.module('HomeCooked.controllers', ['HomeCooked.services', 'HomeCooked.directives']);
 
 HomeCooked
     .constant('_', window._) //lodash
     .config(function($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
     })
-    .config(function($stateProvider, $urlRouterProvider, $compileProvider, ENV, stripeProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
-
-        stripeProvider.setPublishableKey(ENV.STRIPE_KEY);
 
         $stateProvider
             .state('app', {
@@ -26,7 +25,7 @@ HomeCooked
                 controller: 'MenuCtrl as menuVm'
             })
             .state('app.buyer', {
-                url: '/buyer',
+                url: '/buyer/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/search.html',
@@ -35,7 +34,7 @@ HomeCooked
                 }
             })
             .state('app.chef-preview', {
-                url: '/chef/:id/preview',
+                url: '/chef/:id/preview/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/preview.html',
@@ -44,16 +43,16 @@ HomeCooked
                 }
             })
             .state('app.dish-preview', {
-                url: '/chef/:id/dish/:dishId',
+                url: '/chef/:id/dish/:dishId/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/dish-detail.html',
-                        controller: 'DishDetailCtrl as vm'
+                        controller: 'ChefPreviewCtrl as vm'
                     }
                 }
             })
             .state('app.dish-review', {
-                url: '/chef/:id/dish/:dishId/reviews',
+                url: '/chef/:id/dish/:dishId/reviews/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/dish-review.html',
@@ -62,15 +61,16 @@ HomeCooked
                 }
             })
             .state('app.orders', {
-                url: '/orders',
+                url: '/orders/',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/chef/orders.html'
+                        templateUrl: 'templates/buyer/orders.html',
+                        controller: 'OrdersCtrl as vm'
                     }
                 }
             })
             .state('app.enroll', {
-                url: '/enroll',
+                url: '/enroll/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/enroll.html',
@@ -97,7 +97,7 @@ HomeCooked
                 }
             })
             .state('app.bio', {
-                url: '/bio',
+                url: '/bio/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/chef/bio.html',
@@ -106,7 +106,7 @@ HomeCooked
                 }
             })
             .state('app.settings', {
-                url: '/settings',
+                url: '/settings/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/settings/settings.html',
@@ -114,35 +114,17 @@ HomeCooked
                     }
                 }
             })
-            .state('app.settings-email', {
-                url: '/settings/email',
+            .state('app.pending-reviews', {
+                url: '/pending-reviews/',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/settings/email.html',
-                        controller: 'SettingsCtrl as vm'
-                    }
-                }
-            })
-            .state('app.settings-phonenumber', {
-                url: '/settings/phonenumber',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/settings/phonenumber.html',
-                        controller: 'SettingsCtrl as vm'
-                    }
-                }
-            })
-            .state('app.settings-payment', {
-                url: '/settings/payment',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/settings/payment.html',
-                        controller: 'PaymentCtrl as vm'
+                        templateUrl: 'templates/buyer/pending-reviews.html',
+                        controller: 'PendingReviewsCtrl as vm'
                     }
                 }
             })
             .state('app.not-found', {
-                url: '/not-found',
+                url: '/not-found/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/not-found.html'
@@ -150,7 +132,7 @@ HomeCooked
                 }
             })
             .state('zipcode-validation', {
-                url: '/zipcode-validation',
+                url: '/zipcode-validation/',
                 templateUrl: 'templates/zipcode/form.html',
                 controller: 'ZipCodeRestrictionCtrl as vm'
             })
@@ -174,27 +156,32 @@ HomeCooked
             $state.go(nextState);
         });
     })
-    .run(function(LoginService) {
-        LoginService.init();
-    })
-    .run(function($ionicPlatform, ENV) {
+    .run(function($log, $ionicPlatform, ENV, NotificationService, LoginService) {
+        LoginService.reloadUser();
         $ionicPlatform.ready(function() {
-            if (window.cordova) {
+            $ionicPlatform.on('resume', function(event) {
+                $log.info('app resume event', event);
+                LoginService.reloadUser();
+            });
+
+            if (window.cordova && window.facebookConnectPlugin.browserInit) {
                 window.facebookConnectPlugin.browserInit(ENV.FACEBOOK_APP_ID, 'v2.2');
             }
-            else {
+            if (!window.cordova && window.openFB) {
                 window.openFB.init({
                     appId: ENV.FACEBOOK_APP_ID
                 });
             }
-            // Hide the accessory b ar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
+
             if (window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.disableScroll(true);
             }
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
+            }
+            if (window.cordova) {
+                NotificationService.register();
             }
         });
     });
