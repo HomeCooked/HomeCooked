@@ -31,8 +31,8 @@
                     <p>{{chef.bio}}</p>
 
                     <p style="font-size: 90%">{{chef.num_active_dishes}} items on sale</p>
-                    <reviews-rating style="font-size: 90%; text-align: left;" score="::chef.review_score" count="::chef.review_count"></reviews-rating>
                     <p style="font-size: 90%" ng-if="chef.distance">{{chef.distance}} away</p>
+                    <reviews-rating style="font-size: 90%; text-align: left;" score="::chef.review_score" count="::chef.review_count"></reviews-rating>
                     <i class="icon ion-ios-arrow-forward"></i>
                 </div>
             </div>
