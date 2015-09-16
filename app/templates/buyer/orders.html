@@ -1,5 +1,7 @@
-<ion-view title="My Orders" hide-back-button="true">
+<ion-view title="My Orders" hide-back-button="true" class="orders">
     <ion-content class="has-header">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="reload()">
+        </ion-refresher>
         <p class="padding" align="center" ng-if="!vm.activeOrders.length">
             You haven't placed any order yet.<br>
             <a ui-sref="app.buyer">Place one</a>
@@ -7,35 +9,45 @@
 
         <div class="list card" ng-repeat="order in vm.activeOrders">
 
-            <div class="item item-body">
-                <h2>{{::order.chef.first_name}} {{::order.chef.last_name}}</h2>
+            <div class="item item-thumbnail-left">
+                <img ng-src="{{order.chef.picture || 'images/user.png'}}">
 
-                <p>{{order.chef.address}}</p>
+                <h2>Chef {{::order.chef.first_name}} {{::order.chef.last_name}}</h2>
 
-                <p>{{order.chef.distance}} away - pickup {{order.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{order.end_time | amDateFormat:'ha'}})</p>
+                <p>{{::order.chef.phone_number}}</p>
 
-                <div class="map-container" style="height: 300px; pointer-events: none">
-                    <leaflet id="{{::order.mapId}}" defaults="::vm.map.defaults" tiles="::vm.map.tiles"
-                             center="::order.center"></leaflet>
-                </div>
+                <p class="wrap">{{order.chef.address}}</p>
+
+                <p class="wrap">Pickup {{order.start_time | amDateFormat:'ddd, MMM D (ha'}} to
+                    {{order.end_time | amDateFormat:'ha'}})</p>
             </div>
+
+            <!-- a ui-sref="app.dish-preview({id: order.chef.id, dishId: dish.id})"-->
             <div class="item item-avatar" ng-repeat="dish in order.dishes">
                 <img ng-src="{{dish.picture || 'images/logo.png'}}">
+                <span class="item-right">{{dish.cost}} $</span>
 
-                <h2>{{dish.title}}</h2>
+                <h3 class="wrap">{{dish.title}}</h3>
 
                 <p>{{dish.portions.length}} portion(s)</p>
-                <span class="item-right">{{dish.cost}} $</span>
             </div>
+
             <div class="item">
                 Total paid:
                 <span class="item-right">{{order.total_price}} $</span>
             </div>
-
-            <div class="button-bar">
-                <button class="button button-dark" ng-click="vm.notifyChef(order)">
+            <div class="item tabs button-bar">
+                <a href='tel:{{::order.chef.phone_number}}' class="button button-dark button-clear">
+                    <i class="icon ion-ios-telephone"></i>
+                    Call
+                </a>
+                <a class="button button-dark button-clear" ng-click="vm.notifyChef(order)">
                     <i class="icon ion-chatbox"></i>
-                    Notify chef I arrived!
+                    SMS
+                </a>
+                <button class="button button-dark button-clear" ng-click="vm.openMap(order.chef)">
+                    <i class="icon ion-ios-navigate"></i>
+                    Maps
                 </button>
             </div>
         </div>

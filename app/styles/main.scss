@@ -39,9 +39,10 @@ input.ng-dirty.ng-invalid {
 }
 
 .item .item-right {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  float: right;
+}
+.item .wrap {
+  white-space: normal;
 }
 
 .item-input.item-select {
