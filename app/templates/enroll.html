@@ -96,7 +96,7 @@
                        ng-maxlength="50" ng-model="vm.form.card.cardholder_name">
             </label>
 
-            <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid"
+            <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid || !vm.form.picture"
                  ng-click="vm.enroll(enrollForm)">Enroll
             </div>
 

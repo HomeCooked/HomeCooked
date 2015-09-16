@@ -2,118 +2,28 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('OrdersCtrl', OrdersCtrl);
 
-    OrdersCtrl.$inject = ['$scope', '$ionicLoading', 'LocationService', 'OrdersService', 'HCMessaging', 'mapService', '_'];
-    function OrdersCtrl($scope, $ionicLoading, LocationService, OrdersService, HCMessaging, mapService, _) {
-        var vm = this,
-            userLocation,
-            MAP_COUNT = 0;
+    OrdersCtrl.$inject = ['$scope', '$ionicLoading', 'OrdersService', 'HCMessaging'];
+    function OrdersCtrl($scope, $ionicLoading, OrdersService, HCMessaging) {
+        var vm = this;
 
         vm.activeOrders = [];
         vm.notifyChef = notifyChef;
+        vm.openMap = openMap;
+        $scope.reload = reload;
+        $scope.$on('$ionicView.beforeEnter', reload);
 
-        vm.map = {
-            defaults: {
-                zoomControl: false,
-                attributionControl: false,
-                doubleClickZoom: false,
-                scrollWheelZoom: false,
-                dragging: false,
-                touchZoom: false
-            },
-            tiles: {
-                url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
-                options: {
-                    subdomains: [0, 1, 2, 3],
-                    detectRetina: true,
-                    tileSize: 512,
-                    minZoom: 2,
-                    maxZoom: 21,
-                    reuseTiles: true,
-                    noWrap: true
-                }
-            },
-            markers: {}
-        };
-
-        $scope.$watch(function() {
-            return LocationService.getCurrentLocation();
-        }, onLocationChange);
-
-        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
-
-        function onBeforeEnter() {
+        function reload() {
             $ionicLoading.show();
-            OrdersService.getActiveOrders()
+            return OrdersService.getActiveOrders()
                 .then(function(orders) {
                     vm.activeOrders = orders;
-                    initMapProperties();
-                    updateChefsDistance();
-                    displayMarkers();
+                    $ionicLoading.hide();
                 })
                 .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
-        }
-
-        function initMapProperties() {
-            _.forEach(vm.activeOrders, function(order) {
-                order.center = {lat: order.chef.location.latitude, lng: order.chef.location.longitude, zoom: 14};
-                order.mapId = createMapId(order);
-                mapService.initMap(order.mapId);
-            });
-        }
-
-        function createMapId() {
-            return 'order-map-' + (MAP_COUNT++);
-        }
-
-        function onLocationChange(location) {
-            userLocation = location;
-            updateChefsDistance();
-            displayMarkers();
-        }
-
-        function updateChefsDistance() {
-            _.forEach(vm.activeOrders, function(order) {
-                order.chef.distance = LocationService.getDistanceFrom(order.chef.location);
-            });
-        }
-
-        function displayMarkers() {
-            _.forEach(vm.activeOrders, function(order) {
-                var markers = [getChefMarker(order.chef)],
-                    mapId = order.mapId;
-                if (userLocation) {
-                    markers.push(getUserMarker(userLocation));
-                }
-                mapService.addMarkers(mapId, markers);
-                mapService.fitMarkers(mapId);
-            });
-        }
-
-        function getChefMarker(chef) {
-            var html = '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>';
-
-            return {
-                id: chef.id + '_chef',
-                lat: chef.location.latitude,
-                lng: chef.location.longitude,
-                className: 'marker',
-                iconSize: [60, 60],
-                iconAnchor: [30, 68],
-                html: html
-            };
-        }
-
-        function getUserMarker(coords) {
-            return {
-                id: 'user',
-                lat: coords.latitude,
-                lng: coords.longitude,
-                className: 'currentUserMarker',
-                iconSize: [12, 12],
-                iconAnchor: [6, 6],
-                html: ''
-            };
+                .finally(function() {
+                    // Stop the ion-refresher from spinning
+                    $scope.$broadcast('scroll.refreshComplete');
+                });
         }
 
         function notifyChef(order) {
@@ -128,6 +38,11 @@
                 .catch(function() {
                     HCMessaging.showMessage('Too early!', 'Please wait for the scheduled pickup time.');
                 });
+        }
+
+        function openMap(chef) {
+            var url = 'https://www.google.com/maps?q=' + chef.address + '&center=' + chef.location.latitude + ',' + chef.location.longitude;
+            window.open(url, '_system', 'location=yes');
         }
     }
 })();

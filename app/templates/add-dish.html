@@ -35,7 +35,7 @@
             <ion-checkbox ng-model="dish.milk">Milk</ion-checkbox>
             <div class="item button-bar">
                 <div class="button button-positive" ng-click="vm.addDish(dish, dishForm)"
-                     ng-disabled="dishForm.$invalid">
+                     ng-disabled="dishForm.$invalid || !dish.picture">
                     Create!
                 </div>
             </div>
