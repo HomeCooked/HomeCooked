@@ -90,7 +90,7 @@
         }
 
         function onBeforeEnter() {
-            vm.chefId = LoginService.getUser().id;
+            vm.chefId = ChefService.getChef().id;
             modalScope.dish = getEmptyDish();
 
             checkTutorial();
