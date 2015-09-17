@@ -15,7 +15,7 @@ HomeCooked
     })
     .config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 
-        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps):/);
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps|tel|sms):/);
 
         $stateProvider
             .state('app', {
