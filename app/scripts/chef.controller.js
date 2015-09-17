@@ -21,6 +21,7 @@
         vm.adjustRange = adjustRange;
         vm.deleteBatch = deleteBatch;
         vm.showBatchOrder = showBatchOrder;
+        $scope.reload = loadData;
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
         $scope.$on('$destroy', onDestroy);
@@ -52,20 +53,25 @@
         }
 
         function onBeforeEnter() {
-            checkTutorial().finally(loadData);
+            checkTutorial();
+            loadData();
         }
 
         function loadData() {
             $ionicLoading.show();
             $q.all([getBatches(), getDishes(), getChefData()])
                 .then(function() {
+                    $ionicLoading.hide();
                     modalScope.batch = emptyBatch();
                     if ($stateParams.v === 'new' && vm.dishes.length) {
                         openAddBatch();
                     }
                 })
                 .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                .finally(function() {
+                    // Stop the ion-refresher from spinning
+                    $scope.$broadcast('scroll.refreshComplete');
+                });
         }
 
         function checkTutorial() {
@@ -242,15 +248,11 @@
         }
 
         function deleteBatch(batch) {
-            var title = batch.dish.title;
-            if (batch.quantity) {
-                title += ', ' + batch.quantity + ' portion' + (batch.quantity === 1 ? '' : 's');
-            }
             $ionicPopup.confirm({
-                title: title,
-                template: 'Do you want to delete this item?',
+                title: 'Remove available portions',
+                template: 'Do you want to remove ' + batch.remaining + ' portion' + (batch.remaining === 1 ? '' : 's') + ' of ' + batch.dish.title + ' from sale?',
                 cancelText: 'No',
-                okText: 'Yes, Delete',
+                okText: 'Yes, Remove',
                 okType: 'button-assertive'
             }).then(function(res) {
                 if (res) {

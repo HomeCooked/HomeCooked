@@ -65,15 +65,8 @@ input.ng-dirty.ng-invalid {
 }
 
 .hc {
-  &-orders {
-    width: 100%;
-    overflow: hidden;
-    white-space: normal;
-  }
   &-order {
     display: inline-block;
-    width: 5.8rem;
-    height: 5.8rem;
     padding: 0.5rem;
     position: relative;
     text-align: center;
@@ -82,6 +75,8 @@ input.ng-dirty.ng-invalid {
 
     > img {
       border-radius: 50%;
+      width: 5.8rem;
+      height: 5.8rem;
     }
     &-quantity {
       position: absolute;

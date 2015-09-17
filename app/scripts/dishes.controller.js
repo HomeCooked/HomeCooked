@@ -16,6 +16,7 @@
         vm.addDish = addDish;
         vm.deleteDish = deleteDish;
         vm.go = go;
+        $scope.reload = onBeforeEnter;
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
         $scope.$on('$destroy', onDestroy);
@@ -98,13 +99,17 @@
             $ionicLoading.show();
             DishesService.getDishes()
                 .then(function(dishes) {
+                    $ionicLoading.hide();
                     vm.dishes = dishes;
                     if ($state.params.v === 'new') {
                         showModal();
                     }
                 })
                 .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                .finally(function() {
+                    // Stop the ion-refresher from spinning
+                    $scope.$broadcast('scroll.refreshComplete');
+                });
         }
 
         function checkTutorial() {
