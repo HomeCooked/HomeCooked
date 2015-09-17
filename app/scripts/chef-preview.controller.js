@@ -53,7 +53,8 @@
         }
 
         function getCheckoutInfo() {
-            return PaymentService.getCheckoutInfo(vm.chefId).then(function(info) {
+            var getInfoPromise = user.isLoggedIn ? PaymentService.getCheckoutInfo(vm.chefId) : $q.when({});
+            return getInfoPromise.then(function(info) {
                 vm.checkoutInfo = info;
                 return info;
             });

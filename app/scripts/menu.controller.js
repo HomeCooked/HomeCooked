@@ -76,10 +76,6 @@
                 return chefLinks[0].path;
             }
 
-            if (!user.isLoggedIn && !user.zipcode) {
-                return 'zipcode-validation';
-            }
-
             var chefMode = _.some(chefLinks, {path: path});
             if (vm.isChef === false && chefMode) {
                 return 'app.buyer';
