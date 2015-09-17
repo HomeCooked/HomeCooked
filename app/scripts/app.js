@@ -147,10 +147,7 @@ HomeCooked
             var LoginService = $injector.get('LoginService');
             var nextState = 'app.not-found',
                 user = LoginService.getUser();
-            if (!user.isLoggedIn) {
-                nextState = user.zipcode ? 'app.buyer' : 'zipcode-validation';
-            }
-            else if ($state.current.name === '') {
+            if (!user.isLoggedIn || $state.current.name === '') {
                 nextState = 'app.buyer';
             }
             $state.go(nextState);
