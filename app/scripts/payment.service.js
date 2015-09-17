@@ -3,8 +3,8 @@
 
     angular.module('HomeCooked.services').factory('PaymentService', PaymentService);
 
-    PaymentService.$inject = ['$http', 'LoginService', 'ENV'];
-    function PaymentService($http, LoginService, ENV) {
+    PaymentService.$inject = ['$http', 'LoginService', 'ChefService', 'ENV'];
+    function PaymentService($http, LoginService, ChefService, ENV) {
         var baseUrl = ENV.BASE_URL + '/api/v1/';
 
         return {
@@ -17,11 +17,14 @@
         };
 
         function savePaymentInfo(info) {
-            var sId = LoginService.getUser().id,
-                chefMode = LoginService.getChefMode(),
-                url = chefMode ? baseUrl + 'chefs/' : baseUrl + 'users/';
-            // will reload both user and chef info
-            return handleResponses($http.post(url + sId + '/add_payment_method/', info)).then(LoginService.reloadUser);
+            if (LoginService.getChefMode()) {
+                return saveChefPaymentInfo(info);
+            }
+            return handleResponses($http.post(baseUrl + 'users/' + LoginService.getUser().id + '/add_payment_method/', info)).then(LoginService.reloadUser);
+        }
+
+        function saveChefPaymentInfo(info) {
+            return handleResponses($http.post(baseUrl + 'chefs/' + ChefService.getChef().id + '/add_payment_method/', info)).then(ChefService.reloadChef);
         }
 
         function holdBatch(payload) {

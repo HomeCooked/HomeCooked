@@ -154,8 +154,8 @@ HomeCooked
         });
     })
     .run(function($log, $ionicPlatform, ENV, NotificationService, LoginService) {
-        LoginService.reloadUser();
         $ionicPlatform.ready(function() {
+            LoginService.reloadUser();
             $ionicPlatform.on('resume', function(event) {
                 $log.info('app resume event', event);
                 LoginService.reloadUser();
