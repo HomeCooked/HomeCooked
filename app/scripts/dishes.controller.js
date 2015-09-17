@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$rootScope', '$scope', '$ionicHistory', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'LoginService', 'HCMessaging', 'HCModalHelper', '_'];
-    function DishesCtrl($rootScope, $scope, $ionicHistory, $state, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, LoginService, HCMessaging, HCModalHelper, _) {
+    DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicHistory', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'HCMessaging', 'HCModalHelper', '_'];
+    function DishesCtrl($q, $rootScope, $scope, $ionicHistory, $state, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, HCMessaging, HCModalHelper, _) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -16,7 +16,8 @@
         vm.addDish = addDish;
         vm.deleteDish = deleteDish;
         vm.go = go;
-        $scope.reload = onBeforeEnter;
+        vm.checkPrice = checkPrice;
+        $scope.reload = loadData;
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
         $scope.$on('$destroy', onDestroy);
@@ -95,10 +96,14 @@
             modalScope.dish = getEmptyDish();
 
             checkTutorial();
+            loadData();
+        }
 
+        function loadData() {
             $ionicLoading.show();
-            DishesService.getDishes()
-                .then(function(dishes) {
+            $q.all([DishesService.getDishes(), getChefData()])
+                .then(function(values) {
+                    var dishes = values[0];
                     $ionicLoading.hide();
                     vm.dishes = dishes;
                     if ($state.params.v === 'new') {
@@ -110,6 +115,17 @@
                     // Stop the ion-refresher from spinning
                     $scope.$broadcast('scroll.refreshComplete');
                 });
+        }
+
+        function getChefData() {
+            return ChefService.getChefData().then(function(chefData) {
+                chefData = chefData[0];
+                modalScope.minPrice = chefData.minDishPrice || 0.1;
+                modalScope.maxPrice = chefData.maxDishPrice || 100;
+                modalScope.minPrice = modalScope.minPrice.toFixed(2);
+                modalScope.maxPrice = modalScope.maxPrice.toFixed(2);
+                return chefData;
+            });
         }
 
         function checkTutorial() {
@@ -137,6 +153,10 @@
                 disableAnimate: true
             });
             $state.go(path);
+        }
+
+        function checkPrice(dish, min, max){
+            dish.price = Math.max(min, Math.min(dish.price, max));
         }
     }
 })();

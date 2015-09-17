@@ -27,7 +27,7 @@
                 <div class="dish-cover">
                     <img ng-src="{{::dish.picture}}"/>
 
-                    <div class="dish-price">{{::dish.price}} $</div>
+                    <div class="dish-price">${{::dish.price}}</div>
                 </div>
                 <div class="dish-details">
                     <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>

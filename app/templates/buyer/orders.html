@@ -28,7 +28,7 @@
             <!-- a ui-sref="app.dish-preview({id: order.chef.id, dishId: dish.id})"-->
             <div class="item item-avatar" ng-repeat="dish in order.dishes">
                 <img ng-src="{{dish.picture || 'images/logo.png'}}">
-                <span class="item-right">{{dish.cost}} $</span>
+                <span class="item-right">${{dish.cost}}</span>
 
                 <h3 class="wrap">{{dish.title}}</h3>
 
@@ -37,7 +37,7 @@
 
             <div class="item">
                 Total paid:
-                <span class="item-right">{{order.total_price}} $</span>
+                <span class="item-right">${{order.total_price}}</span>
             </div>
 
             <div class="button-bar tabs item">
