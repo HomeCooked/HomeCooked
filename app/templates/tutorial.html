@@ -1,8 +1,8 @@
 <div class="modal tutorial">
     <ion-content scroll="false">
-        <ion-slide-box style="height: 100%;">
+        <ion-slide-box style="width:100%; height: 100%;">
             <ion-slide ng-repeat="step in steps">
-                <ion-scroll zooming="false" style="height: 100%;">
+                <ion-scroll overflow-scroll="true" zooming="false" style="width:100%; height: 100%;">
                     <h1 class="title">{{::step.title}}</h1>
 
                     <div class="instructions">

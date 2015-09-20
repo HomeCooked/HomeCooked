@@ -10,10 +10,10 @@ angular.module('HomeCooked.controllers', ['HomeCooked.services', 'HomeCooked.dir
 
 HomeCooked
     .constant('_', window._) //lodash
-    .config(function($httpProvider) {
+    .config(function($httpProvider, $ionicConfigProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
-    })
-    .config(function($stateProvider, $urlRouterProvider, $compileProvider) {
+
+        $ionicConfigProvider.scrolling.jsScrolling(false);
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps|tel|sms):/);
 

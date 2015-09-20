@@ -13,7 +13,6 @@
         var mapId = 'chefmap';
         var userLocation = null;
         var vm = this;
-        var tutorialPromise;
 
         vm.query = '';
         vm.visible = false;
@@ -32,21 +31,14 @@
 
         function onBeforeEnter() {
             vm.isListVisible = false;
-            tutorialPromise = $q.when();
-            if (!CacheService.getWelcomeTutorialComplete()) {
-                $ionicLoading.hide();
-                tutorialPromise = HCModalHelper.showTutorial('welcome').then(CacheService.setWelcomeTutorialComplete);
-            }
         }
 
         function onAfterEnter() {
             // fixes rendering issues of the map
             window.ionic.trigger('resize');
-            tutorialPromise.finally(function() {
-                getChefs({
-                    latitude: vm.map.center.lat,
-                    longitude: vm.map.center.lng
-                });
+            getChefs({
+                latitude: vm.map.center.lat,
+                longitude: vm.map.center.lng
             });
         }
 
