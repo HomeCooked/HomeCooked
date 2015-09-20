@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$q', '$state', '$scope', '$ionicLoading', 'mapService', 'SearchService', 'LocationService', 'CacheService', 'HCModalHelper', 'HCMessaging', '_'];
+    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading','mapService','SearchService', 'LocationService', 'HCMessaging', '_'];
 
-    function SearchCtrl($q, $state, $scope, $ionicLoading, mapService, SearchService, LocationService, CacheService, HCModalHelper, HCMessaging, _) {
+    function SearchCtrl($state, $scope, $ionicLoading,mapService, SearchService, LocationService, HCMessaging, _) {
 
         var mapId = 'chefmap';
         var userLocation = null;

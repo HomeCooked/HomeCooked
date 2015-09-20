@@ -2,9 +2,11 @@
     'use strict';
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
-    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', 'ChefService', 'DishesService', 'LoginService', 'HCMessaging', 'HCModalHelper'];
+    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', '$cordovaSocialSharing',
+      'ChefService', 'DishesService', 'HCMessaging', 'HCModalHelper'];
 
-    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, ChefService, DishesService, LoginService, HCMessaging, HCModalHelper) {
+    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, $cordovaSocialSharing,
+                      ChefService, DishesService, HCMessaging, HCModalHelper) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -21,6 +23,7 @@
         vm.adjustRange = adjustRange;
         vm.deleteBatch = deleteBatch;
         vm.showBatchOrder = showBatchOrder;
+        vm.shareBatch = shareBatch;
         $scope.reload = loadData;
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
@@ -302,5 +305,25 @@
                 })
                 .finally($ionicLoading.hide);
         }
+
+        function shareBatch(batch){
+          if(isDesktop()){
+            $ionicPopup.alert({
+              title: 'Share your dish!',
+              template: '<p>Copy this link and share it in your social networks!</p>' +
+              '<p><a target="_blank" href="' + batch.share_url + '">' + batch.share_url + '</a></p>',
+              buttons: [{
+                text: 'Done',
+                type: 'button-positive button-clear'
+              }]
+            });
+            return;
+          }
+          $cordovaSocialSharing.share(batch.share_message, batch.share_subject, batch.picture, batch.share_url);
+        }
+
+      function isDesktop(){
+        return !window.ionic.Platform.isIOS() && !window.ionic.Platform.isAndroid();
+      }
     }
 })();

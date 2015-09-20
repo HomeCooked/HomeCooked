@@ -76,7 +76,11 @@
       "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
       "id": "cordova-plugin-camera"
     },
-    "org.apache.cordova.geolocation"
+    "org.apache.cordova.geolocation",
+    {
+      "locator": "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-x-socialsharing"
+    }
   ],
   "cordovaPlatforms": [
     "android",
