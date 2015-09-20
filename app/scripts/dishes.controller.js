@@ -119,7 +119,6 @@
 
         function getChefData() {
             return ChefService.getChefData().then(function(chefData) {
-                chefData = chefData[0];
                 modalScope.minPrice = chefData.minDishPrice || 0.1;
                 modalScope.maxPrice = chefData.maxDishPrice || 100;
                 modalScope.minPrice = modalScope.minPrice.toFixed(2);
@@ -156,7 +155,11 @@
         }
 
         function checkPrice(dish, min, max){
-            dish.price = Math.max(min, Math.min(dish.price, max));
+            var price = parseFloat(dish.price);
+            if (typeof price !== 'number' || isNaN(price)) {
+                price = 0;
+            }
+            dish.price = Math.max(min, Math.min(price, max)).toFixed(2);
         }
     }
 })();

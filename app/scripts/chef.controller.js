@@ -105,7 +105,6 @@
 
         function getChefData() {
             return ChefService.getChefData().then(function(chefData) {
-                chefData = chefData[0];
                 vm.maxPrice = chefData.maxDishPrice;
                 vm.maxQuantity = chefData.maxBatchQuantity;
                 vm.maxBatches = chefData.maxBatches;

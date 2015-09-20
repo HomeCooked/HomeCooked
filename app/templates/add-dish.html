@@ -27,7 +27,7 @@
             </label>
             <label class="item item-input item-floating-label">
               <span class="input-label">Price (min ${{minPrice}}, max ${{maxPrice}})</span>
-              <input name="price" ng-model="dish.price" placeholder="Price (min ${{minPrice}}, max ${{maxPrice}})" type="text" pattern="\d+(\.\d{2})?"
+              <input name="price" ng-model="dish.price" placeholder="Price (min ${{minPrice}}, max ${{maxPrice}})" type="text"
                        value="price"
                        required ng-minlength="1" ng-blur="vm.checkPrice(dish, minPrice, maxPrice)"/>
             </label>
