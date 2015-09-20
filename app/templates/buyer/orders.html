@@ -25,7 +25,6 @@
                     {{order.end_time | amDateFormat:'ha'}})</p>
             </div>
 
-            <!-- a ui-sref="app.dish-preview({id: order.chef.id, dishId: dish.id})"-->
             <div class="item item-avatar" ng-repeat="dish in order.dishes">
                 <img ng-src="{{dish.picture || 'images/logo.png'}}">
                 <span class="item-right">${{dish.cost}}</span>

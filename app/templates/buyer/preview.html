@@ -23,7 +23,7 @@
             </p>
 
             <div class="dish-card" ng-repeat="dish in vm.chef.dishes"
-                 ui-sref="app.dish-preview({id: vm.chef.id, dishId: dish.id})">
+                 ui-sref="app.dish-preview({id: vm.chef.id, batchId: dish.id})">
                 <div class="dish-cover">
                     <img ng-src="{{::dish.picture}}"/>
 

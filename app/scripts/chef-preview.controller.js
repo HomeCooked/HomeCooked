@@ -40,7 +40,7 @@
                 .then(function(chef) {
                     vm.chef = chef;
                     if ($stateParams.dishId) {
-                        vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.dishId)});
+                        vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.batchId)});
                         vm.quantity = 1;
                         vm.dish.quantities = getQuantities(vm.dish.remaining);
                         vm.dish.specialIngredients = getSpecialIngredients(vm.dish);

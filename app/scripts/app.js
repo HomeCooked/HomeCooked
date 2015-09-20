@@ -43,7 +43,7 @@ HomeCooked
                 }
             })
             .state('app.dish-preview', {
-                url: '/chef/:id/dish/:dishId/',
+                url: '/chef/:id/dish/:batchId/',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/buyer/dish-detail.html',
