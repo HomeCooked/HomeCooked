@@ -306,24 +306,25 @@
         }
 
         function shareBatch(batch){
+
+          var url = batch.share_url,
+            pict = batch.dish.picture;
+          if (url && url.indexOf('http') !== 0) {
+            url = 'http://' + url;
+          }
+
           // desktop mode
           if(!window.ionic.Platform.isWebView()){
             $ionicPopup.alert({
               title: 'Share your dish!',
               template: '<p>Copy this link and share it in your social networks!</p>' +
-              '<p><a target="_blank" href="' + batch.share_url + '">' + batch.share_url + '</a></p>',
+              '<p><a target="_blank" href="' + url + '">' + url + '</a></p>',
               buttons: [{
                 text: 'Done',
                 type: 'button-positive button-clear'
               }]
             });
             return;
-          }
-
-          var url = batch.share_url,
-              pict = batch.dish.picture;
-          if (url && url.indexOf('http') !== 0) {
-              url = 'http://' + url;
           }
           // must be either link or image according to docs
           if (window.ionic.Platform.isAndroid()){
