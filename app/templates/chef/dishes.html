@@ -26,9 +26,7 @@
 
                 <p>Ingredients: {{dish.ingredients}}</p>
 
-                <p>Rating:
-                    <reviews-rating score="::dish.rating" count="::dish.review_count"></reviews-rating>
-                </p>
+                <p><reviews-rating score="::dish.rating" count="::dish.review_count"></reviews-rating></p>
             </div>
             <div class="button-bar">
                 <div ng-if="::dish.review_count" class="button button-positive button-clear"
