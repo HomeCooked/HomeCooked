@@ -306,7 +306,8 @@
         }
 
         function shareBatch(batch){
-          if(isDesktop()){
+          // desktop mode
+          if(!window.ionic.Platform.isWebView()){
             $ionicPopup.alert({
               title: 'Share your dish!',
               template: '<p>Copy this link and share it in your social networks!</p>' +
@@ -318,11 +319,17 @@
             });
             return;
           }
-          $cordovaSocialSharing.share(batch.share_message, batch.share_subject, batch.picture, batch.share_url);
-        }
 
-      function isDesktop(){
-        return !window.ionic.Platform.isIOS() && !window.ionic.Platform.isAndroid();
-      }
+          var url = batch.share_url,
+              pict = batch.dish.picture;
+          if (url && url.indexOf('http') !== 0) {
+              url = 'http://' + url;
+          }
+          // must be either link or image according to docs
+          if (window.ionic.Platform.isAndroid()){
+              pict = undefined;
+          }
+          $cordovaSocialSharing.share(batch.share_message, batch.share_subject, pict, url);
+        }
     }
 })();
