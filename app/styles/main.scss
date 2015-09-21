@@ -109,15 +109,4 @@ input.ng-dirty.ng-invalid {
   &-image-container {
     text-align: center;
   }
-  &-crop-area {
-    background: #E4E4E4;
-    overflow: hidden;
-    width: 100%;
-    > img {
-      margin: 0 auto;
-      padding: 10px;
-      max-width: 100%;
-      display: block;
-    }
-  }
 }

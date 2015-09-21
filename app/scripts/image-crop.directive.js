@@ -6,21 +6,21 @@
         .module('HomeCooked.directives')
         .directive('imageCrop', ImageCrop);
 
-    ImageCrop.$inject = ['$jrCrop', '$cordovaCamera', '$ionicActionSheet'];
-    function ImageCrop($jrCrop, $cordovaCamera, $ionicActionSheet) {
+    ImageCrop.$inject = ['$cordovaCamera', '$ionicActionSheet'];
+    function ImageCrop($cordovaCamera, $ionicActionSheet) {
         return {
             restrict: 'E',
             transclude: true,
             scope: {
                 result: '=',
-                aspectRatio: '@',
                 inputName: '@'
             },
             templateUrl: 'templates/image-crop.html',
             link: function(scope) {
-                var SIZE = 800;
+                var SIZE = 600;
                 scope.pictureData = undefined;
-                scope.cropped = undefined;
+                scope.myImage = '';
+                scope.result = scope.result || '';
                 scope.isMobile = window.ionic.Platform.isWebView();
 
                 scope.takePicture = function() {
@@ -43,38 +43,11 @@
                     if (!pictureData) {
                         return;
                     }
-                    var picture = 'data:' + pictureData.filetype + ';base64,' + pictureData.base64,
-                        aspectRatio = parseFloat(scope.aspectRatio);
-                    if (typeof aspectRatio !== 'number' || isNaN(aspectRatio)) {
-                        aspectRatio = 1;
-                    }
-                    $jrCrop.crop({
-                        url: picture,
-                        width: SIZE,
-                        aspectRatio: aspectRatio
-                    }).then(function(canvas) {
-                        scope.result = canvas.toDataURL();
-                    });
+                    var picture = 'data:' + pictureData.filetype + ';base64,' + pictureData.base64;
+                    scope.myImage = picture;
                 };
-                scope.$watch(function() {
-                    return scope.result;
-                }, function(newValue) {
-                    if (!newValue) {
-                        scope.pictureData = undefined;
-                    }
-                    if (newValue && newValue.indexOf('data:') === 0) {
-                        scope.cropped = newValue;
-                    }
-                    else {
-                        scope.cropped = undefined;
-                    }
-                });
 
                 function onActionSelected(index) {
-                    var aspectRatio = parseFloat(scope.aspectRatio);
-                    if (typeof aspectRatio !== 'number' || isNaN(aspectRatio)) {
-                        aspectRatio = 1;
-                    }
                     var options = {
                         quality: 90,
                         destinationType: window.Camera.DestinationType.DATA_URL,
@@ -82,7 +55,7 @@
                         allowEdit: true,
                         encodingType: window.Camera.EncodingType.JPEG,
                         targetWidth: SIZE,
-                        targetHeight: SIZE * aspectRatio,
+                        targetHeight: SIZE,
                         popoverOptions: window.CameraPopoverOptions,
                         saveToPhotoAlbum: false
                     };
@@ -90,7 +63,7 @@
                     $cordovaCamera.getPicture(options).then(function(imageData) {
                         scope.result = 'data:image/jpeg;base64,' + imageData;
                     }, function() {
-                        scope.result = undefined;
+                        scope.result = '';
                     });
                     return true;
                 }

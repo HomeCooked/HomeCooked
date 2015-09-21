@@ -17,4 +17,18 @@
       filter: alpha(opacity=0);
     }
   }
+  .hc-crop-area {
+    background: #E4E4E4;
+    overflow: hidden;
+    width: 100%;
+    img-crop {
+      height: 300px;
+    }
+    > img {
+      margin: 0 auto;
+      padding: 10px;
+      max-width: 100%;
+      display: block;
+    }
+  }
 }

@@ -5,7 +5,8 @@
                base-sixty-four-input
                ng-change="cropPicture(pictureData)"/>
     </div>
-    <div class="hc-crop-area" ng-if="cropped">
-        <img ng-src="{{cropped}}"/>
+    <div class="hc-crop-area">
+        <img-crop ng-show="myImage" image="myImage" result-image="result" area-min-size="300" area-type="square" result-image-size="600"></img-crop>
+        <img ng-show="result" ng-src="{{result}}">
     </div>
 </div>

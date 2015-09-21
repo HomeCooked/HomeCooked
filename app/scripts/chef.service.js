@@ -50,7 +50,7 @@
 
         function getChefData() {
             return handleResponses($http.get(baseUrl + 'chefs/chef_config/')).then(function (chefData) {
-                return chefData[0] || {};
+                return chefData[0] || {};
             });
         }
 
