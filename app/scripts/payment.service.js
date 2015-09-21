@@ -28,7 +28,7 @@
         }
 
         function holdBatch(payload) {
-            return handleResponses($http.post(baseUrl + 'batches/' + payload.dishId + '/hold_batch_for_user/', payload));
+            return handleResponses($http.post(baseUrl + 'batches/' + payload.batchId + '/hold_batch_for_user/', payload));
         }
 
         function deleteBatch(batches) {

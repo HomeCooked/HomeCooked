@@ -39,7 +39,7 @@
             return ChefService.getChefDetails(vm.chefId)
                 .then(function(chef) {
                     vm.chef = chef;
-                    if ($stateParams.dishId) {
+                    if ($stateParams.batchId) {
                         vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.batchId)});
                         vm.quantity = 1;
                         vm.dish.quantities = getQuantities(vm.dish.remaining);
@@ -93,7 +93,7 @@
 
         function holdBatch() {
             $ionicLoading.show();
-            return PaymentService.holdBatch({dishId: $stateParams.dishId, quantity: vm.quantity})
+            return PaymentService.holdBatch({batchId: $stateParams.batchId, quantity: vm.quantity})
                 .then(function() {
                     $ionicLoading.show({template: 'Item added to the cart!', duration: 2000});
                     $state.go('app.chef-preview', {id: $stateParams.id});
