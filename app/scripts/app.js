@@ -2,7 +2,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
-    'ionic.rating', 'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop']);
+    'ionic.rating', 'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
 
 angular.module('HomeCooked.services', []);
 angular.module('HomeCooked.directives', []);
@@ -13,7 +13,9 @@ HomeCooked
     .config(function($httpProvider, $ionicConfigProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
 
-        $ionicConfigProvider.scrolling.jsScrolling(false);
+        if (!window.ionic.Platform.isWebView()) {
+            $ionicConfigProvider.scrolling.jsScrolling(false);
+        }
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps|tel|sms):/);
 
