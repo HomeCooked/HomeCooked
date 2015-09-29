@@ -29,7 +29,7 @@
                     if (!scope.readOnly) {
                         scope.score = r.index + 1;
                     }
-                }
+                };
             }
         };
     }

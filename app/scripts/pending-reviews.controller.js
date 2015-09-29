@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('PendingReviewsCtrl', PendingReviewsCtrl);
 
-    PendingReviewsCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'LoginService', 'HCMessaging'];
-    function PendingReviewsCtrl($rootScope, $scope, $ionicModal, $ionicLoading, DishesService, LoginService, HCMessaging) {
+    PendingReviewsCtrl.$inject = ['_', '$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'LoginService', 'HCMessaging'];
+    function PendingReviewsCtrl(_, $rootScope, $scope, $ionicModal, $ionicLoading, DishesService, LoginService, HCMessaging) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
