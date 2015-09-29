@@ -1,57 +1,26 @@
-(function() {
+(function () {
     'use strict';
     angular.module('HomeCooked.controllers').factory('HCModalHelper', HCModalHelper);
 
-    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', 'HCMessaging', 'PaymentService', 'LoginService', 'ChefService'];
+    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicSlideBoxDelegate', 'HCMessaging', 'PaymentService', 'LoginService', 'ChefService'];
 
-    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, HCMessaging, PaymentService, LoginService, ChefService) {
+    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, $ionicSlideBoxDelegate, HCMessaging, PaymentService, LoginService, ChefService) {
 
         var modals = {};
 
         var tutorials = {
-            'welcome': [{
-                title: 'An everyday option to food!',
-                image: 'images/welcome1.jpg',
-                message: '<p>Find the best amateur chefs in your neighborhood and pick-up their delicious, affordable home cooked meals minutes after they come out of the oven.</p>'
-            }, {
-                title: 'Fresh ingredients, talented cooks',
-                image: 'images/welcome2.jpg',
-                message: '<p>Our amateur chefs go through a rigorous testing process and abide to strict safety guidelines. Your ratings and reviews showcase the best of the best.</p>'
-            }, {
-                title: 'Ready when you are',
-                image: 'images/welcome5.jpg',
-                message: '<p>Select a nearby chef and choose the best time to pick up your hot dinner.</p>'
-            }],
             'dishes': [{
                 title: 'Build your own menu',
                 image: 'images/chef8.jpg',
-                message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>Use this section to describe your meals and make your customers want more!</p>'
+                message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>We recommend posting your dishes several days in advance, and aiming for top reviews and ratings.</p>'
             }, {
-                title: 'Before you start',
+                title: 'Get paid',
                 image: 'images/chef8.jpg',
-                message: '<p>Each menu item starts with zero reviews, as you will accumulate them through time.</p><p>You cannot edit existing items, but feel free to create as many as you like!</p>'
-            }],
-            'batches': [{
-                title: 'Ready to cook?',
-                image: 'images/chef5.jpg',
-                message: '<p>This is the part where you post your meal, and cook on your schedule! Select the meal, quantity, and pickup time, and see the orders trickling in.</p>'
+                message: '<p>Payment is automatic, and takes up to 5 business days to process. For each dish, we take a variable transaction fee below $1, to cover bank and transaction fees.</p>'
             }, {
-                title: 'Easy payment',
-                image: 'images/chef5.jpg',
-                message: '<p>Payment is automatic and goes directly to your account, even if the buyer doesn\'t show up.</p>' +
-                '<p>For each dish, we will take an average commission of $1, which includes all bank and transaction fees</p>'
-            }, {
-                title: 'Simple end-to-end',
-                image: 'images/chef5.jpg',
-                message: '<p>First: you select the meal, quantity and time of pick-up<br>Second: you watch orders tickling in<br>Third: we notify you when the buyer arrives for pickup!</p>'
-            }, {
-                title: 'Plan ahead!',
-                image: 'images/chef5.jpg',
-                message: '<p>We recommend to post your meals several days ahead of the due date, to collect maximum orders</p>'
-            }, {
-                title: 'Cancellation Policy',
-                image: 'images/chef5.jpg',
-                message: '<p>Cancelling before the delivery time results in negative ratings. Cancelling during or after pick-up time results in stronger penalties and potential exclusion.</p>'
+                title: 'Follow our rules',
+                image: 'images/chef8.jpg',
+                message: '<p>Cancelling a meal that has already been purchased results in negative reviews.</p><p>Be sure to follow our code of good conduct and safety requirements from the California Food Handler Program.</p>'
             }]
         };
 
@@ -74,7 +43,7 @@
             modalScope.mustBeDebit = LoginService.getChefMode();
             $ionicModal.fromTemplateUrl('templates/update-payment.html', {
                 scope: modalScope
-            }).then(function(modal) {
+            }).then(function (modal) {
                 modal.show();
                 modalScope.modal = modal;
             });
@@ -89,7 +58,7 @@
                 cvc: paymentForm.cvc.$modelValue,
                 expiry: paymentForm.expiry.$modelValue
             })
-                .then(function() {
+                .then(function () {
                     var scope = closeModal('update-payment');
                     scope.deferred.resolve();
                     $ionicLoading.show({template: 'Your payment information was saved!', duration: 3000});
@@ -102,15 +71,30 @@
             modals['tutorial'] = modalScope;
             var deferred = $q.defer();
             modalScope.deferred = deferred;
+            modalScope.step = 0;
             modalScope.steps = tutorials[tutorialId];
             modalScope.tutorialDone = tutorialDone;
+            modalScope.nextSlide = nextSlide;
+            modalScope.previousSlide = previousSlide;
             $ionicModal.fromTemplateUrl('templates/tutorial.html', {
                 scope: modalScope
-            }).then(function(modal) {
+            }).then(function (modal) {
                 modal.show();
                 modalScope.modal = modal;
             });
             return deferred.promise;
+        }
+
+        function nextSlide() {
+            getTutorialSlideBox().next();
+        }
+
+        function previousSlide() {
+            getTutorialSlideBox().previous();
+        }
+
+        function getTutorialSlideBox() {
+            return $ionicSlideBoxDelegate.$getByHandle('tutorial-slide-box')._instances[0]
         }
 
         function tutorialDone() {
@@ -131,7 +115,7 @@
 
             $ionicModal.fromTemplateUrl('templates/update-phone.html', {
                 scope: modalScope
-            }).then(function(modal) {
+            }).then(function (modal) {
                 modalScope.modal = modal;
                 modal.show();
             });
@@ -142,7 +126,7 @@
             document.activeElement.blur();
             $ionicLoading.show();
             var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
-            fn({phone_number: phone}).then(function() {
+            fn({phone_number: phone}).then(function () {
                 var scope = closeModal('update-phone');
                 scope.deferred.resolve();
                 $ionicLoading.show({template: 'Your phone information was saved!', duration: 3000});
@@ -163,7 +147,7 @@
 
             $ionicModal.fromTemplateUrl('templates/update-email.html', {
                 scope: modalScope
-            }).then(function(modal) {
+            }).then(function (modal) {
                 modalScope.modal = modal;
                 modal.show();
             });
@@ -174,7 +158,7 @@
             $ionicLoading.show();
             var data = {email: email};
             var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
-            fn(data).then(function() {
+            fn(data).then(function () {
                 $ionicLoading.hide();
                 var scope = closeModal('update-email');
                 scope.deferred.resolve();
@@ -192,7 +176,7 @@
             $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
                 animation: 'slide-in-up',
                 scope: modalScope
-            }).then(function(modal) {
+            }).then(function (modal) {
                 modalScope.modal = modal;
                 modal.show();
             });

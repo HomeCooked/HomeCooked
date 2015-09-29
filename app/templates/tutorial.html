@@ -1,18 +1,25 @@
 <div class="modal tutorial">
     <ion-content scroll="false">
-        <ion-slide-box style="width:100%; height: 100%;">
+        <div class="bar bar-clear">
+            <a class="button icon-left button-clear button-dark ion-ios-arrow-left"
+               ng-show="step>0 && steps.length>1" ng-click="previousSlide()">
+                Previous
+            </a>
+            <a class="button button-clear button-positive icon-right"
+               ng-class="step===steps.length-1 ? 'ion-ios-checkmark-empty' : 'ion-ios-arrow-right'"
+               ng-click="step===steps.length-1 ? tutorialDone() : nextSlide()">
+                {{step===steps.length-1 ? 'Got it! ' : 'Next '}}
+            </a>
+        </div>
+        <ion-slide-box delegate-handle="tutorial-slide-box" active-slide="step">
             <ion-slide ng-repeat="step in steps">
-                <ion-scroll overflow-scroll="true" zooming="false" style="width:100%; height: 100%;">
+                <ion-scroll overflow-scroll="true" zooming="false">
                     <h1 class="title">{{::step.title}}</h1>
 
                     <div class="instructions">
                         <img ng-src="{{::step.image}}"/>
 
                         <div class="message" ng-bind-html="::step.message"></div>
-                        <a class="button button-block button-positive icon-right ion-ios-checkmark-empty"
-                           ng-if="$index===steps.length-1" ng-click="tutorialDone()">
-                            Got it!
-                        </a>
                     </div>
                 </ion-scroll>
             </ion-slide>

@@ -3,10 +3,10 @@
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
     ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', '$cordovaSocialSharing',
-      'ChefService', 'DishesService', 'HCMessaging', 'HCModalHelper'];
+      'ChefService', 'DishesService', 'HCMessaging'];
 
     function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, $cordovaSocialSharing,
-                      ChefService, DishesService, HCMessaging, HCModalHelper) {
+                      ChefService, DishesService, HCMessaging) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -26,7 +26,7 @@
         vm.shareBatch = shareBatch;
         $scope.reload = loadData;
 
-        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+        $scope.$on('$ionicView.beforeEnter', loadData);
         $scope.$on('$destroy', onDestroy);
 
         function addBatch(batch, form) {
@@ -55,11 +55,6 @@
             };
         }
 
-        function onBeforeEnter() {
-            checkTutorial();
-            loadData();
-        }
-
         function loadData() {
             $ionicLoading.show();
             $q.all([getBatches(), getDishes(), getChefData()])
@@ -74,18 +69,6 @@
                 .finally(function() {
                     // Stop the ion-refresher from spinning
                     $scope.$broadcast('scroll.refreshComplete');
-                });
-        }
-
-        function checkTutorial() {
-            return ChefService.chefReady()
-                .then(function(chef) {
-                    if (!chef.batches_tutorial_completed) {
-                        return HCModalHelper.showTutorial('batches').then(function() {
-                            return ChefService.saveChefData({batches_tutorial_completed: true});
-                        });
-                    }
-                    return chef;
                 });
         }
 
