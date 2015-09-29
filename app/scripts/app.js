@@ -2,7 +2,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
-    'ionic.rating', 'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
+    'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
 
 angular.module('HomeCooked.services', []);
 angular.module('HomeCooked.directives', []);
@@ -10,7 +10,7 @@ angular.module('HomeCooked.controllers', ['HomeCooked.services', 'HomeCooked.dir
 
 HomeCooked
     .constant('_', window._) //lodash
-    .config(function($httpProvider, $ionicConfigProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+    .config(function ($httpProvider, $ionicConfigProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
 
         if (!window.ionic.Platform.isWebView()) {
@@ -153,7 +153,7 @@ HomeCooked
                 controller: 'ZipCodeRestrictionCtrl as vm'
             });
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise(function($injector) {
+        $urlRouterProvider.otherwise(function ($injector) {
             var $state = $injector.get('$state');
             var LoginService = $injector.get('LoginService');
             var nextState = 'app.not-found',
@@ -164,10 +164,10 @@ HomeCooked
             $state.go(nextState);
         });
     })
-    .run(function($log, $ionicPlatform, ENV, NotificationService, LoginService) {
-        $ionicPlatform.ready(function() {
+    .run(function ($log, $ionicPlatform, ENV, NotificationService, LoginService) {
+        $ionicPlatform.ready(function () {
             LoginService.reloadUser();
-            $ionicPlatform.on('resume', function(event) {
+            $ionicPlatform.on('resume', function (event) {
                 $log.info('app resume event', event);
                 LoginService.reloadUser();
             });
