@@ -76,9 +76,6 @@
             else if (path === 'app.pending-reviews') {
                 path = 'app.buyer';
             }
-            if (vm.isChef && path === 'app.enroll') {
-                return chefLinks[0].path;
-            }
 
             var chefMode = _.some(chefLinks, {path: path});
             if (vm.isChef === false && chefMode) {

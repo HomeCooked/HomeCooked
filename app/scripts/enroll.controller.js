@@ -1,18 +1,25 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('HomeCooked.controllers')
         .controller('EnrollCtrl', EnrollCtrl);
 
-    EnrollCtrl.$inject = ['$window', '$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'HCMessaging'];
-    function EnrollCtrl($window, $state, $ionicPopup, $ionicLoading, LoginService, HCMessaging) {
+    EnrollCtrl.$inject = ['$window', '$scope', '$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'ChefService', 'HCMessaging'];
+    function EnrollCtrl($window, $scope, $state, $ionicPopup, $ionicLoading, LoginService, ChefService, HCMessaging) {
         var vm = this;
+        var chef = ChefService.getChef();
 
         vm.states = ['CA'];
         vm.form = getEmptyForm();
         vm.enroll = enroll;
         vm.openExternalLink = openExternalLink;
+
+        $scope.$watch(function () {
+            return chef.id;
+        }, function () {
+            vm.isChef = chef.id >= 0;
+        });
 
         function enroll(formElement) {
             document.activeElement.blur();
@@ -21,7 +28,7 @@
                 template: 'Enrolling...'
             });
             LoginService.becomeChef(vm.form)
-                .then(function() {
+                .then(function () {
                     vm.form = getEmptyForm();
                     if (formElement) {
                         formElement.$setPristine();
@@ -32,7 +39,7 @@
                         buttons: [{
                             text: 'Got it!',
                             type: 'button-positive',
-                            onTap: function() {
+                            onTap: function () {
                                 // Returning a value will cause the promise to resolve with the given value.
                                 $state.go('app.buyer');
                             }
