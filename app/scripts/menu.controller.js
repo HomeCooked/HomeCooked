@@ -19,6 +19,10 @@
             name: 'Edit Bio',
             icon: 'ion-person',
             path: 'app.bio'
+        }, {
+            name: 'Order new wares',
+            icon: 'ion-ios-cart',
+            path: 'app.buy'
         }];
 
         var buyerLinks = [{

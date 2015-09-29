@@ -80,6 +80,15 @@ HomeCooked
                     }
                 }
             })
+            .state('app.buy', {
+                url: '/buy/',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/chef/buy.html',
+                        controller: 'DisposablesCtrl as vm'
+                    }
+                }
+            })
             .state('app.seller', {
                 url: '/seller/:v',
                 views: {
