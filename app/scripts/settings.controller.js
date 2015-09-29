@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -20,9 +20,9 @@
         vm.showUpdateEmail = showUpdateEmail;
         vm.showUpdatePhone = showUpdatePhone;
 
-        $scope.$watch(function() {
+        $scope.$watch(function () {
             return LoginService.getChefMode();
-        }, function(chefMode) {
+        }, function (chefMode) {
             vm.user = chefMode ? ChefService.getChef() : LoginService.getUser();
         });
 
@@ -37,11 +37,10 @@
         }
 
         function confirmLogout() {
-            var confirmPopup = $ionicPopup.confirm({
+            $ionicPopup.confirm({
                 title: 'Are you sure?',
                 template: 'Signing out will remove your HomeCooked data from this device. Do you want to sign out?'
-            });
-            confirmPopup.then(function(res) {
+            }).then(function (res) {
                 if (res) {
                     LoginService.logout();
                     $ionicHistory.nextViewOptions({

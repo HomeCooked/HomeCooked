@@ -94,7 +94,7 @@
         }
 
         function getTutorialSlideBox() {
-            return $ionicSlideBoxDelegate.$getByHandle('tutorial-slide-box')._instances[0]
+            return $ionicSlideBoxDelegate.$getByHandle('tutorial-slide-box')._instances[0];
         }
 
         function tutorialDone() {

@@ -1,9 +1,9 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
     ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', '$cordovaSocialSharing',
-      'ChefService', 'DishesService', 'HCMessaging'];
+        'ChefService', 'DishesService', 'HCMessaging'];
 
     function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, $cordovaSocialSharing,
                       ChefService, DishesService, HCMessaging) {
@@ -37,7 +37,7 @@
             $ionicLoading.show();
             ChefService.addBatch(batch)
                 .then(getBatches)
-                .then(function() {
+                .then(function () {
                     modalScope.batch = emptyBatch();
                     form.$setPristine();
                     modal.hide();
@@ -58,7 +58,7 @@
         function loadData() {
             $ionicLoading.show();
             $q.all([getBatches(), getDishes(), getChefData()])
-                .then(function() {
+                .then(function () {
                     $ionicLoading.hide();
                     modalScope.batch = emptyBatch();
                     if ($stateParams.v === 'new' && vm.dishes.length) {
@@ -66,28 +66,28 @@
                     }
                 })
                 .catch(HCMessaging.showError)
-                .finally(function() {
+                .finally(function () {
                     // Stop the ion-refresher from spinning
                     $scope.$broadcast('scroll.refreshComplete');
                 });
         }
 
         function getBatches() {
-            return ChefService.getBatches().then(function(batches) {
+            return ChefService.getBatches().then(function (batches) {
                 vm.batches = batches;
                 return batches;
             });
         }
 
         function getDishes() {
-            return DishesService.getDishes().then(function(dishes) {
+            return DishesService.getDishes().then(function (dishes) {
                 vm.dishes = dishes;
                 return dishes;
             });
         }
 
         function getChefData() {
-            return ChefService.getChefData().then(function(chefData) {
+            return ChefService.getChefData().then(function (chefData) {
                 vm.maxPrice = chefData.maxDishPrice;
                 vm.maxQuantity = chefData.maxBatchQuantity;
                 vm.maxBatches = chefData.maxBatches;
@@ -108,7 +108,7 @@
             serviceDays = orderedServiceDays(serviceDays, weekDay);
 
             var days = _.filter(serviceDays, 'is_active');
-            return _.map(days, function(day) {
+            return _.map(days, function (day) {
                 var t = time + (day.week_day - weekDay) * 86400000;
                 return {
                     start_time: getDate(t, day.start_minute),
@@ -191,7 +191,7 @@
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-batch.html', {
                     scope: modalScope
-                }).then(function(m) {
+                }).then(function (m) {
                     modal = m;
                     modal.show();
                 });
@@ -213,16 +213,23 @@
                 }, {
                     text: 'Delivered',
                     type: 'button-balanced',
-                    onTap: function() {
-                        notifyDelivered(order);
+                    onTap: function () {
+                        return 'NOTIFY';
                     }
                 }, {
                     text: 'Cancel',
                     type: 'button-assertive',
-                    onTap: function() {
-                        cancelOrder(order);
+                    onTap: function () {
+                        return 'CANCEL_ORDER';
                     }
                 }]
+            }).then(function (res) {
+                if (res === 'NOTIFY') {
+                    notifyDelivered(order);
+                }
+                else if (res === 'CANCEL_ORDER') {
+                    cancelOrder(order);
+                }
             });
         }
 
@@ -239,7 +246,7 @@
                 cancelText: 'No',
                 okText: 'Yes, Remove',
                 okType: 'button-assertive'
-            }).then(function(res) {
+            }).then(function (res) {
                 if (res) {
                     doDeleteBatch(batch);
                 }
@@ -255,18 +262,16 @@
         }
 
         function cancelOrder(order) {
-            $ionicPopup.show({
+            $ionicPopup.confirm({
                 title: 'Cancel order?',
                 template: 'Are you sure you want to cancel this order? It will result in a 0 star rating for each dish.',
-                buttons: [{
-                    text: 'Cancel Order',
-                    type: 'button-assertive',
-                    onTap: function() {
-                        doCancelOrder(order);
-                    }
-                }, {
-                    text: 'Close'
-                }]
+                cancelText: 'Close',
+                okText: 'Cancel Order',
+                okType: 'button-assertive'
+            }).then(function (res) {
+                if (res) {
+                    doCancelOrder(order);
+                }
             });
         }
 
@@ -282,38 +287,38 @@
             $ionicLoading.show();
             ChefService.notifyDelivered(order.id)
                 .then(getBatches)
-                .catch(function() {
+                .catch(function () {
                     HCMessaging.showMessage('Too early!', 'You can mark an order as "delivered" only after the pickup time.');
                 })
                 .finally($ionicLoading.hide);
         }
 
-        function shareBatch(batch){
+        function shareBatch(batch) {
 
-          var url = batch.share_url,
-            pict = batch.dish.picture;
-          if (url && url.indexOf('http') !== 0) {
-            url = 'http://' + url;
-          }
+            var url = batch.share_url,
+                pict = batch.dish.picture;
+            if (url && url.indexOf('http') !== 0) {
+                url = 'http://' + url;
+            }
 
-          // desktop mode
-          if(!window.ionic.Platform.isWebView()){
-            $ionicPopup.alert({
-              title: 'Share your dish!',
-              template: '<p>Copy this link and share it in your social networks!</p>' +
-              '<p><a target="_blank" href="' + url + '">' + url + '</a></p>',
-              buttons: [{
-                text: 'Done',
-                type: 'button-positive button-clear'
-              }]
-            });
-            return;
-          }
-          // must be either link or image according to docs
-          if (window.ionic.Platform.isAndroid()){
-              pict = undefined;
-          }
-          $cordovaSocialSharing.share(batch.share_message, batch.share_subject, pict, url);
+            // desktop mode
+            if (!window.ionic.Platform.isWebView()) {
+                $ionicPopup.alert({
+                    title: 'Share your dish!',
+                    template: '<p>Copy this link and share it in your social networks!</p>' +
+                    '<p><a target="_blank" href="' + url + '">' + url + '</a></p>',
+                    buttons: [{
+                        text: 'Done',
+                        type: 'button-positive button-clear'
+                    }]
+                });
+                return;
+            }
+            // must be either link or image according to docs
+            if (window.ionic.Platform.isAndroid()) {
+                pict = undefined;
+            }
+            $cordovaSocialSharing.share(batch.share_message, batch.share_subject, pict, url);
         }
     }
 })();
