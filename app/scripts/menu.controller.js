@@ -19,6 +19,10 @@
             name: 'Edit Bio',
             icon: 'ion-person',
             path: 'app.bio'
+        }, {
+            name: 'Order new wares',
+            icon: 'ion-ios-cart',
+            path: 'app.buy'
         }];
 
         var buyerLinks = [{
@@ -71,9 +75,6 @@
             }
             else if (path === 'app.pending-reviews') {
                 path = 'app.buyer';
-            }
-            if (vm.isChef && path === 'app.enroll') {
-                return chefLinks[0].path;
             }
 
             var chefMode = _.some(chefLinks, {path: path});

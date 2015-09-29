@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     'use strict';
 
@@ -16,14 +16,20 @@
                 count: '='
             },
             templateUrl: 'templates/reviews-rating.html',
-            link: function(scope, element, attrs) {
-                var readOnly = scope.$eval(attrs.readOnly);
-                if (readOnly !== false) {
-                    readOnly = true;
-                    element.addClass('read-only');
+            link: function (scope, element, attrs) {
+                var range = [];
+                for (var i = 0; i < 5; i++) {
+                    range.push({
+                        index: i
+                    });
                 }
-                scope.max = 5;
-                scope.readOnly = readOnly;
+                scope.range = range;
+                scope.readOnly = scope.$eval(attrs.readOnly) !== false;
+                scope.updateScore = function (r) {
+                    if (!scope.readOnly) {
+                        scope.score = r.index + 1;
+                    }
+                };
             }
         };
     }

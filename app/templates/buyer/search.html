@@ -1,10 +1,8 @@
 <ion-view title="Find local chefs" hide-back-button="true" class="buyer-search">
-    <ion-nav-buttons side="left">
-        <button class="button button-clear" ng-click="menuVm.login()" ng-if="!menuVm.isUserLoggedIn">
+    <ion-nav-buttons side="left" ng-if="!menuVm.isUserLoggedIn">
+        <button class="button button-clear" ng-click="menuVm.login()">
             <i class="icon ion-ios-person"></i>
             Sign up
-        </button>
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-if="menuVm.isUserLoggedIn">
         </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
@@ -28,11 +26,14 @@
                     <img ng-src="{{chef.picture}}">
 
                     <h2>{{chef.first_name}} {{chef.last_name}}</h2>
+
                     <p>{{chef.bio}}</p>
 
                     <p style="font-size: 90%">{{chef.num_active_dishes}} items on sale</p>
+
                     <p style="font-size: 90%" ng-if="chef.distance">{{chef.distance}} away</p>
-                    <reviews-rating style="font-size: 90%; text-align: left;" score="::chef.review_score" count="::chef.review_count"></reviews-rating>
+                    <reviews-rating style="font-size: 90%; text-align: left;" score="::chef.review_score"
+                                    count="::chef.review_count"></reviews-rating>
                     <i class="icon ion-ios-arrow-forward"></i>
                 </div>
             </div>

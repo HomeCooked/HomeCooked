@@ -1,6 +1,28 @@
 <ion-view title="Become a chef!" hide-back-button="true">
     <ion-content class="has-header">
-        <form novalidate class="list" name="enrollForm">
+        <div class="padding">
+            <p>HomeCooked is a marketplace for neighbors to buy and sell home cooked meals to each other. If you join our community as a chef, you can turn your home kitchen into a pick-up only restaurant whenever you feel like it. You get paid electronically for every dish you sell, and provided with disposable wares for the food.</p>
+
+            <p>If you ever thought of driving for Uber or Lyft, or renting out your place on Airbnb, this is the same idea. HomeCooked gives you the flexibility to cook whatever you want, on your schedule.</p>
+
+            <p>Before you can join the marketplace, we have a couple requirements:</p>
+            <ul style="list-style: inside;">
+                <li>We need to try one of your meals, to ensure quality.</li>
+                <li>You need to have a background in food, or strong passion for cooking</li>
+                <li>You will have to pass your California Food Handler's exam ($10 online at <a href="http://www.cafoodhandlers.com/" target="_system">http://www.cafoodhandlers.com/</a>)</li>
+                <li>We will perform a background check</li>
+                <li>You will need to accept our 'code of good conduct'.</li>
+            </ul>
+
+            <p>Once you are accepted, you simply need to download the app and "post" a meal. For every sale you will also get a public rating and review.</p>
+
+            <p>We sincerely hope to be working with you soon, please fill out the form below if you are interested in applying!</p>
+        </div>
+
+        <p class="padding" align="center" ng-if="vm.isChef">You are already enrolled!<br>
+            <a ui-sref="app.dishes">Go to chef mode</a></p>
+
+        <form novalidate class="list" name="enrollForm" ng-if="!vm.isChef">
             <image-crop class="hc-image-container" input-name="picture" result="vm.form.picture"></image-crop>
             <label class="item item-input item-floating-label">
                 <span class="input-label">First name</span>

@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     'use strict';
 
@@ -21,7 +21,7 @@
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
 
-        $scope.$watch(function() {
+        $scope.$watch(function () {
             return LocationService.getCurrentLocation();
         }, onLocationChange);
 
@@ -37,7 +37,7 @@
         function getChefDetails() {
             $ionicLoading.show();
             return ChefService.getChefDetails(vm.chefId)
-                .then(function(chef) {
+                .then(function (chef) {
                     vm.chef = chef;
                     if ($stateParams.batchId) {
                         vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.batchId)});
@@ -54,7 +54,7 @@
 
         function getCheckoutInfo() {
             var getInfoPromise = user.isLoggedIn ? PaymentService.getCheckoutInfo(vm.chefId) : $q.when({});
-            return getInfoPromise.then(function(info) {
+            return getInfoPromise.then(function (info) {
                 vm.checkoutInfo = info;
                 return info;
             });
@@ -94,7 +94,7 @@
         function holdBatch() {
             $ionicLoading.show();
             return PaymentService.holdBatch({batchId: $stateParams.batchId, quantity: vm.quantity})
-                .then(function() {
+                .then(function () {
                     $ionicLoading.show({template: 'Item added to the cart!', duration: 2000});
                     $state.go('app.chef-preview', {id: $stateParams.id});
                 })
@@ -102,17 +102,17 @@
         }
 
         function checkout() {
-            popup = $ionicPopup.show({
+            popup = $ionicPopup.confirm({
                 title: 'Confirm checkout',
                 templateUrl: 'templates/confirm-checkout.html',
                 scope: getCheckoutScope(),
-                buttons: [{
-                    text: 'Confirm',
-                    type: 'button-positive',
-                    onTap: doCheckout
-                }, {
-                    text: 'Cancel'
-                }]
+                cancelText: 'Cancel',
+                okText: 'Confirm',
+                okType: 'button-positive'
+            }).then(function (res) {
+                if (res) {
+                    doCheckout();
+                }
             });
         }
 
@@ -127,14 +127,14 @@
             $ionicLoading.show();
             var portionsIds = vm.checkoutInfo.portion_id_list;
             PaymentService.checkout(portionsIds)
-                .then(function() {
+                .then(function () {
                     $ionicPopup.show({
                         title: 'Checkout successful!',
                         template: 'Your order is confirmed, remember to go pick it up!',
                         buttons: [{
                             text: 'Got it!',
                             type: 'button-positive',
-                            onTap: function() {
+                            onTap: function () {
                                 vm.checkoutInfo = [];
                                 $ionicHistory.nextViewOptions({
                                     historyRoot: true,
@@ -158,7 +158,7 @@
         }
 
         function getSpecialIngredients(dish) {
-            var ingredients = _.filter(['milk', 'peanuts', 'eggs', 'vegetarian'], function(ingredient) {
+            var ingredients = _.filter(['milk', 'peanuts', 'eggs', 'vegetarian'], function (ingredient) {
                 return dish[ingredient] === true;
             });
             return ingredients.join(', ');
@@ -177,7 +177,7 @@
                     buttons: [{
                         text: 'Delete',
                         type: 'button-assertive',
-                        onTap: function() {
+                        onTap: function () {
                             $ionicLoading.show();
                             PaymentService.cancelOrder()
                                 .catch(HCMessaging.showError)
@@ -201,11 +201,11 @@
         function deleteDishPortions(portion) {
             $ionicLoading.show();
             PaymentService.deleteBatch(portion.portion_id_list)
-                .then(function() {
+                .then(function () {
                     getChefDetails();
                     return getCheckoutInfo();
                 })
-                .then(function(info) {
+                .then(function (info) {
                     if (popup && _.isEmpty(info.portions)) {
                         popup.close();
                     }

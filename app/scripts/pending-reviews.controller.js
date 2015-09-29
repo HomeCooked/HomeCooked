@@ -1,9 +1,9 @@
-(function() {
+(function () {
     'use strict';
     angular.module('HomeCooked.controllers').controller('PendingReviewsCtrl', PendingReviewsCtrl);
 
-    PendingReviewsCtrl.$inject = ['$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'LoginService', 'HCMessaging'];
-    function PendingReviewsCtrl($rootScope, $scope, $ionicModal, $ionicLoading, DishesService, LoginService, HCMessaging) {
+    PendingReviewsCtrl.$inject = ['_', '$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'LoginService', 'HCMessaging'];
+    function PendingReviewsCtrl(_, $rootScope, $scope, $ionicModal, $ionicLoading, DishesService, LoginService, HCMessaging) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -22,14 +22,13 @@
             $ionicLoading.show();
 
             DishesService.addDishReview(review)
-                .catch(HCMessaging.showError)
                 .then(function added() {
                     hideModal();
                     modalScope.review = getEmptyReview();
                     form.$setPristine();
-                    LoginService.reloadUser();
                     loadPendingReviews();
-                });
+                })
+                .catch(HCMessaging.showError);
         }
 
         function showModal(dish) {
@@ -37,7 +36,7 @@
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-review.html', {
                     scope: modalScope
-                }).then(function(m) {
+                }).then(function (m) {
                     modal = m;
                     modal.show();
                 });
@@ -61,11 +60,18 @@
             // show modal only if pending reviews
             $ionicLoading.show();
             return DishesService.getPendingReviews()
-                .then(function(dishes) {
+                .then(function (dishes) {
                     vm.dishes = dishes;
+                    $ionicLoading.hide();
+                    if (!_.size(dishes)) {
+                        $ionicLoading.show({
+                            template: 'No pending reviews!',
+                            duration: 2000
+                        });
+                        return LoginService.reloadUser();
+                    }
                 })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                .catch(HCMessaging.showError);
         }
 
         function onDestroy() {
