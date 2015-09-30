@@ -12,7 +12,7 @@
             'dishes': [{
                 title: 'Build your own menu',
                 image: 'images/chef8.jpg',
-                message: '<p>You decide what to cook, when to cook, and how much to charge.</p><p>We recommend posting your dishes several days in advance, and aiming for top reviews and ratings.</p>'
+                message: '<p>You decide what to cook, when to cook, and how much to charge. Buyers will come to pickup at your front door after passing orders.</p><p>We recommend posting your dishes several days in advance, and aiming for top reviews and ratings.</p>'
             }, {
                 title: 'Get paid',
                 image: 'images/chef8.jpg',

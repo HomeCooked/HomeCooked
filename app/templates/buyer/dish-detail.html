@@ -1,19 +1,19 @@
-<ion-view title="{{::vm.dish.title}}" class="buyer-dish-preview">
+<ion-view title="{{vm.dish.title}}" class="buyer-dish-preview">
     <ion-content class="has-footer">
         <div class="image-container">
             <img ng-src="{{vm.dish.picture}}">
         </div>
         <div class="dish-details">
             <div class="title-price">
-                <h2>{{::vm.dish.title}}</h2>
-                <span>${{::vm.dish.price}}</span>
+                <h2>{{vm.dish.title}}</h2>
+                <span>${{vm.dish.price}}</span>
             </div>
 
-            <p>{{::vm.dish.description}}</p>
+            <p>{{vm.dish.description}}</p>
 
-            <p>Ingredients: {{::vm.dish.ingredients}}</p>
+            <p>Ingredients: {{vm.dish.ingredients}}</p>
 
-            <p>{{::vm.dish.specialIngredients}}</p>
+            <p>{{vm.dish.specialIngredients}}</p>
         </div>
         <div class="list">
 
@@ -23,8 +23,8 @@
 
             <a class="item" ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})">
                 Reviews
-                <reviews-rating class="item-note" score="::vm.dish.review_score"
-                                count="::vm.dish.review_count"></reviews-rating>
+                <reviews-rating class="item-note" score="vm.dish.review_score"
+                                count="vm.dish.review_count"></reviews-rating>
             </a>
 
             <a class="item">

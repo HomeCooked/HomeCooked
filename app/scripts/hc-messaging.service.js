@@ -1,10 +1,10 @@
-(function() {
+(function () {
     'use strict';
     angular.module('HomeCooked.services').factory('HCMessaging', HCMessaging);
 
-    HCMessaging.$inject = ['$log', '$rootScope', '$ionicLoading', '$ionicPopup'];
+    HCMessaging.$inject = ['$rootScope', '$ionicLoading', '$ionicPopup'];
 
-    function HCMessaging($log, $rootScope, $ionicLoading, $ionicPopup) {
+    function HCMessaging($rootScope, $ionicLoading, $ionicPopup) {
 
         $rootScope.$on('unauthorized', notifyUnauthorized);
 
@@ -22,18 +22,12 @@
         }
 
         function showError(error) {
+            error = error || {};
+            var msg = typeof error !== 'object' ? error : error.data;
             $ionicLoading.hide();
-            $log.error(error);
-            var scope = $rootScope.$new();
-            scope.showMore = false;
-            scope.errorDetails = typeof error === 'object' ? JSON.stringify(error, null, '  ') : error;
-            scope.showDetails = function() {
-                scope.showMore = true;
-            };
             $ionicPopup.alert({
                 title: 'Oops, something went wrong!',
-                scope: scope,
-                templateUrl: 'templates/hc-messaging/error.html'
+                template: msg || 'Sorry for the inconvenience'
             });
         }
 

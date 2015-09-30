@@ -1,9 +1,9 @@
-(function() {
+(function () {
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', 'CacheService', 'ENV', 'LoginService', 'HCMessaging', '_'];
-    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, CacheService, ENV, LoginService, HCMessaging, _) {
+    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', '$ionicLoading', 'CacheService', 'ENV', 'LoginService', 'HCMessaging', '_'];
+    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, $ionicLoading, CacheService, ENV, LoginService, HCMessaging, _) {
         var devices = {
             ios: {
                 url: ENV.BASE_URL + '/api/v1/device/apns/',
@@ -23,7 +23,7 @@
         };
         var user = LoginService.getUser();
 
-        var loginWatcher = $rootScope.$watch(function() {
+        var loginWatcher = $rootScope.$watch(function () {
             return user.isLoggedIn;
         }, handleToken);
 
@@ -39,7 +39,7 @@
             var device = getDevice();
             $log.info('register start');
             $cordovaPush.register(device.config)
-                .then(function(deviceToken) {
+                .then(function (deviceToken) {
                     $log.info('register success ' + deviceToken);
                     if (window.ionic.Platform.isIOS()) {
                         device.token = deviceToken;
@@ -57,17 +57,20 @@
                 }
                 $log.info('handleToken start');
                 // Success -- send deviceToken to server, and store for future use
-                $http.post(device.url, {registration_id: device.token}).then(function() {
+                $http.post(device.url, {registration_id: device.token}).then(function () {
                     $log.info('handleToken success');
                     CacheService.setValue({'device-token': device.token});
-                }, function(err) {
+                }, function (err) {
                     var msg = _.get(err, 'data.registration_id[0]') || '';
                     if (msg.indexOf('must be unique') >= 0) {
                         $log.warn('called again service to register token');
                         CacheService.setValue({'device-token': device.token});
                         return;
                     }
-                    HCMessaging.showMessage('Error registering the device', 'We cannot send you push notifications :(');
+                    $ionicLoading.show({
+                        template: 'Error registering the device, we cannot send you push notifications :(',
+                        duration: 3000
+                    });
                 });
             }
         }
@@ -97,13 +100,22 @@
             }
             else if (notification.event === 'message') {
                 redirectIfNeeded(notification);
-                HCMessaging.showMessage('', notification.message);
+                $ionicLoading.show({
+                    template: notification.message,
+                    duration: 3000
+                });
             }
             else if (notification.event === 'error') {
-                HCMessaging.showMessage('Error', notification.msg);
+                $ionicLoading.show({
+                    template: notification.msg,
+                    duration: 3000
+                });
             }
             else {
-                HCMessaging.showMessage('', notification.event);
+                $ionicLoading.show({
+                    template: notification.event,
+                    duration: 3000
+                });
             }
         }
 
@@ -117,7 +129,10 @@
                 // Play custom audio if a sound specified.
                 //TODO
                 if (notification.message) {
-                    HCMessaging.showMessage('', notification.message);
+                    $ionicLoading.show({
+                        template: notification.message,
+                        duration: 3000
+                    });
                 }
 
                 if (notification.badge) {
