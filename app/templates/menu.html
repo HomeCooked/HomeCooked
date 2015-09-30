@@ -14,7 +14,7 @@
         </ion-header-bar>
         <ion-content>
             <div class="list" ng-if="menuVm.isUserLoggedIn && !menuVm.hasPendingReviews">
-                <a class="item item-icon-left dark" ng-repeat="link in menuVm.links"
+                <a class="item item-icon-left" ng-class="link.selected ? 'positive' : 'dark'" ng-repeat="link in menuVm.links"
                    nav-clear menu-close ng-click="menuVm.go(link.path)">
                     <i class="icon {{::link.icon}}"></i>
                     {{::link.name}}</a>
