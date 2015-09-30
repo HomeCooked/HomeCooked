@@ -1,24 +1,19 @@
 <ion-side-menus enable-menu-with-back-views="false">
     <ion-side-menu-content>
         <ion-nav-bar class="bar-stable nav-title-slide-ios7">
-            <ion-nav-buttons side="left">
-                <button class="button button-icon button-clear ion-navicon" menu-toggle="left"
-                        ng-if="menuVm.isUserLoggedIn && !menuVm.hasPendingReviews">
-                </button>
-            </ion-nav-buttons>
             <ion-nav-back-button></ion-nav-back-button>
         </ion-nav-bar>
         <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
     </ion-side-menu-content>
 
-    <ion-side-menu side="left">
+    <ion-side-menu side="left" expose-aside-when="(min-width:768px)">
         <ion-header-bar class="bar-stable">
-            <h1 class="title">Hi {{menuVm.userFirstName}}!</h1>
+            <h1 class="title">{{menuVm.isUserLoggedIn ? 'Hi, ' + menuVm.userFirstName + '!' : 'HomeCooked'}}</h1>
             <a class="button button-icon icon ion-gear-b" nav-clear menu-close href ng-click="menuVm.go('app.settings')"
                ng-if="menuVm.isUserLoggedIn"></a>
         </ion-header-bar>
         <ion-content>
-            <div class="list">
+            <div class="list" ng-if="menuVm.isUserLoggedIn">
                 <a class="item item-icon-left dark" ng-repeat="link in menuVm.links"
                    nav-clear menu-close ng-click="menuVm.go(link.path)">
                     <i class="icon {{::link.icon}}"></i>
@@ -29,12 +24,17 @@
                     <i class="icon ion-card"></i>
                     Payment</a>
             </div>
-            <a ng-if="!menuVm.isChef" nav-clear menu-close class="button button-block button-positive button-clear"
+            <div ng-if="menuVm.isUserLoggedIn">
+                <a ng-if="!menuVm.isChef" nav-clear menu-close class="button button-block button-positive button-clear"
+                   style="margin-top: 40px"
+                   ng-click="menuVm.go('app.enroll')">Become a chef!</a>
+                <a ng-if="menuVm.isChef" nav-clear menu-close class="button button-block button-positive button-clear"
+                   style="margin-top: 40px" ng-click="menuVm.switchView()">Go to {{menuVm.chefMode ? 'Buyer' : 'Chef'}}
+                    mode</a>
+            </div>
+            <a ng-if="!menuVm.isUserLoggedIn" nav-clear class="button button-block button-positive button-clear"
                style="margin-top: 40px"
-               ng-click="menuVm.go('app.enroll')">Become a chef!</a>
-            <a ng-if="menuVm.isChef" nav-clear menu-close class="button button-block button-positive button-clear"
-               style="margin-top: 40px" ng-click="menuVm.switchView()">Go to {{menuVm.chefMode ? 'Buyer' : 'Chef'}}
-                mode</a>
+               ng-click="menuVm.login()">Sign up, it's free!</a>
         </ion-content>
     </ion-side-menu>
 </ion-side-menus>

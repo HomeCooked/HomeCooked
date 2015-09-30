@@ -1,16 +1,19 @@
 <ion-view title="My Bio" hide-back-button="true">
-  <ion-nav-buttons side="right">
-    <button class="button button-positive button-clear" ng-disabled="!vm.modify" ng-click="vm.updateBio()">
-      Save
-      <i class="icon ion-ios-checkmark-empty"></i>
-    </button>
-  </ion-nav-buttons>
-  <ion-content class="has-header">
-    <label class="item item-input padding">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-positive button-clear" ng-disabled="!vm.modify" ng-click="vm.updateBio()">
+            Save
+            <i class="icon ion-ios-checkmark-empty"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <label class="item item-input padding">
       <textarea placeholder="Write something about you" class="hc-chef-bio" maxlength="{{::vm.maxLength}}"
                 ng-model="vm.chefInfo.bio" ng-change="vm.modify=true;">{{vm.chefInfo.bio}}</textarea>
-    </label>
+        </label>
 
-    <p align="right" class="subdued padding">{{vm.chefInfo.bio.length}}/{{::vm.maxLength}}</p>
-  </ion-content>
+        <p align="right" class="subdued padding">{{vm.chefInfo.bio.length}}/{{::vm.maxLength}}</p>
+    </ion-content>
 </ion-view>

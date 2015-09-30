@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     'use strict';
 
@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading','mapService','SearchService', 'LocationService', 'HCMessaging', '_'];
+    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading', 'mapService', 'SearchService', 'LocationService', 'HCMessaging', '_'];
 
-    function SearchCtrl($state, $scope, $ionicLoading,mapService, SearchService, LocationService, HCMessaging, _) {
+    function SearchCtrl($state, $scope, $ionicLoading, mapService, SearchService, LocationService, HCMessaging, _) {
 
         var mapId = 'chefmap';
         var userLocation = null;
@@ -22,7 +22,7 @@
 
         //init the map
         initMapProperties();
-        $scope.$watch(function() {
+        $scope.$watch(function () {
             return LocationService.getCurrentLocation();
         }, onLocationChange);
 
@@ -72,14 +72,14 @@
         }
 
         function updateChefsDistance() {
-            _.forEach(vm.chefs, function(chef) {
+            _.forEach(vm.chefs, function (chef) {
                 chef.distance = LocationService.getDistanceFrom(chef.location);
             });
         }
 
         function displayMarkers(fit) {
             var markers = _.chain(vm.chefs)
-                .filter(function(chef) {
+                .filter(function (chef) {
                     return _.isObject(chef.location);
                 })
                 .map(getChefMarker)
@@ -99,7 +99,7 @@
             var html = '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>' + //
                 '<span class="badge">' + chef.num_active_dishes + '</span>';
 
-            var onClickFn = function() {
+            var onClickFn = function () {
                 goToPreview(parseInt(chef.id));
             };
 

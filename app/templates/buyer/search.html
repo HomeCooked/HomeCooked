@@ -1,9 +1,6 @@
 <ion-view title="Find local chefs" hide-back-button="true" class="buyer-search">
-    <ion-nav-buttons side="left" ng-if="!menuVm.isUserLoggedIn">
-        <button class="button button-clear" ng-click="menuVm.login()">
-            <i class="icon ion-ios-person"></i>
-            Sign up
-        </button>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
         <button class="button button-clear" ng-click="vm.toggleListMap()">

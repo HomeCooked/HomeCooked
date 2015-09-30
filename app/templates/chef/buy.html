@@ -1,6 +1,10 @@
 <ion-view title="Order new wares" hide-back-button="true">
-  <ion-content class="has-header">
-    <p class="padding" align="center">Tell us at <a ng-click="vm.order()" href>{{vm.email}}</a> the number of disposable ware kits you would like
-      to purchase ($0.25 per kit) and we will deliver them directly at your address.</p>
-  </ion-content>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <p class="padding" align="center">Tell us at <a ng-click="vm.order()" href>{{vm.email}}</a> the number of
+            disposable ware kits you would like
+            to purchase ($0.25 per kit) and we will deliver them directly at your address.</p>
+    </ion-content>
 </ion-view>

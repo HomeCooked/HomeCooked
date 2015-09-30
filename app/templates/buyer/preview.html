@@ -1,6 +1,5 @@
 <ion-view title="{{::vm.chef.first_name}} {{::vm.chef.last_name}}" class="buyer-search-preview" hide-nav-bar="true">
-    <ion-content has-bouncing="false"
-                 ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
+    <ion-content ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
         <div class="preview">
             <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
 

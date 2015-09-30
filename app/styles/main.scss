@@ -14,99 +14,101 @@
 'buyer-search',
 'reviews-rating';
 
-@media (min-width: 680px) {
-  .modal {
-    top: 10%;
-    bottom: 10%;
-    left: 10%;
-    right: 10%;
-    width: 80%;
-    height: 80%;
-  }
+@media (min-width: 768px) {
+    .modal {
+        top: 10%;
+        bottom: 10%;
+        left: 10%;
+        right: 10%;
+        width: 80%;
+        height: 80%;
+    }
+    ion-header-bar .buttons-left .ion-navicon {
+        display: none;
+    }
 }
 
-
 body {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  font-weight: 300;
-  color: #333;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    color: #333;
 }
 
 input.ng-dirty.ng-invalid {
-  color: red;
+    color: red;
 }
 
 .hc-menu-item-selected {
-  background-color: #eef;
+    background-color: #eef;
 }
 
 .popup-container .popup {
-  width: 320px;
+    width: 320px;
 }
 
 .item .button-right {
-  position: absolute;
-  top: 0;
-  right: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .item .item-right {
-  float: right;
+    float: right;
 }
 
 .item .wrap {
-  white-space: normal;
+    white-space: normal;
 }
 
 .item-input.item-select {
-  display: block;
+    display: block;
 
-  .input-label {
-    max-width: 100%;
-    width: 100%;
-  }
+    .input-label {
+        max-width: 100%;
+        width: 100%;
+    }
 
-  select {
-    position: relative;
-    padding: 0;
-  }
+    select {
+        position: relative;
+        padding: 0;
+    }
 
-  &:after {
-    top: 75%;
-  }
+    &:after {
+        top: 75%;
+    }
 }
 
 .hc {
-  &-order {
-    display: inline-block;
-    padding: 0.5rem;
-    position: relative;
-    text-align: center;
-    vertical-align: top;
-    cursor: pointer;
+    &-order {
+        display: inline-block;
+        padding: 0.5rem;
+        position: relative;
+        text-align: center;
+        vertical-align: top;
+        cursor: pointer;
 
-    > img {
-      border-radius: 50%;
-      width: 5.8rem;
-      height: 5.8rem;
+        > img {
+            border-radius: 50%;
+            width: 5.8rem;
+            height: 5.8rem;
+        }
+        &-quantity {
+            position: absolute;
+            right: 0.5rem;
+            top: 0.5rem;
+            background: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5rem;
+            border: 2px #00A27F solid;
+            font-weight: bold;
+        }
+        &-username {
+            width: 100%;
+            white-space: normal;
+            overflow: hidden;
+        }
     }
-    &-quantity {
-      position: absolute;
-      right: 0.5rem;
-      top: 0.5rem;
-      background: white;
-      padding: 0.2rem 0.5rem;
-      border-radius: 5rem;
-      border: 2px #00A27F solid;
-      font-weight: bold;
+    &-image-container {
+        text-align: center;
     }
-    &-username {
-      width: 100%;
-      white-space: normal;
-      overflow: hidden;
-    }
-  }
-  &-image-container {
-    text-align: center;
-  }
 }
