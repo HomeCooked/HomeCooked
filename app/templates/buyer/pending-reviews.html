@@ -1,4 +1,7 @@
 <ion-view title="Pending Reviews" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
     <ion-content>
         <div class="list card">
             <div class="item item-avatar" ng-repeat="dish in vm.dishes" href ng-click="vm.showModal(dish)">

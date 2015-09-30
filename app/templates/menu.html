@@ -10,10 +10,10 @@
         <ion-header-bar class="bar-stable">
             <h1 class="title">{{menuVm.isUserLoggedIn ? 'Hi, ' + menuVm.userFirstName + '!' : 'HomeCooked'}}</h1>
             <a class="button button-icon icon ion-gear-b" nav-clear menu-close href ng-click="menuVm.go('app.settings')"
-               ng-if="menuVm.isUserLoggedIn"></a>
+               ng-if="menuVm.isUserLoggedIn && !menuVm.hasPendingReviews"></a>
         </ion-header-bar>
         <ion-content>
-            <div class="list" ng-if="menuVm.isUserLoggedIn">
+            <div class="list" ng-if="menuVm.isUserLoggedIn && !menuVm.hasPendingReviews">
                 <a class="item item-icon-left dark" ng-repeat="link in menuVm.links"
                    nav-clear menu-close ng-click="menuVm.go(link.path)">
                     <i class="icon {{::link.icon}}"></i>
@@ -24,7 +24,7 @@
                     <i class="icon ion-card"></i>
                     Payment</a>
             </div>
-            <div ng-if="menuVm.isUserLoggedIn">
+            <div ng-if="menuVm.isUserLoggedIn && !menuVm.hasPendingReviews">
                 <a ng-if="!menuVm.isChef" nav-clear menu-close class="button button-block button-positive button-clear"
                    style="margin-top: 40px"
                    ng-click="menuVm.go('app.enroll')">Become a chef!</a>
@@ -32,6 +32,8 @@
                    style="margin-top: 40px" ng-click="menuVm.switchView()">Go to {{menuVm.chefMode ? 'Buyer' : 'Chef'}}
                     mode</a>
             </div>
+            <p class="padding" align="center" style="margin-top: 40px" ng-if="menuVm.hasPendingReviews">Please rate the dishes before
+                making a new order.</p>
             <a ng-if="!menuVm.isUserLoggedIn" nav-clear class="button button-block button-positive button-clear"
                style="margin-top: 40px"
                ng-click="menuVm.login()">Sign up, it's free!</a>
