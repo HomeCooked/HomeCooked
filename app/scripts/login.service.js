@@ -1,5 +1,5 @@
 'use strict';
-(function() {
+(function () {
     angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
     LoginService.$inject = ['$q', '$rootScope', '$http', '$cordovaFacebook', 'ENV', 'CacheService', 'ChefService', '_'];
@@ -25,16 +25,14 @@
             getNotified: getNotified
         };
 
-        function getData(response) {
-            return response.data;
-        }
-
         function reloadUser() {
             if (user.isLoggedIn && typeof user.id === 'number') {
-                return $http.get(baseUrl + 'users/' + user.id + '/').then(getData).then(function(newUser) {
-                    handleUser(newUser);
-                    ChefService.reloadChef(user);
-                }, invalidateUser);
+                return $http.get(baseUrl + 'users/' + user.id + '/')
+                    .then(function (response) {
+                        handleUser(response.data);
+                        ChefService.reloadChef(user);
+                    })
+                    .catch(invalidateUser);
             }
             return $q.when(user);
         }
@@ -45,7 +43,7 @@
         }
 
         function login(type) {
-            return getAccessToken(type).then(function(accessToken) {
+            return getAccessToken(type).then(function (accessToken) {
                 return homeCookedLogin(accessToken, type);
             });
         }
@@ -60,7 +58,7 @@
 
         function setUser(newUser) {
             newUser = newUser || {};
-            _.forEach(user, function(val, key) {
+            _.forEach(user, function (val, key) {
                 if (!newUser.hasOwnProperty(key) && key !== 'zipcode') {
                     user[key] = undefined;
                     delete user[key];
@@ -85,10 +83,7 @@
             var deferred = $q.defer();
             $http.post(baseUrl + 'chefs/enroll/', chefInfo)
                 .success(deferred.resolve)
-                .error(function(data) {
-                    deferred.reject(JSON.stringify(data));
-
-                });
+                .error(deferred.reject);
             return deferred.promise;
         }
 
@@ -98,7 +93,7 @@
                 'client_id': ENV.CLIENT_ID,
                 'provider': provider
             })
-                .then(function(response) {
+                .then(function (response) {
                     var data = response.data;
                     CacheService.setValue({
                         provider: provider,
@@ -113,7 +108,7 @@
         function getAccessToken(provider) {
             if (provider === 'facebook') {
                 return doFacebookLogin()
-                    .then(function(response) {
+                    .then(function (response) {
                         var token = _.get(response, 'authResponse.token') || _.get(response, 'authResponse.accessToken');
                         if (token) {
                             return token;
@@ -131,9 +126,18 @@
                 $cordovaFacebook.login(scope).then(deferred.resolve, deferred.reject);
             }
             else {
-                window.openFB.login(deferred.resolve, {scope: scope});
+                window.openFB.login(function (response) {
+                    if (response.status === 'connected') {
+                        deferred.resolve(response);
+                    }
+                    else {
+                        deferred.reject(response.error);
+                    }
+                }, {scope: scope});
             }
-            _.delay(deferred.reject.bind(deferred, 'timeout'), 60000);
+            _.delay(function () {
+                deferred.reject('timeout');
+            }, 90000);
             return deferred.promise;
         }
 
@@ -148,7 +152,10 @@
 
         function saveUserData(data) {
             data.phone_number = serializePhone(data.phone_number);
-            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data).then(getData).then(handleUser);
+            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data)
+                .then(function (response) {
+                    return handleUser(response.data);
+                });
         }
 
         function getNotified(zipcode, email) {

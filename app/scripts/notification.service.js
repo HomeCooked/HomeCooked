@@ -2,8 +2,8 @@
     'use strict';
     angular.module('HomeCooked.services').factory('NotificationService', NotificationService);
 
-    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', '$ionicLoading', 'CacheService', 'ENV', 'LoginService', 'HCMessaging', '_'];
-    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, $ionicLoading, CacheService, ENV, LoginService, HCMessaging, _) {
+    NotificationService.$inject = ['$log', '$rootScope', '$cordovaPush', '$state', '$ionicHistory', '$http', '$ionicLoading', 'CacheService', 'ENV', 'LoginService', '_'];
+    function NotificationService($log, $rootScope, $cordovaPush, $state, $ionicHistory, $http, $ionicLoading, CacheService, ENV, LoginService, _) {
         var devices = {
             ios: {
                 url: ENV.BASE_URL + '/api/v1/device/apns/',

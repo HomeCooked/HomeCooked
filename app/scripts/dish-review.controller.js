@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     'use strict';
 
@@ -8,23 +8,21 @@
 
     DishReviewCtrl.$inject = ['$stateParams', '$ionicLoading', 'DishesService', 'HCMessaging'];
 
-    function DishReviewCtrl($stateParams, $ionicLoading, DishesService, HCMessaging) {
+    function DishReviewCtrl($scope, $stateParams, $ionicLoading, DishesService, HCMessaging) {
         var vm = this;
 
         vm.reviews = [];
 
-        getReviews();
+        $scope.$on('$ionicView.beforeEnter', getReviews);
 
         function getReviews() {
             $ionicLoading.show();
             DishesService.getDishReviews($stateParams.dishId)
-                .then(function(reviews) {
+                .then(function (reviews) {
                     vm.reviews = reviews;
+                    $ionicLoading.hide();
                 })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                .catch(HCMessaging.showError);
         }
-
-
     }
 })();
