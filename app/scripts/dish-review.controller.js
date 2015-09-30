@@ -6,7 +6,7 @@
         .module('HomeCooked.controllers')
         .controller('DishReviewCtrl', DishReviewCtrl);
 
-    DishReviewCtrl.$inject = ['$stateParams', '$ionicLoading', 'DishesService', 'HCMessaging'];
+    DishReviewCtrl.$inject = ['$scope', '$stateParams', '$ionicLoading', 'DishesService', 'HCMessaging'];
 
     function DishReviewCtrl($scope, $stateParams, $ionicLoading, DishesService, HCMessaging) {
         var vm = this;
