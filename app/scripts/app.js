@@ -142,6 +142,14 @@ HomeCooked
                     }
                 }
             })
+            .state('app.conduct', {
+                url: '/conduct/',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/coc.html'
+                    }
+                }
+            })
             .state('zipcode-validation', {
                 url: '/zipcode-validation/',
                 templateUrl: 'templates/zipcode/form.html',
