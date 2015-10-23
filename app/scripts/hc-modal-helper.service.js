@@ -171,7 +171,9 @@
             modals['signup'] = modalScope;
             modalScope.deferred = deferred;
             modalScope.closeModal = closeModal;
+            modalScope.doingLogin = true;
             modalScope.signIn = signIn;
+            modalScope.toggleDoingLogin = toggleDoingLogin;
 
             $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
                 animation: 'slide-in-up',
@@ -183,13 +185,28 @@
             return deferred.promise;
         }
 
-        function signIn(loginType, user, pass) {
+        function signIn(loginType, data) {
             $ionicLoading.show();
-            LoginService.login(loginType, user, pass).then(function didLogin() {
+            var scope = modals['signup'],
+                promise;
+            if (scope.doingLogin) {
+                promise = LoginService.login(loginType, data.email, data.password);
+            }
+            else {
+                promise = LoginService.signup(data).then(function () {
+                    return LoginService.login(loginType, data.email, data.password1);
+                });
+            }
+            promise.then(function didLogin() {
                 $ionicLoading.hide();
-                var scope = closeModal('signup');
+                closeModal('signup');
                 scope.deferred.resolve();
             }, HCMessaging.showError);
+        }
+
+        function toggleDoingLogin() {
+            var scope = modals['signup'];
+            scope.doingLogin = !scope.doingLogin;
         }
 
         function closeModal(scopeName) {

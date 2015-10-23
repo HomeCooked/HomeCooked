@@ -9,10 +9,75 @@
         </div>
     </ion-header-bar>
     <ion-content>
-        <p class="padding">
-            <span>Use Facebook to securely access your account<br>(we won't post anything on your behalf)</span><br/>
-            <a class="button button-positive button-clear icon-left ion-social-facebook" ng-click="signIn('facebook')">Connect
-                with Facebook</a>
-        </p>
+        <div class="padding">
+            <div align="center">
+                <span>Use Facebook to securely access your account<br>(we won't post anything on your behalf)</span><br/>
+                <a class="button button-positive button-clear icon-left ion-social-facebook"
+                   ng-click="signIn('facebook')">Connect
+                    with Facebook</a>
+            </div>
+
+            <div align="center" class="padding-vertical">- or -</div>
+
+            <div class="button-bar padding-top">
+                <a class="button button-positive" ng-class="{'button-clear': !doingLogin}"
+                   ng-click="toggleDoingLogin()">Login</a>
+                <a class="button button-positive" ng-class="{'button-clear': doingLogin}"
+                   ng-click="toggleDoingLogin()">Sign up</a>
+            </div>
+
+            <form novalidate class="list list-inset" name="loginForm" ng-show="doingLogin">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Email</span>
+                    <input type="email" name="email" placeholder="Email" ng-model="login.email" required>
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Password</span>
+                    <input type="password" name="password" placeholder="Password" ng-model="login.password" required
+                           ng-minlength="5">
+                </label>
+
+                <div class="button button-positive button-block" ng-click="signIn('homecooked',loginForm)"
+                     ng-disabled="loginForm.$invalid">Login
+                </div>
+            </form>
+            <form novalidate class="list list-inset" name="signupForm" ng-show="!doingLogin">
+
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">First Name</span>
+                    <input type="text" name="name" placeholder="First Name" ng-model="signup.first_name" required
+                           ng-minlength="2"
+                           ng-maxlength="50">
+                </label>
+
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Last Name</span>
+                    <input type="text" name="name" placeholder="Last Name" ng-model="signup.last_name" required
+                           ng-minlength="2"
+                           ng-maxlength="50">
+                </label>
+
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Email</span>
+                    <input type="email" name="email" placeholder="Email" required ng-model="signup.email">
+                </label>
+
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Password (minimum 5 chars)</span>
+                    <input type="password" name="password1" placeholder="Password (minimum 5 chars)"
+                           ng-model="signup.password1" required ng-minlength="5">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Confirm Password</span>
+                    <input type="password" name="password2" placeholder="Confirm password" ng-model="signup.password2"
+                           required ng-minlength="5">
+                </label>
+
+                <div class="button button-positive button-block" ng-click="signIn('homecooked', signupForm)"
+                     ng-disabled="signupForm.$invalid">Sign
+                    up
+                </div>
+            </form>
+        </div>
     </ion-content>
 </ion-modal-view>
