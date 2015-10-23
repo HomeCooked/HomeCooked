@@ -15,6 +15,7 @@
         return {
             reloadUser: reloadUser,
             login: login,
+            signup: signup,
             logout: logout,
             getUser: getUser,
             setUserZipCode: setUserZipCode,
@@ -42,14 +43,42 @@
             return handleUser();
         }
 
-        function login(type) {
-            return getAccessToken(type).then(function (accessToken) {
-                return homeCookedLogin(accessToken, type);
+        function login(provider, data) {
+            data = data || {};
+            var tokenPromise;
+            if (provider === 'facebook') {
+                tokenPromise = getFacebookToken();
+            }
+            else if (provider === 'homecooked') {
+                tokenPromise = getHomecookedToken(data);
+            }
+            if (tokenPromise) {
+                return tokenPromise.then(function (token) {
+                    return loadUser(token, provider);
+                });
+            }
+            return $q.reject('not supported');
+        }
+
+        function signup(provider, data) {
+            if (provider !== 'homecooked') {
+                return $q.reject('not supported');
+            }
+            data = data || {};
+            return $http.post(ENV.BASE_URL + '/auth/register/', {
+                'client_id': ENV.CLIENT_ID,
+                'provider': provider,
+                'username': data.email,
+                'email': data.email,
+                'password': data.password
+            }).then(function () {
+                return login(provider, data);
             });
         }
 
         function logout() {
             invalidateUser();
+            return $q.reject();
         }
 
         function getUser() {
@@ -87,9 +116,9 @@
             return deferred.promise;
         }
 
-        function homeCookedLogin(accessToken, provider) {
+        function loadUser(token, provider) {
             return $http.post(ENV.BASE_URL + '/connect/', {
-                'access_token': accessToken,
+                'access_token': token,
                 'client_id': ENV.CLIENT_ID,
                 'provider': provider
             })
@@ -105,40 +134,49 @@
                 }, logout);
         }
 
-        function getAccessToken(provider) {
-            if (provider === 'facebook') {
-                return doFacebookLogin()
-                    .then(function (response) {
-                        var token = _.get(response, 'authResponse.token') || _.get(response, 'authResponse.accessToken');
-                        if (token) {
-                            return token;
-                        }
-                        return $q.reject('not connected');
-                    });
-            }
-            return $q.reject('not supported');
-        }
-
-        function doFacebookLogin() {
+        function getFacebookToken() {
             var deferred = $q.defer();
             var scope = ['public_profile', 'email'];
             if (window.cordova) {
-                $cordovaFacebook.login(scope).then(deferred.resolve, deferred.reject);
+                $cordovaFacebook.login(scope).finally(onFacebookLoginSuccess);
             }
             else {
-                window.openFB.login(function (response) {
-                    if (response.status === 'connected') {
-                        deferred.resolve(response);
-                    }
-                    else {
-                        deferred.reject(response.error);
-                    }
-                }, {scope: scope});
+                window.openFB.login(onFacebookLoginSuccess, {scope: scope});
             }
             _.delay(function () {
                 deferred.reject('timeout');
             }, 90000);
             return deferred.promise;
+
+            function onFacebookLoginSuccess(response) {
+                response = response || {};
+                var authResponse = response.authResponse || {},
+                    token = authResponse.token || authResponse.accessToken,
+                    error = response.error || 'Could not connect.';
+                if (token) {
+                    deferred.resolve(token);
+                }
+                else {
+                    deferred.reject(error);
+                }
+            }
+        }
+
+        function getHomecookedToken(data) {
+            return $http.post(ENV.BASE_URL + '/auth/login/', {
+                'client_id': ENV.CLIENT_ID,
+                'email': data.email,
+                'password': data.password
+            })
+                .then(function (response) {
+                    var token = _.get(response, 'data.auth_token');
+                    if (token) {
+                        return token;
+                    }
+                    else {
+                        return $q.reject('Could not connect.');
+                    }
+                });
         }
 
         function getChefMode() {

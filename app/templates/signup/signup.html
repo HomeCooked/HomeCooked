@@ -17,7 +17,7 @@
                     with Facebook</a>
             </div>
 
-            <div align="center" class="padding-vertical">- or -</div>
+            <p align="center" class="padding-vertical">OR</p>
 
             <div class="button-bar padding-top">
                 <a class="button button-positive" ng-class="{'button-clear': !doingLogin}"
@@ -33,11 +33,10 @@
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Password</span>
-                    <input type="password" name="password" placeholder="Password" ng-model="login.password" required
-                           ng-minlength="5">
+                    <input type="password" name="password" placeholder="Password" ng-model="login.password" required>
                 </label>
 
-                <div class="button button-positive button-block" ng-click="signIn('homecooked',loginForm)"
+                <div class="button button-positive button-block" ng-click="signIn('homecooked',login)"
                      ng-disabled="loginForm.$invalid">Login
                 </div>
             </form>
@@ -64,17 +63,20 @@
 
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Password (minimum 5 chars)</span>
-                    <input type="password" name="password1" placeholder="Password (minimum 5 chars)"
-                           ng-model="signup.password1" required ng-minlength="5">
+                    <input type="password" name="password" placeholder="Password (minimum 5 chars)"
+                           ng-model="signup.password" required ng-minlength="5">
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Confirm Password</span>
                     <input type="password" name="password2" placeholder="Confirm password" ng-model="signup.password2"
                            required ng-minlength="5">
+                    <span
+                        ng-if="signupForm.password.$valid && signupForm.password2.$valid && signup.password !== signup.password2"
+                        style="font-style: italic; font-size: 14px; color: darkred;">Passwords don't match.</span>
                 </label>
 
-                <div class="button button-positive button-block" ng-click="signIn('homecooked', signupForm)"
-                     ng-disabled="signupForm.$invalid">Sign
+                <div class="button button-positive button-block" ng-click="signIn('homecooked', signup)"
+                     ng-disabled="signupForm.$invalid || signup.password !== signup.password2">Sign
                     up
                 </div>
             </form>

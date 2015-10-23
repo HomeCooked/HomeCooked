@@ -188,16 +188,8 @@
         function signIn(loginType, data) {
             $ionicLoading.show();
             var scope = modals['signup'],
-                promise;
-            if (scope.doingLogin) {
-                promise = LoginService.login(loginType, data.email, data.password);
-            }
-            else {
-                promise = LoginService.signup(data).then(function () {
-                    return LoginService.login(loginType, data.email, data.password1);
-                });
-            }
-            promise.then(function didLogin() {
+                fn = loginType === 'homecooked' && !scope.doingLogin ? LoginService.signup : LoginService.login;
+            fn(loginType, data).then(function didLogin() {
                 $ionicLoading.hide();
                 closeModal('signup');
                 scope.deferred.resolve();
