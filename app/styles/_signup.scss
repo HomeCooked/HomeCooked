@@ -4,11 +4,22 @@
     $color-border-email-btn: #4A6D80;
     $light-radius: 4px;
 
-    p {
-        text-align: center;
+    .error_msg {
+        font-style: italic;
+        font-size: 14px;
+        color: darkred;
     }
-    p > a {
-        margin-top: 10px;
+    .divider {
+        background-color: white;
+        &:before, &:after {
+            content: "";
+            display: inline-block;
+            width: 30%;
+            height: 1px;
+            background: lightgray;
+            vertical-align: middle;
+            margin: 40px 5%;
+        }
     }
 }
 

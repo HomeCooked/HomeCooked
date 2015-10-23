@@ -12,12 +12,12 @@
         <div class="padding">
             <div align="center">
                 <span>Use Facebook to securely access your account<br>(we won't post anything on your behalf)</span><br/>
-                <a class="button button-positive button-clear icon-left ion-social-facebook"
+                <a class="button button-positive button-clear icon-left ion-social-facebook padding-top"
                    ng-click="signIn('facebook')">Connect
                     with Facebook</a>
             </div>
 
-            <p align="center" class="padding-vertical">OR</p>
+            <div align="center" class="divider">or</div>
 
             <div class="button-bar padding-top">
                 <a class="button button-positive" ng-class="{'button-clear': !doingLogin}"
@@ -72,7 +72,7 @@
                            required ng-minlength="5">
                     <span
                         ng-if="signupForm.password.$valid && signupForm.password2.$valid && signup.password !== signup.password2"
-                        style="font-style: italic; font-size: 14px; color: darkred;">Passwords don't match.</span>
+                        class="error_msg">Passwords don't match.</span>
                 </label>
 
                 <div class="button button-positive button-block" ng-click="signIn('homecooked', signup)"
