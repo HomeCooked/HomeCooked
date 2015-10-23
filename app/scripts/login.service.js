@@ -170,7 +170,14 @@
             })
                 .then(function (response) {
                     var token = _.get(response, 'data.auth_token');
+                    console.log('its my token', token)
                     if (token) {
+                        var credential = {token_type: 'Token', access_token:token }
+                        CacheService.setValue({
+
+                        credential: credential
+                    });
+
                         return token;
                     }
                     else {
