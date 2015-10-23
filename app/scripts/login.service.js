@@ -124,10 +124,14 @@
             })
                 .then(function (response) {
                     var data = response.data;
-                    CacheService.setValue({
-                        provider: provider,
-                        credential: data.credential
-                    });
+                    if(provider == 'facebook'){
+
+                        CacheService.setValue({
+                            provider: provider,
+                            credential: data.credential
+                        });
+
+                    }
                     handleUser(data.user);
                     ChefService.reloadChef(user);
                     return user;
