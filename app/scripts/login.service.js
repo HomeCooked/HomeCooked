@@ -165,7 +165,7 @@
         function getHomecookedToken(data) {
             return $http.post(ENV.BASE_URL + '/auth/login/', {
                 'client_id': ENV.CLIENT_ID,
-                'email': data.email,
+                'username': data.email,
                 'password': data.password
             })
                 .then(function (response) {
