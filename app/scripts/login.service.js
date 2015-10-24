@@ -61,16 +61,12 @@
         }
 
         function signup(provider, data) {
-            if (provider !== 'homecooked') {
+            if (provider !== 'homecooked' || _.isEmpty(data)) {
                 return $q.reject('not supported');
             }
-            data = data || {};
-            return $http.post(ENV.BASE_URL + '/auth/register/', {
-                'provider': provider,
-                'username': data.email,
-                'email': data.email,
-                'password': data.password
-            }).then(function () {
+            data.provider = provider;
+            data.username = data.username || data.email;
+            return $http.post(ENV.BASE_URL + '/auth/register/', data).then(function () {
                 return login(provider, data);
             });
         }
