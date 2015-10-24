@@ -66,7 +66,6 @@
             }
             data = data || {};
             return $http.post(ENV.BASE_URL + '/auth/register/', {
-                'client_id': ENV.CLIENT_ID,
                 'provider': provider,
                 'username': data.email,
                 'email': data.email,
@@ -119,19 +118,14 @@
         function loadUser(token, provider) {
             return $http.post(ENV.BASE_URL + '/connect/', {
                 'access_token': token,
-                'client_id': ENV.CLIENT_ID,
                 'provider': provider
             })
                 .then(function (response) {
                     var data = response.data;
-                    if(provider == 'facebook'){
-
-                        CacheService.setValue({
-                            provider: provider,
-                            credential: data.credential
-                        });
-
-                    }
+                    CacheService.setValue({
+                        provider: provider,
+                        credential: data.credential
+                    });
                     handleUser(data.user);
                     ChefService.reloadChef(user);
                     return user;
@@ -168,25 +162,15 @@
 
         function getHomecookedToken(data) {
             return $http.post(ENV.BASE_URL + '/auth/login/', {
-                'client_id': ENV.CLIENT_ID,
                 'username': data.email,
                 'password': data.password
             })
                 .then(function (response) {
                     var token = _.get(response, 'data.auth_token');
-                    console.log('its my token', token)
-                    if (token) {
-                        var credential = {token_type: 'Token', access_token:token }
-                        CacheService.setValue({
-
-                        credential: credential
-                    });
-
-                        return token;
-                    }
-                    else {
+                    if (!token) {
                         return $q.reject('Could not connect.');
                     }
+                    return token;
                 });
         }
 
