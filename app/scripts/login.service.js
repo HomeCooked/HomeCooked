@@ -181,10 +181,9 @@
 
         function saveUserData(data) {
             data.phone_number = serializePhone(data.phone_number);
-            return $http.patch(baseUrl + (chefMode ? 'chefs/' : 'users/') + user.id + '/', data)
-                .then(function (response) {
-                    return handleUser(response.data);
-                });
+            return $http.patch(baseUrl + 'users/' + user.id + '/', data).then(function (response) {
+                return handleUser(response.data);
+            });
         }
 
         function getNotified(zipcode, email) {

@@ -19,6 +19,11 @@
         vm.showUpdatePayment = showUpdatePayment;
         vm.showUpdateEmail = showUpdateEmail;
         vm.showUpdatePhone = showUpdatePhone;
+        vm.newPicture = null;
+        vm.uploadPhoto = function (pict) {
+            var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
+            fn({picture: pict});
+        };
 
         $scope.$watch(function () {
             return LoginService.getChefMode();
