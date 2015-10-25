@@ -29,7 +29,8 @@
             showTutorial: showTutorial,
             showUpdatePhoneNumber: showUpdatePhoneNumber,
             showUpdateEmail: showUpdateEmail,
-            showSignup: showSignup
+            showSignup: showSignup,
+            showUpdatePicture: showUpdatePicture
         };
 
         function showUpdatePayment() {
@@ -207,6 +208,35 @@
             scope.$destroy();
             delete modals[scopeName];
             return scope;
+        }
+
+        function showUpdatePicture() {
+            var modalScope = $rootScope.$new();
+            var deferred = $q.defer();
+            modals['picture'] = modalScope;
+            modalScope.deferred = deferred;
+            modalScope.result = '';
+            modalScope.closeModal = closeModal;
+            modalScope.uploadPicture = uploadPicture;
+
+            $ionicModal.fromTemplateUrl('templates/update-picture.html', {
+                animation: 'slide-in-up',
+                scope: modalScope
+            }).then(function (modal) {
+                modalScope.modal = modal;
+                modal.show();
+            });
+            return deferred.promise;
+        }
+
+        function uploadPicture(pict) {
+            $ionicLoading.show();
+            var method = LoginService.getChefMode() ? ChefService.uploadProfilePicture : LoginService.uploadProfilePicture;
+            method(pict).then(function () {
+                $ionicLoading.hide();
+                var scope = closeModal('picture');
+                scope.deferred.resolve();
+            }, HCMessaging.showError);
         }
     }
 

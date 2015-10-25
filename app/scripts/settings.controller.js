@@ -20,10 +20,7 @@
         vm.showUpdateEmail = showUpdateEmail;
         vm.showUpdatePhone = showUpdatePhone;
         vm.newPicture = null;
-        vm.uploadPhoto = function (pict) {
-            var fn = LoginService.getChefMode() ? ChefService.saveChefData : LoginService.saveUserData;
-            fn({picture: pict});
-        };
+        vm.showUpdatePhoto = showUpdatePhoto;
 
         $scope.$watch(function () {
             return LoginService.getChefMode();
@@ -67,6 +64,10 @@
 
         function showUpdatePhone() {
             HCModalHelper.showUpdatePhoneNumber();
+        }
+
+        function showUpdatePhoto() {
+            HCModalHelper.showUpdatePicture();
         }
     }
 

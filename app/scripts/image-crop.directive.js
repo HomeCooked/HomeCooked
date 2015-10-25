@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     'use strict';
 
@@ -12,18 +12,21 @@
             restrict: 'E',
             transclude: true,
             scope: {
+                onSave: '&',
+                showSave: '=',
                 result: '=',
                 inputName: '@'
             },
             templateUrl: 'templates/image-crop.html',
-            link: function(scope) {
+            link: function (scope) {
                 var SIZE = 600;
                 scope.pictureData = undefined;
                 scope.myImage = '';
+                scope.showSave = scope.showSave === true;
                 scope.result = scope.result || '';
                 scope.isMobile = window.ionic.Platform.isWebView();
 
-                scope.takePicture = function() {
+                scope.takePicture = function () {
                     document.activeElement.blur();
                     if (!scope.isMobile) {
                         return;
@@ -39,10 +42,11 @@
                     });
                 };
 
-                scope.cropPicture = function(pictureData) {
+                scope.cropPicture = function (pictureData) {
                     if (!pictureData) {
                         return;
                     }
+                    scope.pictureData = pictureData;
                     var picture = 'data:' + pictureData.filetype + ';base64,' + pictureData.base64;
                     scope.myImage = picture;
                 };
@@ -60,9 +64,9 @@
                         saveToPhotoAlbum: false
                     };
 
-                    $cordovaCamera.getPicture(options).then(function(imageData) {
+                    $cordovaCamera.getPicture(options).then(function (imageData) {
                         scope.result = 'data:image/jpeg;base64,' + imageData;
-                    }, function() {
+                    }, function () {
                         scope.result = '';
                     });
                     return true;

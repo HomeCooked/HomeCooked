@@ -1,0 +1,12 @@
+<div class="modal">
+    <ion-header-bar>
+        <h1 class="title">Change Picture</h1>
+
+        <div class="button button-clear" ng-click="closeModal('picture')">Cancel</div>
+    </ion-header-bar>
+    <ion-content>
+        <image-crop class="hc-image-container" input-name="picture" result="picture"
+                    aspect-ratio="0.60" show-save="true" on-save="uploadPicture(picture)"></image-crop>
+    </ion-content>
+</div>
+

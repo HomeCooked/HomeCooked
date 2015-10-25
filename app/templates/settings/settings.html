@@ -4,13 +4,11 @@
     </ion-nav-buttons>
     <ion-content class="has-header">
         <div class="profile dark-bg">
-            <img ng-src="{{vm.user.picture ||'images/user.png'}}">
-
-            <form novalidate name="photoForm">
-                <image-crop class="hc-image-container" input-name="picture" result="vm.newPicture"
-                            aspect-ratio="0.60"></image-crop>
-                <a class="button" ng-disabled="!vm.newPicture" ng-click="vm.uploadPhoto(vm.newPicture)">Submit</a>
-            </form>
+            <div class="profile-picture">
+                <img ng-src="{{vm.user.picture ||'images/user.png'}}">
+                <a ng-click="vm.showUpdatePhoto()"
+                   class="button button-clear button-dark icon ion-camera"></a>
+            </div>
             <h3>{{vm.user.first_name}} {{vm.user.last_name}}</h3>
         </div>
 

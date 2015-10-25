@@ -23,7 +23,8 @@
             becomeChef: becomeChef,
             getChefMode: getChefMode,
             setChefMode: setChefMode,
-            getNotified: getNotified
+            getNotified: getNotified,
+            uploadProfilePicture: uploadProfilePicture
         };
 
         function reloadUser() {
@@ -215,6 +216,12 @@
             setUser(newUser);
             CacheService.setValue({user: user});
             return user;
+        }
+
+        function uploadProfilePicture(pict) {
+            return $http.patch(baseUrl + 'users/' + user.id + '/picture/', pict).then(function (response) {
+                return handleUser(response.data);
+            });
         }
     }
 })();

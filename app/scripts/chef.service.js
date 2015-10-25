@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular.module('HomeCooked.services').factory('ChefService', ChefService);
 
@@ -22,12 +22,13 @@
             getChefDetails: getChefDetails,
             cancelOrder: cancelOrder,
             notifyDelivered: notifyDelivered,
-            saveChefData: saveChefData
+            saveChefData: saveChefData,
+            uploadProfilePicture: uploadProfilePicture
         };
 
 
         function handleResponses(httpPromise) {
-            return httpPromise.then(function(response) {
+            return httpPromise.then(function (response) {
                 return response.data;
             });
         }
@@ -112,7 +113,7 @@
 
         function setChef(newChef) {
             newChef = newChef || {};
-            _.forEach(chef, function(val, key) {
+            _.forEach(chef, function (val, key) {
                 if (!newChef.hasOwnProperty(key)) {
                     chef[key] = undefined;
                     delete chef[key];
@@ -122,6 +123,10 @@
                 newChef.phone_number = deserializePhone(newChef.phone_number);
                 _.assign(chef, newChef);
             }
+        }
+
+        function uploadProfilePicture(pict) {
+            return handleResponses($http.patch(baseUrl + 'chefs/' + chef.id + '/picture/', pict)).then(handleChef);
         }
     }
 })();
