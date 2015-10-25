@@ -133,7 +133,7 @@
             var deferred = $q.defer();
             var scope = ['public_profile', 'email'];
             if (window.cordova) {
-                $cordovaFacebook.login(scope).finally(onFacebookLoginSuccess);
+                $cordovaFacebook.login(scope).then(onFacebookLoginSuccess, deferred.reject);
             }
             else {
                 window.openFB.login(onFacebookLoginSuccess, {scope: scope});
