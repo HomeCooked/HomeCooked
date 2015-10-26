@@ -35,10 +35,16 @@
 
         <form novalidate class="list" name="enrollForm" ng-if="!vm.isChef">
             <h4 class="group-title">Profile picture</h4>
+
             <p class="group-description">Select a nice profile picture.</p>
-            <image-crop class="hc-image-container" input-name="picture" result="vm.form.picture"></image-crop>
+
+            <div class="hc-profile-picture">
+                <img ng-src="{{vm.form.picture ||'images/user.png'}}">
+                <a ng-click="vm.showUpdatePhoto()" class="button button-clear icon ion-camera"></a>
+            </div>
 
             <h4 class="group-title">Background Verification</h4>
+
             <p class="group-description">We will this data to run a background check on to make sure that you are who
                 you say you are and that you don't have a dangerous criminal history.</p>
 
@@ -64,6 +70,7 @@
             </label>
 
             <h4 class="group-title">Meal Pick Up Address</h4>
+
             <p class="group-description">
                 We use this to direct people to you after and only after they have bought your meals.
             </p>
@@ -95,8 +102,10 @@
             </label>
 
             <h4 class="group-title">Contact info</h4>
+
             <p class="group-description">
-                This info will allow us to contanct you when people purchase you meals.  We send notifications via sms and summeries via email.
+                This info will allow us to contanct you when people purchase you meals. We send notifications via sms
+                and summeries via email.
             </p>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Email</span>
@@ -110,6 +119,7 @@
             </label>
 
             <h4 class="group-title">Payment information</h4>
+
             <p class="group-description">
                 We use your debit card to pay you when customer buy your meals!
             </p>

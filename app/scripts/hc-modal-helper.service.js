@@ -210,11 +210,12 @@
             return scope;
         }
 
-        function showUpdatePicture() {
+        function showUpdatePicture(uploadMethod) {
             var modalScope = $rootScope.$new();
             var deferred = $q.defer();
             modals['picture'] = modalScope;
             modalScope.deferred = deferred;
+            modalScope.callback = uploadMethod;
             modalScope.result = '';
             modalScope.closeModal = closeModal;
             modalScope.uploadPicture = uploadPicture;
@@ -230,8 +231,12 @@
         }
 
         function uploadPicture(pict) {
-            $ionicLoading.show();
+            var scope = modals['picture'];
             var method = LoginService.getChefMode() ? ChefService.uploadProfilePicture : LoginService.uploadProfilePicture;
+            if (scope.callback) {
+                method = scope.callback;
+            }
+            $ionicLoading.show();
             method(pict).then(function () {
                 $ionicLoading.hide();
                 var scope = closeModal('picture');

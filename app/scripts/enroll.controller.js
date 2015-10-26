@@ -5,8 +5,8 @@
         .module('HomeCooked.controllers')
         .controller('EnrollCtrl', EnrollCtrl);
 
-    EnrollCtrl.$inject = ['$window', '$scope', '$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'ChefService', 'HCMessaging'];
-    function EnrollCtrl($window, $scope, $state, $ionicPopup, $ionicLoading, LoginService, ChefService, HCMessaging) {
+    EnrollCtrl.$inject = ['$q', '$window', '$scope', '$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'ChefService', 'HCMessaging', 'HCModalHelper'];
+    function EnrollCtrl($q, $window, $scope, $state, $ionicPopup, $ionicLoading, LoginService, ChefService, HCMessaging, HCModalHelper) {
         var vm = this;
         var chef = ChefService.getChef();
 
@@ -14,6 +14,7 @@
         vm.form = getEmptyForm();
         vm.enroll = enroll;
         vm.openExternalLink = openExternalLink;
+        vm.showUpdatePhoto = showUpdatePhoto;
 
         $scope.$watch(function () {
             return chef.id;
@@ -67,6 +68,15 @@
         function openExternalLink(link) {
             $window.open(link, '_system');
             return true;
+        }
+
+        function showUpdatePhoto() {
+            HCModalHelper.showUpdatePicture(setPicture);
+        }
+
+        function setPicture(pict) {
+            vm.form.picture = pict;
+            return $q.when();
         }
     }
 
