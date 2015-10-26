@@ -79,6 +79,11 @@
                      ng-disabled="signupForm.$invalid || signup.password !== signup.password2">Sign
                     up
                 </div>
+                <p align="center">
+                    By signing up, you are accepting these<br>
+                    <a href ng-click="openExternalLink('http://www.gohomecooked.com/terms.html')">Terms and Conditions</a>
+                    and <a href ng-click="openExternalLink('http://www.gohomecooked.com/privacy.html')">Privacy Policy</a>
+                </p>
             </form>
         </div>
     </ion-content>

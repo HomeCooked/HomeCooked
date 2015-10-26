@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="hc-crop-area" ng-show="didSelect">
-        <img-crop ng-if="!isMobile" image="myImage" result-image="result" area-min-size="300" area-type="square"
+        <img-crop ng-show="!isMobile" image="myImage" result-image="result" area-min-size="300" area-type="square"
                   result-image-size="600"></img-crop>
         <img ng-src="{{result}}">
     </div>

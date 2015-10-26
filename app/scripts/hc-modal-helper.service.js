@@ -2,9 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').factory('HCModalHelper', HCModalHelper);
 
-    HCModalHelper.$inject = ['_', '$q', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicSlideBoxDelegate', 'HCMessaging', 'PaymentService', 'LoginService', 'ChefService'];
+    HCModalHelper.$inject = ['$q', '$window', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicSlideBoxDelegate', 'HCMessaging', 'PaymentService', 'LoginService', 'ChefService'];
 
-    function HCModalHelper(_, $q, $rootScope, $ionicLoading, $ionicModal, $ionicSlideBoxDelegate, HCMessaging, PaymentService, LoginService, ChefService) {
+    function HCModalHelper($q, $window, $rootScope, $ionicLoading, $ionicModal, $ionicSlideBoxDelegate, HCMessaging, PaymentService, LoginService, ChefService) {
 
         var modals = {};
 
@@ -175,6 +175,7 @@
             modalScope.doingLogin = true;
             modalScope.signIn = signIn;
             modalScope.toggleDoingLogin = toggleDoingLogin;
+            modalScope.openExternalLink = openExternalLink;
 
             $ionicModal.fromTemplateUrl('templates/signup/signup.html', {
                 animation: 'slide-in-up',
@@ -242,6 +243,11 @@
                 var scope = closeModal('picture');
                 scope.deferred.resolve();
             }, HCMessaging.showError);
+        }
+
+        function openExternalLink(link) {
+            $window.open(link, '_system');
+            return true;
         }
     }
 
