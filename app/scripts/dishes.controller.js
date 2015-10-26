@@ -36,13 +36,12 @@
             $ionicLoading.show({template: 'Adding dish...'});
             DishesService.addDish(dish)
                 .then(function added(dishes) {
-                    modalScope.dish = getEmptyDish();
+                    $ionicLoading.hide();
                     form.$setPristine();
                     vm.dishes = dishes;
                     hideModal();
                 })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                .catch(HCMessaging.showError);
         }
 
         function deleteDish(dish, $event) {
@@ -77,6 +76,7 @@
         }
 
         function showModal() {
+            modalScope.dish = {user: vm.chefId};
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-dish.html', {
                     scope: modalScope
@@ -96,13 +96,8 @@
             }
         }
 
-        function getEmptyDish() {
-            return {user: vm.chefId};
-        }
-
         function onBeforeEnter() {
             vm.chefId = ChefService.getChef().id;
-            modalScope.dish = getEmptyDish();
 
             checkTutorial();
             loadData();

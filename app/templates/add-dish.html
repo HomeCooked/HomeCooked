@@ -7,7 +7,8 @@
     <ion-content>
         <form novalidate class="list" name="dishForm">
             <div class="hc-profile-picture">
-                <img ng-src="{{dish.picture}}">
+                <div ng-if="!dish.picture" class="no-image">No image selected</div>
+                <img ng-if="dish.picture" ng-src="{{dish.picture}}">
                 <a ng-click="vm.showUpdatePhoto()" class="button button-clear icon ion-camera"></a>
             </div>
             <label class="item item-input item-floating-label">
