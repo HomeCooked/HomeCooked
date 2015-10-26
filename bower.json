@@ -13,5 +13,8 @@
     "angular-payments": "*",
     "ng-img-crop": "ngImgCrop#~0.3.2",
     "ngCordova": "~0.1.17-alpha"
+  },
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.1.0"
   }
 }
