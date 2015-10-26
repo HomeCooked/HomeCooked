@@ -6,28 +6,31 @@
     </ion-header-bar>
     <ion-content>
         <form novalidate class="list" name="dishForm">
-            <image-crop class="hc-image-container" input-name="picture" result="dish.picture"
-                        aspect-ratio="0.60"></image-crop>
+            <div class="hc-profile-picture">
+                <img ng-src="{{dish.picture ||'images/logo.png'}}">
+                <a ng-click="vm.showUpdatePhoto()" class="button button-clear icon ion-camera"></a>
+            </div>
             <label class="item item-input item-floating-label">
-              <span class="input-label">Title</span>
+                <span class="input-label">Title</span>
                 <input type="text" name="title" placeholder="Title" ng-model="dish.title" ng-minlength="2" required/>
             </label>
             <label class="item">
                 <textarea name="description" placeholder="Description" ng-model="dish.description" ng-minlength="2"
-                  maxlength="160" required
-                  class="hc-dish-description"></textarea>
+                          maxlength="160" required
+                          class="hc-dish-description"></textarea>
 
                 <p class="hc-char-count subdued">{{dish.description.length || 0}}/160</p>
             </label>
             <label class="item item-input item-floating-label">
-              <span class="input-label">Ingredients</span>
+                <span class="input-label">Ingredients</span>
                 <input type="text" name="ingredients" placeholder="Ingredients" ng-model="dish.ingredients"
                        ng-minlength="2"
                        required/>
             </label>
             <label class="item item-input item-floating-label">
-              <span class="input-label">Price (min ${{minPrice}}, max ${{maxPrice}})</span>
-              <input name="price" ng-model="dish.price" placeholder="Price (min ${{minPrice}}, max ${{maxPrice}})" type="text"
+                <span class="input-label">Price (min ${{minPrice}}, max ${{maxPrice}})</span>
+                <input name="price" ng-model="dish.price" placeholder="Price (min ${{minPrice}}, max ${{maxPrice}})"
+                       type="text"
                        value="price"
                        required ng-minlength="1" ng-blur="vm.checkPrice(dish, minPrice, maxPrice)"/>
             </label>

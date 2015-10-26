@@ -234,11 +234,12 @@
         function uploadPicture(pict) {
             var scope = modals['picture'];
             var method = LoginService.getChefMode() ? ChefService.uploadProfilePicture : LoginService.uploadProfilePicture;
-            if (scope.callback) {
+            if (typeof scope.callback === 'function') {
                 method = scope.callback;
             }
             $ionicLoading.show();
-            method(pict).then(function () {
+            var promise = method(pict) || $q.when();
+            promise.then(function () {
                 $ionicLoading.hide();
                 var scope = closeModal('picture');
                 scope.deferred.resolve();

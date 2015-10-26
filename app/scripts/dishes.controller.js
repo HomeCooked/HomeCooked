@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
@@ -13,6 +13,7 @@
         vm.dishes = [];
         vm.showModal = showModal;
         vm.hideModal = hideModal;
+        vm.showUpdatePhoto = showUpdatePhoto;
         vm.addDish = addDish;
         vm.deleteDish = deleteDish;
         vm.go = go;
@@ -21,6 +22,14 @@
 
         $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
         $scope.$on('$destroy', onDestroy);
+
+        function showUpdatePhoto() {
+            HCModalHelper.showUpdatePicture(savePicture);
+        }
+
+        function savePicture(pict) {
+            modalScope.dish.picture = pict;
+        }
 
         function addDish(dish, form) {
             document.activeElement.blur();
@@ -47,7 +56,7 @@
                 cancelText: 'No',
                 okText: 'Yes, Delete',
                 okType: 'button-assertive'
-            }).then(function(res) {
+            }).then(function (res) {
                 if (res) {
                     doDeleteDish(dish);
                 }
@@ -60,7 +69,7 @@
                 .then(function deleted() {
                     _.remove(vm.dishes, dish);
                 })
-                .catch(function() {
+                .catch(function () {
                     HCMessaging.showMessage('Cannot delete', 'There are pending orders for the dish you tried to delete.<br>' +
                         'You will be able to delete after the orders have been completed.');
                 })
@@ -71,7 +80,7 @@
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-dish.html', {
                     scope: modalScope
-                }).then(function(m) {
+                }).then(function (m) {
                     modal = m;
                     modal.show();
                 });
@@ -102,7 +111,7 @@
         function loadData() {
             $ionicLoading.show();
             $q.all([DishesService.getDishes(), getChefData()])
-                .then(function(values) {
+                .then(function (values) {
                     var dishes = values[0];
                     $ionicLoading.hide();
                     vm.dishes = dishes;
@@ -111,14 +120,14 @@
                     }
                 })
                 .catch(HCMessaging.showError)
-                .finally(function() {
+                .finally(function () {
                     // Stop the ion-refresher from spinning
                     $scope.$broadcast('scroll.refreshComplete');
                 });
         }
 
         function getChefData() {
-            return ChefService.getChefData().then(function(chefData) {
+            return ChefService.getChefData().then(function (chefData) {
                 modalScope.minPrice = chefData.minDishPrice || 0.1;
                 modalScope.maxPrice = chefData.maxDishPrice || 100;
                 modalScope.minPrice = modalScope.minPrice.toFixed(2);
@@ -129,9 +138,9 @@
 
         function checkTutorial() {
             ChefService.chefReady()
-                .then(function(chef) {
+                .then(function (chef) {
                     if (!chef.dishes_tutorial_completed) {
-                        HCModalHelper.showTutorial('dishes').then(function() {
+                        HCModalHelper.showTutorial('dishes').then(function () {
                             return ChefService.saveChefData({dishes_tutorial_completed: true});
                         });
                     }
@@ -154,7 +163,7 @@
             $state.go(path);
         }
 
-        function checkPrice(dish, min, max){
+        function checkPrice(dish, min, max) {
             var price = parseFloat(dish.price);
             if (typeof price !== 'number' || isNaN(price)) {
                 price = 0;

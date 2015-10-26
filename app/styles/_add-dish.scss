@@ -1,20 +1,30 @@
 .add-dish {
 
-  .item {
-    padding-right: 11px;
+    .item {
+        padding-right: 11px;
+        .hc-dish-description {
+            resize: none;
+            width: 100%;
+            height: 60px;
+        }
+        .hc-char-count {
+            text-align: right;
+        }
+        .hc-error-message {
+            text-align: right;
+        }
+    }
 
-    .hc-dish-description {
-      resize: none;
-      width: 100%;
-      height: 60px;
+    .hc-profile-picture {
+        margin: 2rem auto;
+        width: 240px;
+        height: 240px;
+        > img {
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+        }
     }
-    .hc-char-count {
-      text-align: right;
-    }
-    .hc-error-message {
-      text-align: right;
-    }
-  }
 
 }
 
