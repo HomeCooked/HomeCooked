@@ -110,9 +110,13 @@
                 cancelText: 'Cancel',
                 okText: 'Confirm',
                 okType: 'button-positive'
-            }).then(function (res) {
+            });
+            popup.then(function (res) {
                 if (res) {
                     doCheckout();
+                }
+                else {
+                    popup = undefined;
                 }
             });
         }
@@ -129,25 +133,24 @@
             var portionsIds = vm.checkoutInfo.portion_id_list;
             PaymentService.checkout(portionsIds)
                 .then(function () {
-                    $ionicPopup.show({
+                    $ionicLoading.hide();
+                    return $ionicPopup.show({
                         title: 'Checkout successful!',
                         template: 'Your order is confirmed, remember to go pick it up!',
                         buttons: [{
                             text: 'Got it!',
-                            type: 'button-positive',
-                            onTap: function () {
-                                vm.checkoutInfo = [];
-                                $ionicHistory.nextViewOptions({
-                                    historyRoot: true,
-                                    disableAnimate: true
-                                });
-                                $state.go('app.orders');
-                            }
+                            type: 'button-positive'
                         }]
                     });
-                })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                }, HCMessaging.showError)
+                .then(function(){
+                    vm.checkoutInfo = [];
+                    $ionicHistory.nextViewOptions({
+                        historyRoot: true,
+                        disableAnimate: true
+                    });
+                    $state.go('app.orders');
+                });
         }
 
         function getQuantities(remaining) {
@@ -179,15 +182,21 @@
                         text: 'Delete',
                         type: 'button-assertive',
                         onTap: function () {
-                            $ionicLoading.show();
-                            PaymentService.cancelOrder()
-                                .catch(HCMessaging.showError)
-                                .finally($ionicLoading.hide);
-                            goBack();
+                            return true;
                         }
                     }, {
                         text: 'Keep'
                     }]
+                });
+                popup.then(function(res) {
+                    if (res) {
+                        $ionicLoading.show();
+                        PaymentService.cancelOrder($ionicLoading.hide, HCMessaging.showError);
+                        goBack();
+                    }
+                    else {
+                        popup = undefined;
+                    }
                 });
             }
             else {
@@ -206,13 +215,13 @@
                     getChefDetails();
                     return getCheckoutInfo();
                 })
+                .catch(HCMessaging.showError)
                 .then(function (info) {
+                    $ionicLoading.hide();
                     if (popup && _.isEmpty(info.portions)) {
                         popup.close();
                     }
-                })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                });
         }
     }
 })();

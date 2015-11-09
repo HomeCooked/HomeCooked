@@ -34,19 +34,19 @@
                     if (formElement) {
                         formElement.$setPristine();
                     }
+                    $ionicLoading.hide();
                     $ionicPopup.show({
                         title: 'You\'re enrolled!',
                         template: 'We\'ll reach out to you soon with further instructions.',
                         buttons: [{
                             text: 'Got it!',
-                            type: 'button-positive',
-                            onTap: function () {
-                                // Returning a value will cause the promise to resolve with the given value.
-                                $state.go('app.buyer');
-                            }
+                            type: 'button-positive'
                         }]
+                    })
+                    .then(function () {
+                        // Returning a value will cause the promise to resolve with the given value.
+                        $state.go('app.buyer');
                     });
-                    $ionicLoading.hide();
                 })
                 .catch(HCMessaging.showError);
         }
