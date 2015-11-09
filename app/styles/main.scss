@@ -82,21 +82,25 @@ input.ng-dirty.ng-invalid {
 .hc {
     &-order {
         display: inline-block;
-        padding: 0.5rem;
+        margin: 0.5rem 0.5rem 1.5rem 0.5rem;
         position: relative;
         text-align: center;
         vertical-align: top;
         cursor: pointer;
+        width: 5.8rem;
+        height: 5.8rem;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-position: center;
+        border-radius: 50%;
 
-        > img {
-            border-radius: 50%;
-            width: 5.8rem;
-            height: 5.8rem;
-        }
         &-quantity {
             position: absolute;
-            right: 0.5rem;
-            top: 0.5rem;
+            right: 0;
+            top: 0;
             background: white;
             padding: 0.2rem 0.5rem;
             border-radius: 5rem;
@@ -104,6 +108,9 @@ input.ng-dirty.ng-invalid {
             font-weight: bold;
         }
         &-username {
+            position: absolute;
+            left: 0;
+            bottom: -1.2rem;
             width: 100%;
             white-space: normal;
             overflow: hidden;

@@ -38,7 +38,7 @@
 
             <p class="group-description">Select a nice profile picture.</p>
 
-            <div class="hc-profile-picture" ng-style="{'background-image': 'url('+ vm.form.picture ||'images/user.png' +')'}">
+            <div class="hc-profile-picture" ng-style="{'background-image': 'url('+ (vm.form.picture ||'images/user.png') +')'}">
                 <a ng-click="vm.showUpdatePhoto()" class="button button-clear icon ion-camera"></a>
             </div>
 

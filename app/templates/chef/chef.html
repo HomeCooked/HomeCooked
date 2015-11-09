@@ -38,9 +38,7 @@
 
             <div class="item item-body" ng-if="batch.orders.length">
                 <div class="title">{{batch.orders.length}} active order{{batch.orders.length===1 ? "" : "s"}}</div>
-                <div ng-repeat="order in batch.orders" class="hc-order" ng-click="vm.showBatchOrder(order)">
-                    <img ng-src="{{order.user.picture || 'images/user.png'}}" width="100%">
-
+                <div ng-repeat="order in batch.orders" class="hc-order" ng-click="vm.showBatchOrder(order)" ng-style="{'background-image' : 'url(' + (order.user.picture || 'images/user.png') + ')'}">
                     <div class="hc-order-username">{{::order.user.first_name}} {{::order.user.last_name}}</div>
                     <div class="hc-order-quantity">{{::order.quantity}}</div>
                 </div>
