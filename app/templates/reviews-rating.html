@@ -1,6 +1,6 @@
 <ul class="rating" ng-if="count>0 || !readOnly">
     <li ng-repeat="r in range" ng-click="updateScore(r)">
-        <i class="icon" ng-class="r.index < score ? 'ion-ios-star' : 'ion-ios-star-outline'"></i>
+        <i ng-class="r.index < score ? 'ion-ios-star' : 'ion-ios-star-outline'"></i>
     </li>
 </ul>
 <div ng-if="count>0" class="count">{{score}}/{{max}} ({{count}} review{{count===1 ? '' : 's'}})</div>

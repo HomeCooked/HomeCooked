@@ -26,7 +26,7 @@
 
                     <p>{{chef.bio}}</p>
 
-                    <p style="font-size: 90%">{{chef.num_active_dishes}} items on sale</p>
+                    <p style="font-size: 90%">{{chef.num_active_dishes}} item{{chef.num_active_dishes === 1 ? '' : 's'}} on sale</p>
 
                     <p style="font-size: 90%" ng-if="chef.distance">{{chef.distance}} away</p>
                     <reviews-rating style="font-size: 90%; text-align: left;" score="::chef.review_score"

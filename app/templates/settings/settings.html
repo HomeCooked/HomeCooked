@@ -4,8 +4,7 @@
     </ion-nav-buttons>
     <ion-content class="has-header">
         <div class="profile dark-bg">
-            <div class="hc-profile-picture">
-                <img ng-src="{{vm.user.picture ||'images/user.png'}}">
+            <div class="hc-profile-picture" ng-style="{'background-image': 'url('+ vm.user.picture ||'images/user.png' +')'}">
                 <a ng-click="vm.showUpdatePhoto()" class="button button-clear icon ion-camera"></a>
             </div>
             <h3>{{vm.user.first_name}} {{vm.user.last_name}}</h3>

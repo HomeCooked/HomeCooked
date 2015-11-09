@@ -306,7 +306,7 @@
                 $ionicPopup.alert({
                     title: 'Share your dish!',
                     template: '<p>Copy this link and share it in your social networks!</p>' +
-                    '<p><a target="_blank" href="' + url + '">' + url + '</a></p>',
+                    '<input type="text" autofocus value="' + url + '" onfocus="this.select()" onkeydown="return false;">',
                     buttons: [{
                         text: 'Done',
                         type: 'button-positive button-clear'

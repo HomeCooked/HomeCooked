@@ -41,7 +41,9 @@
         }
 
         function openMap(chef) {
-            var url = 'https://www.google.com/maps?q=' + chef.address + '&center=' + chef.location.latitude + ',' + chef.location.longitude;
+            var base = window.ionic.Platform.isIOS() ? 'comgooglemaps://' : window.ionic.Platform.isAndroid() ? 'geo:0,0' : 'https://www.google.com/maps/';
+            var center = chef.location ? chef.location.latitude + ',' + chef.location.longitude : '';
+            var url = base + '?q=' + encodeURI(chef.address) + '&center=' + center;
             window.open(url, '_system', 'location=yes');
         }
     }

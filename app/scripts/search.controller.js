@@ -96,8 +96,7 @@
         }
 
         function getChefMarker(chef) {
-            var html = '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>' + //
-                '<span class="badge">' + chef.num_active_dishes + '</span>';
+            var html = '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>';
 
             var onClickFn = function () {
                 goToPreview(parseInt(chef.id));

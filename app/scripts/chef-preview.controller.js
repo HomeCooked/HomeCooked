@@ -38,6 +38,7 @@
             $ionicLoading.show();
             return ChefService.getChefDetails(vm.chefId)
                 .then(function (chef) {
+                    chef.distance = vm.chef.distance;
                     vm.chef = chef;
                     if ($stateParams.batchId) {
                         vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.batchId)});

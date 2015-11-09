@@ -19,11 +19,9 @@
         margin: 2rem auto;
         width: 240px;
         height: 240px;
-        > img {
-            border-radius: 0;
-            border: none;
-            box-shadow: none;
-        }
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
         .no-image {
             position: absolute;
             text-align: center;

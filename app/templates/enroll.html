@@ -38,8 +38,7 @@
 
             <p class="group-description">Select a nice profile picture.</p>
 
-            <div class="hc-profile-picture">
-                <img ng-src="{{vm.form.picture ||'images/user.png'}}">
+            <div class="hc-profile-picture" ng-style="{'background-image': 'url('+ vm.form.picture ||'images/user.png' +')'}">
                 <a ng-click="vm.showUpdatePhoto()" class="button button-clear icon ion-camera"></a>
             </div>
 
@@ -59,8 +58,8 @@
                        ng-maxlength="50" ng-model="vm.form.last_name">
             </label>
             <label class="item item-input item-floating-label">
-                <span class="input-label">Social Security Number</span>
-                <input type="tel" name="ssn" placeholder="Social Security Number" required ng-minlength="9"
+                <span class="input-label">Social Security Number (no spaces)</span>
+                <input type="tel" name="ssn" placeholder="Social Security Number (no spaces)" required ng-minlength="9"
                        ng-maxlength="9"
                        ng-model="vm.form.ssn">
             </label>
