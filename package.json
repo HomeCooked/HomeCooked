@@ -58,8 +58,6 @@
     "cordova-plugin-geolocation",
     "org.apache.cordova.console",
     "org.apache.cordova.device",
-    "org.apache.cordova.file",
-    "org.apache.cordova.inappbrowser",
     {
       "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
       "id": "cordova-plugin-camera"
@@ -75,7 +73,9 @@
     {
       "locator": "https://github.com/Telerik-Verified-Plugins/PushNotification.git",
       "id": "com.phonegap.plugins.PushPlugin"
-    }
+    },
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-file"
   ],
   "cordovaPlatforms": [
     "android",
