@@ -13,7 +13,7 @@
     }
 
     function updateItunesMetatag() {
-        document.querySelector('meta[name=apple-itunes-app]').setAttribute('app-argument', window.location.hash);
+        document.querySelector('meta[name=apple-itunes-app]').setAttribute('content', 'app-id=1027256050, app-argument=' + window.location.hash);
     }
 })();
 
