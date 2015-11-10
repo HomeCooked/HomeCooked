@@ -30,7 +30,8 @@
         }
 
         function invalidateCache() {
-            saveCache(cacheId);
+            cache = {};
+            saveCache(cacheId, cache);
         }
 
         function readCache(key) {

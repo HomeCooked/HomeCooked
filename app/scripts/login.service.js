@@ -41,7 +41,9 @@
 
         function invalidateUser() {
             ChefService.invalidateChef();
-            return handleUser();
+            handleUser();
+            CacheService.invalidateCache();
+            return user;
         }
 
         function login(provider, data) {
