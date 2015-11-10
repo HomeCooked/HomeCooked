@@ -56,6 +56,8 @@
     "cordova-plugin-statusbar@^1.0.1",
     "cordova-plugin-splashscreen@^2.1.0",
     "cordova-plugin-geolocation",
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-file",
     "org.apache.cordova.console",
     "org.apache.cordova.device",
     {
@@ -71,11 +73,16 @@
       }
     },
     {
+      "locator": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-customurlscheme",
+      "variables": {
+        "URL_SCHEME": "homecooked"
+      }
+    },
+    {
       "locator": "https://github.com/Telerik-Verified-Plugins/PushNotification.git",
       "id": "com.phonegap.plugins.PushPlugin"
-    },
-    "cordova-plugin-inappbrowser",
-    "cordova-plugin-file"
+    }
   ],
   "cordovaPlatforms": [
     "android",
