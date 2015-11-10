@@ -38,19 +38,25 @@
             $ionicLoading.show();
             return ChefService.getChefDetails(vm.chefId)
                 .then(function (chef) {
-                    chef.distance = vm.chef.distance;
+                    $ionicLoading.hide();
                     vm.chef = chef;
                     if ($stateParams.batchId) {
                         vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.batchId)});
+                        if (!vm.dish) {
+                            HCMessaging.showMessage('Could not find the dish', 'The chef might have deleted this dish');
+                            $state.go('app.chef-preview', {id: $stateParams.id});
+                            return;
+                        }
                         vm.quantity = 1;
                         vm.dish.quantities = getQuantities(vm.dish.remaining);
                         vm.dish.specialIngredients = getSpecialIngredients(vm.dish);
                     }
                     onLocationChange();
                     return chef;
-                })
-                .catch(HCMessaging.showError)
-                .finally($ionicLoading.hide);
+                }, function (error) {
+                    HCMessaging.showError(error);
+                    back();
+                });
         }
 
         function getCheckoutInfo() {
@@ -143,7 +149,7 @@
                         }]
                     });
                 }, HCMessaging.showError)
-                .then(function(){
+                .then(function () {
                     vm.checkoutInfo = [];
                     $ionicHistory.nextViewOptions({
                         historyRoot: true,
@@ -173,7 +179,10 @@
         }
 
         function back() {
-            if (_.size(vm.checkoutInfo.portions)) {
+            if ($stateParams.batchId) {
+                $state.go('app.chef-preview', {id: $stateParams.id});
+            }
+            else if (_.size(vm.checkoutInfo.portions)) {
                 popup = $ionicPopup.show({
                     title: 'Order pending',
                     templateUrl: 'templates/confirm-checkout.html',
@@ -188,11 +197,11 @@
                         text: 'Keep'
                     }]
                 });
-                popup.then(function(res) {
+                popup.then(function (res) {
                     if (res) {
                         $ionicLoading.show();
                         PaymentService.cancelOrder($ionicLoading.hide, HCMessaging.showError);
-                        goBack();
+                        back();
                     }
                     else {
                         popup = undefined;
@@ -200,12 +209,8 @@
                 });
             }
             else {
-                goBack();
+                $state.go('app.buyer');
             }
-        }
-
-        function goBack() {
-            $state.go('app.buyer');
         }
 
         function deleteDishPortions(portion) {
