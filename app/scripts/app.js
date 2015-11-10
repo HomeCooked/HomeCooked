@@ -1,12 +1,21 @@
 'use strict';
+(function () {
+    updateItunesMetatag();
+    window.handleOpenURL = handleOpenURL;
+    window.addEventListener('hashchange', updateItunesMetatag);
 
-// handler for url schema on device
-window.handleOpenURL = function (url) {
-    var i = url.indexOf('#');
-    if (i >= 0) {
-        window.url_scheme_context = url.substr(i + 1);
+    // handler for url schema on device
+    function handleOpenURL(url) {
+        var i = url.indexOf('#');
+        if (i >= 0) {
+            window.url_scheme_context = url.substr(i + 1);
+        }
     }
-};
+
+    function updateItunesMetatag() {
+        document.querySelector('meta[name=apple-itunes-app]').setAttribute('app-argument', window.location.hash);
+    }
+})();
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
