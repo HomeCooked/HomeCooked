@@ -1,5 +1,13 @@
 'use strict';
 
+// handler for url schema on device
+window.handleOpenURL = function (url) {
+    var i = url.indexOf('#');
+    if (i >= 0) {
+        window.url_scheme_context = url.substr(i + 1);
+    }
+};
+
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
     'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
@@ -177,6 +185,7 @@ HomeCooked
             LoginService.reloadUser();
             $ionicPlatform.on('resume', function (event) {
                 $log.info('app resume event', event);
+                checkUrlScheme();
                 LoginService.reloadUser();
             });
 
@@ -194,11 +203,19 @@ HomeCooked
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
             }
             if (window.StatusBar) {
-                // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
             if (window.cordova) {
                 NotificationService.register();
             }
+
+            checkUrlScheme();
         });
+
+        function checkUrlScheme() {
+            if (window.url_scheme_context) {
+                window.location.hash = window.url_scheme_context;
+                delete window.url_scheme_context;
+            }
+        }
     });
