@@ -214,8 +214,11 @@ HomeCooked
 
         function checkUrlScheme() {
             if (window.url_scheme_context) {
-                window.location.hash = window.url_scheme_context;
+                var hash = window.url_scheme_context;
                 delete window.url_scheme_context;
+                window.setTimeout(function () {
+                    window.location.hash = hash;
+                }, 0);
             }
         }
     });
