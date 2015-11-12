@@ -31,12 +31,21 @@
             vm.user = user;
             vm.chefId = $stateParams.id;
             getChefDetails();
-            getCheckoutInfo();
+
+            // needed only on chef view
+            if (!$stateParams.batchId) {
+                getCheckoutInfo().then(function (info) {
+                    if (_.size(info.portions)) {
+                        checkout();
+                    }
+                });
+            }
         }
 
         function getChefDetails() {
             $ionicLoading.show();
-            return ChefService.getChefDetails(vm.chefId)
+            // must force reload if on chef view
+            return ChefService.getChefDetails(vm.chefId, !$stateParams.batchId)
                 .then(function (chef) {
                     $ionicLoading.hide();
                     vm.chef = chef;
@@ -102,7 +111,6 @@
             $ionicLoading.show();
             return PaymentService.holdBatch({batchId: $stateParams.batchId, quantity: vm.quantity})
                 .then(function () {
-                    $ionicLoading.show({template: 'Item added to the cart!', duration: 2000});
                     $state.go('app.chef-preview', {id: $stateParams.id});
                 })
                 .catch(HCMessaging.showError);
@@ -113,8 +121,8 @@
                 title: 'Confirm checkout',
                 templateUrl: 'templates/confirm-checkout.html',
                 scope: getCheckoutScope(),
-                cancelText: 'Cancel',
-                okText: 'Confirm',
+                cancelText: 'Close',
+                okText: 'Checkout',
                 okType: 'button-positive'
             });
             popup.then(function (res) {
@@ -168,10 +176,18 @@
         }
 
         function getSpecialIngredients(dish) {
-            var ingredients = _.filter(['milk', 'peanuts', 'eggs', 'vegetarian'], function (ingredient) {
+            var containsIngredients = _.filter(['milk', 'peanuts', 'eggs'], function (ingredient) {
                 return dish[ingredient] === true;
-            });
-            return ingredients.join(', ');
+            }).join(', ');
+            var res = containsIngredients ? 'Contains ' + containsIngredients + '. ' : '';
+
+            var isIngredients = _.filter(['vegetarian'], function (ingredient) {
+                return dish[ingredient] === true;
+            }).join(', ');
+            if (isIngredients) {
+                res += 'Is' + isIngredients;
+            }
+            return res;
         }
 
         function signin() {
@@ -199,8 +215,8 @@
                 });
                 popup.then(function (res) {
                     if (res) {
-                        $ionicLoading.show();
-                        PaymentService.cancelOrder($ionicLoading.hide, HCMessaging.showError);
+                        vm.checkoutInfo = {};
+                        PaymentService.cancelOrder();
                         back();
                     }
                     else {

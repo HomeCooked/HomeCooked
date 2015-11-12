@@ -6,7 +6,9 @@
     function ChefService($q, $http, ENV, CacheService, _) {
         var chef = {},
             chefDeferred = $q.defer(),
-            baseUrl = ENV.BASE_URL + '/api/v1/';
+            baseUrl = ENV.BASE_URL + '/api/v1/',
+            chefDetailsPromise;
+
         setChef(CacheService.getValue('chef'));
 
         return {
@@ -63,8 +65,11 @@
             return chefDeferred.promise;
         }
 
-        function getChefDetails(chefId) {
-            return handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/get_chef_details/'));
+        function getChefDetails(chefId, forceReload) {
+            if (!chefDetailsPromise || forceReload) {
+                chefDetailsPromise = handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/get_chef_details/'));
+            }
+            return chefDetailsPromise;
         }
 
         function cancelOrder(orderId) {

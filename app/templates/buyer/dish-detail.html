@@ -41,7 +41,7 @@
             </a>
 
             <label class="item item-input item-select" ng-if="vm.dish.remaining > 0" style="padding-bottom: 30px">
-                <div class="input-label">Quantity</div>
+                <div class="input-label">Quantity (max {{vm.dish.remaining}})</div>
                 <select ng-model="vm.quantity" ng-options="i as i for i in vm.dish.quantities"></select>
             </label>
 

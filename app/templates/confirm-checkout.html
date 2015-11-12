@@ -2,12 +2,12 @@
     <label class="item item-avatar" ng-repeat="portion in checkoutInfo.portions">
         <img ng-src="{{::portion.dish.picture || 'images/logo.png'}}"/>
 
-        <div>{{::portion.dish.title}}</div>
-        <div>{{::portion.portion_id_list.length}} portion(s)</div>
-        <span class="item-note">${{::portion.cost}}</span>
         <button class="button button-clear button-stable button-right" ng-click="deleteDishPortions(portion)">
             <i class="icon ion-trash-a"></i>
         </button>
+        <span class="item-note" style="margin-top: 25px">${{::portion.cost}}</span>
+        <div style="white-space: normal">{{::portion.dish.title}}</div>
+        <div>{{::portion.portion_id_list.length}} portion(s)</div>
     </label>
     <label class="item">
         <span>Total price:</span>

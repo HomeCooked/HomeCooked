@@ -79,14 +79,18 @@
     .dishes-container {
         text-align: center;
     }
-    .dish-card {
-        cursor: pointer;
-        padding: 20px 10px 0 10px;
+    .card {
+        text-align: left;
+        padding: 20px 10px 10px 10px;
         box-sizing: border-box;
         width: 100%;
         max-width: 320px;
         display: inline-block;
-        .dish-cover {
+
+        .dish-img {
+            clear: right;
+            display: block;
+            margin: 10px 0;
             position: relative;
             min-height: 300px;
             background-repeat: no-repeat;
@@ -98,33 +102,20 @@
         }
 
         .dish-price {
-            padding-bottom: 5px;
-            font-size: 150%;
+            float: right;
+            font-size: 28px;
+            line-height: 28px;
         }
-        
-        .dish-details {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right:0;
-            background: rgba(255,255,255, 0.8);
-            padding: 5px;
-            .right {
-                float: right;
-                text-align: right;
-            }
-            .title {
-                text-align: left;
-                span {
-                    font-weight: bold;
-                }
-            }
-            .btn .button {
-                height: 26px;
-                font-size: 14px;
-                min-height: 26px;
-                line-height: 24px;
-            }
+
+        reviews-rating {
+            float: right;
+            text-align: right;
+            cursor: pointer;
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 16px;
         }
     }
 }

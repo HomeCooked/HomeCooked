@@ -50,7 +50,7 @@ input.ng-dirty.ng-invalid {
 .item .button-right {
     position: absolute;
     top: 0;
-    right: 0;
+    right: -2px;
 }
 
 .item .item-right {
@@ -71,11 +71,13 @@ input.ng-dirty.ng-invalid {
 
     select {
         position: relative;
-        padding: 0;
+        padding: 0 0 7px 0;
+        max-width: 100%;
+        direction: ltr;
     }
 
     &:after {
-        top: 75%;
+        top: 55px;
     }
 }
 
