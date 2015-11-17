@@ -41,8 +41,8 @@ module.exports = function(grunt) {
                 constants: {
                     ENV: {
                         name: 'development',
-                        version: '0.2.8',
-                        BASE_URL: 'https://homecooked.herokuapp.com',
+                        version: '0.2.9',
+                        BASE_URL: 'https://homecookedstaging.herokuapp.com',
                         FACEBOOK_APP_ID: '845407792180025'
                     }
                 }
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
                 constants: {
                     ENV: {
                         name: 'production',
-                        version: '0.2.8',
+                        version: '0.2.9',
                         BASE_URL: 'https://homecooked.herokuapp.com',
                         FACEBOOK_APP_ID: '805673482820123'
                     }
@@ -386,9 +386,7 @@ module.exports = function(grunt) {
                     '<%= yeoman.app %>/lib/angular-ui-router/release/angular-ui-router.min.js',
                     '<%= yeoman.app %>/lib/ionic/js/ionic.js',
                     '<%= yeoman.app %>/lib/ionic/js/ionic-angular.min.js',
-                    '<%= yeoman.app %>/lib/angular-stripe/release/angular-stripe.js',
                     '<%= yeoman.app %>/lib/angular-payments/lib/angular-payments.js',
-                    '<%= yeoman.app %>/lib/angular-upload/angular-upload.min.js',
                     '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
                     '<%= yeoman.app %>/**/*.html',
                     'test/spec/**/*.js'
