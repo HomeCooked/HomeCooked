@@ -19,7 +19,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
-    'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
+    'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
 
 angular.module('HomeCooked.services', []);
 angular.module('HomeCooked.directives', []);
@@ -166,16 +166,6 @@ HomeCooked
                         templateUrl: 'templates/coc.html'
                     }
                 }
-            })
-            .state('zipcode-validation', {
-                url: '/zipcode-validation/',
-                templateUrl: 'templates/zipcode/form.html',
-                controller: 'ZipCodeRestrictionCtrl as vm'
-            })
-            .state('zipcode-unavailable', {
-                url: '/zipcode-unavailable/:zipcode',
-                templateUrl: 'templates/zipcode/unavailable.html',
-                controller: 'ZipCodeRestrictionCtrl as vm'
             });
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise(function ($injector) {
