@@ -2,17 +2,7 @@
     <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
     </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-        <button class="button button-clear" ng-click="vm.toggleListMap()">
-            <i class="icon" ng-class="{'ion-map': vm.isListVisible, 'ion-ios-list-outline': !vm.isListVisible}"></i>
-        </button>
-    </ion-nav-buttons>
-    <ion-content overflow-scroll="true">
-        <div class="map-container" ng-hide="vm.isListVisible">
-            <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center"
-                     data-tap-disabled="true"></leaflet>
-        </div>
-        <div ng-show="vm.isListVisible">
+    <ion-content>
             <p class="padding" align="center" ng-if="vm.chefs.length===0">
                 No items on sale.
             </p>
@@ -34,6 +24,5 @@
                     <i class="icon ion-ios-arrow-forward"></i>
                 </div>
             </div>
-        </div>
     </ion-content>
 </ion-view>
