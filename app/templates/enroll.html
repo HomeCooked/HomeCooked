@@ -4,34 +4,33 @@
     </ion-nav-buttons>
     <ion-content class="has-header">
         <div class="padding">
-            <p>HomeCooked is a marketplace for neighbors to buy and sell home cooked meals to each other. If you join
-                our community as a chef, you can turn your home kitchen into a pick-up only restaurant whenever you feel
-                like it. You get paid electronically for every dish you sell, and provided with disposable wares for the
-                food.</p>
+            <p>HomeCooked is a marketplace for neighbors to buy and sell home cooked meals to each other. If you join our community as a chef, you can turn your home kitchen into a pick-up only restaurant whenever you feel like it. You get paid electronically
+                for every dish you sell, and provided with disposable wares for the food.
+            </p>
 
-            <p>If you ever thought of driving for Uber or Lyft, or renting out your place on Airbnb, this is the same
-                idea. HomeCooked gives you the flexibility to cook whatever you want, on your schedule.</p>
+            <p>If you ever thought of driving for Uber or Lyft, or renting out your place on Airbnb, this is the same idea. HomeCooked gives you the flexibility to cook whatever you want, on your schedule.</p>
 
             <p>Before you can join the marketplace, we have a couple requirements:</p>
             <ul style="margin-bottom: 1rem; list-style: inside;">
                 <li>We need to try one of your meals, to ensure quality.</li>
                 <li>You need to have a background in food, or strong passion for cooking</li>
-                <li>You will have to pass your California Food Handler's exam ($10 online at <a
-                    href="http://www.cafoodhandlers.com/" target="_system">http://www.cafoodhandlers.com/</a>)
+                <li>You will have to pass your California Food Handler's exam ($10 online at <a href="http://www.cafoodhandlers.com/" target="_system">http://www.cafoodhandlers.com/</a>)
                 </li>
                 <li>We will perform a background check</li>
                 <li>You will need to abide by our <a ui-sref="app.conduct">Code of Conduct</a></li>
             </ul>
 
-            <p>Once you are accepted, you simply need to download the app and "post" a meal. For every sale you will
-                also get a public rating and review.</p>
+            <p>Once you are accepted, you simply need to download the app and "post" a meal. For every sale you will also get a public rating and review.</p>
 
-            <p>We sincerely hope to be working with you soon, please fill out the form below if you are interested in
-                applying!</p>
+            <p>We sincerely hope to be working with you soon, please fill out the form below if you are interested in applying!
+            </p>
         </div>
 
-        <p class="padding" align="center" ng-if="vm.isChef">You are already enrolled!<br>
-            <a ui-sref="app.dishes">Go to chef mode</a></p>
+        <p class="padding" align="center" ng-if="vm.isChef">
+            You are already enrolled!
+            <br>
+            <a ui-sref="app.dishes">Go to chef mode</a>
+        </p>
 
         <form novalidate class="list" name="enrollForm" ng-if="!vm.isChef">
             <h4 class="group-title">Profile picture</h4>
@@ -44,27 +43,22 @@
 
             <h4 class="group-title">Background Verification</h4>
 
-            <p class="group-description">We will this data to run a background check on to make sure that you are who
-                you say you are and that you don't have a dangerous criminal history.</p>
+            <p class="group-description">We will this data to run a background check on to make sure that you are who you say you are and that you don't have a dangerous criminal history.</p>
 
             <label class="item item-input item-floating-label">
                 <span class="input-label">First name</span>
-                <input type="text" name="first_name" placeholder="First name" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.first_name">
+                <input type="text" name="first_name" placeholder="First name" required ng-minlength="2" ng-maxlength="50" ng-model="vm.form.first_name">
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Last name</span>
-                <input type="text" name="cardholder_name" placeholder="Last name" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.last_name">
+                <input type="text" name="cardholder_name" placeholder="Last name" required ng-minlength="2" ng-maxlength="50" ng-model="vm.form.last_name">
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Social Security Number (no spaces)</span>
-                <input type="tel" name="ssn" placeholder="Social Security Number (no spaces)" required ng-minlength="9"
-                       ng-maxlength="9"
-                       ng-model="vm.form.ssn">
+                <input type="tel" name="ssn" placeholder="Social Security Number (no spaces)" required ng-minlength="9" ng-maxlength="9" ng-model="vm.form.ssn">
             </label>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Date of birth</span>
+                <span class="input-label">Date of birth (mm/dd/yyyy)</span>
                 <input type="date" name="dob" required ng-minlength="10" ng-maxlength="10" ng-model="vm.form.dob">
             </label>
 
@@ -75,22 +69,19 @@
             </p>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Line 1</span>
-                <input type="text" name="line1" placeholder="Line 1" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.address.line1"/>
+                <input type="text" name="line1" placeholder="Line 1" required ng-minlength="2" ng-maxlength="50" ng-model="vm.form.address.line1" />
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Line 2</span>
-                <input type="text" name="line2" placeholder="Line 2" ng-model="vm.form.address.line2"/>
+                <input type="text" name="line2" placeholder="Line 2" ng-model="vm.form.address.line2" />
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">City</span>
-                <input type="text" name="city" placeholder="City" required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.address.city"/>
+                <input type="text" name="city" placeholder="City" required ng-minlength="2" ng-maxlength="50" ng-model="vm.form.address.city" />
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Zipcode</span>
-                <input type="tel" name="zipcode" placeholder="Zipcode" required ng-minlength="5"
-                       ng-model="vm.form.address.zipcode"/>
+                <input type="tel" name="zipcode" placeholder="Zipcode" required ng-minlength="5" ng-model="vm.form.address.zipcode" />
             </label>
             <label class="item item-input item-select">
                 <span class="input-label">State</span>
@@ -103,8 +94,7 @@
             <h4 class="group-title">Contact info</h4>
 
             <p class="group-description">
-                This info will allow us to contanct you when people purchase you meals. We send notifications via sms
-                and summeries via email.
+                This info will allow us to contact you when people purchase you meals. We send notifications via sms and summaries via email.
             </p>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Email</span>
@@ -112,9 +102,7 @@
             </label>
             <label class="item item-input item-floating-label">
                 <span class="input-label">Phone</span>
-                <input type="tel" name="phone_number" placeholder="Phone" required ng-minlength="10"
-                       ng-maxlength="11"
-                       ng-model="vm.form.phone_number">
+                <input type="tel" name="phone_number" placeholder="Phone" required ng-minlength="10" ng-maxlength="11" ng-model="vm.form.phone_number">
             </label>
 
             <h4 class="group-title">Payment information</h4>
@@ -124,42 +112,31 @@
             </p>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Debit Card Number</span>
-                <input type="tel" ng-model="vm.form.card.number" placeholder="1234 1234 1234 1234"
-                       payments-format="card"
-                       payments-validate="card" name="card"
-                       ng-minlength="1"/>
+                <input type="tel" ng-model="vm.form.card.number" placeholder="1234 1234 1234 1234" payments-format="card" payments-validate="card" name="card" ng-minlength="1" />
             </label>
 
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Expiration</span>
-                <input type="tel" ng-model="vm.form.card.expiry" placeholder="11/16" payments-format="expiry"
-                       payments-validate="expiry" name="expiry"
-                       ng-minlength="1" ng-class="{'invalid-input' : enrollForm.expiry
-                        && enrollForm.expiry.$invalid}"/>
+                <input type="tel" ng-model="vm.form.card.expiry" placeholder="11/16" payments-format="expiry" payments-validate="expiry" name="expiry" ng-minlength="1" ng-class="{'invalid-input' : enrollForm.expiry
+                        && enrollForm.expiry.$invalid}" />
             </label>
 
             <label class="item item-input item-stacked-label">
                 <span class="input-label">CVC</span>
-                <input type="tel" ng-model="vm.form.card.cvc" placeholder="123" payments-format="cvc"
-                       payments-validate="cvc"
-                       name="cvc"
-                       ng-minlength="1"/>
+                <input type="tel" ng-model="vm.form.card.cvc" placeholder="123" payments-format="cvc" payments-validate="cvc" name="cvc" ng-minlength="1" />
             </label>
 
             <label class="item item-input item-floating-label">
                 <span class="input-label">Cardholder's name (as it appears on card)</span>
-                <input type="text" name="cardholder_name" placeholder="Cardholder's name (as it appears on card)"
-                       required ng-minlength="2"
-                       ng-maxlength="50" ng-model="vm.form.card.cardholder_name">
+                <input type="text" name="cardholder_name" placeholder="Cardholder's name (as it appears on card)" required ng-minlength="2" ng-maxlength="50" ng-model="vm.form.card.cardholder_name">
             </label>
 
-            <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid || !vm.form.picture"
-                 ng-click="vm.enroll(enrollForm)">Enroll
+            <div class="button button-positive button-block" ng-disabled="enrollForm.$invalid || !vm.form.picture" ng-click="vm.enroll(enrollForm)">Enroll
             </div>
 
-            <p class="padding" align="center">By enrolling, you are accepting these<br>
-                <a href ng-click="vm.openExternalLink('http://www.gohomecooked.com/terms.html')">Terms and Conditions</a>
-                and <a href ng-click="openExternalLink('http://www.gohomecooked.com/privacy.html')">Privacy Policy</a>
+            <p class="padding" align="center">By enrolling, you are accepting these
+                <br>
+                <a href ng-click="vm.openExternalLink('http://www.gohomecooked.com/terms.html')">Terms and Conditions</a> and <a href ng-click="openExternalLink('http://www.gohomecooked.com/privacy.html')">Privacy Policy</a>
             </p>
         </form>
     </ion-content>
