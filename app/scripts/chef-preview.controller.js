@@ -1,4 +1,4 @@
-(function () {
+(function() {
 
     'use strict';
 
@@ -7,6 +7,7 @@
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
     ChefPreviewCtrl.$inject = ['$q', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', 'HCModalHelper', '_'];
+
     function ChefPreviewCtrl($q, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, HCModalHelper, _) {
         var vm = this;
         var user, popup;
@@ -19,13 +20,13 @@
         vm.chef = {};
         vm.checkoutInfo = {};
 
-        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+        $scope.$on('$ionicView.afterEnter', onAfterEnter);
 
-        $scope.$watch(function () {
+        $scope.$watch(function() {
             return LocationService.getCurrentLocation();
         }, onLocationChange);
 
-        function onBeforeEnter() {
+        function onAfterEnter() {
             popup = undefined;
             user = LoginService.getUser();
             vm.user = user;
@@ -34,7 +35,7 @@
 
             // needed only on chef view
             if (!$stateParams.batchId) {
-                getCheckoutInfo().then(function (info) {
+                getCheckoutInfo().then(function(info) {
                     if (_.size(info.portions)) {
                         checkout();
                     }
@@ -43,26 +44,34 @@
         }
 
         function getChefDetails() {
-            $ionicLoading.show();
             // must force reload if on chef view
-            return ChefService.getChefDetails(vm.chefId, !$stateParams.batchId)
-                .then(function (chef) {
+            var reload = !$stateParams.batchId;
+            if (reload) {
+                $ionicLoading.show();
+            }
+            return ChefService.getChefDetails(vm.chefId, reload)
+                .then(function(chef) {
                     $ionicLoading.hide();
                     vm.chef = chef;
                     if ($stateParams.batchId) {
-                        vm.dish = _.find(chef.dishes, {id: parseFloat($stateParams.batchId)});
-                        if (!vm.dish) {
+                        var dish = _.find(chef.dishes, {
+                            id: parseFloat($stateParams.batchId)
+                        });
+                        if (!dish) {
                             HCMessaging.showMessage('Could not find the dish', 'The chef might have deleted this dish');
-                            $state.go('app.chef-preview', {id: $stateParams.id});
+                            $state.go('app.chef-preview', {
+                                id: $stateParams.id
+                            });
                             return;
                         }
                         vm.quantity = 1;
-                        vm.dish.quantities = getQuantities(vm.dish.remaining);
-                        vm.dish.specialIngredients = getSpecialIngredients(vm.dish);
+                        dish.quantities = getQuantities(dish.remaining);
+                        dish.specialIngredients = getSpecialIngredients(dish);
+                        vm.dish = dish;
                     }
                     onLocationChange();
                     return chef;
-                }, function (error) {
+                }, function(error) {
                     HCMessaging.showError(error);
                     back();
                 });
@@ -70,7 +79,7 @@
 
         function getCheckoutInfo() {
             var getInfoPromise = user.isLoggedIn ? PaymentService.getCheckoutInfo(vm.chefId) : $q.when({});
-            return getInfoPromise.then(function (info) {
+            return getInfoPromise.then(function(info) {
                 vm.checkoutInfo = info;
                 return info;
             });
@@ -109,9 +118,14 @@
 
         function holdBatch() {
             $ionicLoading.show();
-            return PaymentService.holdBatch({batchId: $stateParams.batchId, quantity: vm.quantity})
-                .then(function () {
-                    $state.go('app.chef-preview', {id: $stateParams.id});
+            return PaymentService.holdBatch({
+                    batchId: $stateParams.batchId,
+                    quantity: vm.quantity
+                })
+                .then(function() {
+                    $state.go('app.chef-preview', {
+                        id: $stateParams.id
+                    });
                 })
                 .catch(HCMessaging.showError);
         }
@@ -125,11 +139,10 @@
                 okText: 'Checkout',
                 okType: 'button-positive'
             });
-            popup.then(function (res) {
+            popup.then(function(res) {
                 if (res) {
                     doCheckout();
-                }
-                else {
+                } else {
                     popup = undefined;
                 }
             });
@@ -146,7 +159,7 @@
             $ionicLoading.show();
             var portionsIds = vm.checkoutInfo.portion_id_list;
             PaymentService.checkout(portionsIds)
-                .then(function () {
+                .then(function() {
                     $ionicLoading.hide();
                     return $ionicPopup.show({
                         title: 'Checkout successful!',
@@ -157,7 +170,7 @@
                         }]
                     });
                 }, HCMessaging.showError)
-                .then(function () {
+                .then(function() {
                     vm.checkoutInfo = [];
                     $ionicHistory.nextViewOptions({
                         historyRoot: true,
@@ -176,12 +189,12 @@
         }
 
         function getSpecialIngredients(dish) {
-            var containsIngredients = _.filter(['milk', 'peanuts', 'eggs'], function (ingredient) {
+            var containsIngredients = _.filter(['milk', 'peanuts', 'eggs'], function(ingredient) {
                 return dish[ingredient] === true;
             }).join(', ');
             var res = containsIngredients ? 'Contains ' + containsIngredients + '. ' : '';
 
-            var isIngredients = _.filter(['vegetarian'], function (ingredient) {
+            var isIngredients = _.filter(['vegetarian'], function(ingredient) {
                 return dish[ingredient] === true;
             }).join(', ');
             if (isIngredients) {
@@ -196,9 +209,10 @@
 
         function back() {
             if ($stateParams.batchId) {
-                $state.go('app.chef-preview', {id: $stateParams.id});
-            }
-            else if (_.size(vm.checkoutInfo.portions)) {
+                $state.go('app.chef-preview', {
+                    id: $stateParams.id
+                });
+            } else if (_.size(vm.checkoutInfo.portions)) {
                 popup = $ionicPopup.show({
                     title: 'Order pending',
                     templateUrl: 'templates/confirm-checkout.html',
@@ -206,25 +220,23 @@
                     buttons: [{
                         text: 'Delete',
                         type: 'button-assertive',
-                        onTap: function () {
+                        onTap: function() {
                             return true;
                         }
                     }, {
                         text: 'Keep'
                     }]
                 });
-                popup.then(function (res) {
+                popup.then(function(res) {
                     if (res) {
                         vm.checkoutInfo = {};
                         PaymentService.cancelOrder();
                         back();
-                    }
-                    else {
+                    } else {
                         popup = undefined;
                     }
                 });
-            }
-            else {
+            } else {
                 $state.go('app.buyer');
             }
         }
@@ -232,12 +244,12 @@
         function deleteDishPortions(portion) {
             $ionicLoading.show();
             PaymentService.deleteBatch(portion.portion_id_list)
-                .then(function () {
+                .then(function() {
                     getChefDetails();
                     return getCheckoutInfo();
                 })
                 .catch(HCMessaging.showError)
-                .then(function (info) {
+                .then(function(info) {
                     $ionicLoading.hide();
                     if (popup && _.isEmpty(info.portions)) {
                         popup.close();
