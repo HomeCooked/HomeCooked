@@ -2,8 +2,17 @@
   "name": "HomeCooked",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "gulp": "^3.5.6",
+    "gulp-sass": "^2.0.4",
+    "gulp-concat": "^2.2.0",
+    "gulp-minify-css": "^0.3.0",
+    "gulp-rename": "^1.2.0"
+  },
   "devDependencies": {
+    "bower": "^1.3.3",
+    "gulp-util": "^2.2.14",
+    "shelljs": "^0.3.0",
     "cordova": "~3.5.0-0.2.6",
     "glob": "~4.0.5",
     "grunt": "~0.4.1",
@@ -25,7 +34,6 @@
     "grunt-ng-constant": "^0.5.0",
     "grunt-usemin": "~2.0.0",
     "grunt-wiredep": "^1.7.0",
-    "ionic": "^1.3.22",
     "jshint-stylish": "~0.1.3",
     "karma": "~0.12.0",
     "karma-chai": "~0.1.0",
@@ -50,42 +58,41 @@
     "test": "grunt test"
   },
   "cordovaPlugins": [
-    "cordova-plugin-whitelist@^1.0.0",
-    "cordova-plugin-console@^1.0.1",
-    "cordova-plugin-geolocation@^1.0.1",
-    "cordova-plugin-statusbar@^1.0.1",
-    "cordova-plugin-splashscreen@^2.1.0",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-console",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-statusbar",
+    "cordova-plugin-splashscreen",
     "cordova-plugin-geolocation",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-file",
-    "org.apache.cordova.console",
-    "org.apache.cordova.device",
+    "cordova-plugin-camera",
+    "ionic-plugin-keyboard",
+    "phonegap-plugin-push",
     {
-      "locator": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
-      "id": "cordova-plugin-camera"
-    },
-    {
-      "locator": "https://github.com/Telerik-Verified-Plugins/Facebook.git",
-      "id": "com.phonegap.plugins.facebookconnect",
       "variables": {
         "APP_ID": "805673482820123",
         "APP_NAME": "HomeCooked"
-      }
+      },
+      "locator": "cordova-plugin-facebook4",
+      "id": "cordova-plugin-facebook4"
     },
     {
-      "locator": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
-      "id": "cordova-plugin-customurlscheme",
       "variables": {
         "URL_SCHEME": "homecooked"
-      }
+      },
+      "locator": "cordova-plugin-customurlscheme",
+      "id": "cordova-plugin-customurlscheme"
     },
     {
-      "locator": "https://github.com/Telerik-Verified-Plugins/PushNotification.git",
-      "id": "com.phonegap.plugins.PushPlugin"
-    }
+      "locator": "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-x-socialsharing"
+    },
+    "cordova-plugin-facebook4",
+    "cordova-plugin-customurlscheme"
   ],
   "cordovaPlatforms": [
-    "android",
-    "ios"
+    "ios",
+    "android"
   ]
 }

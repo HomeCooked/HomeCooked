@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.homecooked.app" version="0.2.9" xmlns="http://www.w3.org/ns/widgets">
+<widget id="com.homecooked.app" version="0.3.0" xmlns="http://www.w3.org/ns/widgets">
     <name>HomeCooked</name>
     <description>
-        An Ionic Framework and Cordova project.
+        HomeCooked
     </description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">
-        Ionic Framework Team
+    <author email="marc@gohomecooked.com" href="http://gohomecooked.com/">
+        HomeCooked
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -16,8 +16,7 @@
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="BackupWebStorage" value="none" />
-    <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="android-minSdkVersion" value="16"/>
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
@@ -73,13 +72,4 @@
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
-    <plugin name="cordova-plugin-splashscreen" spec="^2.1.0" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.0.0" />
-    <plugin name="com.ionic.keyboard" spec="https://github.com/driftyco/ionic-plugin-keyboard.git" />
-    <plugin name="cordova-plugin-console" spec="^1.0.1" />
-    <plugin name="cordova-plugin-geolocation" spec="^1.0.1" />
-    <plugin name="cordova-plugin-statusbar" spec="^1.0.1" />
-    <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git">
-        <variable name="URL_SCHEME" value="homecooked" />
-    </plugin>
 </widget>
