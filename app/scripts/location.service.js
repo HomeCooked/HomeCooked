@@ -2,8 +2,8 @@
 (function() {
     angular.module('HomeCooked.services').factory('LocationService', LocationService);
 
-    LocationService.$inject = ['$cordovaGeolocation', '$ionicPlatform'];
-    function LocationService($cordovaGeolocation, $ionicPlatform) {
+    LocationService.$inject = ['$cordovaGeolocation'];
+    function LocationService($cordovaGeolocation) {
         var location;
         var posOptions = {timeout: 10000, enableHighAccuracy: false};
         var watchOptions = {
@@ -12,15 +12,16 @@
             enableHighAccuracy: false // may cause errors if true
         };
 
-        $ionicPlatform.ready(function() {
+        function init() {
             $cordovaGeolocation.getCurrentPosition(posOptions)
                 .then(onLocationSuccess, onLocationFail);
 
             var watch = $cordovaGeolocation.watchPosition(watchOptions);
             watch.then(null, onLocationFail, onLocationSuccess);
-        });
+        }
 
         return {
+            init: init,
             getCurrentLocation: getCurrentLocation,
             getDistanceFrom: getDistanceFrom
         };

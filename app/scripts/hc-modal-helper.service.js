@@ -189,7 +189,11 @@
         }
 
         function signIn(loginType, data) {
-            $ionicLoading.show();
+            // block ui only for homecooked login
+            if (loginType === 'homecooked') {
+                $ionicLoading.show();
+            }
+
             var scope = modals['signup'],
                 fn = loginType === 'homecooked' && !scope.doingLogin ? LoginService.signup : LoginService.login;
             fn(loginType, data).then(function didLogin() {

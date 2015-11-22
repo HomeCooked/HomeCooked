@@ -179,8 +179,9 @@ HomeCooked
             $state.go(nextState);
         });
     })
-    .run(function ($log, $ionicPlatform, ENV, NotificationService, LoginService) {
+    .run(function ($log, $ionicPlatform, ENV, NotificationService, LoginService, LocationService) {
         $ionicPlatform.ready(function () {
+            LocationService.init();
             LoginService.reloadUser();
             $ionicPlatform.on('resume', function (event) {
                 $log.info('app resume event', event);
