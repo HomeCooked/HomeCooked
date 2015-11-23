@@ -9,8 +9,45 @@
         <div style="white-space: normal">{{::portion.dish.title}}</div>
         <div>{{::portion.portion_id_list.length}} portion(s)</div>
     </label>
+    <div class="item item-select" ng-if="deliveryOptions.length">
+      <div class="">
+        Delivery options:
+      </div>
+      <select name="delivery_option" ng-model="selectedDeliveryOptionType" ng-change="updateOption(selectedDeliveryOptionType)">
+        <option ng-repeat="option in deliveryOptions" value="{{option.type}}">{{option.type}} ({{option.price === 0 ? 'Free' : '+ $' + option.price}})</option>
+      </select>
+    </div>
+    <form novalidate class="list" ng-if="selectedDeliveryOption.address_required">
+      <label class="item">
+        Delivery address:
+      </label>
+      <label class="item item-input item-floating-label">
+          <span class="input-label">Line 1</span>
+          <input type="text" name="line1" placeholder="Line 1" required ng-minlength="2" ng-maxlength="50" ng-model="address.line1" />
+      </label>
+      <label class="item item-input item-floating-label">
+          <span class="input-label">Line 2</span>
+          <input type="text" name="line2" placeholder="Line 2" ng-model="address.line2" />
+      </label>
+      <label class="item item-input item-floating-label">
+          <span class="input-label">City</span>
+          <input type="text" name="city" placeholder="City" required ng-minlength="2" ng-maxlength="50" ng-model="address.city" />
+      </label>
+      <label class="item item-input item-floating-label">
+          <span class="input-label">Zipcode</span>
+          <input type="tel" name="zipcode" placeholder="Zipcode" required ng-minlength="5" ng-model="address.zipcode" />
+      </label>
+      <label class="item item-input item-select">
+          <span class="input-label">State</span>
+          <select name="state" ng-model="address.state">
+              <option ng-repeat="state in states" value="{{::state}}">{{::state}}</option>
+          </select>
+          <input type="hidden" ng-model="address.state" required minlength="1">
+      </label>
+    </form>
+
     <label class="item">
         <span>Total price:</span>
-        <span class="item-note"><b>${{::checkoutInfo.total_price}}</b></span>
+        <span class="item-note"><b>${{checkoutInfo.total_price + selectedDeliveryOption.price}}</b></span>
     </label>
 </div>

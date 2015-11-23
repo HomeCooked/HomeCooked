@@ -32,15 +32,6 @@
             vm.user = user;
             vm.chefId = $stateParams.id;
             getChefDetails();
-
-            // needed only on chef view
-            if (!$stateParams.batchId) {
-                getCheckoutInfo().then(function(info) {
-                    if (_.size(info.portions)) {
-                        checkout();
-                    }
-                });
-            }
         }
 
         function getChefDetails() {
@@ -52,6 +43,16 @@
             return ChefService.getChefDetails(vm.chefId, reload)
                 .then(function(chef) {
                     $ionicLoading.hide();
+                    if (_.isEmpty(chef.delivery_options)) {
+                        chef.delivery_options = [{
+                            type: 'Pickup',
+                            price: 0
+                        }, {
+                            type: 'Deliver',
+                            price: 5,
+                            address_required: true
+                        }];
+                    }
                     vm.chef = chef;
                     if ($stateParams.batchId) {
                         var dish = _.find(chef.dishes, {
@@ -68,6 +69,14 @@
                         dish.quantities = getQuantities(dish.remaining);
                         dish.specialIngredients = getSpecialIngredients(dish);
                         vm.dish = dish;
+                    }
+                    // needed only on chef view
+                    else {
+                        getCheckoutInfo().then(function(info) {
+                            if (_.size(info.portions)) {
+                                checkout();
+                            }
+                        });
                     }
                     onLocationChange();
                     return chef;
@@ -148,17 +157,49 @@
             });
         }
 
-        function getCheckoutScope() {
+        function getCheckoutScope(noDelivery) {
             var confirmScope = $rootScope.$new();
             confirmScope.checkoutInfo = vm.checkoutInfo;
-            confirmScope.deleteDishPortions = deleteDishPortions;
+            if (!noDelivery) {
+                confirmScope.deliveryOptions = vm.chef.delivery_options;
+                confirmScope.selectedDeliveryOption = vm.chef.delivery_options[0];
+                confirmScope.selectedDeliveryOptionType = confirmScope.selectedDeliveryOption.type;
+                confirmScope.deleteDishPortions = deleteDishPortions;
+                confirmScope.updateOption = function(type) {
+                    confirmScope.selectedDeliveryOption = _.find(confirmScope.deliveryOptions, {
+                        type: type
+                    });
+                };
+                confirmScope.address = {
+                    state: 'CA'
+                };
+                confirmScope.states = ['CA'];
+                vm.checkoutScope = confirmScope;
+            } else {
+              vm.checkoutScope = undefined;
+            }
             return confirmScope;
         }
 
         function doCheckout() {
+            if (vm.checkoutScope.selectedDeliveryOption.address_required && !isValidAddress(vm.checkoutScope.address)) {
+                var address = vm.checkoutScope.address,
+                    selectedDeliveryOption = vm.checkoutScope.selectedDeliveryOption;
+                checkout();
+                setTimeout(function() {
+                    $ionicLoading.show({
+                        template: 'Please input a valid address.',
+                        duration: 2000
+                    });
+                    vm.checkoutScope.address = address;
+                    vm.checkoutScope.selectedDeliveryOption = selectedDeliveryOption;
+                    vm.checkoutScope.selectedDeliveryOptionType = selectedDeliveryOption.type;
+                }, 100);
+                return;
+            }
             $ionicLoading.show();
             var portionsIds = vm.checkoutInfo.portion_id_list;
-            PaymentService.checkout(portionsIds)
+            PaymentService.checkout(portionsIds, vm.checkoutScope.selectedDeliveryOptionType, vm.checkoutScope.address)
                 .then(function() {
                     $ionicLoading.hide();
                     return $ionicPopup.show({
@@ -178,6 +219,10 @@
                     });
                     $state.go('app.orders');
                 });
+        }
+
+        function isValidAddress(address) {
+            return (_.size(address.line1) >= 2 && _.size(address.city) >= 2 && _.size(address.zipcode) >= 5 && _.size(address.state) >= 1);
         }
 
         function getQuantities(remaining) {
@@ -216,7 +261,7 @@
                 popup = $ionicPopup.show({
                     title: 'Order pending',
                     templateUrl: 'templates/confirm-checkout.html',
-                    scope: getCheckoutScope(),
+                    scope: getCheckoutScope(true),
                     buttons: [{
                         text: 'Delete',
                         type: 'button-assertive',

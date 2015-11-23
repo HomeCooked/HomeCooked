@@ -16,6 +16,12 @@
             <p style="font-size: 90%">{{chef.distance ? chef.distance + ' away, ' : ''}}{{chef.num_active_dishes}} item{{chef.num_active_dishes === 1 ? '' : 's'}} on sale</p>
 
             <reviews-rating style="font-size: 90%; text-align: left;" score="::chef.review_score" count="::chef.review_count"></reviews-rating>
+            <!-- <div ng-if="chef.dishes.length" class="dishes-container">
+              <p style="font-size: 90%">{{chef.dishes.length}} item{{chef.dishes.length === 1 ? '' : 's'}} on sale</p>
+              <div ng-repeat="dish in ::chef.dishes" class="dish" ng-style="{'background-image' : 'url(' + dish.picture + ')'}">
+                  <div class="dish-price">${{::dish.price}}</div>
+              </div>
+            </div> -->
         </div>
     </ion-content>
 </ion-view>

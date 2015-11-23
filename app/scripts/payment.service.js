@@ -4,6 +4,7 @@
     angular.module('HomeCooked.services').factory('PaymentService', PaymentService);
 
     PaymentService.$inject = ['$http', 'LoginService', 'ChefService', 'ENV'];
+
     function PaymentService($http, LoginService, ChefService, ENV) {
         var baseUrl = ENV.BASE_URL + '/api/v1/';
 
@@ -46,10 +47,12 @@
             return handleResponses($http.delete(baseUrl + 'users/held_batches/'));
         }
 
-        function checkout(portions) {
+        function checkout(portions, deliveryType, address) {
             var payload = {
                 card_id: LoginService.getUser().payment_info.id,
-                portions: portions
+                portions: portions,
+                delivery_type: deliveryType,
+                address: address
             };
             return handleResponses($http.post(baseUrl + 'orders/order_meal/', payload));
         }
