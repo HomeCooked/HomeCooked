@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading', 'SearchService', 'LocationService', 'HCMessaging', '_'];
+    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading', 'SearchService', 'LocationService', 'HCMessaging', 'ConfigService', '_'];
 
-    function SearchCtrl($state, $scope, $ionicLoading, SearchService, LocationService, HCMessaging, _) {
+    function SearchCtrl($state, $scope, $ionicLoading, SearchService, LocationService, HCMessaging, ConfigService, _) {
 
         var userLocation = {
             latitude: 37.773204,
@@ -33,9 +33,15 @@
 
         function getChefs(location) {
             $ionicLoading.show();
-            SearchService.getChefs(location)
-                .then(setChefs)
-                .catch(HCMessaging.showError);
+            ConfigService.getConfig().then(function(config) {
+                vm.search_inactive = config.search_inactive;
+                vm.search_message = vm.search_message;
+                if (!vm.search_inactive) {
+                    SearchService.getChefs(location).then(setChefs, HCMessaging.showError);
+                } else {
+                    $ionicLoading.hide();
+                }
+            }, HCMessaging.showError);
         }
 
         function setChefs(chefs) {

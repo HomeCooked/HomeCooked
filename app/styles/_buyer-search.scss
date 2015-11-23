@@ -1,16 +1,23 @@
 .buyer-search {
-
-    .list-results {
-        background: #f8f8f8;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-        .item {
-            background: transparent;
-        }
+  .dishes-container {
+    white-space: nowrap;
+    > .dish {
+      text-align: center;
+      display: inline-block;
+      width: 5rem;
+      height: 5rem;
+      margin-right: 10px;
+      background-repeat: no-repeat;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-position: center;
+      > * {
+        margin-top: 5.2rem;
+      }
     }
+  }
 
 }
 
