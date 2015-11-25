@@ -162,6 +162,7 @@
                 confirmScope.selectedDeliveryOptionType = confirmScope.selectedDeliveryOption.type;
                 confirmScope.deleteDishPortions = deleteDishPortions;
                 confirmScope.updateOption = function(type) {
+                    confirmScope.selectedDeliveryOptionType = type;
                     confirmScope.selectedDeliveryOption = _.find(confirmScope.deliveryOptions, {
                         type: type
                     });
@@ -195,7 +196,7 @@
             }
             $ionicLoading.show();
             var portionsIds = vm.checkoutInfo.portion_id_list;
-            PaymentService.checkout(portionsIds, vm.checkoutScope.selectedDeliveryOptionType, vm.checkoutScope.address)
+            PaymentService.checkout(portionsIds, vm.checkoutScope.selectedDeliveryOption.type, vm.checkoutScope.address)
                 .then(function() {
                     $ionicLoading.hide();
                     return $ionicPopup.show({
