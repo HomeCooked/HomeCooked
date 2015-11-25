@@ -16,6 +16,7 @@
         };
         var vm = this;
         vm.chefs = [];
+        $scope.reload = onAfterEnter;
 
         //init the map
         $scope.$watch(function() {
@@ -34,14 +35,18 @@
         function getChefs(location) {
             $ionicLoading.show();
             ConfigService.getConfig().then(function(config) {
-                vm.search_inactive = config.search_inactive;
-                vm.search_message = config.search_message;
-                if (!vm.search_inactive) {
-                    SearchService.getChefs(location).then(setChefs, HCMessaging.showError);
-                } else {
-                    $ionicLoading.hide();
-                }
-            }, HCMessaging.showError);
+                    vm.search_inactive = config.search_inactive;
+                    vm.search_message = config.search_message;
+                    if (!vm.search_inactive) {
+                        SearchService.getChefs(location).then(setChefs, HCMessaging.showError);
+                    } else {
+                        $ionicLoading.hide();
+                    }
+                }, HCMessaging.showError)
+                .finally(function() {
+                    // Stop the ion-refresher from spinning
+                    $scope.$broadcast('scroll.refreshComplete');
+                });
         }
 
         function setChefs(chefs) {
