@@ -3,6 +3,7 @@
     angular.module('HomeCooked.controllers').controller('OrdersCtrl', OrdersCtrl);
 
     OrdersCtrl.$inject = ['$scope', '$ionicLoading', 'OrdersService', 'HCMessaging'];
+
     function OrdersCtrl($scope, $ionicLoading, OrdersService, HCMessaging) {
         var vm = this;
 
@@ -40,10 +41,10 @@
                 });
         }
 
-        function openMap(chef) {
+        function openMap(geoData) {
             var base = window.ionic.Platform.isIOS() ? 'comgooglemaps://' : window.ionic.Platform.isAndroid() ? 'geo:0,0' : 'https://www.google.com/maps/';
-            var center = chef.location ? chef.location.latitude + ',' + chef.location.longitude : '';
-            var url = base + '?q=' + encodeURI(chef.address) + '&center=' + center;
+            var center = geoData.location ? geoData.location.latitude + ',' + geoData.location.longitude : '';
+            var url = base + '?q=' + encodeURI(geoData.address) + '&center=' + center;
             window.open(url, '_system', 'location=yes');
         }
     }

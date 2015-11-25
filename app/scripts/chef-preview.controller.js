@@ -47,10 +47,6 @@
                         chef.delivery_options = [{
                             type: 'Pickup',
                             price: 0
-                        }, {
-                            type: 'Deliver',
-                            price: 5,
-                            address_required: true
                         }];
                     }
                     vm.chef = chef;
@@ -175,8 +171,8 @@
                 };
                 confirmScope.states = ['CA'];
                 vm.checkoutScope = confirmScope;
-            } else {
-              vm.checkoutScope = undefined;
+            } else {
+                vm.checkoutScope = undefined;
             }
             return confirmScope;
         }

@@ -6,7 +6,8 @@
         <ion-refresher pulling-text="Pull to refresh" on-refresh="reload()">
         </ion-refresher>
         <p class="padding" align="center" ng-if="!vm.activeOrders.length">
-            You haven't placed any order yet.<br>
+            You haven't placed any order yet.
+            <br>
             <a ui-sref="app.buyer">Place one</a>
         </p>
 
@@ -16,16 +17,20 @@
                 <img ng-src="{{order.chef.picture || 'images/user.png'}}">
 
                 <h2 class="wrap">
-                    <a ng-href='sms:+{{::order.chef.phone_number}}'
-                       class="button button-positive button-clear icon ion-chatbubbles" style="float: right"></a>
-                    <a ng-href='tel:+{{::order.chef.phone_number}}'
-                       class="button button-positive button-clear icon ion-ios-telephone" style="float: right"></a>
+                    <a ng-href='sms:+{{::order.chef.phone_number}}' class="button button-positive button-clear icon ion-chatbubbles" style="float: right"></a>
+                    <a ng-href='tel:+{{::order.chef.phone_number}}' class="button button-positive button-clear icon ion-ios-telephone" style="float: right"></a>
                     <span style="line-height: 45px">Chef {{::order.chef.first_name}} {{::order.chef.last_name}}</span>
                 </h2>
-                <a class="wrap positive" href ng-click="vm.openMap(order.chef)">{{order.chef.address}}</a>
 
-                <p class="wrap">Pickup {{order.start_time | amDateFormat:'ddd, MMM D (ha'}} to
-                    {{order.end_time | amDateFormat:'ha'}})</p>
+                <p class="wrap">{{order.delivery.type || 'Pickup'}} at
+                    <a ng-if="!order.delivery.address" class="wrap positive" href ng-click="vm.openMap(order.chef)">{{order.chef.address}}</a>
+                    <a ng-if="order.delivery.address" class="wrap positive" href ng-click="vm.openMap(order.delivery)">{{order.delivery.address}}</a>
+                    <br>
+                    <span ng-if="order.delivery.contact_name">
+                        by <a class="wrap positive" ng-href="tel:+{{::order.delivery.contact_number}}">{{order.delivery.contact_name}}</a>
+                    </span>
+                    on {{order.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{order.end_time | amDateFormat:'ha'}})
+                </p>
             </div>
 
             <div class="item item-avatar" ng-repeat="dish in order.dishes">
@@ -43,9 +48,11 @@
             </div>
 
             <div class="button-bar tabs item">
-                <a class="button button-positive icon-left" ng-click="vm.notifyChef(order)">
-                    <i class="icon ion-ios-bell"></i>
-                    Notify chef I arrived!
+                <a ng-if="order.delivery.contact_name" class="button button-positive icon-left" ng-href="tel:+{{::order.delivery.contact_number}}">
+                    <i class="icon ion-ios-telephone"></i> Call {{order.delivery.contact_name}}
+                </a>
+                <a ng-if="!order.delivery.contact_name" class="button button-positive icon-left" ng-click="vm.notifyChef(order)">
+                    <i class="icon ion-ios-bell"></i> Notify {{order.chef.first_name}} I arrived!
                 </a>
             </div>
         </div>
