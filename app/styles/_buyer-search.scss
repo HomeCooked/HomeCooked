@@ -1,11 +1,13 @@
 .buyer-search {
   .dishes-container {
     white-space: nowrap;
+    margin-top: 10px;
     > .dish {
+      border-radius: 50%;
       text-align: center;
       display: inline-block;
-      width: 5rem;
-      height: 5rem;
+      width: 3.8rem;
+      height: 3.8rem;
       margin-right: 10px;
       background-repeat: no-repeat;
       -webkit-background-size: cover;
@@ -14,7 +16,7 @@
       background-size: cover;
       background-position: center;
       > * {
-        margin-top: 5.2rem;
+        margin-top: 4rem;
       }
     }
   }
