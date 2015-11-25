@@ -1,38 +1,41 @@
 .buyer-search {
-  .dishes-container {
-    white-space: nowrap;
-    margin-top: 10px;
-    > .dish {
-      border-radius: 50%;
-      text-align: center;
-      display: inline-block;
-      width: 3.8rem;
-      height: 3.8rem;
-      margin-right: 10px;
-      background-repeat: no-repeat;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-      background-position: center;
-      > * {
-        margin-top: 4rem;
-      }
+    .dishes-container {
+        white-space: nowrap;
+        margin-top: 10px;
+        > .dish {
+            border-radius: 50%;
+            text-align: center;
+            display: inline-block;
+            width: 3.8rem;
+            height: 3.8rem;
+            margin-right: 10px;
+            background-repeat: no-repeat;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            background-position: center;
+            > * {
+                margin-top: 4rem;
+            }
+        }
     }
-  }
 
+    reviews-rating {
+        font-size: 12px;
+        ul.rating li i {
+            font-size: 12px;
+        }
+    }
 }
-
 .buyer-search-preview {
     background: #efefef;
-
     .preview {
         width: 100%;
         position: relative;
         text-align: center;
         padding: 25px 0;
         background: url(../images/preview.jpg) top right;
-
         .button-back {
             position: absolute;
             top: 25px;
@@ -43,24 +46,21 @@
             width: 50px;
             height: 50px;
         }
-
         > img {
             border-radius: 5%;
             border: 4px solid white;
-            box-shadow: 0px 0px 4px 1px #333;
+            box-shadow: 0 0 4px 1px #333;
             width: 120px;
             height: 120px;
         }
-
         h3 {
-            text-shadow: 0px 2px 2px #333;
+            text-shadow: 0 2px 2px #333;
             margin: 10px auto;
             color: white;
         }
-
         p {
             margin: 0 auto;
-            text-shadow: 0px 2px 2px #333;
+            text-shadow: 0 2px 2px #333;
             font-size: 90%;
             color: white;
         }
@@ -84,18 +84,16 @@
             }
         }
     }
-
     .dishes-container {
         text-align: center;
     }
     .card {
         text-align: left;
-        padding: 20px 10px 10px 10px;
+        padding: 20px 10px 10px;
         box-sizing: border-box;
         width: 100%;
         max-width: 320px;
         display: inline-block;
-
         .dish-img {
             clear: right;
             display: block;
@@ -109,26 +107,22 @@
             background-size: cover;
             background-position: center;
         }
-
         .dish-price {
             float: right;
             font-size: 28px;
             line-height: 28px;
         }
-
         reviews-rating {
             float: right;
             text-align: right;
             cursor: pointer;
         }
-
         .title {
             font-weight: bold;
             font-size: 16px;
         }
     }
 }
-
 .buyer-dish-preview {
     .image-container {
         padding: 16px;
@@ -139,40 +133,33 @@
         }
     }
     .dish-details {
-        padding: 0px 16px;
+        padding: 0 16px;
     }
-
     reviews-rating {
         text-align: right;
     }
-
     div.title-price {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         margin-bottom: 10px;
-
         h2 {
             margin: 0;
             font-size: 140%;
         }
-
         span {
             font-size: 150%;
             flex-shrink: 0;
         }
     }
-
     .item-divider {
         font-size: 85%;
         font-weight: bold;
         text-transform: uppercase;
     }
-
     .item-note {
         color: initial;
     }
-
     .place-order-btn .title {
         text-transform: uppercase;
         letter-spacing: 1px;
