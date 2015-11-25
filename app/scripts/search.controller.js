@@ -35,7 +35,7 @@
             $ionicLoading.show();
             ConfigService.getConfig().then(function(config) {
                 vm.search_inactive = config.search_inactive;
-                vm.search_message = vm.search_message;
+                vm.search_message = config.search_message;
                 if (!vm.search_inactive) {
                     SearchService.getChefs(location).then(setChefs, HCMessaging.showError);
                 } else {
