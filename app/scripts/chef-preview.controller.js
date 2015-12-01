@@ -6,10 +6,14 @@
         .module('HomeCooked.controllers')
         .controller('ChefPreviewCtrl', ChefPreviewCtrl);
 
-    ChefPreviewCtrl.$inject = ['$q', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService', 'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', 'HCModalHelper', '_'];
+    ChefPreviewCtrl.$inject = ['$q', '$state', '$rootScope', '$stateParams', '$scope', '$ionicLoading', '$ionicPopup', '$ionicHistory', 'ChefService',
+        'LocationService', 'HCMessaging', 'LoginService', 'PaymentService', 'HCModalHelper', 'MapService', '_'
+    ];
 
-    function ChefPreviewCtrl($q, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService, LocationService, HCMessaging, LoginService, PaymentService, HCModalHelper, _) {
+    function ChefPreviewCtrl($q, $state, $rootScope, $stateParams, $scope, $ionicLoading, $ionicPopup, $ionicHistory, ChefService,
+        LocationService, HCMessaging, LoginService, PaymentService, HCModalHelper, MapService, _) {
         var vm = this;
+        var mapId = 'chefmap';
         var user, popup;
 
         vm.go = $state.go;
@@ -25,6 +29,9 @@
         $scope.$watch(function() {
             return LocationService.getCurrentLocation();
         }, onLocationChange);
+
+        //init the map
+        initMapProperties();
 
         function onAfterEnter() {
             popup = undefined;
@@ -68,6 +75,7 @@
                     }
                     // needed only on chef view
                     else {
+                        updateMapCenter();
                         getCheckoutInfo().then(function(info) {
                             if (_.size(info.portions)) {
                                 checkout();
@@ -297,6 +305,43 @@
                         popup.close();
                     }
                 });
+        }
+
+        function updateMapCenter() {
+            vm.map.center.lat = vm.chef.location.latitude;
+            vm.map.center.lng = vm.chef.location.longitude;
+        }
+
+        function initMapProperties() {
+            MapService.initMap(mapId);
+            vm.map = {
+                defaults: {
+                    zoomControl: false,
+                    attributionControl: false,
+                    doubleClickZoom: false,
+                    scrollWheelZoom: false,
+                    dragging: false,
+                    touchZoom: false
+                },
+                tiles: {
+                    url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
+                    options: {
+                        subdomains: [0, 1, 2, 3],
+                        detectRetina: true,
+                        tileSize: 512,
+                        minZoom: 15,
+                        maxZoom: 15,
+                        reuseTiles: true,
+                        noWrap: true
+                    }
+                },
+                center: {
+                    lat: 37.773204,
+                    lng: -122.4213458,
+                    zoom: 15
+                },
+                markers: {}
+            };
         }
     }
 })();

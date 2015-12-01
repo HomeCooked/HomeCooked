@@ -19,7 +19,7 @@
 
 var HomeCooked = angular.module('HomeCooked', [
     'ionic', 'ngCordova', 'ngAnimate', 'config', 'HomeCooked.controllers',
-    'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
+    'leaflet-directive', 'angularPayments', 'naif.base64', 'angularMoment', 'ngImgCrop', 'ngIOS9UIWebViewPatch']);
 
 angular.module('HomeCooked.services', []);
 angular.module('HomeCooked.directives', []);

@@ -3,13 +3,16 @@
         <button class="button button-icon button-clear ion-ios-arrow-back" ng-click="vm.back()"></button>
     </ion-nav-buttons>
     <ion-content ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
-        <div class="preview">
-            <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
 
-            <p class="padding">
+        <div class="map-container">
+            <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" data-tap-disabled="true"></leaflet>
+        </div>
+        <div class="info-container">
+            <div class="info">
+                <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
                 <reviews-rating class="rating" score="vm.chef.review_score" count="vm.chef.review_count"></reviews-rating>
-            </p>
-            <p ng-if="vm.chef.distance">{{vm.chef.distance}} away</p>
+                <div class="distance" ng-if="vm.chef.distance">{{vm.chef.distance}} away</div>
+            </div>
         </div>
         <div class="bio" ng-if="vm.chef.bio.length">
             <blockquote>{{vm.chef.bio}}</blockquote>

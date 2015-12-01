@@ -11,7 +11,8 @@
     "angular-moment": "~0.10.1",
     "angular-payments": "*",
     "ng-img-crop": "ngImgCrop#~0.3.2",
-    "ngCordova": "~0.1.17-alpha"
+    "ngCordova": "~0.1.17-alpha",
+    "angular-leaflet-directive": "~0.10.0"
   },
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.1.1"
