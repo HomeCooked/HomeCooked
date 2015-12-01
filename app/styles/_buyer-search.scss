@@ -32,20 +32,9 @@
     background: #efefef;
     .preview {
         width: 100%;
-        position: relative;
         text-align: center;
         padding: 25px 0;
         background: url(../images/preview.jpg) top right;
-        .button-back {
-            position: absolute;
-            top: 25px;
-            left: 10px;
-            color: white;
-            border-color: white;
-            font-size: 140%;
-            width: 50px;
-            height: 50px;
-        }
         > img {
             border-radius: 5%;
             border: 4px solid white;
@@ -92,7 +81,7 @@
         padding: 20px 10px 10px;
         box-sizing: border-box;
         width: 100%;
-        max-width: 320px;
+        max-width: 300px;
         display: inline-block;
         .dish-img {
             clear: right;
