@@ -39,6 +39,8 @@
             vm.user = user;
             vm.chefId = $stateParams.id;
             getChefDetails();
+            // fixes rendering issues of the map
+            window.ionic.trigger('resize');
         }
 
         function getChefDetails() {
