@@ -320,7 +320,7 @@
             MapService.initMap(mapId);
             vm.map = {
                 defaults: {
-                    zoomControl: false,
+                    zoomControl: true,
                     attributionControl: false,
                     doubleClickZoom: false,
                     scrollWheelZoom: false,
@@ -333,8 +333,8 @@
                         subdomains: [0, 1, 2, 3],
                         detectRetina: true,
                         tileSize: 512,
-                        minZoom: 15,
-                        maxZoom: 15,
+                        minZoom: 10,
+                        maxZoom: 18,
                         reuseTiles: true,
                         noWrap: true
                     }
