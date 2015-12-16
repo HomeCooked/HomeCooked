@@ -27,6 +27,7 @@
                 <div class="title">{{dish.title}}</div>
                 <div>{{dish.remaining}} remaining</div>
                 <div>
+                    Available for
                     <span ng-if="vm.chef.hasPickup">Pickup</span>
                     <span ng-if="vm.chef.hasPickup && vm.chef.hasDelivery">or</span>
                     <span ng-if="vm.chef.hasDelivery">Delivery</span>
