@@ -25,10 +25,16 @@
             <div class="card" ng-repeat="dish in vm.chef.dishes">
                 <div class="dish-price right">${{dish.price}}</div>
                 <div class="title">{{dish.title}}</div>
-                <p>{{dish.remaining}} remaining</p>
+                <div>{{dish.remaining}} remaining</div>
+                <div>
+                    <span ng-if="vm.chef.hasPickup">Pickup</span>
+                    <span ng-if="vm.chef.hasPickup && vm.chef.hasDelivery">or</span>
+                    <span ng-if="vm.chef.hasDelivery">Delivery</span>
+                    <i class="icon ion-ios-checkmark positive" style="vertical-align: middle;"></i>
+                </div>
                 <a class="dish-img" ng-style="{'background-image': 'url(' + dish.picture + ')'}" ui-sref="app.dish-preview({id: vm.chef.id, batchId: dish.id})"></a>
                 <reviews-rating class="right" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: vm.chef.id, dishId: dish.id})"></reviews-rating>
-                Pickup {{dish.start_time | amDateFormat:'ddd, MMM D'}}
+                {{dish.start_time | amDateFormat:'ddd, MMM D'}}
                 <br> {{dish.start_time | amDateFormat:'(ha'}} to {{dish.end_time | amDateFormat:'ha'}})
             </div>
         </div>

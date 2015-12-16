@@ -58,6 +58,8 @@
                             price: 0
                         }];
                     }
+                    chef.hasPickup = _.some(chef.delivery_options, {type:'Pickup'});
+                    chef.hasDelivery = _.size(chef.delivery_options) > (1 * chef.hasPickup);
                     vm.chef = chef;
                     if ($stateParams.batchId) {
                         var dish = _.find(chef.dishes, {

@@ -11,47 +11,47 @@
                 <h2>{{vm.dish.title}}</h2>
                 <span>${{vm.dish.price}}</span>
             </div>
+            <reviews-rating ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})" score="vm.dish.review_score" count="vm.dish.review_count"></reviews-rating>
 
             <p>{{vm.dish.description}}</p>
 
             <p>Ingredients: {{vm.dish.ingredients}}</p>
 
             <p>{{vm.dish.specialIngredients}}</p>
+
         </div>
-        <div class="list">
+        <div class="list" ng-if="vm.dish.remaining > 0">
 
             <div class="item item-divider">
-                Details
+                Order
             </div>
 
-            <a class="item" ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})">
-                Reviews
-                <reviews-rating class="item-note" score="vm.dish.review_score"
-                                count="vm.dish.review_count"></reviews-rating>
-            </a>
-
-            <a class="item" ng-if="vm.dish.remaining > 0">
-                Pickup Time
-                <span class="item-note">{{vm.dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{vm.dish.end_time | amDateFormat:'ha'}})</span>
-            </a>
-
-            <a class="item" ng-if="vm.dish.remaining > 0">
-                Pickup Distance
-                <span class="item-note">{{vm.chef.distance}}</span>
-            </a>
-
-            <label class="item item-input item-select" ng-if="vm.dish.remaining > 0" style="padding-bottom: 30px">
+            <div class="item item-input item-select">
                 <div class="input-label">Quantity (max {{vm.dish.remaining}})</div>
                 <select ng-model="vm.quantity" ng-options="i as i for i in vm.dish.quantities"></select>
-            </label>
+            </div>
 
-            <p style="text-align: center; margin: 30px 0;" ng-if="vm.dish.remaining === 0">No portions available</p>
+            <div class="item item-icon-right">
+                Available for
+                <span ng-if="vm.chef.hasPickup">Pickup</span>
+                <span ng-if="vm.chef.hasPickup && vm.chef.hasDelivery">or</span>
+                <span ng-if="vm.chef.hasDelivery">Delivery</span>
+                <i class="icon ion-ios-checkmark positive"></i>
+            </div>
+            <div class="item">
+                Available on
+                <span class="item-note">{{vm.dish.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{vm.dish.end_time | amDateFormat:'ha'}})</span>
+            </div>
+            <div class="item" ng-if="vm.chef.distance">
+                Distance
+                <span class="item-note">{{vm.chef.distance}}</span>
+            </div>
         </div>
+        <p style="text-align: center; margin: 30px 0;" ng-if="vm.dish.remaining === 0">No portions available</p>
     </ion-content>
     <div class="bar bar-footer bar-positive button-bar" ng-if="vm.dish.remaining > 0">
         <button class="button button-clear" ng-if="!vm.user.isLoggedIn" ng-click="vm.signin()">Sign up to order</button>
-        <button class="button button-clear" ng-if="vm.user.isLoggedIn" ng-disabled="!vm.quantity"
-                ng-click="vm.order()">Add to cart
+        <button class="button button-clear" ng-if="vm.user.isLoggedIn" ng-disabled="!vm.quantity" ng-click="vm.order()">Add to cart
         </button>
     </div>
 </ion-view>
