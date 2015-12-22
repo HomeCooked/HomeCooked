@@ -8,11 +8,14 @@
     EnrollCtrl.$inject = ['$window', '$scope', '$state', '$ionicPopup', '$ionicLoading', 'LoginService', 'ChefService', 'HCMessaging', 'HCModalHelper'];
     function EnrollCtrl($window, $scope, $state, $ionicPopup, $ionicLoading, LoginService, ChefService, HCMessaging, HCModalHelper) {
         var vm = this;
+
+        var user = LoginService.getUser();
         var chef = ChefService.getChef();
 
+        vm.user = user;
         vm.states = ['CA'];
-        vm.form = getEmptyForm();
         vm.enroll = enroll;
+        vm.login = login;
         vm.openExternalLink = openExternalLink;
         vm.showUpdatePhoto = showUpdatePhoto;
 
@@ -21,6 +24,11 @@
         }, function () {
             vm.isChef = chef.id >= 0;
         });
+        $scope.$on('$ionicView.beforeEnter', onBeforeEnter);
+
+        function onBeforeEnter() {
+          vm.form = getEmptyForm();
+        }
 
         function enroll(formElement) {
             document.activeElement.blur();
@@ -52,7 +60,6 @@
         }
 
         function getEmptyForm() {
-            var user = LoginService.getUser();
             return {
                 first_name: user.first_name,
                 last_name: user.last_name,
@@ -76,6 +83,10 @@
 
         function setPicture(pict) {
             vm.form.picture = pict;
+        }
+
+        function login() {
+            HCModalHelper.showSignup();
         }
     }
 

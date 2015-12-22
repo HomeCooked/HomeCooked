@@ -31,6 +31,8 @@
                     </span>
                     on {{order.start_time | amDateFormat:'ddd, MMM D (ha'}} to {{order.end_time | amDateFormat:'ha'}})
                 </p>
+
+                <p ng-if="order.delivery.additional_info">{{order.delivery.additional_info}}</p>
             </div>
 
             <div class="item item-avatar" ng-repeat="dish in order.dishes">

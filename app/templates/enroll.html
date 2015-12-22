@@ -29,10 +29,16 @@
         <p class="padding" align="center" ng-if="vm.isChef">
             You are already enrolled!
             <br>
-            <a ui-sref="app.dishes">Go to chef mode</a>
+            <a ui-sref="app.dishes" class="button button-positive button-clear">Go to chef mode</a>
         </p>
 
-        <form novalidate class="list" name="enrollForm" ng-if="!vm.isChef">
+        <p class="padding" align="center" ng-if="!vm.user.isLoggedIn">
+            You need to login before enrolling
+            <br>
+            <a href ng-click="vm.login()" class="button button-positive button-clear">Login / Sign up</a>
+        </p>
+
+        <form novalidate class="list" name="enrollForm" ng-if="vm.user.isLoggedIn && !vm.isChef">
             <h4 class="group-title">Profile picture</h4>
 
             <p class="group-description">Select a nice profile picture.</p>
