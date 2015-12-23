@@ -45,7 +45,7 @@
 
         function getChefDetails() {
             // must force reload if on chef view
-            var reload = !$stateParams.batchId;
+            var reload = !$stateParams.batchId || vm.chefId !== vm.chef.id;
             if (reload) {
                 $ionicLoading.show();
             }

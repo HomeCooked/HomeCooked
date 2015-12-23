@@ -8,11 +8,16 @@
         </div>
         <div class="dish-details">
             <div class="title-price">
-                <h2>{{vm.dish.title}}</h2>
+                <h2>
+                    <span>{{vm.dish.title}}</span>
+                    <a ng-if="vm.chef.id" ui-sref="app.chef-preview({id: vm.chef.id})" class="button button-positive button-clear">
+                      by {{vm.chef.first_name}} {{vm.chef.last_name}}
+                      <img ng-src="{{vm.chef.picture || 'images/user.png'}}" />
+                    </a>
+                </h2>
                 <span>${{vm.dish.price}}</span>
             </div>
             <reviews-rating ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})" score="vm.dish.review_score" count="vm.dish.review_count"></reviews-rating>
-
             <p>{{vm.dish.description}}</p>
 
             <p style="clear:right">Ingredients: {{vm.dish.ingredients}}</p>
