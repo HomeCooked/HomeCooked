@@ -58,7 +58,9 @@
                             price: 0
                         }];
                     }
-                    chef.hasPickup = _.some(chef.delivery_options, {type:'Pickup'});
+                    chef.hasPickup = _.some(chef.delivery_options, {
+                        type: 'Pickup'
+                    });
                     chef.hasDelivery = _.size(chef.delivery_options) > (1 * chef.hasPickup);
                     vm.chef = chef;
                     if ($stateParams.batchId) {
@@ -252,7 +254,7 @@
                 return dish[ingredient] === true;
             }).join(', ');
             if (isIngredients) {
-                res += 'Is' + isIngredients;
+                res += 'Is ' + isIngredients;
             }
             return res;
         }
@@ -262,11 +264,8 @@
         }
 
         function back() {
-            if ($stateParams.batchId) {
-                $state.go('app.chef-preview', {
-                    id: $stateParams.id
-                });
-            } else if (_.size(vm.checkoutInfo.portions)) {
+
+            if (!$stateParams.batchId && _.size(vm.checkoutInfo.portions)) {
                 popup = $ionicPopup.show({
                     title: 'Order pending',
                     templateUrl: 'templates/confirm-checkout.html',
@@ -290,9 +289,20 @@
                         popup = undefined;
                     }
                 });
+            } else if (canGoBack()) {
+                $ionicHistory.goBack();
+            } else if ($stateParams.batchId) {
+                $state.go('app.chef-preview', {
+                    id: $stateParams.id
+                });
             } else {
                 $state.go('app.buyer');
             }
+        }
+
+        function canGoBack() {
+            var backView = $ionicHistory.backView();
+            return backView && ['app.chef-preview', 'app.dish-preview'].indexOf(backView.stateName) === -1;
         }
 
         function deleteDishPortions(portion) {

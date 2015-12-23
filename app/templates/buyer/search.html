@@ -7,17 +7,19 @@
         <p class="padding" align="center" ng-if="vm.search_message">{{vm.search_message}}</p>
         <p class="padding" align="center" ng-if="!vm.search_inactive && vm.chefs.length===0">No items on sale.</p>
 
-        <a ng-if="!vm.search_inactive" class="item item-avatar-left" ng-repeat="chef in vm.chefs" ui-sref="app.chef-preview({id:chef.id})">
-            <img ng-src="{{chef.picture}}">
-            <h2>{{chef.first_name}} {{chef.last_name}}</h2>
-            <reviews-rating score="::chef.review_score" count="::chef.review_count"></reviews-rating>
-
-            <p style="font-size: 90%">{{chef.distance ? chef.distance + ' away, ' : ''}}{{chef.num_active_dishes}} item{{chef.num_active_dishes === 1 ? '' : 's'}} on sale</p>
-            <div ng-if="chef.dishes.length" class="dishes-container">
-              <div ng-repeat="dish in ::chef.dishes" class="dish" ng-style="{'background-image' : 'url(' + dish.picture + ')'}">
-                  <div class="dish-price">${{::dish.price}}</div>
-              </div>
-            </div>
-        </a>
+        <div ng-if="!vm.search_inactive" ng-repeat="chef in vm.chefs">
+            <a class="item item-divider item-avatar-right" ui-sref="app.chef-preview({id:chef.id})">
+                <img style="top:auto" ng-src="{{chef.picture}}">
+                <h2>{{chef.first_name}} {{chef.last_name}}</h2>
+                <p style="font-size: 90%">{{chef.distance ? chef.distance + ' away, ' : ''}}{{chef.num_active_dishes}} item{{chef.num_active_dishes === 1 ? '' : 's'}} on sale</p>
+            </a>
+            <a ng-if="chef.dishes.length" ng-repeat="dish in ::chef.dishes" class="item item-thumbnail-left" ui-sref="app.dish-preview({id: chef.id, batchId: dish.id})">
+                <img ng-src="{{::dish.picture}}">
+                <h2 class="item-right">${{::dish.price}}</h2>
+                <h2 class="wrap">{{::dish.title}}</h2>
+                <p>{{dish.remaining}} remaining</p>
+                <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>
+            </a>
+        </div>
     </ion-content>
 </ion-view>

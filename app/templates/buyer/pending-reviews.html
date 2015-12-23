@@ -13,9 +13,9 @@
                 <img ng-src="{{dish.picture && dish.picture.length ? dish.picture : 'images/logo.png'}}">
 
                 <span class="item-right">${{dish.price}}</span>
-                <h2>{{dish.title}}</h2>
+                <h2 class="wrap">{{dish.title}}</h2>
 
-                <p>{{dish.description}}</p>
+                <p class="wrap">{{dish.description}}</p>
 
                 <p>{{dish.portions}} portion(s)</p>
                 <span class="item-note">{{dish.delivery_time | amTimeAgo}}</span>

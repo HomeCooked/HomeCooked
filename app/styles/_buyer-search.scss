@@ -1,25 +1,4 @@
 .buyer-search {
-    .dishes-container {
-        white-space: nowrap;
-        margin-top: 10px;
-        > .dish {
-            border-radius: 50%;
-            text-align: center;
-            display: inline-block;
-            width: 3.8rem;
-            height: 3.8rem;
-            margin-right: 10px;
-            background-repeat: no-repeat;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            background-position: center;
-            > * {
-                margin-top: 4rem;
-            }
-        }
-    }
     reviews-rating {
         font-size: 12px;
         ul.rating li i {
@@ -111,6 +90,7 @@
             float: right;
             font-size: 28px;
             line-height: 28px;
+            margin: 0 0 10px 10px;
         }
         reviews-rating {
             float: right;
@@ -140,8 +120,8 @@
     reviews-rating {
         cursor: pointer;
         text-align: right;
-        float:right;
-        padding-left:10px;
+        float: right;
+        margin: 0 0 10px 10px;
     }
     div.title-price {
         display: flex;
@@ -154,6 +134,7 @@
         }
         span {
             font-size: 150%;
+            margin: 0 0 10px 10px;
             flex-shrink: 0;
         }
     }
