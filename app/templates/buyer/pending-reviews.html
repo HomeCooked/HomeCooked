@@ -3,7 +3,12 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
     </ion-nav-buttons>
     <ion-content>
-        <div class="list card">
+        <p class="padding" align="center" ng-if="!vm.dishes.length">
+            No dishes to review, good job!
+            <br>
+            <a ui-sref="app.buyer" class="button button-positive button-clear">Place new order</a>
+        </p>
+        <div class="list card" ng-if="vm.dishes.length">
             <div class="item item-avatar" ng-repeat="dish in vm.dishes" href ng-click="vm.showModal(dish)">
                 <img ng-src="{{dish.picture && dish.picture.length ? dish.picture : 'images/logo.png'}}">
 

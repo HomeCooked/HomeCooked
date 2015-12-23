@@ -5,9 +5,9 @@
         .module('HomeCooked.controllers')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$scope', '$state', '$ionicHistory', '$ionicSideMenuDelegate', 'LoginService', 'ChefService', 'HCModalHelper', '_'];
+    MenuCtrl.$inject = ['$scope', '$state', '$ionicHistory', 'LoginService', 'ChefService', 'HCModalHelper', 'HCMessaging', '_'];
 
-    function MenuCtrl($scope, $state, $ionicHistory, $ionicSideMenuDelegate, LoginService, ChefService, HCModalHelper, _) {
+    function MenuCtrl($scope, $state, $ionicHistory, LoginService, ChefService, HCModalHelper, HCMessaging, _) {
 
         var vm = this;
 
@@ -33,6 +33,10 @@
             name: 'My Orders',
             icon: 'ion-ios-cart',
             path: 'app.orders'
+        }, {
+            name: 'Pending reviews',
+            icon: 'ion-star',
+            path: 'app.pending-reviews'
         }];
 
         // will be same instance during all the session
@@ -54,7 +58,7 @@
 
         $scope.$watch(function() {
             return user.has_pending_reviews;
-        }, init);
+        }, checkPendingReviews);
 
         $scope.$watch(function() {
             return chef.id;
@@ -62,22 +66,22 @@
 
         function init() {
             vm.isUserLoggedIn = user.isLoggedIn === true;
-            $ionicSideMenuDelegate.canDragContent(vm.isUserLoggedIn);
             vm.userFirstName = user.first_name || '';
             vm.isChef = chef.id >= 0;
-            vm.hasPendingReviews = user.has_pending_reviews;
             updateStateIfNeeded($state.current);
         }
 
-        function getCorrectPath(path) {
-            if (vm.hasPendingReviews) {
-                return 'app.pending-reviews';
+        function checkPendingReviews() {
+            if (vm.isUserLoggedIn && !vm.chefMode && user.has_pending_reviews && $state.current !== 'app.pending-reviews') {
+                HCMessaging.showMessage('Pending reviews', 'You got some dishes to review!');
+                go('app.pending-reviews');
             }
-            else if (path === 'app.pending-reviews') {
-                path = 'app.buyer';
-            }
+        }
 
-            var chefMode = _.some(chefLinks, {path: path});
+        function getCorrectPath(path) {
+            var chefMode = _.some(chefLinks, {
+                path: path
+            });
             if (vm.isChef === false && chefMode) {
                 return 'app.buyer';
             }
@@ -123,6 +127,8 @@
             if ($state.current.name !== 'app.settings') {
                 _.delay(function() {
                     go(vm.chefMode ? chefLinks[0].path : buyerLinks[0].path);
+                    // will send to pending-reviews if necessary
+                    checkPendingReviews();
                 }, 300);
             }
         }

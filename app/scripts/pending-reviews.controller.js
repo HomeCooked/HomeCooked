@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
     angular.module('HomeCooked.controllers').controller('PendingReviewsCtrl', PendingReviewsCtrl);
 
@@ -36,12 +36,11 @@
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-review.html', {
                     scope: modalScope
-                }).then(function (m) {
+                }).then(function(m) {
                     modal = m;
                     modal.show();
                 });
-            }
-            else {
+            } else {
                 modal.show();
             }
         }
@@ -53,22 +52,22 @@
         }
 
         function getEmptyReview(dishId, orderId) {
-            return {score: 0, comment: '', dishId: dishId, orderId: orderId};
+            return {
+                score: 0,
+                comment: '',
+                dishId: dishId,
+                orderId: orderId
+            };
         }
 
         function loadPendingReviews() {
-            // show modal only if pending reviews
             $ionicLoading.show();
             return DishesService.getPendingReviews()
-                .then(function (dishes) {
+                .then(function(dishes) {
                     vm.dishes = dishes;
                     $ionicLoading.hide();
                     if (!_.size(dishes)) {
-                        $ionicLoading.show({
-                            template: 'No pending reviews!',
-                            duration: 2000
-                        });
-                        return LoginService.reloadUser();
+                        LoginService.getUser().has_pending_reviews = false;
                     }
                 })
                 .catch(HCMessaging.showError);
