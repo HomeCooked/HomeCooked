@@ -17,8 +17,14 @@
                 <img ng-src="{{::dish.picture}}">
                 <h2 class="item-right">${{::dish.price}}</h2>
                 <h2 class="wrap">{{::dish.title}}</h2>
-                <p>{{dish.remaining}} remaining</p>
                 <reviews-rating score="::dish.review_score" count="::dish.review_count"></reviews-rating>
+                <p style="font-size: 80%; line-height:16px">Available for
+                  <span ng-if="chef.hasPickup">Pickup</span>
+                  <span ng-if="chef.hasPickup && chef.hasDelivery">or</span>
+                  <span ng-if="chef.hasDelivery">Delivery</span>
+                  <br>
+                  on {{dish.start_time | amDateFormat:'ddd MMM D'}} {{dish.start_time | amDateFormat:'(ha'}} to {{dish.end_time | amDateFormat:'ha'}})
+                </p>
             </a>
         </div>
     </ion-content>

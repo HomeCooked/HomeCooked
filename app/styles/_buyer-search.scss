@@ -2,6 +2,10 @@
     reviews-rating {
         text-align: left;
         font-size: 12px;
+        margin: 2px 0;
+        ul.rating {
+          line-height: 12px;
+        }
         ul.rating li i {
             font-size: 12px;
         }

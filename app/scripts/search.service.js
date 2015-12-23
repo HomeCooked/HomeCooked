@@ -5,9 +5,9 @@
         .module('HomeCooked.services')
         .service('SearchService', SearchService);
 
-    SearchService.$inject = ['$http', 'ENV'];
+    SearchService.$inject = ['$http', 'ENV', 'ChefService'];
 
-    function SearchService($http, ENV) {
+    function SearchService($http, ENV, ChefService) {
         var baseUrl = ENV.BASE_URL + '/api/v1/';
 
         var service = {
@@ -34,7 +34,11 @@
                     distance: 50
                 }
             }).then(function(resp) {
-                return resp.data;
+                var chefs = resp.data || [];
+                for (var i = 0; i < chefs.length; i++) {
+                  ChefService.enrichChefData(chefs[i]);
+                }
+                return chefs;
             });
         }
     }

@@ -1,8 +1,9 @@
-(function () {
+(function() {
     'use strict';
     angular.module('HomeCooked.services').factory('ChefService', ChefService);
 
     ChefService.$inject = ['$q', '$http', 'ENV', 'CacheService', '_'];
+
     function ChefService($q, $http, ENV, CacheService, _) {
         var chef = {},
             chefDeferred = $q.defer(),
@@ -25,12 +26,13 @@
             cancelOrder: cancelOrder,
             notifyDelivered: notifyDelivered,
             saveChefData: saveChefData,
-            uploadProfilePicture: uploadProfilePicture
+            uploadProfilePicture: uploadProfilePicture,
+            enrichChefData: enrichChefData
         };
 
 
         function handleResponses(httpPromise) {
-            return httpPromise.then(function (response) {
+            return httpPromise.then(function(response) {
                 return response.data;
             });
         }
@@ -52,7 +54,7 @@
         }
 
         function getChefData() {
-            return handleResponses($http.get(baseUrl + 'chefs/chef_config/')).then(function (chefData) {
+            return handleResponses($http.get(baseUrl + 'chefs/chef_config/')).then(function(chefData) {
                 return chefData[0] || {};
             });
         }
@@ -67,17 +69,21 @@
 
         function getChefDetails(chefId, forceReload) {
             if (!chefDetailsPromise || forceReload) {
-                chefDetailsPromise = handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/get_chef_details/'));
+                chefDetailsPromise = handleResponses($http.get(baseUrl + 'chefs/' + chefId + '/get_chef_details/')).then(enrichChefData);
             }
             return chefDetailsPromise;
         }
 
         function cancelOrder(orderId) {
-            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {id: orderId}));
+            return handleResponses($http.post(baseUrl + 'chefs/cancel_order/', {
+                id: orderId
+            }));
         }
 
         function notifyDelivered(orderId) {
-            return handleResponses($http.post(baseUrl + 'chefs/notify_delivered_order/', {orderId: orderId}));
+            return handleResponses($http.post(baseUrl + 'chefs/notify_delivered_order/', {
+                orderId: orderId
+            }));
         }
 
         function saveChefData(data) {
@@ -111,14 +117,16 @@
 
         function handleChef(newChef) {
             setChef(newChef);
-            CacheService.setValue({chef: chef});
+            CacheService.setValue({
+                chef: chef
+            });
             chefDeferred.resolve(chef);
             return chef;
         }
 
         function setChef(newChef) {
             newChef = newChef || {};
-            _.forEach(chef, function (val, key) {
+            _.forEach(chef, function(val, key) {
                 if (!newChef.hasOwnProperty(key)) {
                     chef[key] = undefined;
                     delete chef[key];
@@ -132,6 +140,20 @@
 
         function uploadProfilePicture(pict) {
             return handleResponses($http.patch(baseUrl + 'chefs/' + chef.id + '/picture/', pict)).then(handleChef);
+        }
+
+        function enrichChefData(chef) {
+            if (_.isEmpty(chef.delivery_options)) {
+                chef.delivery_options = [{
+                    type: 'Pickup',
+                    price: 0
+                }];
+            }
+            chef.hasPickup = _.some(chef.delivery_options, {
+                type: 'Pickup'
+            });
+            chef.hasDelivery = _.size(chef.delivery_options) > (1 * chef.hasPickup);
+            return chef;
         }
     }
 })();
