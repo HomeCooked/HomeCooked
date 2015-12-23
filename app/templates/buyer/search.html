@@ -23,7 +23,7 @@
                   <span ng-if="chef.hasPickup && chef.hasDelivery">or</span>
                   <span ng-if="chef.hasDelivery">Delivery</span>
                   <br>
-                  on {{dish.start_time | amDateFormat:'ddd MMM D'}} {{dish.start_time | amDateFormat:'(ha'}} to {{dish.end_time | amDateFormat:'ha'}})
+                  on {{dish.start_time | amDateFormat:'ddd, MMM D'}} {{dish.start_time | amDateFormat:'(ha'}} to {{dish.end_time | amDateFormat:'ha'}})
                 </p>
             </a>
         </div>
