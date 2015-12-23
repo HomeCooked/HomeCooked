@@ -112,6 +112,8 @@
                     vm.dishes = dishes;
                     if ($state.params.v === 'new') {
                         showModal();
+                        // avoid modal shows after pull-to-refresh
+                        $state.params.v = undefined;
                     }
                 })
                 .catch(HCMessaging.showError)
