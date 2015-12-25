@@ -51,6 +51,14 @@
 
         function setChefs(chefs) {
             vm.chefs = chefs;
+            var dishes = [];
+            _.forEach(chefs, function(chef) {
+                _.forEach(chef.dishes, function(dish) {
+                    dish.chef = chef;
+                });
+                dishes = dishes.concat(chef.dishes);
+            });
+            vm.dishes = dishes;
             updateChefsDistance();
             $ionicLoading.hide();
         }
@@ -67,6 +75,7 @@
                 chef.distance = LocationService.getDistanceFrom(chef.location);
             });
             vm.chefs = _.sortBy(vm.chefs, 'distance');
+            vm.dishes = _.sortBy(vm.dishes, 'chef.distance');
         }
     }
 })();

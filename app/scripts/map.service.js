@@ -13,6 +13,7 @@
 
         var service = {
             initMap: initMap,
+            getMap: getMap,
             fitMarkers: fitMarkers,
             addMarkers: addMarkers,
             centerMap: centerMap,
@@ -36,9 +37,13 @@
         function initMap(mapId) {
             var mapFeatureGroup = $window.L.featureGroup();
             featureGroups[mapId] = mapFeatureGroup;
-            leafletData.getMap(mapId).then(function(map) {
+            getMap(mapId).then(function(map) {
                 mapFeatureGroup.addTo(map);
             });
+        }
+
+        function getMap(mapId) {
+            return leafletData.getMap(mapId);
         }
 
 
@@ -55,8 +60,7 @@
         function fitMarkers(mapId) {
             return leafletData.getMap(mapId).then(function(map) {
                 map.fitBounds(featureGroups[mapId].getBounds(), {
-                    padding: [20, 20],
-                    maxZoom: 13
+                    padding: [20, 20]
                 });
             });
         }

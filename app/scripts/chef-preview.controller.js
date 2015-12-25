@@ -14,6 +14,7 @@
         LocationService, HCMessaging, LoginService, PaymentService, HCModalHelper, MapService, _) {
         var vm = this;
         var mapId = 'chefmap';
+        var chefIconSize = 60;
         var user, popup;
 
         vm.go = $state.go;
@@ -39,8 +40,20 @@
             vm.user = user;
             vm.chefId = $stateParams.id;
             getChefDetails();
-            // fixes rendering issues of the map
-            window.ionic.trigger('resize');
+            if (!$stateParams.batchId) {
+                // fixes rendering issues of the map
+                window.ionic.trigger('resize');
+                MapService.getMap(mapId).then(function(map) {
+                    map.on('zoomend', mapZoomChanged.bind(vm, map));
+                });
+            }
+        }
+
+        function mapZoomChanged(map) {
+            var zoom = 1.2 * (map.getZoom() - 14);
+            var size = Math.max(chefIconSize, chefIconSize * zoom);
+            vm.map.markers.chef.icon.iconSize = [size, size];
+            vm.map.markers.chef.icon.iconAnchor = [size / 2, size / 2];
         }
 
         function getChefDetails() {
@@ -95,7 +108,12 @@
         }
 
         function onLocationChange() {
-            vm.chef.distance = LocationService.getDistanceFrom(vm.chef.location);
+            var location = LocationService.getCurrentLocation();
+            if (location) {
+                vm.chef.distance = LocationService.getDistanceFrom(vm.chef.location);
+                vm.map.markers.user.lat = location.latitude;
+                vm.map.markers.user.lng = location.longitude;
+            }
         }
 
         function order() {
@@ -237,16 +255,15 @@
         function getSpecialIngredients(dish) {
             var containsIngredients = _.filter(['milk', 'peanuts', 'eggs'], function(ingredient) {
                 return dish[ingredient] === true;
-            }).join(', ');
-            var res = containsIngredients ? 'Contains ' + containsIngredients + '. ' : '';
+            });
 
             var isIngredients = _.filter(['vegetarian'], function(ingredient) {
                 return dish[ingredient] === true;
-            }).join(', ');
-            if (isIngredients) {
-                res += 'Is ' + isIngredients;
-            }
-            return res;
+            });
+            return {
+                contains: containsIngredients.join(', '),
+                is: isIngredients.join(', ')
+            };
         }
 
         function signin() {
@@ -312,20 +329,19 @@
         }
 
         function updateMapCenter() {
-            vm.map.center.lat = vm.chef.location.latitude;
-            vm.map.center.lng = vm.chef.location.longitude;
+            vm.map.center.lat = vm.map.markers.chef.lat = vm.chef.location.latitude;
+            vm.map.center.lng = vm.map.markers.chef.lng = vm.chef.location.longitude;
         }
 
         function initMapProperties() {
-            MapService.initMap(mapId);
             vm.map = {
                 defaults: {
-                    zoomControl: true,
+                    zoomControl: !('ontouchstart' in window),
                     attributionControl: false,
-                    doubleClickZoom: false,
+                    doubleClickZoom: true,
                     scrollWheelZoom: false,
-                    dragging: false,
-                    touchZoom: false
+                    dragging: true,
+                    touchZoom: true
                 },
                 tiles: {
                     url: 'https://mt{s}.googleapis.com/vt?x={x}&y={y}&z={z}&style=high_dpi&w=512',
@@ -344,8 +360,33 @@
                     lng: -122.4213458,
                     zoom: 15
                 },
-                markers: {}
+                markers: {
+                    user: {
+                        lat: 0,
+                        lng: 0,
+                        icon: {
+                            type: 'div',
+                            className: 'currentUserMarker',
+                            iconSize: [12, 12],
+                            iconAnchor: [6, 6],
+                            html: ''
+                        }
+                    },
+                    chef: {
+                        lat: 0,
+                        lng: 0,
+                        icon: {
+                            type: 'div',
+                            className: 'currentChefMarker',
+                            iconSize: [chefIconSize, chefIconSize],
+                            iconAnchor: [chefIconSize / 2, chefIconSize / 2],
+                            html: ''
+                        }
+                    }
+                }
             };
+            MapService.initMap(mapId);
         }
+
     }
 })();

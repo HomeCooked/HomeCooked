@@ -7,22 +7,27 @@
             <img ng-src="{{vm.dish.picture}}">
         </div>
         <div class="dish-details">
-            <div class="title-price">
-                <h2>
-                    <span>{{vm.dish.title}}</span>
-                    <a ng-if="vm.chef.id" ui-sref="app.chef-preview({id: vm.chef.id})" class="button button-positive button-clear">
-                      by {{vm.chef.first_name}} {{vm.chef.last_name}}
-                      <img ng-src="{{vm.chef.picture || 'images/user.png'}}" />
-                    </a>
-                </h2>
-                <span>${{vm.dish.price}}</span>
-            </div>
-            <reviews-rating ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})" score="vm.dish.review_score" count="vm.dish.review_count"></reviews-rating>
+            <h2 class="title">
+                {{vm.dish.title}}
+            </h2>
+            <h3 class="dish-price">
+                ${{vm.dish.price}}
+            </h3>
+            <p>
+                <a ng-if="vm.chef.id" ui-sref="app.chef-preview({id: vm.chef.id})" class="button button-positive button-clear chef-button">
+                  by {{vm.chef.first_name}} {{vm.chef.last_name}}
+                  <img ng-src="{{vm.chef.picture || 'images/user.png'}}" />
+                </a>
+                <reviews-rating class="positive clickable" ui-sref="app.dish-review({id: vm.chef.id, dishId: vm.dish.dish_id})" score="vm.dish.review_score" count="vm.dish.review_count"></reviews-rating>
+            </p>
+
             <p>{{vm.dish.description}}</p>
 
             <p style="clear:right">Ingredients: {{vm.dish.ingredients}}</p>
 
-            <p>{{vm.dish.specialIngredients}}</p>
+            <p ng-if="vm.dish.specialIngredients.contains">Contains {{vm.dish.specialIngredients.contains}}.</p>
+
+            <p ng-if="vm.dish.specialIngredients.is" class="capitalize">{{vm.dish.specialIngredients.is}} <i class="icon ion-checkmark"></i></p>
 
         </div>
         <div class="list" ng-if="vm.dish.remaining > 0">
@@ -36,12 +41,12 @@
                 <select ng-model="vm.quantity" ng-options="i as i for i in vm.dish.quantities"></select>
             </div>
 
-            <div class="item item-icon-right">
+            <div class="item">
                 Available for
                 <span ng-if="vm.chef.hasPickup">Pickup</span>
                 <span ng-if="vm.chef.hasPickup && vm.chef.hasDelivery">or</span>
                 <span ng-if="vm.chef.hasDelivery">Delivery</span>
-                <i class="icon ion-ios-checkmark positive"></i>
+                <i class="icon ion-checkmark"></i>
             </div>
             <div class="item">
                 Available on

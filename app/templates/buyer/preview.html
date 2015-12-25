@@ -3,40 +3,42 @@
         <button class="button button-icon button-clear ion-ios-arrow-back" ng-click="vm.back()"></button>
     </ion-nav-buttons>
     <ion-content ng-class="{'has-footer' : vm.checkoutInfo.portions && vm.checkoutInfo.portions.length}">
-
-        <div class="map-container">
-            <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" data-tap-disabled="true"></leaflet>
-        </div>
         <div class="info-container">
-            <div class="info">
-                <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
-                <reviews-rating class="rating" score="vm.chef.review_score" count="vm.chef.review_count"></reviews-rating>
-                <div class="distance" ng-if="vm.chef.distance">{{vm.chef.distance}} away</div>
-            </div>
+            <img ng-src="{{vm.chef.picture ||'images/user.png'}}">
+            <p class="bio" ng-if="vm.chef.bio.length">{{vm.chef.bio}}</p>
+            <reviews-rating score="vm.chef.review_score" count="vm.chef.review_count"></reviews-rating>
+            <div class="distance" ng-if="vm.chef.distance">{{vm.chef.distance}} away</div>
         </div>
-        <div class="bio" ng-if="vm.chef.bio.length">
-            <blockquote>{{vm.chef.bio}}</blockquote>
+        <div class="map-container">
+            <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers" data-tap-disabled="true"></leaflet>
         </div>
         <div class="dishes-container">
+            <h1 class="title">Menu</h1>
             <p class="padding" align="center" ng-if="vm.chef.dishes.length===0">
                 No items on sale.
             </p>
 
             <div class="card" ng-repeat="dish in vm.chef.dishes">
-                <div class="dish-price right">${{dish.price}}</div>
-                <div class="title">{{dish.title}}</div>
-                <div>{{dish.remaining}} remaining</div>
-                <div>
-                    Available for
-                    <span ng-if="vm.chef.hasPickup">Pickup</span>
-                    <span ng-if="vm.chef.hasPickup && vm.chef.hasDelivery">or</span>
-                    <span ng-if="vm.chef.hasDelivery">Delivery</span>
-                    <i class="icon ion-ios-checkmark positive" style="vertical-align: middle;"></i>
+                <div class="clickable" ui-sref="app.dish-preview({id: vm.chef.id, batchId: dish.id})">
+                    <div class="dish-price item-right">${{dish.price}}</div>
+                    <div class="title">{{dish.title}}</div>
+                    <div>{{dish.remaining}} remaining</div>
+                    <div>
+                        Available for
+                        <span ng-if="vm.chef.hasPickup">Pickup</span>
+                        <span ng-if="vm.chef.hasPickup && vm.chef.hasDelivery">or</span>
+                        <span ng-if="vm.chef.hasDelivery">Delivery</span>
+                        <i class="icon ion-checkmark"></i>
+                    </div>
+                    <div class="dish-img" ng-style="{'background-image': 'url(' + dish.picture + ')'}"></div>
                 </div>
-                <a class="dish-img" ng-style="{'background-image': 'url(' + dish.picture + ')'}" ui-sref="app.dish-preview({id: vm.chef.id, batchId: dish.id})"></a>
-                <reviews-rating class="right" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: vm.chef.id, dishId: dish.id})"></reviews-rating>
-                {{dish.start_time | amDateFormat:'ddd, MMM D'}}
-                <br> {{dish.start_time | amDateFormat:'(ha'}} to {{dish.end_time | amDateFormat:'ha'}})
+                <div class="horizontal">
+                    <div>
+                        {{dish.start_time | amDateFormat:'ddd, MMM D'}}
+                        <br> {{dish.start_time | amDateFormat:'(ha'}} to {{dish.end_time | amDateFormat:'ha'}})
+                    </div>
+                    <reviews-rating class="positive" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: vm.chef.id, dishId: dish.id})"></reviews-rating>
+                </div>
             </div>
         </div>
     </ion-content>

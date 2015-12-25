@@ -1,116 +1,126 @@
 .buyer-search {
-    reviews-rating {
-        text-align: left;
+    .list-container {
+        display: none;
+        reviews-rating {
+            text-align: left;
+            font-size: 13px;
+            margin: 4px 0;
+            ul.rating {
+                line-height: 14px;
+            }
+            ul.rating li i {
+                font-size: 13px;
+            }
+        }
+        .dish-price {
+            font-size: 22px;
+            line-height: 26px;
+        }
+    }
+    @media (max-width: 600px) {
+        .list-container {
+            display: block;
+        }
+        .dishes-container {
+            display: none;
+        }
+    }
+    .small {
         font-size: 12px;
-        margin: 2px 0;
-        ul.rating {
-            line-height: 12px;
-        }
-        ul.rating li i {
-            font-size: 12px;
-        }
+        line-height: 16px;
     }
 }
 .buyer-search-preview {
-    background: #efefef;
+    .dishes-container {
+        background-color: #efefef;
+        padding-top: 20px;
+    }
     .info-container {
-        width: 100%;
-        height: 300px;
         text-align: center;
-        position: relative;
-        .info {
-            display: inline-block;
-            overflow: hidden;
-            margin: 0 auto;
-            margin-top: 40px;
-            text-shadow: 0 2px 2px #eee;
-            font-size: 90%;
-            border-radius: 5%;
-            background-color: rgba(255, 255, 255, 0.8);
+        font-size: 90%;
+        img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
             box-shadow: 0 0 4px 1px #333;
-            img {
-                width: 120px;
-                height: 120px;
-                display: block;
-                margin-bottom: 10px;
-            }
-            .distance {
-                margin: 10px 0;
-            }
+            display: block;
+            margin: 20px auto;
+        }
+        .distance {
+            margin: 10px 0;
         }
     }
     .map-container {
         width: 100%;
-        height: 300px;
-        pointer-events: none;
-        position: absolute;
-        top: 0;
+        height: 40vh;
+        min-height: 150px;
         .angular-leaflet-map {
             height: 100%;
         }
-    }
-    .bio {
-        padding: 10px 10px 0;
-        position: relative;
-        blockquote {
-            margin: 0;
-            padding: 10px 0 0 40px;
-            border: none;
-            &:before {
-                content: "“";
-                font-family: Georgia;
-                font-size: 600%;
+
+        /* display the user picture inside as a marker with a nice border + an arrow */
+        .currentChefMarker {
+            background: rgba(56, 126, 245, 0.3);
+            border-radius: 50%;
+            border: 5px solid rgba(56, 126, 245, 0.6);
+        }
+
+        /* display the currentuser marker with a nice pulse */
+        .currentUserMarker {
+            background: #2495BF;
+            border-radius: 50%;
+            padding: 0;
+            border: 1px solid #1c7598;
+            &:after {
+                content: '';
+                border-radius: 50%;
+                height: 40px;
+                width: 40px;
                 position: absolute;
-                color: #444;
-                text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-                top: 40px;
-                left: 10px;
+                top: -15px;
+                left: -15px;
+                -webkit-animation: pulsate 2s ease-out;
+                -webkit-animation-iteration-count: infinite;
+                -webkit-animation-delay: 2s;
+                box-shadow: 0 0 1px 1px #1B6D8C;
+                background-color: rgba(36,149,191,0.2);
+            }
+        }
+        @-webkit-keyframes pulsate {
+            0% {
+                -webkit-transform: scale(0.1, 0.1);
+                opacity: 0.0 !important;
+            }
+            50% {
+                opacity: 1.0 !important;
+            }
+            100% {
+                -webkit-transform: scale(1.2, 1.2);
+                opacity: 0.0 !important;
             }
         }
     }
-    .dishes-container {
-        text-align: center;
+    .bio:before,
+    .bio:after {
+        font-family: Georgia;
+        font-size: 400%;
+        position: absolute;
+        color: #444;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+        margin-top: 12px;
     }
-    .card {
-        text-align: left;
-        padding: 20px 10px 10px;
-        box-sizing: border-box;
-        width: 100%;
-        max-width: 300px;
-        display: inline-block;
-        .dish-img {
-            clear: right;
-            display: block;
-            margin: 10px 0;
-            position: relative;
-            min-height: 300px;
-            background-repeat: no-repeat;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            background-position: center;
-        }
-        .dish-price {
-            float: right;
-            font-size: 28px;
-            line-height: 28px;
-            margin: 0 0 10px 10px;
-        }
-        reviews-rating {
-            float: right;
-            text-align: right;
-            cursor: pointer;
-        }
-        .title {
-            font-weight: bold;
-            font-size: 16px;
-        }
+    .bio:before {
+        content: "“";
+        margin-left: -25px;
+    }
+    .bio:after {
+        content: "”";
+        margin-left: 5px;
     }
 }
 .buyer-dish-preview {
     .image-container {
-        padding: 16px;
+        padding-bottom: 14px;
         max-width: 450px;
         margin: 0 auto;
         img {
@@ -121,41 +131,15 @@
     }
     .dish-details {
         padding: 0 16px;
-    }
-
-    reviews-rating {
-        cursor: pointer;
-        text-align: right;
-        float: right;
-        margin: 0 0 10px 10px;
-    }
-    div.title-price {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-bottom: 5px;
-        h2 {
-            margin: 0;
+        text-align: center;
+        .title {
             font-size: 140%;
-            span {
-              margin-right: 5px;
-            }
         }
-        > span {
+        .dish-price {
             font-size: 150%;
-            margin: 0 0 10px 10px;
-            flex-shrink: 0;
         }
-        .button {
-            padding: 0;
-            margin-top: -9px;
-            font-size: 70%;
-        }
-        img {
-            width: 26px;
-            border-radius: 50%;
-            margin-top: -5px;
-            vertical-align: middle;
+        .chef-button {
+            margin-right: 40px;
         }
     }
     .item-divider {
@@ -172,4 +156,63 @@
         font-weight: bold;
         font-size: 110%;
     }
+}
+.dishes-container {
+    text-align: center;
+    .card {
+        vertical-align: top;
+        text-align: left;
+        padding: 20px 10px 5px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 280px;
+        display: inline-block;
+        .dish-img {
+            clear: right;
+            display: block;
+            margin: 10px 0;
+            position: relative;
+            min-height: 280px;
+            background-repeat: no-repeat;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            background-position: center;
+        }
+        .dish-price {
+            font-size: 28px;
+            line-height: 28px;
+        }
+        reviews-rating {
+            text-align: right;
+            cursor: pointer;
+        }
+        .title {
+            height: 34px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    }
+}
+.chef-button {
+    padding: 0;
+    img {
+        width: 26px;
+        border-radius: 50%;
+        margin-top: -5px;
+        vertical-align: middle;
+    }
+}
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.clickable {
+    cursor: pointer;
+}
+.capitalize {
+    text-transform: capitalize;
 }

@@ -26,7 +26,7 @@
         }];
 
         var buyerLinks = [{
-            name: 'Find local chefs',
+            name: 'Find local meals',
             icon: 'ion-ios-location',
             path: 'app.buyer'
         }, {

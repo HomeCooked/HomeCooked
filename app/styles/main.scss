@@ -51,8 +51,9 @@ input.ng-dirty.ng-invalid {
     right: -2px;
 }
 
-.item .item-right {
+.item-right {
     float: right;
+    text-align: right;
     margin: 0 0 10px 10px;
 }
 
