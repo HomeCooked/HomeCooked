@@ -26,13 +26,13 @@
             </p>
         </div>
 
-        <p class="padding" align="center" ng-if="vm.isChef">
+        <p class="message" ng-if="vm.isChef">
             You are already enrolled!
             <br>
             <a ui-sref="app.dishes" class="button button-positive button-clear">Go to chef mode</a>
         </p>
 
-        <p class="padding" align="center" ng-if="!vm.user.isLoggedIn">
+        <p class="message" ng-if="!vm.user.isLoggedIn">
             You need to login before enrolling
             <br>
             <a href ng-click="vm.login()" class="button button-positive button-clear">Login / Sign up</a>

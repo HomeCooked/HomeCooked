@@ -5,9 +5,9 @@
         <div class="button button-clear" ng-click="closeModal('update-payment')">Cancel</div>
     </ion-header-bar>
     <ion-content>
-        <p class="padding" align="center" ng-if="user.has_payment">Your current card is:
+        <div class="padding" align="center" ng-if="user.has_payment">Your current card is:
             {{user.payment_info.card_type}} ending in {{user.payment_info.last_four}}, expiring on
-            {{user.payment_info.exp_date}}</p>
+            {{user.payment_info.exp_date}}</div>
 
         <form class="list" name="paymentForm">
             <label class="item item-input item-stacked-label">

@@ -4,8 +4,8 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh" on-refresh="reload()"></ion-refresher>
-        <p class="padding" align="center" ng-if="vm.search_message">{{vm.search_message}}</p>
-        <p class="padding" align="center" ng-if="!vm.search_inactive && vm.chefs.length===0">No items on sale.</p>
+        <p class="message" align="center" ng-if="vm.search_message">{{vm.search_message}}</p>
+        <p class="message" align="center" ng-if="!vm.search_inactive && vm.chefs.length===0">No items on sale.</p>
 
         <div class="dishes-container" ng-if="!vm.search_inactive">
             <div class="card" ng-repeat="dish in vm.dishes">

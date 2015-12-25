@@ -1,7 +1,7 @@
 <ion-view title="Reviews" class="buyer-dish-preview">
     <ion-content>
         <div class="list">
-            <p class="padding" align="center" ng-if="vm.reviews.length===0">No reviews for this dish yet</p>
+            <p class="message" ng-if="vm.reviews.length===0">No reviews for this dish yet</p>
 
             <div class="item item-avatar item-text-wrap" ng-repeat="review in vm.reviews">
                 <img ng-src="{{review.user.picture || 'images/user.png'}}">

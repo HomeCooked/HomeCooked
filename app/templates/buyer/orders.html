@@ -5,7 +5,7 @@
     <ion-content class="has-header">
         <ion-refresher pulling-text="Pull to refresh" on-refresh="reload()">
         </ion-refresher>
-        <p class="padding" align="center" ng-if="!vm.activeOrders.length">
+        <p class="message" align="center" ng-if="!vm.activeOrders.length">
             You haven't placed any order yet.
             <br>
             <a ui-sref="app.buyer" class="button button-positive button-clear">Place one</a>

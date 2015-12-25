@@ -13,7 +13,7 @@
         <ion-refresher pulling-text="Pull to refresh" on-refresh="reload()">
         </ion-refresher>
 
-        <p class="padding" align="center" ng-if="vm.dishes.length===0">Your menu is empty!</p>
+        <div class="padding" align="center" ng-if="vm.dishes.length===0">Your menu is empty!</div>
 
         <div class="card" ng-repeat="dish in vm.dishes">
             <h2 class="item">
