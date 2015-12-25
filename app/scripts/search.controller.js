@@ -16,6 +16,18 @@
         };
         var vm = this;
         vm.chefs = [];
+        vm.showOnlyToday = false;
+        vm.isToday = function(value) {
+            var now = new Date(),
+                weekDay = now.getDay();
+            now.setHours(23);
+            now.setMinutes(59);
+            now.setSeconds(59);
+            now.setMilliseconds(0);
+            var date = new Date(value.start_time).getTime();
+            return !vm.showOnlyToday || date <= now.getTime();
+        };
+
         $scope.reload = onAfterEnter;
 
         //init the map
@@ -77,5 +89,6 @@
             vm.chefs = _.sortBy(vm.chefs, 'distance');
             vm.dishes = _.sortBy(vm.dishes, 'chef.distance');
         }
+
     }
 })();
