@@ -34,8 +34,8 @@
                 </div>
                 <div class="horizontal">
                     <div>
-                        {{dish.start_time | amDateFormat:'ddd, MMM D'}}
-                        <br> {{dish.start_time | amDateFormat:'(ha'}} to {{dish.end_time | amDateFormat:'ha'}})
+                        {{dish.start_time | amDateFormat:'dddd, MMM D'}}
+                        <br> {{dish.start_time | amDateFormat:'(h:mma'}} to {{dish.end_time | amDateFormat:'h:mma'}})
                     </div>
                     <reviews-rating class="positive" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: vm.chef.id, dishId: dish.id})"></reviews-rating>
                 </div>
