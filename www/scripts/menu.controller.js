@@ -79,6 +79,9 @@
         }
 
         function getCorrectPath(path) {
+            if (!vm.isUserLoggedIn && path !== 'app.buyer' && path !== 'app.enroll') {
+                return 'app.buyer';
+            }
             var chefMode = _.some(chefLinks, {
                 path: path
             });

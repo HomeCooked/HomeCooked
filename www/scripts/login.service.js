@@ -1,16 +1,17 @@
 'use strict';
-(function () {
+(function() {
     angular.module('HomeCooked.services').factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$q', '$rootScope', '$http', '$cordovaFacebook', 'ENV', 'CacheService', 'ChefService', '_'];
-    function LoginService($q, $rootScope, $http, $cordovaFacebook, ENV, CacheService, ChefService, _) {
+    LoginService.$inject = ['$q', '$rootScope', '$http', '$cordovaFacebook', 'ENV', 'CacheService', 'ChefService', 'HCMessaging', '_'];
+
+    function LoginService($q, $rootScope, $http, $cordovaFacebook, ENV, CacheService, ChefService, HCMessaging, _) {
         var user = {},
             baseUrl = ENV.BASE_URL + '/api/v1/';
         setUser(CacheService.getValue('user'));
 
         var chefMode = CacheService.getValue('chefMode');
 
-        $rootScope.$on('unauthorized', logout);
+        $rootScope.$on('unauthorized', notAuthorized);
 
         return {
             reloadUser: reloadUser,
@@ -30,7 +31,7 @@
         function reloadUser() {
             if (user.isLoggedIn && typeof user.id === 'number') {
                 return $http.get(baseUrl + 'users/' + user.id + '/')
-                    .then(function (response) {
+                    .then(function(response) {
                         handleUser(response.data);
                         ChefService.reloadChef(user);
                     })
@@ -51,12 +52,11 @@
             var tokenPromise;
             if (provider === 'facebook') {
                 tokenPromise = getFacebookToken();
-            }
-            else if (provider === 'homecooked') {
+            } else if (provider === 'homecooked') {
                 tokenPromise = getHomecookedToken(data);
             }
             if (tokenPromise) {
-                return tokenPromise.then(function (token) {
+                return tokenPromise.then(function(token) {
                     return loadUser(token, provider);
                 });
             }
@@ -69,12 +69,16 @@
             }
             data.provider = provider;
             data.username = data.username || data.email;
-            return $http.post(ENV.BASE_URL + '/auth/register/', data).then(function () {
+            return $http.post(ENV.BASE_URL + '/auth/register/', data).then(function() {
                 return login(provider, data);
             });
         }
 
         function logout() {
+            CacheService.setValue({
+                provider: undefined,
+                credential: undefined
+            });;
             invalidateUser();
             return $q.reject();
         }
@@ -85,7 +89,7 @@
 
         function setUser(newUser) {
             newUser = newUser || {};
-            _.forEach(user, function (val, key) {
+            _.forEach(user, function(val, key) {
                 if (!newUser.hasOwnProperty(key) && key !== 'zipcode') {
                     user[key] = undefined;
                     delete user[key];
@@ -99,7 +103,9 @@
 
         function setUserZipCode(zipcode) {
             user.zipcode = zipcode;
-            CacheService.setValue({user: user});
+            CacheService.setValue({
+                user: user
+            });
         }
 
         function becomeChef(chefInfo) {
@@ -116,10 +122,10 @@
 
         function loadUser(token, provider) {
             return $http.post(ENV.BASE_URL + '/connect/', {
-                'access_token': token,
-                'provider': provider
-            })
-                .then(function (response) {
+                    'access_token': token,
+                    'provider': provider
+                })
+                .then(function(response) {
                     var data = response.data;
                     CacheService.setValue({
                         provider: provider,
@@ -136,11 +142,12 @@
             var scope = ['public_profile', 'email'];
             if (window.cordova) {
                 $cordovaFacebook.login(scope).then(onFacebookLoginSuccess, deferred.reject);
+            } else {
+                window.openFB.login(onFacebookLoginSuccess, {
+                    scope: scope
+                });
             }
-            else {
-                window.openFB.login(onFacebookLoginSuccess, {scope: scope});
-            }
-            _.delay(function () {
+            _.delay(function() {
                 deferred.reject('timeout');
             }, 90000);
             return deferred.promise;
@@ -152,8 +159,7 @@
                     error = response.error || 'Could not connect.';
                 if (token) {
                     deferred.resolve(token);
-                }
-                else {
+                } else {
                     deferred.reject(error);
                 }
             }
@@ -161,10 +167,10 @@
 
         function getHomecookedToken(data) {
             return $http.post(ENV.BASE_URL + '/auth/login/', {
-                'username': data.email,
-                'password': data.password
-            })
-                .then(function (response) {
+                    'username': data.email,
+                    'password': data.password
+                })
+                .then(function(response) {
                     var token = _.get(response, 'data.auth_token');
                     if (!token) {
                         return $q.reject('Could not connect.');
@@ -179,12 +185,14 @@
 
         function setChefMode(mode) {
             chefMode = (mode === true);
-            CacheService.setValue({chefMode: chefMode});
+            CacheService.setValue({
+                chefMode: chefMode
+            });
         }
 
         function saveUserData(data) {
             data.phone_number = serializePhone(data.phone_number);
-            return $http.patch(baseUrl + 'users/' + user.id + '/', data).then(function (response) {
+            return $http.patch(baseUrl + 'users/' + user.id + '/', data).then(function(response) {
                 return handleUser(response.data);
             });
         }
@@ -216,14 +224,23 @@
                 newUser.isLoggedIn = true;
             }
             setUser(newUser);
-            CacheService.setValue({user: user});
+            CacheService.setValue({
+                user: user
+            });
             return user;
         }
 
         function uploadProfilePicture(pict) {
-            return $http.patch(baseUrl + 'users/' + user.id + '/picture/', pict).then(function (response) {
+            return $http.patch(baseUrl + 'users/' + user.id + '/picture/', pict).then(function(response) {
                 return handleUser(response.data);
             });
+        }
+
+        function notAuthorized() {
+            if (user.isLoggedIn) {
+                HCMessaging.showMessage('Session expired', 'Please login again');
+                logout();
+            }
         }
     }
 })();

@@ -1,8 +1,9 @@
-(function () {
+(function() {
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
     DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicHistory', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'HCMessaging', 'HCModalHelper', '_'];
+
     function DishesCtrl($q, $rootScope, $scope, $ionicHistory, $state, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, HCMessaging, HCModalHelper, _) {
         var vm = this,
             modal,
@@ -33,7 +34,9 @@
 
         function addDish(dish, form) {
             document.activeElement.blur();
-            $ionicLoading.show({template: 'Adding dish...'});
+            $ionicLoading.show({
+                template: 'Adding dish...'
+            });
             DishesService.addDish(dish)
                 .then(function added(dishes) {
                     $ionicLoading.hide();
@@ -55,7 +58,7 @@
                 cancelText: 'No',
                 okText: 'Yes, Delete',
                 okType: 'button-assertive'
-            }).then(function (res) {
+            }).then(function(res) {
                 if (res) {
                     doDeleteDish(dish);
                 }
@@ -63,12 +66,14 @@
         }
 
         function doDeleteDish(dish) {
-            $ionicLoading.show({template: 'Deleting dish...'});
+            $ionicLoading.show({
+                template: 'Deleting dish...'
+            });
             DishesService.deleteDish(dish)
                 .then(function deleted() {
                     _.remove(vm.dishes, dish);
                 })
-                .catch(function () {
+                .catch(function() {
                     HCMessaging.showMessage('Cannot delete', 'There are pending orders for the dish you tried to delete.<br>' +
                         'You will be able to delete after the orders have been completed.');
                 })
@@ -76,16 +81,17 @@
         }
 
         function showModal() {
-            modalScope.dish = {user: vm.chefId};
+            modalScope.dish = {
+                user: vm.chefId
+            };
             if (!modal) {
                 $ionicModal.fromTemplateUrl('templates/add-dish.html', {
                     scope: modalScope
-                }).then(function (m) {
+                }).then(function(m) {
                     modal = m;
                     modal.show();
                 });
-            }
-            else {
+            } else {
                 modal.show();
             }
         }
@@ -97,16 +103,18 @@
         }
 
         function onBeforeEnter() {
-            vm.chefId = ChefService.getChef().id;
-
-            checkTutorial();
-            loadData();
+            ChefService.chefReady()
+                .then(function(chef) {
+                    vm.chefId = chef.id;
+                    checkTutorial(chef);
+                    loadData();
+                });
         }
 
         function loadData() {
             $ionicLoading.show();
             $q.all([DishesService.getDishes(), getChefData()])
-                .then(function (values) {
+                .then(function(values) {
                     var dishes = values[0];
                     $ionicLoading.hide();
                     vm.dishes = dishes;
@@ -117,14 +125,14 @@
                     }
                 })
                 .catch(HCMessaging.showError)
-                .finally(function () {
+                .finally(function() {
                     // Stop the ion-refresher from spinning
                     $scope.$broadcast('scroll.refreshComplete');
                 });
         }
 
         function getChefData() {
-            return ChefService.getChefData().then(function (chefData) {
+            return ChefService.getChefData().then(function(chefData) {
                 modalScope.minPrice = chefData.minDishPrice || 0.1;
                 modalScope.maxPrice = chefData.maxDishPrice || 100;
                 modalScope.minPrice = modalScope.minPrice.toFixed(2);
@@ -133,15 +141,15 @@
             });
         }
 
-        function checkTutorial() {
-            ChefService.chefReady()
-                .then(function (chef) {
-                    if (!chef.dishes_tutorial_completed) {
-                        HCModalHelper.showTutorial('dishes').then(function () {
-                            return ChefService.saveChefData({dishes_tutorial_completed: true});
-                        });
-                    }
+        function checkTutorial(chef) {
+            if (!chef.dishes_tutorial_completed) {
+                HCModalHelper.showTutorial('dishes').then(function() {
+                    return ChefService.saveChefData({
+                        dishes_tutorial_completed: true
+                    });
                 });
+            }
+
         }
 
         function onDestroy() {

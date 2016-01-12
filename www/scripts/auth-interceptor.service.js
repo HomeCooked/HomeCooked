@@ -1,9 +1,9 @@
 'use strict';
 angular.module('HomeCooked.services')
     .factory('AuthInterceptor', ['$q', '$rootScope', 'CacheService',
-        function ($q, $rootScope, CacheService) {
+        function($q, $rootScope, CacheService) {
             return {
-                request: function (config) {
+                request: function(config) {
                     config.headers = config.headers || {};
                     var credential = CacheService.getValue('credential');
                     if (credential) {
@@ -11,19 +11,18 @@ angular.module('HomeCooked.services')
                     }
                     return config;
                 },
-                response: function (response) {
+                response: function(response) {
                     if (response.status === 401) {
                         $rootScope.$emit('unauthorized');
                     }
                     return response || $q.when(response);
                 },
-                responseError: function (rejection) {
+                responseError: function(rejection) {
                     if (rejection.status === 401) {
                         $rootScope.$emit('unauthorized');
-                        return $q.when({});
                     }
                     return $q.reject(rejection);
                 }
             };
-        }]
-);
+        }
+    ]);
