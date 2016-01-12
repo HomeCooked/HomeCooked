@@ -75,10 +75,6 @@
         }
 
         function logout() {
-            CacheService.setValue({
-                provider: undefined,
-                credential: undefined
-            });;
             invalidateUser();
             return $q.reject();
         }

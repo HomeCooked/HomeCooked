@@ -112,6 +112,7 @@
         }
 
         function invalidateChef() {
+            chefDeferred = $q.defer();
             return handleChef();
         }
 
