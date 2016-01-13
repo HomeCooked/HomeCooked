@@ -27,7 +27,7 @@
             return LocationService.getCurrentLocation();
         }, onLocationChange);
 
-        $scope.$on('$ionicView.beforeEnter', reloadData);
+        $scope.$on('$ionicView.afterEnter', reloadData);
 
         function reloadData() {
             getChefs({
