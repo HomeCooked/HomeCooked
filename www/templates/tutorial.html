@@ -13,7 +13,7 @@
         </div>
         <ion-slide-box delegate-handle="tutorial-slide-box" active-slide="step">
             <ion-slide ng-repeat="step in steps">
-                <ion-scroll overflow-scroll="true" zooming="false">
+                <ion-scroll zooming="false">
                     <h1 class="title">{{::step.title}}</h1>
 
                     <div class="instructions">
@@ -26,4 +26,3 @@
         </ion-slide-box>
     </ion-content>
 </div>
-

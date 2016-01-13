@@ -2,9 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('DishesCtrl', DishesCtrl);
 
-    DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicHistory', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', 'DishesService', 'ChefService', 'HCMessaging', 'HCModalHelper', '_'];
+    DishesCtrl.$inject = ['$q', '$rootScope', '$scope', '$ionicHistory', '$state', '$ionicModal', '$ionicLoading', '$ionicPopup', '$ionicScrollDelegate', 'DishesService', 'ChefService', 'HCMessaging', 'HCModalHelper', '_'];
 
-    function DishesCtrl($q, $rootScope, $scope, $ionicHistory, $state, $ionicModal, $ionicLoading, $ionicPopup, DishesService, ChefService, HCMessaging, HCModalHelper, _) {
+    function DishesCtrl($q, $rootScope, $scope, $ionicHistory, $state, $ionicModal, $ionicLoading, $ionicPopup, $ionicScrollDelegate, DishesService, ChefService, HCMessaging, HCModalHelper, _) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -71,7 +71,9 @@
             });
             DishesService.deleteDish(dish)
                 .then(function deleted() {
+                    var scrollPosition = $ionicScrollDelegate.getScrollPosition();
                     _.remove(vm.dishes, dish);
+                    $ionicScrollDelegate.scrollBy(0, scrollPosition.top, true);
                 })
                 .catch(function() {
                     HCMessaging.showMessage('Cannot delete', 'There are pending orders for the dish you tried to delete.<br>' +
@@ -117,7 +119,11 @@
                 .then(function(values) {
                     var dishes = values[0];
                     $ionicLoading.hide();
+
+                    var scrollPosition = $ionicScrollDelegate.getScrollPosition();
                     vm.dishes = dishes;
+                    $ionicScrollDelegate.scrollBy(0, scrollPosition.top, true);
+
                     if ($state.params.v === 'new') {
                         showModal();
                         // avoid modal shows after pull-to-refresh

@@ -5,11 +5,11 @@
         .module('HomeCooked.controllers')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$window', '$scope', '$state', '$ionicPlatform',
-        '$ionicPopup', '$ionicHistory', 'LoginService', 'ChefService', 'HCModalHelper', 'ENV'];
+    SettingsCtrl.$inject = ['$window', '$scope', '$ionicPlatform',
+        '$ionicPopup', 'LoginService', 'ChefService', 'HCModalHelper', 'ENV'];
 
-    function SettingsCtrl($window, $scope, $state, $ionicPlatform,
-                          $ionicPopup, $ionicHistory, LoginService, ChefService, HCModalHelper, ENV) {
+    function SettingsCtrl($window, $scope, $ionicPlatform,
+                          $ionicPopup, LoginService, ChefService, HCModalHelper, ENV) {
 
         var vm = this;
         vm.version = ENV.version;
@@ -45,11 +45,6 @@
             }).then(function (res) {
                 if (res) {
                     LoginService.logout();
-                    $ionicHistory.nextViewOptions({
-                        historyRoot: true,
-                        disableAnimate: true
-                    });
-                    $state.go('app.buyer');
                 }
             });
         }

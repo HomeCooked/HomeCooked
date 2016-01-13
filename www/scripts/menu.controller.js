@@ -39,6 +39,8 @@
             path: 'app.pending-reviews'
         }];
 
+        var publicPaths = ['app.buyer', 'app.enroll', 'app.chef-preview', 'app.dish-preview', 'app.dish-review'];
+
         // will be same instance during all the session
         var user = LoginService.getUser();
         var chef = ChefService.getChef();
@@ -79,7 +81,7 @@
         }
 
         function getCorrectPath(path) {
-            if (!vm.isUserLoggedIn && path !== 'app.buyer' && path !== 'app.enroll') {
+            if (!vm.isUserLoggedIn && publicPaths.indexOf(path) === -1) {
                 return 'app.buyer';
             }
             var chefMode = _.some(chefLinks, {

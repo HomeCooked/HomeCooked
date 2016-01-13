@@ -6,9 +6,9 @@
         .module('HomeCooked.controllers')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['$state', '$scope', '$ionicLoading', 'SearchService', 'LocationService', 'HCMessaging', 'ConfigService', '_'];
+    SearchCtrl.$inject = ['$state', '$scope', '$ionicScrollDelegate', '$ionicLoading', 'SearchService', 'LocationService', 'HCMessaging', 'ConfigService', '_'];
 
-    function SearchCtrl($state, $scope, $ionicLoading, SearchService, LocationService, HCMessaging, ConfigService, _) {
+    function SearchCtrl($state, $scope, $ionicScrollDelegate, $ionicLoading, SearchService, LocationService, HCMessaging, ConfigService, _) {
 
         var userLocation = {
             latitude: 37.773204,
@@ -20,16 +20,16 @@
         vm.showOnlyToday = false;
         vm.isToday = isToday;
 
-        $scope.reload = onAfterEnter;
+        $scope.reload = reloadData;
 
         //init the map
         $scope.$watch(function() {
             return LocationService.getCurrentLocation();
         }, onLocationChange);
 
-        $scope.$on('$ionicView.afterEnter', onAfterEnter);
+        $scope.$on('$ionicView.beforeEnter', reloadData);
 
-        function onAfterEnter() {
+        function reloadData() {
             getChefs({
                 latitude: userLocation.latitude,
                 longitude: userLocation.longitude
@@ -56,6 +56,7 @@
         }
 
         function setChefs(chefs) {
+            var scrollPosition = $ionicScrollDelegate.getScrollPosition();
             vm.chefs = chefs;
             var dishes = [];
             _.forEach(chefs, function(chef) {
@@ -67,6 +68,7 @@
             vm.dishes = dishes;
             updateChefsDistance();
             $ionicLoading.hide();
+            $ionicScrollDelegate.scrollBy(0, scrollPosition.top, true);
         }
 
         function onLocationChange(location) {

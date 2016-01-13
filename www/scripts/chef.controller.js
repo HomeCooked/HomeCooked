@@ -2,11 +2,11 @@
     'use strict';
 
     angular.module('HomeCooked.controllers').controller('ChefCtrl', ChefCtrl);
-    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', '$cordovaSocialSharing',
+    ChefCtrl.$inject = ['_', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicModal', '$ionicLoading', '$ionicPopup', '$q', '$ionicScrollDelegate', '$cordovaSocialSharing',
         'ChefService', 'DishesService', 'HCMessaging'
     ];
 
-    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, $cordovaSocialSharing,
+    function ChefCtrl(_, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicModal, $ionicLoading, $ionicPopup, $q, $ionicScrollDelegate, $cordovaSocialSharing,
         ChefService, DishesService, HCMessaging) {
         var vm = this,
             modal,
@@ -79,7 +79,9 @@
 
         function getBatches() {
             return ChefService.getBatches().then(function(batches) {
+                var scrollPosition = $ionicScrollDelegate.getScrollPosition();
                 vm.batches = batches;
+                $ionicScrollDelegate.scrollBy(0, scrollPosition.top, true);
                 return batches;
             });
         }

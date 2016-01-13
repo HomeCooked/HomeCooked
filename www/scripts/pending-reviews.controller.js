@@ -2,8 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('PendingReviewsCtrl', PendingReviewsCtrl);
 
-    PendingReviewsCtrl.$inject = ['_', '$rootScope', '$scope', '$ionicModal', '$ionicLoading', 'DishesService', 'LoginService', 'HCMessaging'];
-    function PendingReviewsCtrl(_, $rootScope, $scope, $ionicModal, $ionicLoading, DishesService, LoginService, HCMessaging) {
+    PendingReviewsCtrl.$inject = ['_', '$rootScope', '$scope', '$ionicModal', '$ionicLoading', '$ionicScrollDelegate', 'DishesService', 'LoginService', 'HCMessaging'];
+
+    function PendingReviewsCtrl(_, $rootScope, $scope, $ionicModal, $ionicLoading, $ionicScrollDelegate, DishesService, LoginService, HCMessaging) {
         var vm = this,
             modal,
             modalScope = $rootScope.$new();
@@ -64,11 +65,13 @@
             $ionicLoading.show();
             return DishesService.getPendingReviews()
                 .then(function(dishes) {
-                    vm.dishes = dishes;
-                    $ionicLoading.hide();
                     if (!_.size(dishes)) {
                         LoginService.getUser().has_pending_reviews = false;
                     }
+                    var scrollPosition = $ionicScrollDelegate.getScrollPosition();
+                    vm.dishes = dishes;
+                    $ionicScrollDelegate.scrollBy(0, scrollPosition.top, true);
+                    $ionicLoading.hide();
                 })
                 .catch(HCMessaging.showError);
         }
