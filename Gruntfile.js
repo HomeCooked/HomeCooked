@@ -20,8 +20,9 @@ module.exports = function(grunt) {
         // Project settings
         yeoman: {
             // configurable paths
-            app: 'app',
+            app: 'www',
             scripts: 'scripts',
+            scss: 'scss',
             styles: 'styles',
             images: 'images'
         },
@@ -41,7 +42,7 @@ module.exports = function(grunt) {
                 constants: {
                     ENV: {
                         name: 'development',
-                        version: '0.3.8',
+                        version: '0.3.9',
                         BASE_URL: 'https://homecookedstaging.herokuapp.com',
                         FACEBOOK_APP_ID: '845407792180025'
                     }
@@ -51,7 +52,7 @@ module.exports = function(grunt) {
                 constants: {
                     ENV: {
                         name: 'production',
-                        version: '0.3.8',
+                        version: '0.3.9',
                         BASE_URL: 'https://homecooked.herokuapp.com',
                         FACEBOOK_APP_ID: '805673482820123'
                     }
@@ -74,7 +75,7 @@ module.exports = function(grunt) {
                 tasks: ['newer:copy:app', 'newer:jshint:all']
             },
             compass: {
-                files: ['<%= yeoman.app %>/<%= yeoman.styles %>/**/*.{scss,sass}'],
+                files: ['<%= yeoman.scss %>/**/*.{scss,sass}'],
                 tasks: ['compass:server', 'autoprefixer', 'newer:copy:tmp']
             },
             gruntfile: {
@@ -92,7 +93,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 options: {
-                    base: 'www'
+                    base: 'parse/public'
                 }
             },
             coverage: {
@@ -129,16 +130,8 @@ module.exports = function(grunt) {
                     dot: true,
                     src: [
                         '.tmp',
-                        'www/*',
-                        '!www/.git*'
-                    ]
-                }]
-            },
-            parse: {
-                files: [{
-                    dot: true,
-                    src: [
-                        'parse/public/*'
+                        'parse/public/*',
+                        '!parse/public/.git*'
                     ]
                 }]
             },
@@ -162,11 +155,11 @@ module.exports = function(grunt) {
         // Automatically inject Bower components into the app
         wiredep: {
             app: {
-                src: ['<%= yeoman.app %>/index.html'],
+                src: ['<%= yeoman.app %>/index.html', '<%= yeoman.app %>/web.html'],
                 ignorePath: /\.\.\//
             },
             sass: {
-                src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+                src: ['<%= yeoman.scss %>/{,*/}*.{scss,sass}'],
                 ignorePath: /(\.\.\/){1,2}lib\//
             }
         },
@@ -175,23 +168,23 @@ module.exports = function(grunt) {
         // Compiles Sass to CSS and generates necessary files if requested
         compass: {
             options: {
-                sassDir: '<%= yeoman.app %>/<%= yeoman.styles %>',
+                sassDir: '<%= yeoman.scss %>',
                 cssDir: '.tmp/<%= yeoman.styles %>',
                 generatedImagesDir: '.tmp/<%= yeoman.images %>/generated',
                 imagesDir: '<%= yeoman.app %>/<%= yeoman.images %>',
                 javascriptsDir: '<%= yeoman.app %>/<%= yeoman.scripts %>',
-                fontsDir: '<%= yeoman.app %>/<%= yeoman.styles %>/fonts',
+                fontsDir: '<%= yeoman.app %>/fonts',
                 importPath: '<%= yeoman.app %>/lib',
                 httpImagesPath: '/<%= yeoman.images %>',
                 httpGeneratedImagesPath: '/<%= yeoman.images %>/generated',
-                httpFontsPath: '/<%= yeoman.styles %>/fonts',
+                httpFontsPath: '/<%= yeoman.app %>/fonts',
                 relativeAssets: false,
                 assetCacheBuster: false,
                 raw: 'Sass::Script::Number.precision = 10\n'
             },
             dist: {
                 options: {
-                    generatedImagesDir: 'www/<%= yeoman.images %>/generated'
+                    generatedImagesDir: 'parse/public/<%= yeoman.images %>/generated'
                 }
             },
             server: {
@@ -206,9 +199,9 @@ module.exports = function(grunt) {
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
         useminPrepare: {
-            html: '<%= yeoman.app %>/index.html',
+            html: '<%= yeoman.app %>/web.html',
             options: {
-                dest: 'www',
+                dest: 'parse/public',
                 flow: {
                     html: {
                         steps: {
@@ -223,10 +216,10 @@ module.exports = function(grunt) {
 
         // Performs rewrites based on the useminPrepare configuration
         usemin: {
-            html: ['www/**/*.html'],
-            css: ['www/<%= yeoman.styles %>/**/*.css'],
+            html: ['parse/public/**/*.html'],
+            css: ['parse/public/<%= yeoman.styles %>/**/*.css'],
             options: {
-                assetsDirs: ['www']
+                assetsDirs: ['parse/public']
             }
         },
 
@@ -247,9 +240,9 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: 'www',
+                    cwd: 'parse/public',
                     src: ['*.html', 'templates/**/*.html'],
-                    dest: 'www'
+                    dest: 'parse/public'
                 }]
             }
         },
@@ -261,7 +254,7 @@ module.exports = function(grunt) {
                     expand: true,
                     dot: true,
                     cwd: '<%= yeoman.app %>',
-                    dest: 'www',
+                    dest: 'parse/public',
                     src: [
                         '<%= yeoman.images %>/**/*.{png,ico,jpg,jpeg,gif,webp,svg}',
                         '*.html',
@@ -272,7 +265,7 @@ module.exports = function(grunt) {
                 }, {
                     expand: true,
                     cwd: '.tmp/<%= yeoman.images %>',
-                    dest: 'www/<%= yeoman.images %>',
+                    dest: 'parse/public/<%= yeoman.images %>',
                     src: ['generated/*']
                 }]
             },
@@ -297,7 +290,7 @@ module.exports = function(grunt) {
             app: {
                 expand: true,
                 cwd: '<%= yeoman.app %>',
-                dest: 'www/',
+                dest: 'parse/public/',
                 src: [
                     '**/*',
                     '!**/*.(scss,sass,css)',
@@ -306,12 +299,6 @@ module.exports = function(grunt) {
             tmp: {
                 expand: true,
                 cwd: '.tmp',
-                dest: 'www/',
-                src: '**/*'
-            },
-            parse: {
-                expand: true,
-                cwd: 'www',
                 dest: 'parse/public/',
                 src: '**/*'
             }
@@ -350,7 +337,7 @@ module.exports = function(grunt) {
         // cssmin: {
         //   dist: {
         //     files: {
-        //       'www/<%= yeoman.styles %>/main.css': [
+        //       'parse/public/<%= yeoman.styles %>/main.css': [
         //         '.tmp/<%= yeoman.styles %>/**/*.css',
         //         '<%= yeoman.app %>/<%= yeoman.styles %>/**/*.css'
         //       ]
@@ -360,8 +347,8 @@ module.exports = function(grunt) {
         // uglify: {
         //   dist: {
         //     files: {
-        //       'www/<%= yeoman.scripts %>/scripts.js': [
-        //         'www/<%= yeoman.scripts %>/scripts.js'
+        //       'parse/public/<%= yeoman.scripts %>/scripts.js': [
+        //         'parse/public/<%= yeoman.scripts %>/scripts.js'
         //       ]
         //     }
         //   }
@@ -434,6 +421,13 @@ module.exports = function(grunt) {
                     dest: '.tmp/concat/<%= yeoman.scripts %>'
                 }]
             }
+        },
+
+        rename: {
+          dist: {
+            src: 'parse/public/web.html',
+            dest: 'parse/public/index.html'
+          }
         }
 
     });
@@ -466,7 +460,7 @@ module.exports = function(grunt) {
 
     // Since Apache Ripple serves assets directly out of their respective platform
     // directories, we watch all registered files and then copy all un-built assets
-    // over to www/. Last step is running cordova prepare so we can refresh the ripple
+    // over to parse/public/. Last step is running cordova prepare so we can refresh the ripple
     // browser tab to see the changes. Technically ripple runs `cordova prepare` on browser
     // refreshes, but at this time you would need to re-run the emulator to see changes.
     grunt.registerTask('ripple', ['wiredep', 'newer:copy:app', 'ripple-emulator']);
@@ -525,26 +519,6 @@ module.exports = function(grunt) {
         'watch:karma'
     ]);
 
-    grunt.registerTask('serve', function(target) {
-        if (target === 'compress') {
-            return grunt.task.run(['compress', 'ionic:serve']);
-        }
-
-        grunt.config('concurrent.ionic.tasks', ['ionic:serve', 'watch']);
-        grunt.task.run(['init', 'concurrent:ionic']);
-    });
-    grunt.registerTask('emulate', function() {
-        grunt.config('concurrent.ionic.tasks', ['ionic:emulate:' + this.args.join(), 'watch']);
-        return grunt.task.run(['init', 'concurrent:ionic']);
-    });
-    grunt.registerTask('run', function() {
-        grunt.config('concurrent.ionic.tasks', ['ionic:run:' + this.args.join(), 'watch']);
-        return grunt.task.run(['init', 'concurrent:ionic']);
-    });
-    grunt.registerTask('build', function() {
-        return grunt.task.run(['init', 'ionic:build:' + this.args.join()]);
-    });
-
     grunt.registerTask('init', [
         'clean',
         'ngconstant:development',
@@ -570,8 +544,7 @@ module.exports = function(grunt) {
         'uglify',
         'usemin',
         'htmlmin',
-        'clean:parse',
-        'copy:parse'
+        'rename:dist'
     ]);
 
     grunt.registerTask('coverage', ['karma:continuous', 'connect:coverage:keepalive']);

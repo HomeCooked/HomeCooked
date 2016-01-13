@@ -1,10 +1,9 @@
 node_modules
-www
+www/lib
+www/styles
+www/scripts/config.js
 .tmp
 .sass-cache
-app/lib
-app/styles/main.css
-app/styles/main.css.map
 coverage
 platforms
 plugins
@@ -13,9 +12,7 @@ plugins
 *.log
 *.DS_Store
 build-android.sh
-.idea/*
-build/*
-parse/cloud/*
-parse/public/*
-
-app/scripts/config.js
+.idea/
+build/
+parse/cloud/
+parse/public/

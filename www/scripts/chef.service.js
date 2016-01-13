@@ -112,6 +112,7 @@
         }
 
         function invalidateChef() {
+            chefDeferred = $q.defer();
             return handleChef();
         }
 
@@ -120,7 +121,9 @@
             CacheService.setValue({
                 chef: chef
             });
-            chefDeferred.resolve(chef);
+            if (!_.isEmpty(newChef)) {
+                chefDeferred.resolve(chef);
+            }
             return chef;
         }
 

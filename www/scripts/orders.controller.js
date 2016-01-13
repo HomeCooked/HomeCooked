@@ -2,9 +2,9 @@
     'use strict';
     angular.module('HomeCooked.controllers').controller('OrdersCtrl', OrdersCtrl);
 
-    OrdersCtrl.$inject = ['$scope', '$ionicLoading', 'OrdersService', 'HCMessaging'];
+    OrdersCtrl.$inject = ['$scope', '$ionicLoading', '$ionicScrollDelegate', 'OrdersService', 'HCMessaging'];
 
-    function OrdersCtrl($scope, $ionicLoading, OrdersService, HCMessaging) {
+    function OrdersCtrl($scope, $ionicLoading, $ionicScrollDelegate, OrdersService, HCMessaging) {
         var vm = this;
 
         vm.activeOrders = [];
@@ -17,7 +17,9 @@
             $ionicLoading.show();
             return OrdersService.getActiveOrders()
                 .then(function(orders) {
+                    var scrollPosition = $ionicScrollDelegate.getScrollPosition();
                     vm.activeOrders = orders;
+                    $ionicScrollDelegate.scrollBy(0, scrollPosition.top, true);
                     $ionicLoading.hide();
                 })
                 .catch(HCMessaging.showError)

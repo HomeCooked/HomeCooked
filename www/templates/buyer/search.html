@@ -30,7 +30,7 @@
                     <a ui-sref="app.chef-preview({id: dish.chef.id})" class="button button-positive button-clear chef-button">
                         <img ng-src="{{dish.chef.picture || 'images/user.png'}}" /> {{dish.chef.first_name}} {{dish.chef.last_name}}
                     </a>
-                    <reviews-rating class="positive" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: dish.chef.id, dishId: dish.id})"></reviews-rating>
+                    <reviews-rating class="positive" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: dish.chef.id, dishId: dish.dish_id})"></reviews-rating>
                 </div>
             </div>
         </div>

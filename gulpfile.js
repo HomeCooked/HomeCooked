@@ -14,15 +14,15 @@ var paths = {
 gulp.task('default', ['sass']);
 
 gulp.task('sass', function(done) {
-  gulp.src('./app/styles/main.scss')
+  gulp.src('./scss/main.scss')
     .pipe(sass())
     .on('error', sass.logError)
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(gulp.dest('./www/styles/'))
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(rename({ extname: '.css' }))
+    .pipe(gulp.dest('./www/styles/'))
     .on('end', done);
 });
 

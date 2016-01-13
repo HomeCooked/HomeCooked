@@ -1,12 +1,10 @@
-(function () {
+(function() {
     'use strict';
     angular.module('HomeCooked.services').factory('HCMessaging', HCMessaging);
 
-    HCMessaging.$inject = ['$rootScope', '$ionicLoading', '$ionicPopup'];
+    HCMessaging.$inject = ['$ionicLoading', '$ionicPopup'];
 
-    function HCMessaging($rootScope, $ionicLoading, $ionicPopup) {
-
-        $rootScope.$on('unauthorized', notifyUnauthorized);
+    function HCMessaging($ionicLoading, $ionicPopup) {
 
         return {
             showError: showError,
@@ -31,8 +29,5 @@
             });
         }
 
-        function notifyUnauthorized() {
-            showMessage('Session expired', 'Please login again');
-        }
     }
 })();
