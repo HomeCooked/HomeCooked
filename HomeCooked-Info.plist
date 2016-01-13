@@ -2,6 +2,51 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSExceptionDomains</key>
+      <dict>
+        <key>m.facebook.com</key>
+        <dict/>
+        <key>graph.facebook.com</key>
+        <dict/>
+        <key>api.facebook.com</key>
+        <dict/>
+        <key>fbcdn.net</key>
+        <dict>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+        </dict>
+        <key>akamaihd.net</key>
+        <dict>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+        </dict>
+        <key>app.gohomecooked.com</key>
+        <dict>
+          <key>NSExceptionRequiresForwardSecrecy</key>
+          <false/>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+        </dict>
+        <key>homecooked.herokuapp.com</key>
+        <dict>
+          <key>NSExceptionRequiresForwardSecrecy</key>
+          <false/>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+        </dict>
+        <key>homecookedstatic.s3.amazonaws.com</key>
+        <dict>
+          <key>NSExceptionRequiresForwardSecrecy</key>
+          <false/>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+        </dict>
+      </dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+    </dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleDisplayName</key>
@@ -56,106 +101,20 @@
     <string>${PRODUCT_NAME}</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
-    <key>CFBundleShortVersionString</key>
-    <string>0.3.2</string>
     <key>CFBundleSignature</key>
     <string>????</string>
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>fb805673482820123</string>
-        </array>
-      </dict>
-      <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>homecooked</string>
-        </array>
-      </dict>
-    </array>
     <key>CFBundleVersion</key>
-    <string>0.3.2</string>
-    <key>FacebookAppID</key>
-    <string>805673482820123</string>
-    <key>FacebookDisplayName</key>
-    <string>HomeCooked</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>fbapi</string>
-      <string>fb-messenger-api</string>
-      <string>fbauth2</string>
-      <string>fbshareextension</string>
-      <string>fbapi20130214</string>
-      <string>fbapi20130410</string>
-      <string>fbapi20130702</string>
-      <string>fbapi20131010</string>
-      <string>fbapi20131219</string>
-      <string>fbapi20140410</string>
-      <string>fbapi20140116</string>
-      <string>fbapi20150313</string>
-      <string>fbapi20150629</string>
-      <string>fbauth</string>
-      <string>fb-messenger-api20140430</string>
-      <string>fb-messenger-platform-20150128</string>
-      <string>fb-messenger-platform-20150218</string>
-      <string>fb-messenger-platform-20150305</string>
-      <string>sms</string>
-      <string>tel</string>
-      <string>comgooglemaps</string>
-    </array>
+    <string>0.3.9</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.3.9</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-      <key>NSExceptionDomains</key>
-      <dict>
-        <key>akamaihd.net</key>
-        <dict>
-          <key>NSIncludesSubdomains</key>
-          <true/>
-        </dict>
-        <key>api.facebook.com</key>
-        <dict/>
-        <key>app.gohomecooked.com</key>
-        <dict>
-          <key>NSExceptionRequiresForwardSecrecy</key>
-          <false/>
-          <key>NSIncludesSubdomains</key>
-          <true/>
-        </dict>
-        <key>fbcdn.net</key>
-        <dict>
-          <key>NSIncludesSubdomains</key>
-          <true/>
-        </dict>
-        <key>graph.facebook.com</key>
-        <dict/>
-        <key>homecooked.herokuapp.com</key>
-        <dict>
-          <key>NSExceptionRequiresForwardSecrecy</key>
-          <false/>
-          <key>NSIncludesSubdomains</key>
-          <true/>
-        </dict>
-        <key>homecookedstatic.s3.amazonaws.com</key>
-        <dict>
-          <key>NSExceptionRequiresForwardSecrecy</key>
-          <false/>
-          <key>NSIncludesSubdomains</key>
-          <true/>
-        </dict>
-        <key>m.facebook.com</key>
-        <dict/>
-      </dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <true/>
-    </dict>
     <key>NSMainNibFile</key>
-    <string></string>
+    <string/>
     <key>NSMainNibFile~ipad</key>
-    <string></string>
+    <string/>
+    <key>UIRequiresFullScreen</key>
+    <true/>
     <key>UILaunchImages</key>
     <array>
       <dict>
@@ -259,9 +218,54 @@
         <string>{768, 1024}</string>
       </dict>
     </array>
-    <key>UIRequiresFullScreen</key>
-    <false/>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>remote-notification</string>
+    </array>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string></string>
+    <string/>
+    <key>FacebookAppID</key>
+    <string>805673482820123</string>
+    <key>FacebookDisplayName</key>
+    <string>HomeCooked</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>fb805673482820123</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>homecooked</string>
+        </array>
+      </dict>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+      <string>fbapi20130214</string>
+      <string>fbapi20130410</string>
+      <string>fbapi20130702</string>
+      <string>fbapi20131010</string>
+      <string>fbapi20131219</string>
+      <string>fbapi20140410</string>
+      <string>fbapi20140116</string>
+      <string>fbapi20150313</string>
+      <string>fbapi20150629</string>
+      <string>fbauth</string>
+      <string>fb-messenger-api20140430</string>
+      <string>fb-messenger-platform-20150128</string>
+      <string>fb-messenger-platform-20150218</string>
+      <string>fb-messenger-platform-20150305</string>
+      <string>sms</string>
+      <string>tel</string>
+      <string>comgooglemaps</string>
+    </array>
   </dict>
 </plist>
