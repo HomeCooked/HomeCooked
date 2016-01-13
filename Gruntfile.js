@@ -421,6 +421,13 @@ module.exports = function(grunt) {
                     dest: '.tmp/concat/<%= yeoman.scripts %>'
                 }]
             }
+        },
+
+        rename: {
+          dist: {
+            src: 'parse/public/web.html',
+            dest: 'parse/public/index.html'
+          }
         }
 
     });
@@ -536,7 +543,8 @@ module.exports = function(grunt) {
         'cssmin',
         'uglify',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'rename:dist'
     ]);
 
     grunt.registerTask('coverage', ['karma:continuous', 'connect:coverage:keepalive']);
