@@ -108,9 +108,8 @@
             vm.mapMode = !vm.mapMode;
             if (vm.mapMode) {
                 window.ionic.trigger('resize');
-                MapService.fitMarkers(mapId);
+                _.delay(MapService.fitMarkers.bind(MapService, mapId), 100);
             }
-
         }
 
         function updateMarkers() {
