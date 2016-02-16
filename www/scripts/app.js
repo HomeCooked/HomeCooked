@@ -27,7 +27,9 @@ angular.module('HomeCooked.controllers', ['HomeCooked.services', 'HomeCooked.dir
 
 HomeCooked
     .constant('_', window._) //lodash
-    .config(function ($httpProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+    .config(function ($httpProvider, $stateProvider, $urlRouterProvider, $compileProvider, $logProvider) {
+        $logProvider.debugEnabled(false);
+        
         $httpProvider.interceptors.push('AuthInterceptor');
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|geo|maps|market|file|itms|itms-apps|tel|sms):/);

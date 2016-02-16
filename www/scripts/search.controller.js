@@ -17,7 +17,6 @@
         var today;
         var vm = this;
         var mapId = 'searchmap';
-        var chefIconSize = 60;
         vm.chefs = [];
         vm.showOnlyToday = false;
         vm.mapMode = false;
@@ -87,9 +86,8 @@
         function onLocationChange(location) {
             if (location) {
                 userLocation = location;
-                vm.map.markers.user.lat = location.latitude;
-                vm.map.markers.user.lng = location.longitude;
                 updateChefsDistance();
+                updateMarkers();
             }
         }
 
@@ -110,43 +108,25 @@
             vm.mapMode = !vm.mapMode;
             if (vm.mapMode) {
                 window.ionic.trigger('resize');
+                MapService.fitMarkers(mapId);
             }
 
         }
 
         function updateMarkers() {
-            var markers = {};
-            markers.user = vm.map.markers.user;
-            var markersCount = 1;
-            var min = [markers.user.latitude, markers.user.longitude];
-            var max = [].concat(min);
-            _.forEach(vm.chefs, function(chef) {
-                markers['chef' + markersCount] = {
-                    lat: chef.location.latitude,
-                    lng: chef.location.longitude,
-                    icon: {
-                        type: 'div',
-                        className: 'chefMarker',
-                        iconSize: [chefIconSize, chefIconSize],
-                        iconAnchor: [chefIconSize / 2, chefIconSize / 2],
-                        html: '<img src="' + (chef.picture || 'images/user.png') + '" alt=""/>',
-                        onClickFn: goToChefPreview.bind(this, chef.id)
-                    }
-                };
-                if (typeof min[0] !== 'number') {
-                    min[0] = max[0] = chef.location.latitude;
-                    min[1] = max[1] = chef.location.longitude;
-                } else {
-                    min[0] = Math.min(chef.location.latitude, min[0]);
-                    min[1] = Math.min(chef.location.longitude, min[1]);
-                    max[0] = Math.max(chef.location.latitude, max[0]);
-                    max[1] = Math.max(chef.location.longitude, max[1]);
-                }
-                markersCount++;
-            }.bind(this));
-            vm.map.markers = markers;
-            vm.map.center.latitude = (min[0] + max[0]) / 2;
-            vm.map.center.longitude = (min[1] + max[1]) / 2;
+            var markers = _.chain(vm.chefs)
+                .filter(function(chef) {
+                    return _.isObject(chef.location);
+                })
+                .map(getChefMarker)
+                .value();
+            if (userLocation) {
+                markers.push(getUserMarker(userLocation));
+            }
+            if (_.size(markers)) {
+                MapService.addMarkers(mapId, markers);
+                MapService.fitMarkers(mapId);
+            }
         }
 
         function goToChefPreview(chefId) {
@@ -180,23 +160,37 @@
                 center: {
                     lat: 37.773204,
                     lng: -122.4213458,
-                    zoom: 15
+                    zoom: 18
                 },
-                markers: {
-                    user: {
-                        lat: 0,
-                        lng: 0,
-                        icon: {
-                            type: 'div',
-                            className: 'currentUserMarker',
-                            iconSize: [12, 12],
-                            iconAnchor: [6, 6],
-                            html: ''
-                        }
-                    }
-                }
+                markers: {}
             };
             MapService.initMap(mapId);
+        }
+
+        function getChefMarker(chef) {
+            var html = '<img src="' + chef.dishes[0].picture + '"/>';
+            return {
+                id: 'chef' + chef.id,
+                lat: chef.location.latitude,
+                lng: chef.location.longitude,
+                className: 'chefMarker',
+                iconSize: [80, 80],
+                iconAnchor: [40, 40],
+                html: html,
+                onClickFn: goToChefPreview.bind(vm, chef.id)
+            };
+        }
+
+        function getUserMarker(coords) {
+            return {
+                id: 'user',
+                lat: coords.latitude,
+                lng: coords.longitude,
+                className: 'currentUserMarker',
+                iconSize: [12, 12],
+                iconAnchor: [6, 6],
+                html: ''
+            };
         }
 
     }
