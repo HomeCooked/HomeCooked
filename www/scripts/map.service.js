@@ -13,7 +13,6 @@
 
         var service = {
             initMap: initMap,
-            getMap: getMap,
             fitMarkers: fitMarkers,
             addMarkers: addMarkers,
             centerMap: centerMap,
@@ -37,15 +36,10 @@
         function initMap(mapId) {
             var mapFeatureGroup = $window.L.featureGroup();
             featureGroups[mapId] = mapFeatureGroup;
-            getMap(mapId).then(function(map) {
+            leafletData.getMap(mapId).then(function(map) {
                 mapFeatureGroup.addTo(map);
             });
         }
-
-        function getMap(mapId) {
-            return leafletData.getMap(mapId);
-        }
-
 
         /**
          * fit the map to display all the markers displayed on the map,

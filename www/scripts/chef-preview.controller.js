@@ -43,13 +43,11 @@
             if (!$stateParams.batchId) {
                 // fixes rendering issues of the map
                 window.ionic.trigger('resize');
-                MapService.getMap(mapId).then(function(map) {
-                    map.on('zoomend', mapZoomChanged.bind(vm, map));
-                });
             }
         }
 
-        function mapZoomChanged(map) {
+        function mapZoomChanged(event) {
+            var map = event.target;
             var zoom = 1.2 * (map.getZoom() - 14);
             var size = Math.max(chefIconSize, chefIconSize * zoom);
             vm.map.markers.chef.icon.iconSize = [size, size];
@@ -386,6 +384,7 @@
                 }
             };
             MapService.initMap(mapId);
+            MapService.onEvent(mapId, 'zoomend', mapZoomChanged);
         }
 
     }

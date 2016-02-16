@@ -17,6 +17,22 @@
             line-height: 26px;
         }
     }
+    .map-container {
+        width: 100vw;
+        height: 100vh;
+        .angular-leaflet-map {
+            height: 100%;
+        }
+        .chefMarker {
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid rgba(56, 126, 245, 0.6);
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
     @media (max-width: 600px) {
         .list-container {
             display: block;
@@ -48,7 +64,8 @@
             display: block;
             margin: 20px auto;
         }
-        reviews-rating, .distance {
+        reviews-rating,
+        .distance {
             margin-bottom: 10px;
         }
     }
@@ -59,47 +76,11 @@
         .angular-leaflet-map {
             height: 100%;
         }
-
         /* display the user picture inside as a marker with a nice border + an arrow */
         .currentChefMarker {
             background: rgba(56, 126, 245, 0.3);
             border-radius: 50%;
             border: 5px solid rgba(56, 126, 245, 0.6);
-        }
-
-        /* display the currentuser marker with a nice pulse */
-        .currentUserMarker {
-            background: #2495BF;
-            border-radius: 50%;
-            padding: 0;
-            border: 1px solid #1c7598;
-            &:after {
-                content: '';
-                border-radius: 50%;
-                height: 40px;
-                width: 40px;
-                position: absolute;
-                top: -15px;
-                left: -15px;
-                -webkit-animation: pulsate 2s ease-out;
-                -webkit-animation-iteration-count: infinite;
-                -webkit-animation-delay: 2s;
-                box-shadow: 0 0 1px 1px #1B6D8C;
-                background-color: rgba(36,149,191,0.2);
-            }
-        }
-        @-webkit-keyframes pulsate {
-            0% {
-                -webkit-transform: scale(0.1, 0.1);
-                opacity: 0.0 !important;
-            }
-            50% {
-                opacity: 1.0 !important;
-            }
-            100% {
-                -webkit-transform: scale(1.2, 1.2);
-                opacity: 0.0 !important;
-            }
         }
     }
     .bio:before,
@@ -118,6 +99,40 @@
     .bio:after {
         content: "”";
         margin-left: 5px;
+    }
+}
+/* display the currentuser marker with a nice pulse */
+.currentUserMarker {
+    background: #2495BF;
+    border-radius: 50%;
+    padding: 0;
+    border: 1px solid #1c7598;
+    &:after {
+        content: '';
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        -webkit-animation: pulsate 2s ease-out;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-delay: 2s;
+        box-shadow: 0 0 1px 1px #1B6D8C;
+        background-color: rgba(36,149,191,0.2);
+    }
+}
+@-webkit-keyframes pulsate {
+    0% {
+        -webkit-transform: scale(0.1, 0.1);
+        opacity: 0.0 !important;
+    }
+    50% {
+        opacity: 1.0 !important;
+    }
+    100% {
+        -webkit-transform: scale(1.2, 1.2);
+        opacity: 0.0 !important;
     }
 }
 .buyer-dish-preview {

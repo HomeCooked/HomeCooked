@@ -2,15 +2,21 @@
     <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
     </ion-nav-buttons>
-    <!-- <ion-nav-buttons side="right">
-        <button class="button button-icon button-clear ion-navicon" ng-click="vm.showOnlyToday=!vm.showOnlyToday"></button>
-    </ion-nav-buttons> -->
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear" ng-class="{'ion-map': !vm.mapMode, 'ion-ios-list-outline': vm.mapMode}" ng-click="vm.toggleMapMode()" ng-if="!vm.search_inactive"></button>
+    </ion-nav-buttons>
     <ion-content>
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="reload()"></ion-refresher>
-        <p class="message" align="center" ng-if="vm.search_message">{{vm.search_message}}</p>
-        <p class="message" align="center" ng-if="!vm.search_inactive && vm.chefs.length===0">No items on sale.</p>
+        <div ng-if="!vm.mapMode">
+            <ion-refresher pulling-text="Pull to refresh" on-refresh="reload()"></ion-refresher>
+            <p class="message" align="center" ng-if="vm.search_message">{{vm.search_message}}</p>
+            <p class="message" align="center" ng-if="!vm.search_inactive && vm.chefs.length===0">No items on sale.</p>
+        </div>
 
-        <div class="dishes-container" ng-if="!vm.search_inactive">
+        <div ng-if="!vm.search_inactive" class="map-container" ng-show="vm.mapMode">
+            <leaflet id="searchmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers" data-tap-disabled="true"></leaflet>
+        </div>
+
+        <div ng-if="!vm.search_inactive && !vm.mapMode" class="dishes-container">
             <div class="card" ng-repeat="dish in vm.dishes | filter:vm.isToday">
                 <div class="clickable" ui-sref="app.dish-preview({id: dish.chef.id, batchId: dish.id})">
                     <div class="dish-price item-right">${{dish.price}}</div>
@@ -34,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div ng-if="!vm.search_inactive" class="list-container">
+        <div ng-if="!vm.search_inactive && !vm.mapMode" class="list-container">
             <div ng-repeat="chef in vm.chefs">
                 <a class="item item-divider item-avatar-right" ui-sref="app.chef-preview({id:chef.id})">
                     <img style="top:auto" ng-src="{{chef.picture}}">
