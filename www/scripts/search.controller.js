@@ -15,14 +15,11 @@
             latitude: 37.773204,
             longitude: -122.4213458
         };
-        var today;
         var vm = this;
         var mapId = 'searchmap';
         vm.chefs = [];
         vm.hasUserLocation = false;
-        vm.showOnlyToday = false;
         vm.mapMode = false;
-        vm.isToday = isToday;
         vm.toggleMapMode = toggleMapMode;
         vm.centerToUserLocation = centerToUserLocation;
 
@@ -48,8 +45,6 @@
         }
 
         function getChefs(location) {
-            // now + 12h
-            today = new Date().getTime() + 43200000;
             $ionicLoading.show();
             ConfigService.getConfig().then(function(config) {
                     vm.search_inactive = config.search_inactive;
@@ -106,11 +101,6 @@
             });
             vm.chefs = _.sortBy(vm.chefs, 'distance');
             vm.dishes = _.sortBy(vm.dishes, 'chef.distance');
-        }
-
-        function isToday(value) {
-            var date = new Date(value.start_time).getTime();
-            return !vm.showOnlyToday || date <= today;
         }
 
         function toggleMapMode() {

@@ -18,7 +18,7 @@
         </div>
 
         <div ng-if="!vm.search_inactive && !vm.mapMode" class="dishes-container">
-            <div class="card" ng-repeat="dish in vm.dishes | filter:vm.isToday">
+            <div class="card" ng-repeat="dish in vm.dishes">
                 <div class="clickable" ui-sref="app.dish-preview({id: dish.chef.id, batchId: dish.id})">
                     <div class="dish-price item-right">${{dish.price}}</div>
                     <div class="title">{{dish.title}}</div>
@@ -48,7 +48,7 @@
                     <h2>{{chef.first_name}} {{chef.last_name}}</h2>
                     <p style="font-size: 90%">{{chef.distance ? chef.distance + ' away, ' : ''}}{{chef.num_active_dishes}} item{{chef.num_active_dishes === 1 ? '' : 's'}} on sale</p>
                 </a>
-                <a ng-if="chef.dishes.length" ng-repeat="dish in chef.dishes | filter:vm.isToday" class="item item-thumbnail-left" ui-sref="app.dish-preview({id: chef.id, batchId: dish.id})">
+                <a ng-if="chef.dishes.length" ng-repeat="dish in chef.dishes" class="item item-thumbnail-left" ui-sref="app.dish-preview({id: chef.id, batchId: dish.id})">
                     <img ng-src="{{::dish.picture}}">
                     <h2 class="dish-price item-right">${{::dish.price}}</h2>
                     <h2 class="wrap">{{::dish.title}}</h2>
