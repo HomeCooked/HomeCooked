@@ -24,6 +24,9 @@
         vm.checkout = checkout;
         vm.chef = {};
         vm.checkoutInfo = {};
+        vm.hasUserLocation = false;
+        vm.centerToUserLocation = centerToUserLocation;
+        vm.centerToChefLocation = centerToChefLocation;
 
         $scope.$on('$ionicView.afterEnter', onAfterEnter);
 
@@ -108,6 +111,7 @@
         function onLocationChange() {
             var location = LocationService.getCurrentLocation();
             if (location) {
+                vm.hasUserLocation = true;
                 vm.chef.distance = LocationService.getDistanceFrom(vm.chef.location);
                 vm.map.markers.user.lat = location.latitude;
                 vm.map.markers.user.lng = location.longitude;
@@ -387,5 +391,13 @@
             MapService.onEvent(mapId, 'zoomend', mapZoomChanged);
         }
 
+        function centerToUserLocation() {
+            var userLocation = LocationService.getCurrentLocation();
+            MapService.centerMap(mapId, userLocation.latitude, userLocation.longitude);
+        }
+
+        function centerToChefLocation() {
+            MapService.centerMap(mapId, vm.chef.location.latitude, vm.chef.location.longitude);
+        }
     }
 })();

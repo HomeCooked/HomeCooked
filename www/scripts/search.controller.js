@@ -18,10 +18,11 @@
         var vm = this;
         var mapId = 'searchmap';
         vm.chefs = [];
-        vm.hasUserLocation = false;
         vm.mapMode = false;
         vm.toggleMapMode = toggleMapMode;
+        vm.hasUserLocation = false;
         vm.centerToUserLocation = centerToUserLocation;
+        vm.fitMarkers = fitMarkers;
 
         $scope.reload = reloadData;
 
@@ -89,8 +90,8 @@
                     MapService.setMarkerLatLng(mapId, 'user', location.latitude, location.longitude);
                 } else {
                     MapService.addMarkers(mapId, [getUserMarker()]);
-                    vm.hasUserLocation = true;
                 }
+                vm.hasUserLocation = true;
                 updateChefsDistance();
             }
         }

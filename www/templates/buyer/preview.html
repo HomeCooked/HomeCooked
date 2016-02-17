@@ -11,6 +11,8 @@
         </div>
         <div class="map-container">
             <leaflet id="chefmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers" data-tap-disabled="true"></leaflet>
+            <button class="button button-icon ion-ios-person" ng-click="vm.centerToChefLocation()"></button>
+            <button class="button button-icon ion-pinpoint second" ng-click="vm.centerToUserLocation()" ng-disabled="!vm.hasUserLocation"></button>
         </div>
         <div class="dishes-container">
             <h1 class="title">Menu</h1>
