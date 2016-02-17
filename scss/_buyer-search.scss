@@ -18,8 +18,8 @@
         }
     }
     .map-container {
-        width: 100vw;
-        height: 100vh;
+        height: calc(100vh - 44px);
+        position: relative;
         .angular-leaflet-map {
             height: 100%;
         }

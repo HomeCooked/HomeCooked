@@ -33,11 +33,6 @@ body {
     color: #333;
 }
 
-/* fixes extra spaces on bottom for scrollable ion-content */
-.scroll {
-    overflow: hidden;
-}
-
 input.ng-dirty.ng-invalid {
     color: red;
 }
