@@ -84,13 +84,13 @@
 
         function onLocationChange(location) {
             if (location) {
-                if (!userLocation) {
-                    MapService.addMarkers(mapId, [getUserMarker(location)]);
-                } else {
-                    MapService.setMarkerLatLng(mapId, 'user', location.latitude, location.longitude);
-                }
                 userLocation = location;
-                vm.hasUserLocation = true;
+                if (vm.hasUserLocation) {
+                    MapService.setMarkerLatLng(mapId, 'user', location.latitude, location.longitude);
+                } else {
+                    MapService.addMarkers(mapId, [getUserMarker()]);
+                    vm.hasUserLocation = true;
+                }
                 updateChefsDistance();
             }
         }
@@ -106,6 +106,7 @@
         function toggleMapMode() {
             vm.mapMode = !vm.mapMode;
             if (vm.mapMode) {
+                $ionicScrollDelegate.scrollBy(0, 0, false);
                 window.ionic.trigger('resize');
                 _.delay(fitMarkers, 100);
             }
@@ -203,11 +204,11 @@
             };
         }
 
-        function getUserMarker(location) {
+        function getUserMarker() {
             return {
                 id: 'user',
-                lat: location.latitude,
-                lng: location.longitude,
+                lat: userLocation.latitude,
+                lng: userLocation.longitude,
                 className: 'currentUserMarker',
                 iconSize: [12, 12],
                 iconAnchor: [6, 6],
