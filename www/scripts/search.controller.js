@@ -10,7 +10,8 @@
 
     function SearchCtrl($state, $scope, $ionicScrollDelegate, $ionicLoading, SearchService, LocationService, HCMessaging, ConfigService, MapService, _) {
 
-        var userLocation = {
+        var userLocation;
+        var defaultLocation = {
             latitude: 37.773204,
             longitude: -122.4213458
         };
@@ -41,10 +42,7 @@
         }
 
         function reloadData() {
-            getChefs({
-                latitude: userLocation.latitude,
-                longitude: userLocation.longitude
-            });
+            getChefs(userLocation || defaultLocation);
         }
 
         function getChefs(location) {
@@ -68,6 +66,10 @@
 
         function setChefs(chefs) {
             var scrollPosition = $ionicScrollDelegate.getScrollPosition();
+            var oldMarkers = getChefMarkers(vm.chefs);
+            var newMarkers = getChefMarkers(chefs);
+            var toRemove = _.difference(oldMarkers, newMarkers, 'id');
+            var toAdd = _.difference(newMarkers, oldMarkers, 'id');
             vm.chefs = chefs;
             var dishes = [];
             _.forEach(chefs, function(chef) {
@@ -78,16 +80,20 @@
             });
             vm.dishes = dishes;
             updateChefsDistance();
-            updateMarkers();
+            updateMarkers(toAdd, toRemove);
             $ionicLoading.hide();
             $ionicScrollDelegate.scrollBy(0, scrollPosition.top, true);
         }
 
         function onLocationChange(location) {
             if (location) {
+                if (!userLocation) {
+                    MapService.addMarkers(mapId, [getUserMarker(location)]);
+                } else {
+                    MapService.setMarkerLatLng(mapId, 'user', location.latitude, location.longitude);
+                }
                 userLocation = location;
                 updateChefsDistance();
-                updateMarkers();
             }
         }
 
@@ -108,24 +114,33 @@
             vm.mapMode = !vm.mapMode;
             if (vm.mapMode) {
                 window.ionic.trigger('resize');
-                _.delay(MapService.fitMarkers.bind(MapService, mapId), 100);
+                _.delay(fitMarkers, 100);
             }
         }
 
-        function updateMarkers() {
-            var markers = _.chain(vm.chefs)
+        function updateMarkers(toAdd, toRemove) {
+            if (_.size(toRemove)) {
+                MapService.removeMarkers(mapId, _.map(toRemove, 'id'));
+            }
+            if (_.size(toAdd)) {
+                MapService.addMarkers(mapId, toAdd);
+            }
+            if (_.size(toRemove)  ||  _.size(toAdd)) {
+                fitMarkers();
+            }
+        }
+
+        function fitMarkers() {
+            MapService.fitMarkers(mapId);
+        }
+
+        function getChefMarkers(chefs) {
+            return _.chain(chefs)
                 .filter(function(chef) {
                     return _.isObject(chef.location);
                 })
                 .map(getChefMarker)
                 .value();
-            if (userLocation) {
-                markers.push(getUserMarker(userLocation));
-            }
-            if (_.size(markers)) {
-                MapService.addMarkers(mapId, markers);
-                MapService.fitMarkers(mapId);
-            }
         }
 
         function goToChefPreview(chefId) {
@@ -180,11 +195,11 @@
             };
         }
 
-        function getUserMarker(coords) {
+        function getUserMarker(location) {
             return {
                 id: 'user',
-                lat: coords.latitude,
-                lng: coords.longitude,
+                lat: location.latitude,
+                lng: location.longitude,
                 className: 'currentUserMarker',
                 iconSize: [12, 12],
                 iconAnchor: [6, 6],

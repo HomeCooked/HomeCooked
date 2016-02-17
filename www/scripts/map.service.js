@@ -9,12 +9,14 @@
 
     function MapService($window, leafletData) {
 
-        var featureGroups = []; // an array containing each leaflet map feature group
+        var featureGroups = {}; // an object containing each leaflet map feature group
 
         var service = {
             initMap: initMap,
             fitMarkers: fitMarkers,
             addMarkers: addMarkers,
+            removeMarkers: removeMarkers,
+            setMarkerLatLng: setMarkerLatLng,
             centerMap: centerMap,
             onEvent: onEvent
         };
@@ -36,6 +38,7 @@
         function initMap(mapId) {
             var mapFeatureGroup = $window.L.featureGroup();
             featureGroups[mapId] = mapFeatureGroup;
+            mapFeatureGroup._markers = {};
             leafletData.getMap(mapId).then(function(map) {
                 mapFeatureGroup.addTo(map);
             });
@@ -59,7 +62,6 @@
             });
         }
 
-
         /**
          * reset all the markers and add new markers to the map
          * @param mapId the map id
@@ -67,11 +69,23 @@
          */
 
         function addMarkers(mapId, markers) {
-            featureGroups[mapId].clearLayers();
             for (var i = 0; i < markers.length; i++) {
+                if (!markers[i].id) {
+                    markers[i].id = 'marker_' + i;
+                }
                 addMarker(mapId, markers[i]);
             }
             featureGroups[mapId].bringToFront();
+        }
+
+        function removeMarkers(mapId, markerIds) {
+            var group = featureGroups[mapId],
+                markers = group._markers;
+            for (var i = 0; i < markerIds.length; i++) {
+                var id = markerIds[i];
+                group.removeLayer(markers[id]);
+                delete markers[id];
+            }
         }
 
         /**
@@ -101,8 +115,19 @@
 
             // add the maker to the group layer
             featureGroups[mapId].addLayer(m);
+            featureGroups[mapId]._markers[marker.id] = m;
         }
 
+        /**
+         * updates the marker location
+         * @param mapId the map id
+         * @param markerId the marker id
+         * @param lat the latitude
+         * @param lng the longitude
+         */
+        function setMarkerLatLng(mapId, markerId, lat, lng) {
+            featureGroups[mapId]._markers[markerId].setLatLng([lat, lng]);
+        }
 
         /**
          * center the map on a given latitude and longitude
