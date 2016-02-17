@@ -105,9 +105,9 @@
         }
 
         function toggleMapMode() {
+            $ionicScrollDelegate.scrollTop(false);
             vm.mapMode = !vm.mapMode;
             if (vm.mapMode) {
-                $ionicScrollDelegate.scrollBy(0, 0, false);
                 window.ionic.trigger('resize');
                 _.delay(fitMarkers, 100);
                 handleShittyAppleBugs();
