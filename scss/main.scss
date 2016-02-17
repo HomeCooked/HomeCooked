@@ -151,9 +151,3 @@ input.ng-dirty.ng-invalid {
   margin: 40px 20px;
   text-align: center;
 }
-
-/* removes white space at the bottom of preview.html */
-ion-content > .scroll {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
