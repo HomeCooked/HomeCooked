@@ -11,60 +11,61 @@
             <p class="message" align="center" ng-if="vm.search_message">{{vm.search_message}}</p>
             <p class="message" align="center" ng-if="!vm.search_inactive && vm.chefs.length===0">No items on sale.</p>
         </div>
+        <div ng-if="!vm.search_inactive">
+            <div class="map-container" ng-show="vm.mapMode">
+                <leaflet id="searchmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers" data-tap-disabled="true"></leaflet>
+                <button class="button button-icon ion-ios-people" ng-click="vm.fitMarkers()" ng-disabled="vm.chefs.length===0"></button>
+                <button class="button button-icon ion-location second" ng-click="vm.centerToUserLocation()" ng-disabled="!vm.hasUserLocation"></button>
+            </div>
 
-        <div ng-if="!vm.search_inactive" class="map-container" ng-show="vm.mapMode">
-            <leaflet id="searchmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers" data-tap-disabled="true"></leaflet>
-            <button class="button button-icon ion-ios-people" ng-click="vm.fitMarkers()"></button>
-            <button class="button button-icon ion-location second" ng-click="vm.centerToUserLocation()" ng-disabled="!vm.hasUserLocation"></button>
-        </div>
-
-        <div ng-if="!vm.search_inactive && !vm.mapMode" class="dishes-container">
-            <div class="card" ng-repeat="dish in vm.dishes">
-                <div class="clickable" ui-sref="app.dish-preview({id: dish.chef.id, batchId: dish.id})">
-                    <div class="dish-price item-right">${{dish.price}}</div>
-                    <div class="title">{{dish.title}}</div>
-                    <div class="dark">{{dish.chef.distance ? dish.chef.distance + ' away, ' : ''}}{{dish.remaining}} remaining</div>
-                    <div class="dark">
-                        <span>{{dish.start_time | amCalendar}} •</span>
-                        <span ng-if="dish.chef.hasPickup">Pickup</span>
-                        <span ng-if="dish.chef.hasPickup && dish.chef.hasDelivery">or</span>
-                        <span ng-if="dish.chef.hasDelivery">Delivery</span>
-                        <i class="icon ion-checkmark"></i>
+            <div class="dishes-container" ng-hide="vm.mapMode">
+                <div class="card" ng-repeat="dish in vm.dishes">
+                    <div class="clickable" ui-sref="app.dish-preview({id: dish.chef.id, batchId: dish.id})">
+                        <div class="dish-price item-right">${{dish.price}}</div>
+                        <div class="title">{{dish.title}}</div>
+                        <div class="dark">{{dish.chef.distance ? dish.chef.distance + ' away, ' : ''}}{{dish.remaining}} remaining</div>
+                        <div class="dark">
+                            <span>{{dish.start_time | amCalendar}} •</span>
+                            <span ng-if="dish.chef.hasPickup">Pickup</span>
+                            <span ng-if="dish.chef.hasPickup && dish.chef.hasDelivery">or</span>
+                            <span ng-if="dish.chef.hasDelivery">Delivery</span>
+                            <i class="icon ion-checkmark"></i>
+                        </div>
+                        <div class="dish-img" ng-style="{'background-image': 'url(' + dish.picture + ')'}"></div>
                     </div>
-                    <div class="dish-img" ng-style="{'background-image': 'url(' + dish.picture + ')'}"></div>
-                </div>
 
-                <div class="horizontal">
-                    <a ui-sref="app.chef-preview({id: dish.chef.id})" class="button button-positive button-clear chef-button">
-                        <img ng-src="{{dish.chef.picture || 'images/user.png'}}" /> {{dish.chef.first_name}} {{dish.chef.last_name}}
-                    </a>
-                    <reviews-rating class="positive" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: dish.chef.id, dishId: dish.dish_id})"></reviews-rating>
+                    <div class="horizontal">
+                        <a ui-sref="app.chef-preview({id: dish.chef.id})" class="button button-positive button-clear chef-button">
+                            <img ng-src="{{dish.chef.picture || 'images/user.png'}}" /> {{dish.chef.first_name}} {{dish.chef.last_name}}
+                        </a>
+                        <reviews-rating class="positive" score="dish.review_score" count="dish.review_count" ui-sref="app.dish-review({id: dish.chef.id, dishId: dish.dish_id})"></reviews-rating>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div ng-if="!vm.search_inactive && !vm.mapMode" class="list-container">
-            <div ng-repeat="chef in vm.chefs">
-                <a class="item item-divider item-avatar-right" ui-sref="app.chef-preview({id:chef.id})">
-                    <img style="top:auto" ng-src="{{chef.picture}}">
-                    <h2>{{chef.first_name}} {{chef.last_name}}</h2>
-                    <p style="font-size: 90%">{{chef.distance ? chef.distance + ' away, ' : ''}}{{chef.num_active_dishes}} item{{chef.num_active_dishes === 1 ? '' : 's'}} on sale</p>
-                </a>
-                <a ng-if="chef.dishes.length" ng-repeat="dish in chef.dishes" class="item item-thumbnail-left" ui-sref="app.dish-preview({id: chef.id, batchId: dish.id})">
-                    <img ng-src="{{::dish.picture}}">
-                    <h2 class="dish-price item-right">${{::dish.price}}</h2>
-                    <h2 class="wrap">{{::dish.title}}</h2>
-                    <reviews-rating class="dark" score="::dish.review_score" count="::dish.review_count"></reviews-rating>
-                    <div class="small dark">
-                        Available {{dish.start_time | amCalendar}}
-                    </div>
-                    <div class="small dark">
-                        For
-                        <span ng-if="chef.hasPickup">Pickup</span>
-                        <span ng-if="chef.hasPickup && chef.hasDelivery">or</span>
-                        <span ng-if="chef.hasDelivery">Delivery</span>
-                        <i class="icon ion-checkmark"></i>
-                    </div>
-                </a>
+            <div class="list-container" ng-hide="vm.mapMode">
+                <div ng-repeat="chef in vm.chefs">
+                    <a class="item item-divider item-avatar-right" ui-sref="app.chef-preview({id:chef.id})">
+                        <img style="top:auto" ng-src="{{chef.picture}}">
+                        <h2>{{chef.first_name}} {{chef.last_name}}</h2>
+                        <p style="font-size: 90%">{{chef.distance ? chef.distance + ' away, ' : ''}}{{chef.num_active_dishes}} item{{chef.num_active_dishes === 1 ? '' : 's'}} on sale</p>
+                    </a>
+                    <a ng-if="chef.dishes.length" ng-repeat="dish in chef.dishes" class="item item-thumbnail-left" ui-sref="app.dish-preview({id: chef.id, batchId: dish.id})">
+                        <img ng-src="{{::dish.picture}}">
+                        <h2 class="dish-price item-right">${{::dish.price}}</h2>
+                        <h2 class="wrap">{{::dish.title}}</h2>
+                        <reviews-rating class="dark" score="::dish.review_score" count="::dish.review_count"></reviews-rating>
+                        <div class="small dark">
+                            Available {{dish.start_time | amCalendar}}
+                        </div>
+                        <div class="small dark">
+                            For
+                            <span ng-if="chef.hasPickup">Pickup</span>
+                            <span ng-if="chef.hasPickup && chef.hasDelivery">or</span>
+                            <span ng-if="chef.hasDelivery">Delivery</span>
+                            <i class="icon ion-checkmark"></i>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </ion-content>
