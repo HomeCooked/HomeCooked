@@ -13,7 +13,7 @@
 
         var service = {
             initMap: initMap,
-            fitMarkers: fitMarkers,
+            fitBounds: fitBounds,
             addMarkers: addMarkers,
             removeMarkers: removeMarkers,
             setMarkerLatLng: setMarkerLatLng,
@@ -52,11 +52,13 @@
          * might need some improvements, it's a little bit hackish.
          *
          * @param mapId
+         * @param bounds the bounds to fit
          */
 
-        function fitMarkers(mapId) {
+        function fitBounds(mapId, bounds) {
             return leafletData.getMap(mapId).then(function(map) {
-                map.fitBounds(featureGroups[mapId].getBounds(), {
+                bounds = bounds || featureGroups[mapId].getBounds();
+                map.fitBounds(bounds, {
                     padding: [20, 20]
                 });
             });

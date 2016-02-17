@@ -19,10 +19,12 @@
         var vm = this;
         var mapId = 'searchmap';
         vm.chefs = [];
+        vm.hasUserLocation = false;
         vm.showOnlyToday = false;
         vm.mapMode = false;
         vm.isToday = isToday;
         vm.toggleMapMode = toggleMapMode;
+        vm.centerToUserLocation = centerToUserLocation;
 
         $scope.reload = reloadData;
 
@@ -42,7 +44,7 @@
         }
 
         function reloadData() {
-            getChefs(userLocation || defaultLocation);
+            getChefs(userLocation || defaultLocation);
         }
 
         function getChefs(location) {
@@ -93,6 +95,7 @@
                     MapService.setMarkerLatLng(mapId, 'user', location.latitude, location.longitude);
                 }
                 userLocation = location;
+                vm.hasUserLocation = true;
                 updateChefsDistance();
             }
         }
@@ -131,7 +134,22 @@
         }
 
         function fitMarkers() {
-            MapService.fitMarkers(mapId);
+            if (!vm.chefs.length) {
+                return;
+            }
+            // top-left
+            var tl = [vm.chefs[0].location.latitude, vm.chefs[0].location.longitude];
+            // bottom-right
+            var br = [vm.chefs[0].location.latitude, vm.chefs[0].location.longitude];
+            for (var i = 1; i < vm.chefs.length; i++) {
+                var l = vm.chefs[i].location;
+                tl[0] = Math.min(tl[0], l.latitude);
+                tl[1] = Math.min(tl[1], l.longitude);
+                br[0] = Math.max(br[0], l.latitude);
+                br[1] = Math.max(br[1], l.longitude);
+            }
+            // we exclude user location
+            MapService.fitBounds(mapId, [tl, br]);
         }
 
         function getChefMarkers(chefs) {
@@ -205,6 +223,10 @@
                 iconAnchor: [6, 6],
                 html: ''
             };
+        }
+
+        function centerToUserLocation() {
+            MapService.centerMap(mapId, userLocation.latitude, userLocation.longitude);
         }
 
     }

@@ -14,6 +14,7 @@
 
         <div ng-if="!vm.search_inactive" class="map-container" ng-show="vm.mapMode">
             <leaflet id="searchmap" defaults="vm.map.defaults" tiles="vm.map.tiles" center="vm.map.center" markers="vm.map.markers" data-tap-disabled="true"></leaflet>
+            <button class="button button-icon ion-location" ng-click="vm.centerToUserLocation()" ng-disabled="!vm.hasUserLocation"></button>
         </div>
 
         <div ng-if="!vm.search_inactive && !vm.mapMode" class="dishes-container">
