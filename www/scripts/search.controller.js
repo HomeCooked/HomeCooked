@@ -110,6 +110,7 @@
                 $ionicScrollDelegate.scrollBy(0, 0, false);
                 window.ionic.trigger('resize');
                 _.delay(fitMarkers, 100);
+                handleShittyAppleBugs();
             }
         }
 
@@ -219,6 +220,19 @@
 
         function centerToUserLocation() {
             MapService.centerMap(mapId, userLocation.latitude, userLocation.longitude);
+        }
+
+
+        function handleShittyAppleBugs() {
+            if (!navigator.userAgent.match(/i(Pad|Phone|Pod)/i)) {
+                return;
+            }
+
+            var container = window.document.querySelector('.buyer-search > ion-content');
+            var map = window.document.querySelector('.buyer-search .map-container');
+            if (container && map) {
+                map.style.height = container.offsetHeight + 'px';
+            }
         }
 
     }
