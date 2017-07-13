@@ -52,9 +52,6 @@
     "shelljs": "^0.3.0",
     "time-grunt": "~0.2.1"
   },
-  "engines": {
-    "node": ">=0.10.0"
-  },
   "scripts": {
     "test": "grunt test"
   },
